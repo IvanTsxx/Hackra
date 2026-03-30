@@ -3,7 +3,7 @@ import { getHackathons } from "@/lib/actions/hackathons";
 
 export const metadata = {
   description: "Browse and join amazing hackathons",
-  title: "Hackathons - Hackathon Hub",
+  title: "Hackathons - Hackra",
 };
 
 export default async function HackathonsPage() {

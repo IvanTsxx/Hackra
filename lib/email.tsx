@@ -52,7 +52,7 @@ export async function sendWelcomeEmail(
 
   return sendEmail({
     react: <WelcomeEmail name={name} email={email} userType={userType} />,
-    subject: "Welcome to Hackathon Hub!",
+    subject: "Welcome to Hackra!",
     to: email,
   });
 }

@@ -22,15 +22,15 @@ export function WelcomeEmail({ name, userType }: WelcomeEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Welcome to Hackathon Hub!</Preview>
+      <Preview>Welcome to Hackra!</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={box}>
-            <Text style={heading}>Welcome to Hackathon Hub! 🚀</Text>
+            <Text style={heading}>Welcome to Hackra! 🚀</Text>
             <Text style={paragraph}>Hi {name},</Text>
             <Text style={paragraph}>
-              Thank you for joining Hackathon Hub! We&apos;re excited to have
-              you as a {userType} in our community.
+              Thank you for joining Hackra! We&apos;re excited to have you as a{" "}
+              {userType} in our community.
             </Text>
 
             {userType === "participant" && (

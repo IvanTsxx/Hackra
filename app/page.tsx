@@ -10,7 +10,7 @@ import { getFeaturedHackathon } from "@/lib/actions/hackathons";
 export const metadata = {
   description:
     "Connect with developers, build innovative projects, and compete in exciting hackathon events worldwide.",
-  title: "Hackathon Hub | Build. Compete. Together.",
+  title: "Hackra | Build. Compete. Together.",
 };
 
 export default async function Home() {

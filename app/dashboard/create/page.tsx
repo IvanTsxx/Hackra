@@ -2,7 +2,7 @@ import { CreateHackathonForm } from "./_components/create-form";
 
 export const metadata = {
   description: "Create a new hackathon event",
-  title: "Create Hackathon - Hackathon Hub",
+  title: "Create Hackathon - Hackra",
 };
 
 export default function CreateHackathonPage() {

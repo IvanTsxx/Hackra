@@ -4,8 +4,8 @@ import Link from "next/link";
 import { LoginForm } from "@/components/auth/login-form";
 
 export const metadata = {
-  description: "Sign in to your Hackathon Hub account",
-  title: "Sign In - Hackathon Hub",
+  description: "Sign in to your Hackra account",
+  title: "Sign In - Hackra",
 };
 
 export default function LoginPage() {
@@ -17,7 +17,7 @@ export default function LoginPage() {
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center gap-2 mb-4">
             <Code2 className="w-8 h-8" />
-            <span className="text-xl font-bold">Hackathon Hub</span>
+            <span className="text-xl font-bold">Hackra</span>
           </Link>
         </div>
         <LoginForm />

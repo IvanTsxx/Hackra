@@ -2,10 +2,15 @@
 
 import { Points, PointMaterial } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { useTheme } from "next-themes";
 import { useRef, useMemo } from "react";
 import type * as THREE from "three";
 
-function Globe() {
+interface GlobeProps {
+  color: string;
+}
+
+function Globe({ color }: GlobeProps) {
   const ref = useRef<THREE.Points>(null);
 
   // Generate points on a sphere surface (wireframe globe effect)
@@ -51,7 +56,7 @@ function Globe() {
     <Points ref={ref} positions={points} stride={3}>
       <PointMaterial
         transparent
-        color="#4ade80"
+        color={color}
         size={0.03}
         sizeAttenuation={true}
         depthWrite={false}
@@ -60,7 +65,11 @@ function Globe() {
   );
 }
 
-function FloatingParticles() {
+interface FloatingParticlesProps {
+  color: string;
+}
+
+function FloatingParticles({ color }: FloatingParticlesProps) {
   const ref = useRef<THREE.Points>(null);
 
   const particles = useMemo(() => {
@@ -89,7 +98,7 @@ function FloatingParticles() {
     <Points ref={ref} positions={particles} stride={3}>
       <PointMaterial
         transparent
-        color="#4ade80"
+        color={color}
         size={0.02}
         sizeAttenuation={true}
         depthWrite={false}
@@ -100,6 +109,10 @@ function FloatingParticles() {
 }
 
 export function Globe3D() {
+  const { resolvedTheme } = useTheme();
+
+  const pointColor = resolvedTheme === "dark" ? "#4ade80" : "#0a0a0a";
+
   return (
     <div className="relative w-full h-full">
       <Canvas
@@ -108,8 +121,8 @@ export function Globe3D() {
         style={{ background: "transparent" }}
       >
         <ambientLight intensity={0.5} />
-        <Globe />
-        <FloatingParticles />
+        <Globe color={pointColor} />
+        <FloatingParticles color={pointColor} />
       </Canvas>
     </div>
   );

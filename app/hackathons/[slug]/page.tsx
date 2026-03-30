@@ -10,7 +10,7 @@ import { HackathonDetailContent } from "./_components/detail-content";
 
 export const metadata = {
   description: "View details about this amazing hackathon",
-  title: "Hackathon Details - Hackathon Hub",
+  title: "Hackathon Details - Hackra",
 };
 
 export default async function HackathonDetailPage({

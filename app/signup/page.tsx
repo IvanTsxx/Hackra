@@ -5,8 +5,8 @@ import { Suspense } from "react";
 import { SignupForm } from "@/components/auth/signup-form";
 
 export const metadata = {
-  description: "Create a new Hackathon Hub account",
-  title: "Sign Up - Hackathon Hub",
+  description: "Create a new Hackra account",
+  title: "Sign Up - Hackra",
 };
 
 export default function SignupPage() {
@@ -18,7 +18,7 @@ export default function SignupPage() {
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center gap-2 mb-4">
             <Code2 className="w-8 h-8" />
-            <span className="text-xl font-bold">Hackathon Hub</span>
+            <span className="text-xl font-bold">Hackra</span>
           </Link>
         </div>
         <Suspense

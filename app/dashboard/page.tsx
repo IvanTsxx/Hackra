@@ -10,7 +10,7 @@ import { DashboardContent } from "./_components/dashboard-content";
 
 export const metadata = {
   description: "Manage your hackathons",
-  title: "Dashboard - Hackathon Hub",
+  title: "Dashboard - Hackra",
 };
 
 export default async function DashboardPage() {
