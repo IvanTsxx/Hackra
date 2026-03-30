@@ -45,7 +45,7 @@ export default async function HackathonDetailPage({
     (hackathon.maxParticipants || 0) - hackathon.participantCount;
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="h-full py-20 bg-background">
       {hackathon.coverImage && (
         <div className="relative w-full h-72 bg-muted overflow-hidden">
           <img

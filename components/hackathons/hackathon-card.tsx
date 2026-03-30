@@ -1,12 +1,9 @@
-"use client";
-
 import { format } from "date-fns";
-import { CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react";
+import { CalendarIcon, MapPinIcon, UsersIcon, Terminal } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 
 interface HackathonCardProps {
   id: string;
@@ -27,14 +24,11 @@ export function HackathonCard({
   title,
   slug,
   description,
-  image_url,
   start_date,
   end_date,
   location,
   max_participants,
   participant_count,
-  bg_color,
-  text_color,
 }: HackathonCardProps) {
   const startDate = new Date(start_date);
   const endDate = new Date(end_date);
@@ -42,66 +36,76 @@ export function HackathonCard({
   const spotsLeft = max_participants - participant_count;
 
   return (
-    <Link href={`/hackathons/${slug}`}>
-      <Card
-        className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col"
-        style={{
-          backgroundColor: bg_color || "var(--background)",
-        }}
-      >
-        {image_url && (
-          <div className="relative w-full h-40 bg-muted overflow-hidden">
-            <img
-              src={image_url}
-              alt={title}
-              className="w-full h-full object-cover"
-            />
+    <Link href={`/hackathons/${slug}`} className="block group">
+      <article className="h-full border border-border bg-card hover:border-primary/50 transition-colors p-4 flex flex-col gap-4">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex items-center gap-2 text-primary">
+            <Terminal className="w-4 h-4" />
+            <span className="text-[10px] font-mono uppercase tracking-widest">
+              hackathon
+            </span>
           </div>
-        )}
+          <Badge
+            variant={isFull ? "destructive" : "secondary"}
+            className="text-[10px] uppercase tracking-wider font-mono"
+          >
+            {isFull ? "FULL" : `${spotsLeft} SLOTS`}
+          </Badge>
+        </div>
 
-        <div className="p-6 flex-1 flex flex-col gap-4">
-          <div>
-            <h3
-              className="text-xl font-bold line-clamp-2 mb-2"
-              style={{ color: text_color || "var(--foreground)" }}
-            >
-              {title}
-            </h3>
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {description}
-            </p>
+        {/* Title & Description */}
+        <div className="flex-1">
+          <h3 className="text-base font-bold font-mono line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+            {">"} {title}
+          </h3>
+          <p className="text-xs text-muted-foreground font-mono line-clamp-2">
+            {"// "}
+            {description}
+          </p>
+        </div>
+
+        {/* Meta Info */}
+        <div className="space-y-2 text-xs font-mono">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <CalendarIcon className="w-3 h-3 text-primary" />
+            <span>
+              {format(startDate, "MMM dd")} - {format(endDate, "MMM dd, yyyy")}
+            </span>
           </div>
-
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <CalendarIcon className="w-4 h-4" />
-              <span>
-                {format(startDate, "MMM dd")} -{" "}
-                {format(endDate, "MMM dd, yyyy")}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <MapPinIcon className="w-4 h-4" />
-              <span>{location}</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <UsersIcon className="w-4 h-4" />
-              <span>
-                {participant_count} / {max_participants} participants
-              </span>
-            </div>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <MapPinIcon className="w-3 h-3 text-primary" />
+            <span className="uppercase tracking-wider">{location}</span>
           </div>
-
-          <div className="pt-4 border-t border-border flex justify-between items-center">
-            <Badge variant={isFull ? "destructive" : "secondary"}>
-              {isFull ? "Full" : `${spotsLeft} spots left`}
-            </Badge>
-            <Button size="sm" variant="outline">
-              View Details
-            </Button>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <UsersIcon className="w-3 h-3 text-primary" />
+            <span>
+              [{participant_count}/{max_participants}] participants
+            </span>
           </div>
         </div>
-      </Card>
+
+        {/* Progress bar */}
+        <div className="h-1 bg-secondary overflow-hidden">
+          <div
+            className="h-full bg-primary transition-all"
+            style={{
+              width: `${Math.min((participant_count / max_participants) * 100, 100)}%`,
+            }}
+          />
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end">
+          <Button
+            size="sm"
+            variant="outline"
+            className="text-[10px] uppercase tracking-wider font-mono"
+          >
+            {">"} view_details
+          </Button>
+        </div>
+      </article>
     </Link>
   );
 }

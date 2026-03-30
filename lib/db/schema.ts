@@ -14,7 +14,7 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false),
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: text("id").primaryKey(),
   image: text("image"),
   name: text("name").notNull(),
   role: text("role").default("user"),
@@ -112,7 +112,7 @@ export const organizers = pgTable("organizers", {
     .references(() => hackathons.id, { onDelete: "cascade" }),
   id: uuid("id").defaultRandom().primaryKey(),
   role: text("role").default("organizer"),
-  userId: uuid("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
 });
@@ -126,7 +126,7 @@ export const participants = pgTable("participants", {
   status: text("status").default("registered"),
   teamName: text("team_name"),
   updatedAt: timestamp("updated_at").defaultNow(),
-  userId: uuid("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
 });
@@ -134,7 +134,7 @@ export const participants = pgTable("participants", {
 export const verifications = pgTable("verifications", {
   createdAt: timestamp("created_at").defaultNow(),
   expiresAt: timestamp("expires_at").notNull(),
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   updatedAt: timestamp("updated_at").defaultNow(),
   value: text("value").notNull(),

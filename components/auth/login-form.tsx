@@ -10,13 +10,6 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   FieldGroup,
   Field,
   FieldLabel,
@@ -88,12 +81,17 @@ export function LoginForm() {
   const isDisabled = isLoading || socialLoading !== null;
 
   return (
-    <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-border">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Welcome back</CardTitle>
-        <CardDescription>Sign in to your account to continue</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <div className="w-full border border-border bg-card/80 backdrop-blur-sm p-6">
+      <div className="text-center mb-6">
+        <h2 className="text-lg font-bold font-mono uppercase tracking-wider mb-1">
+          {">"} LOGIN
+        </h2>
+        <p className="text-xs text-muted-foreground font-mono">
+          {"// Sign in to your account to continue"}
+        </p>
+      </div>
+
+      <div className="space-y-6">
         {/* Social Login Buttons */}
         <div className="grid grid-cols-2 gap-3">
           <Button
@@ -101,7 +99,7 @@ export function LoginForm() {
             variant="outline"
             onClick={() => handleSocialLogin("google")}
             disabled={isDisabled}
-            className="gap-2"
+            className="gap-2 text-xs uppercase tracking-wider font-mono"
           >
             {socialLoading === "google" ? (
               <Spinner className="w-4 h-4" />
@@ -132,7 +130,7 @@ export function LoginForm() {
             variant="outline"
             onClick={() => handleSocialLogin("github")}
             disabled={isDisabled}
-            className="gap-2"
+            className="gap-2 text-xs uppercase tracking-wider font-mono"
           >
             {socialLoading === "github" ? (
               <Spinner className="w-4 h-4" />
@@ -149,9 +147,9 @@ export function LoginForm() {
           <div className="absolute inset-0 flex items-center">
             <Separator className="w-full" />
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">
-              Or continue with email
+          <div className="relative flex justify-center text-[10px] uppercase tracking-widest">
+            <span className="bg-card px-2 text-muted-foreground font-mono">
+              or continue with email
             </span>
           </div>
         </div>
@@ -160,16 +158,23 @@ export function LoginForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <FieldLabel
+                htmlFor="email"
+                className="text-xs uppercase tracking-wider font-mono"
+              >
+                email
+              </FieldLabel>
               <Input
                 id="email"
                 type="email"
                 placeholder="you@example.com"
                 {...register("email")}
                 disabled={isDisabled}
+                className="font-mono text-sm"
               />
               {errors.email && (
-                <FieldDescription className="text-destructive">
+                <FieldDescription className="text-destructive text-xs font-mono">
+                  {"// "}
                   {errors.email.message}
                 </FieldDescription>
               )}
@@ -178,38 +183,46 @@ export function LoginForm() {
 
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <FieldLabel
+                htmlFor="password"
+                className="text-xs uppercase tracking-wider font-mono"
+              >
+                password
+              </FieldLabel>
               <Input
                 id="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder="********"
                 {...register("password")}
                 disabled={isDisabled}
+                className="font-mono text-sm"
               />
               {errors.password && (
-                <FieldDescription className="text-destructive">
+                <FieldDescription className="text-destructive text-xs font-mono">
+                  {"// "}
                   {errors.password.message}
                 </FieldDescription>
               )}
             </Field>
           </FieldGroup>
 
-          <Button type="submit" className="w-full gap-2" disabled={isDisabled}>
+          <Button
+            type="submit"
+            className="w-full gap-2 uppercase tracking-wider text-xs font-mono"
+            disabled={isDisabled}
+          >
             {isLoading && <Spinner className="w-4 h-4" />}
-            Sign In
+            {">"} Sign In
           </Button>
         </form>
 
-        <p className="text-center text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/signup"
-            className="text-primary hover:underline font-medium"
-          >
-            Sign up
+        <p className="text-center text-xs text-muted-foreground font-mono">
+          {"// "} Don&apos;t have an account?{" "}
+          <Link href="/signup" className="text-primary hover:underline">
+            sign_up()
           </Link>
         </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

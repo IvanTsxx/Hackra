@@ -10,7 +10,6 @@ import {
   Text,
 } from "@react-email/components";
 import { format } from "date-fns";
-import React from "react";
 
 interface HackathonConfirmationEmailProps {
   participantName: string;
