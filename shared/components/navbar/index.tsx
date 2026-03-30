@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 
 import { auth } from "@/lib/auth";
+import { cn } from "@/shared/lib/utils";
 
 import { DesktopNav } from "./desktop-menu";
 import { MobileNav } from "./mobile-menu";
@@ -36,19 +37,22 @@ export async function Navbar() {
           <DesktopNav isAuthenticated={isAuthenticated} />
 
           {/* User Menu (Desktop) or Mobile Nav */}
-          <div className="flex items-center gap-3">
+          <div
+            className={cn(
+              "flex items-center gap-3",
+              !isAuthenticated && "lg:hidden"
+            )}
+          >
             {isAuthenticated && session?.user && (
-              <div className="hidden md:block">
-                <UserMenu
-                  user={{
-                    email: session.user.email || "",
-                    id: session.user.id,
-                    image: session.user.image,
-                    name: session.user.name || "User",
-                    userType: (session.user as { userType?: string }).userType,
-                  }}
-                />
-              </div>
+              <UserMenu
+                user={{
+                  email: session.user.email || "",
+                  id: session.user.id,
+                  image: session.user.image,
+                  name: session.user.name || "User",
+                  userType: (session.user as { userType?: string }).userType,
+                }}
+              />
             )}
             <MobileNav isAuthenticated={isAuthenticated} />
           </div>
