@@ -12,7 +12,11 @@ export const metadata = {
 export default function SignupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative py-12">
-      <div className="absolute inset-0 dot-grid opacity-30" />
+      {/* Pixel Grid Background */}
+      <div className="absolute inset-0 pixel-grid opacity-40" />
+
+      {/* Scanline overlay */}
+      <div className="absolute inset-0 scanlines pointer-events-none" />
 
       <div className="w-full px-4 relative z-10 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center mb-8">

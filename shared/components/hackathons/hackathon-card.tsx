@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+import { CodeText } from "../code-text";
+
 interface HackathonCardProps {
   id: string;
   title: string;
@@ -59,10 +61,12 @@ export function HackathonCard({
           <h3 className="text-base font-bold font-mono line-clamp-2 mb-2 group-hover:text-primary transition-colors">
             {">"} {title}
           </h3>
-          <p className="text-xs text-muted-foreground font-mono line-clamp-2">
-            {"// "}
+          <CodeText
+            as="p"
+            className="text-xs text-muted-foreground font-mono line-clamp-2"
+          >
             {description}
-          </p>
+          </CodeText>
         </div>
 
         {/* Meta Info */}

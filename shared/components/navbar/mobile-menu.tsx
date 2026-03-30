@@ -13,6 +13,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { CodeText } from "../code-text";
+
 const navLinks = [
   { href: "/hackathons", label: "Hackathons" },
   { href: "/about", label: "About" },
@@ -86,9 +88,12 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
           </nav>
 
           <div className="absolute bottom-8 left-4 right-4">
-            <p className="text-xs text-muted-foreground font-mono">
-              {"// hackathon_hub v1.0.0"}
-            </p>
+            <CodeText
+              as="p"
+              className="text-xs text-muted-foreground font-mono"
+            >
+              hackra v1.0.0
+            </CodeText>
           </div>
         </SheetContent>
       </Sheet>

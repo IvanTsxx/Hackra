@@ -16,8 +16,10 @@ export const auth = betterAuth({
       verification: schema.verifications,
     },
   }),
+  // OAuth-only: email/password disabled
+  // Set enabled: true to re-enable in the future
   emailAndPassword: {
-    enabled: true,
+    enabled: false,
     maxPasswordLength: 128,
     minPasswordLength: 8,
   },
@@ -42,6 +44,15 @@ export const auth = betterAuth({
   trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:3000"],
   user: {
     additionalFields: {
+      bio: {
+        type: "string",
+      },
+      company: {
+        type: "string",
+      },
+      organizerRole: {
+        type: "string",
+      },
       role: {
         defaultValue: "user",
         type: "string",

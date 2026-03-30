@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -40,6 +41,7 @@ export function DesktopNav({ isAuthenticated }: DesktopNavProps) {
       </NavigationMenu>
 
       <div className="flex items-center gap-3">
+        <ThemeToggle />
         {isAuthenticated ? (
           <Link href="/dashboard">
             <Button

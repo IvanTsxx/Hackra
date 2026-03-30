@@ -23,12 +23,12 @@ export async function Navbar() {
             <div className="flex items-center gap-1">
               <span className="text-primary font-mono text-lg">[</span>
               <span className="font-mono text-sm uppercase tracking-widest">
-                HH
+                HR
               </span>
               <span className="text-primary font-mono text-lg">]</span>
             </div>
             <span className="hidden sm:inline-block text-xs text-muted-foreground font-mono uppercase tracking-wider group-hover:text-foreground transition-colors">
-              hackathon_hub
+              hackra
             </span>
           </Link>
 

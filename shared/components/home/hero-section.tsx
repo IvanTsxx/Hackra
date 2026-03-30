@@ -9,6 +9,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { TextFlip } from "@/components/ui/text-flip";
 
+import { CodeText } from "../code-text";
+
 const Globe3D = dynamic(
   async () => {
     const mod = await import("./globe-3d");
@@ -61,9 +63,12 @@ export function HeroSection() {
               <motion.div variants={itemVariants} className="mb-8">
                 <div className="inline-flex items-center gap-2 px-4 py-2 border border-border bg-card/80 backdrop-blur-sm">
                   <Terminal className="w-4 h-4 text-primary" />
-                  <span className="text-xs font-mono uppercase tracking-widest">
-                    {"// hackathon_hub.init()"}
-                  </span>
+                  <CodeText
+                    as="span"
+                    className="text-xs font-mono uppercase tracking-widest"
+                  >
+                    hackra.init()
+                  </CodeText>
                 </div>
               </motion.div>
 

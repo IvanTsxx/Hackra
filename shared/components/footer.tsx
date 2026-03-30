@@ -1,10 +1,12 @@
 import Link from "next/link";
 
+import { CodeText } from "./code-text";
+
 export const Footer = () => (
   <footer className="py-8 border-t border-border">
     <div className="container mx-auto px-4">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground font-mono">
-        <p>{"// hackathon_hub v1.0.0 | built with <3"}</p>
+        <CodeText as="p">hackra v1.0.0 | built with &lt;3</CodeText>
         <div className="flex items-center gap-6">
           <Link
             href="/about"
@@ -23,6 +25,12 @@ export const Footer = () => (
             className="hover:text-foreground transition-colors uppercase tracking-wider"
           >
             Privacy
+          </Link>
+          <Link
+            href="/terms"
+            className="hover:text-foreground transition-colors uppercase tracking-wider"
+          >
+            Terms
           </Link>
         </div>
       </div>

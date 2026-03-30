@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/home/hero-section";
 import { TechStackMarquee } from "@/components/home/tech-stack-marquee";
 import { Button } from "@/components/ui/button";
 import { getFeaturedHackathon } from "@/lib/actions/hackathons";
+import { CodeText } from "@/shared/components/code-text";
 
 export const metadata = {
   description:
@@ -27,9 +28,12 @@ export default async function Home() {
         <div className="absolute inset-0 pixel-grid opacity-20" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="text-xs text-primary font-mono uppercase tracking-widest mb-4">
-              {"// features.map()"}
-            </p>
+            <CodeText
+              className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+              as="p"
+            >
+              features.map()
+            </CodeText>
             <h2 className="text-2xl md:text-3xl font-bold mb-4 font-mono">
               {">"} EVERYTHING YOU NEED TO HACK
             </h2>
@@ -69,10 +73,12 @@ export default async function Home() {
                     {feature.title}
                   </h3>
                 </div>
-                <p className="text-xs text-muted-foreground font-mono">
-                  {"// "}
+                <CodeText
+                  as="p"
+                  className="text-xs text-muted-foreground font-mono"
+                >
                   {feature.description}
-                </p>
+                </CodeText>
               </div>
             ))}
           </div>
@@ -84,9 +90,12 @@ export default async function Home() {
         <div className="absolute inset-0 pixel-grid opacity-20" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <p className="text-xs text-primary font-mono uppercase tracking-widest mb-4">
-              {"// call_to_action"}
-            </p>
+            <CodeText
+              as="p"
+              className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+            >
+              call_to_action
+            </CodeText>
             <h2 className="text-2xl md:text-3xl font-bold mb-6 font-mono">
               {">"} READY TO START BUILDING?
             </h2>

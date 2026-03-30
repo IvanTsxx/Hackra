@@ -11,12 +11,15 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
+  bio: text("bio"),
+  company: text("company"),
   createdAt: timestamp("created_at").defaultNow(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false),
   id: text("id").primaryKey(),
   image: text("image"),
   name: text("name").notNull(),
+  organizerRole: text("organizer_role"),
   role: text("role").default("user"),
   updatedAt: timestamp("updated_at").defaultNow(),
   userType: text("user_type").default("participant"),

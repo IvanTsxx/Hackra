@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 
+import { CodeText } from "../code-text";
 import { Button } from "../ui/button";
 
 interface FeaturedHackathonProps {
@@ -28,9 +29,12 @@ export const FeaturedHackathon = ({ hackathon }: FeaturedHackathonProps) => (
     <div className="container mx-auto px-4 py-6">
       <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-4 border border-border bg-card/50 backdrop-blur-sm">
         <div className="flex-1">
-          <p className="text-[10px] uppercase tracking-widest text-primary mb-2 font-mono">
-            {"// featured_event"}
-          </p>
+          <CodeText
+            as="p"
+            className="text-[10px] uppercase tracking-widest text-primary mb-2 font-mono"
+          >
+            featured_event
+          </CodeText>
           <h3 className="text-lg font-bold mb-1 font-mono">
             {hackathon.title}
           </h3>

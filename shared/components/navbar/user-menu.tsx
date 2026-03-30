@@ -56,21 +56,23 @@ export function UserMenu({ user }: UserMenuProps) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none font-mono">
-              {user.name}
-            </p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {user.email}
-            </p>
-            {user.userType && (
-              <p className="text-xs text-primary uppercase tracking-wider mt-1">
-                [{user.userType}]
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none font-mono">
+                {user.name}
               </p>
-            )}
-          </div>
-        </DropdownMenuLabel>
+              <p className="text-xs leading-none text-muted-foreground">
+                {user.email}
+              </p>
+              {user.userType && (
+                <p className="text-xs text-primary uppercase tracking-wider mt-1">
+                  [{user.userType}]
+                </p>
+              )}
+            </div>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => router.push("/dashboard")}>

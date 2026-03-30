@@ -1,5 +1,6 @@
 import { Code2 } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { LoginForm } from "@/components/auth/login-form";
 
@@ -10,8 +11,12 @@ export const metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background relative">
-      <div className="absolute inset-0 dot-grid opacity-30" />
+    <div className="min-h-screen flex items-center justify-center bg-background relative py-12">
+      {/* Pixel Grid Background */}
+      <div className="absolute inset-0 pixel-grid opacity-40" />
+
+      {/* Scanline overlay */}
+      <div className="absolute inset-0 scanlines pointer-events-none" />
 
       <div className="w-full px-4 relative z-10 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center mb-8">
@@ -20,7 +25,13 @@ export default function LoginPage() {
             <span className="text-xl font-bold">Hackra</span>
           </Link>
         </div>
-        <LoginForm />
+        <Suspense
+          fallback={
+            <div className="w-full max-w-md mx-auto h-96 bg-card/50 rounded-lg animate-pulse" />
+          }
+        >
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );
