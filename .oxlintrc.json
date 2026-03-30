@@ -14,7 +14,8 @@
     "complexity": "off",
     "unicorn/catch-error-name": "off",
     "curly": "off",
-    "no-relative-parent-imports": "off"
+    "no-relative-parent-imports": "off",
+    "nextjs/no-img-element": "off"
   },
-  "ignorePatterns": [".next/**", "node_modules/**", "skills/*"]
+  "ignorePatterns": [".next/**", "node_modules/**", "skills/*", "drizzle/**"]
 }
