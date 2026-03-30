@@ -127,19 +127,21 @@ export async function createHackathon(data: {
   requirements?: string[];
   technologies?: string[];
   prizes?: { place: string; prize: string }[];
+  coverImage?: string;
 }) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session?.user) {
-    throw new Error("Unauthorized");
+    return { error: "Unauthorized", success: false };
   }
 
   const [newHackathon] = await db
     .insert(hackathons)
     .values({
       accentColor: data.accentColor || "#3b82f6",
+      coverImage: data.coverImage,
       description: data.description,
       endDate: data.endDate,
       isVirtual: data.isVirtual,
@@ -165,7 +167,7 @@ export async function createHackathon(data: {
   revalidatePath("/dashboard");
   revalidatePath("/hackathons");
 
-  return newHackathon;
+  return { data: newHackathon, success: true };
 }
 
 export async function updateHackathon(

@@ -21,9 +21,9 @@ import { createHackathon } from "@/lib/actions/hackathons";
 
 const createHackathonSchema = z.object({
   bgColor: z.string().optional(),
+  coverImage: z.string().optional(),
   description: z.string().min(10, "Description must be at least 10 characters"),
   endDate: z.string(),
-  imageUrl: z.string().optional(),
   location: z.string().min(3, "Location must be at least 3 characters"),
   maxParticipants: z.number().min(1, "Must have at least 1 participant"),
   slug: z
@@ -55,15 +55,15 @@ export function CreateHackathonForm() {
     setIsLoading(true);
     try {
       const result = await createHackathon({
-        bgColor: data.bgColor,
+        accentColor: data.bgColor,
+        coverImage: data.coverImage,
         description: data.description,
         endDate: new Date(data.endDate),
-        imageUrl: data.imageUrl,
         location: data.location,
         maxParticipants: data.maxParticipants,
         slug: data.slug,
         startDate: new Date(data.startDate),
-        textColor: data.textColor,
+
         title: data.title,
       });
 
@@ -205,7 +205,7 @@ export function CreateHackathonForm() {
           <FieldLabel>Image URL (optional)</FieldLabel>
           <Input
             placeholder="https://example.com/image.jpg"
-            {...register("imageUrl")}
+            {...register("coverImage")}
             disabled={isLoading}
           />
         </Field>
