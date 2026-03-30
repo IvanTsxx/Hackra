@@ -31,23 +31,21 @@ export const FeaturedHackathon = ({ hackathon }: FeaturedHackathonProps) => (
         <div className="flex-1">
           <CodeText
             as="p"
-            className="text-[10px] uppercase tracking-widest text-primary mb-2 font-mono"
+            className="text-[10px] uppercase tracking-widest text-primary mb-2  "
           >
             featured_event
           </CodeText>
-          <h3 className="text-lg font-bold mb-1 font-mono">
-            {hackathon.title}
-          </h3>
-          <p className="text-xs text-muted-foreground line-clamp-1 font-mono">
+          <h3 className="text-lg font-bold mb-1  ">{hackathon.title}</h3>
+          <p className="text-xs text-muted-foreground line-clamp-1  ">
             {hackathon.description}
           </p>
         </div>
         <div className="flex items-center gap-6">
           <div className="text-center">
-            <p className="text-xl font-bold font-mono text-primary">
+            <p className="text-xl font-bold   text-primary">
               {hackathon.participantCount}
             </p>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-widest  ">
               joined
             </p>
           </div>

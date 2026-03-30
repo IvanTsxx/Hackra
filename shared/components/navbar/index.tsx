@@ -22,13 +22,11 @@ export async function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="flex items-center gap-1">
-              <span className="text-primary font-mono text-lg">[</span>
-              <span className="font-mono text-sm uppercase tracking-widest">
-                HR
-              </span>
-              <span className="text-primary font-mono text-lg">]</span>
+              <span className="text-primary   text-lg">[</span>
+              <span className="  text-sm uppercase tracking-widest">HR</span>
+              <span className="text-primary   text-lg">]</span>
             </div>
-            <span className="hidden sm:inline-block text-xs text-muted-foreground font-mono uppercase tracking-wider group-hover:text-foreground transition-colors">
+            <span className="hidden sm:inline-block text-xs text-muted-foreground   uppercase tracking-wider group-hover:text-foreground transition-colors">
               hackra
             </span>
           </Link>

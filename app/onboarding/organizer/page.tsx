@@ -95,10 +95,10 @@ export default function OrganizerOnboardingPage() {
       <div className="w-full px-4 relative z-10 flex flex-col items-center justify-center max-w-lg">
         <Card className="bg-card/80 backdrop-blur-sm border-border w-full">
           <CardHeader>
-            <CardTitle className="font-mono uppercase tracking-wider">
+            <CardTitle className=" uppercase tracking-wider">
               {">"} ORGANIZER PROFILE
             </CardTitle>
-            <CardDescription className="font-mono text-xs">
+            <CardDescription className=" text-xs">
               <CodeText>Tell us more about yourself</CodeText>
             </CardDescription>
           </CardHeader>
@@ -107,7 +107,7 @@ export default function OrganizerOnboardingPage() {
               {/* Organizer Role */}
               <FieldGroup>
                 <Field>
-                  <FieldLabel className="text-xs uppercase tracking-wider font-mono">
+                  <FieldLabel className="text-xs uppercase tracking-wider ">
                     <CodeText>I organize hackathons as</CodeText>
                   </FieldLabel>
                   <Select
@@ -118,17 +118,17 @@ export default function OrganizerOnboardingPage() {
                       field.onChange({ target: { value: v } });
                     }}
                   >
-                    <SelectTrigger className="font-mono">
+                    <SelectTrigger className="">
                       <SelectValue placeholder="Select your role" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="individual" className="font-mono">
+                      <SelectItem value="individual" className="">
                         Individual — I organize as a person
                       </SelectItem>
-                      <SelectItem value="company" className="font-mono">
+                      <SelectItem value="company" className="">
                         Company — I organize for a company
                       </SelectItem>
-                      <SelectItem value="community" className="font-mono">
+                      <SelectItem value="community" className="">
                         Community — I organize for a community
                       </SelectItem>
                     </SelectContent>
@@ -147,7 +147,7 @@ export default function OrganizerOnboardingPage() {
                   <Field>
                     <FieldLabel
                       htmlFor="company"
-                      className="text-xs uppercase tracking-wider font-mono"
+                      className="text-xs uppercase tracking-wider "
                     >
                       <CodeText>company_name</CodeText>
                     </FieldLabel>
@@ -155,10 +155,10 @@ export default function OrganizerOnboardingPage() {
                       id="company"
                       placeholder="Acme Inc."
                       {...register("company")}
-                      className="font-mono text-sm"
+                      className=" text-sm"
                     />
                     {errors.company && (
-                      <FieldDescription className="text-destructive text-xs font-mono">
+                      <FieldDescription className="text-destructive text-xs ">
                         <CodeText>{errors.company.message}</CodeText>
                       </FieldDescription>
                     )}
@@ -171,7 +171,7 @@ export default function OrganizerOnboardingPage() {
                 <Field>
                   <FieldLabel
                     htmlFor="bio"
-                    className="text-xs uppercase tracking-wider font-mono"
+                    className="text-xs uppercase tracking-wider "
                   >
                     <CodeText>bio</CodeText>
                   </FieldLabel>
@@ -179,10 +179,10 @@ export default function OrganizerOnboardingPage() {
                     id="bio"
                     placeholder="Tell participants about yourself and your hackathons..."
                     {...register("bio")}
-                    className="font-mono text-sm min-h-[120px]"
+                    className=" text-sm min-h-[120px]"
                   />
                   {errors.bio && (
-                    <FieldDescription className="text-destructive text-xs font-mono">
+                    <FieldDescription className="text-destructive text-xs ">
                       <CodeText>{errors.bio.message}</CodeText>
                     </FieldDescription>
                   )}
@@ -191,7 +191,7 @@ export default function OrganizerOnboardingPage() {
 
               <Button
                 type="submit"
-                className="w-full gap-2 uppercase tracking-wider text-xs font-mono"
+                className="w-full gap-2 uppercase tracking-wider text-xs "
                 disabled={isLoading}
               >
                 {isLoading && <Spinner className="w-4 h-4" />}

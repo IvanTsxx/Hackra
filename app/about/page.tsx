@@ -18,14 +18,14 @@ export default function AboutPage() {
           <div className="text-center max-w-3xl mx-auto">
             <CodeText
               as="p"
-              className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+              className="text-xs text-primary  uppercase tracking-widest mb-4"
             >
               about_hackra()
             </CodeText>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 font-mono">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 ">
               {">"} BUILD TOGETHER
             </h1>
-            <p className="text-lg text-muted-foreground font-mono">
+            <p className="text-lg text-muted-foreground ">
               {
                 "/* Hackra is the platform where developers connect, compete, and create amazing projects */"
               }
@@ -41,19 +41,19 @@ export default function AboutPage() {
             <div>
               <CodeText
                 as="p"
-                className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+                className="text-xs text-primary  uppercase tracking-widest mb-4"
               >
                 our_mission
               </CodeText>
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 font-mono">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 ">
                 {">"} DEMOCRATIZING HACKATHONS
               </h2>
-              <p className="text-muted-foreground font-mono text-sm mb-6">
+              <p className="text-muted-foreground  text-sm mb-6">
                 {
                   "/* We believe every developer deserves access to opportunities to learn, grow, and showcase their skills. Hackathons are more than competitions — they're launchpads for careers, friendships, and revolutionary ideas. */"
                 }
               </p>
-              <p className="text-muted-foreground font-mono text-sm">
+              <p className="text-muted-foreground  text-sm">
                 {
                   "/* Our mission is to make organizing and participating in hackathons as seamless as possible, connecting organizers with passionate developers worldwide. */"
                 }
@@ -68,10 +68,10 @@ export default function AboutPage() {
               ].map((stat, idx) => (
                 <div key={idx} className="p-4 border border-border bg-card/50">
                   <stat.icon className="w-5 h-5 text-primary mb-2" />
-                  <span className="text-2xl font-bold font-mono block">
+                  <span className="text-2xl font-bold  block">
                     {stat.label}
                   </span>
-                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest ">
                     {stat.value}
                   </span>
                 </div>
@@ -87,11 +87,11 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <CodeText
               as="p"
-              className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+              className="text-xs text-primary  uppercase tracking-widest mb-4"
             >
               core_values
             </CodeText>
-            <h2 className="text-2xl md:text-3xl font-bold font-mono">
+            <h2 className="text-2xl md:text-3xl font-bold ">
               {">"} WHAT WE BELIEVE
             </h2>
           </div>
@@ -114,13 +114,10 @@ export default function AboutPage() {
               },
             ].map((value, idx) => (
               <div key={idx} className="p-6 border border-border bg-card/50">
-                <h3 className="text-sm font-bold font-mono uppercase tracking-wider mb-2">
+                <h3 className="text-sm font-bold  uppercase tracking-wider mb-2">
                   {value.title}
                 </h3>
-                <CodeText
-                  as="p"
-                  className="text-xs text-muted-foreground font-mono"
-                >
+                <CodeText as="p" className="text-xs text-muted-foreground ">
                   {value.description}
                 </CodeText>
               </div>
@@ -134,14 +131,14 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 text-center">
           <CodeText
             as="p"
-            className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+            className="text-xs text-primary  uppercase tracking-widest mb-4"
           >
             join_the_movement
           </CodeText>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 font-mono">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 ">
             {">"} START YOUR JOURNEY
           </h2>
-          <p className="text-muted-foreground font-mono text-sm mb-8 max-w-xl mx-auto">
+          <p className="text-muted-foreground  text-sm mb-8 max-w-xl mx-auto">
             {
               "/* Whether you want to compete or organize, there's a place for you in the Hackra community. */"
             }
@@ -149,13 +146,13 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/hackathons"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-mono uppercase tracking-wider"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 text-xs  uppercase tracking-wider"
             >
               {"<"} Browse Hackathons {"/>"}
             </Link>
             <Link
               href="/signup?type=organizer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-border hover:border-primary/50 text-xs font-mono uppercase tracking-wider"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-border hover:border-primary/50 text-xs  uppercase tracking-wider"
             >
               {"<"} Organize Event {"/>"}
             </Link>

@@ -65,7 +65,7 @@ export function HeroSection() {
                   <Terminal className="w-4 h-4 text-primary" />
                   <CodeText
                     as="span"
-                    className="text-xs font-mono uppercase tracking-widest"
+                    className="text-xs   uppercase tracking-widest"
                   >
                     hackra.init()
                   </CodeText>
@@ -75,7 +75,7 @@ export function HeroSection() {
               {/* Main Heading with Text Flip */}
               <motion.h1
                 variants={itemVariants}
-                className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 font-mono"
+                className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6  "
               >
                 <span className="block text-muted-foreground">
                   {">"} BUILD.
@@ -96,7 +96,7 @@ export function HeroSection() {
               {/* Subheading */}
               <motion.p
                 variants={itemVariants}
-                className="text-sm md:text-base text-muted-foreground max-w-xl mb-10 font-mono"
+                className="text-sm md:text-base text-muted-foreground max-w-xl mb-10  "
               >
                 {
                   "/* Join thousands of developers in hackathons that matter. Build real projects, make connections, and launch your ideas. */"
@@ -144,10 +144,10 @@ export function HeroSection() {
                     className="flex flex-col items-center gap-2 p-4 border border-border bg-card/50 backdrop-blur-sm"
                   >
                     <stat.icon className="w-4 h-4 text-primary" />
-                    <span className="text-xl md:text-2xl font-bold font-mono">
+                    <span className="text-xl md:text-2xl font-bold  ">
                       {stat.value}
                     </span>
-                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest  ">
                       {stat.label}
                     </span>
                   </div>

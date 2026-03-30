@@ -58,10 +58,10 @@ export function SignupForm() {
   return (
     <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-border">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-mono uppercase tracking-wider">
+        <CardTitle className="text-2xl  uppercase tracking-wider">
           {">"} CREATE ACCOUNT
         </CardTitle>
-        <CardDescription className="font-mono text-xs">
+        <CardDescription className=" text-xs">
           <CodeText>Join the hackathon community</CodeText>
         </CardDescription>
       </CardHeader>
@@ -74,14 +74,14 @@ export function SignupForm() {
             onValueChange={(v) => setUserType(v as "participant" | "organizer")}
             disabled={isDisabled}
           >
-            <SelectTrigger className="font-mono">
+            <SelectTrigger className="">
               <SelectValue placeholder="Select your role" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="participant" className="font-mono">
+              <SelectItem value="participant" className="">
                 Participant — Join hackathons
               </SelectItem>
-              <SelectItem value="organizer" className="font-mono">
+              <SelectItem value="organizer" className="">
                 Organizer — Host hackathons
               </SelectItem>
             </SelectContent>
@@ -95,7 +95,7 @@ export function SignupForm() {
             variant="outline"
             onClick={() => handleSocialLogin("google")}
             disabled={isDisabled}
-            className="gap-2 text-xs uppercase tracking-wider font-mono"
+            className="gap-2 text-xs uppercase tracking-wider "
           >
             {socialLoading === "google" ? (
               <Spinner className="w-4 h-4" />
@@ -109,7 +109,7 @@ export function SignupForm() {
             variant="outline"
             onClick={() => handleSocialLogin("github")}
             disabled={isDisabled}
-            className="gap-2 text-xs uppercase tracking-wider font-mono"
+            className="gap-2 text-xs uppercase tracking-wider "
           >
             {socialLoading === "github" ? (
               <Spinner className="w-4 h-4" />

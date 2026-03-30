@@ -1,6 +1,7 @@
 "use client";
 
-import { Settings, LogOut, LayoutDashboard, Trophy } from "lucide-react";
+import { LogOut, LayoutDashboard, Trophy } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -50,7 +51,7 @@ export function UserMenu({ user }: UserMenuProps) {
       >
         <Avatar className="h-9 w-9 border border-border">
           <AvatarImage src={user.image || undefined} alt={user.name} />
-          <AvatarFallback className="bg-primary text-primary-foreground text-xs font-mono">
+          <AvatarFallback className="bg-primary text-primary-foreground text-xs  ">
             {initials}
           </AvatarFallback>
         </Avatar>
@@ -59,9 +60,7 @@ export function UserMenu({ user }: UserMenuProps) {
         <DropdownMenuGroup>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none font-mono">
-                {user.name}
-              </p>
+              <p className="text-sm font-medium leading-none  ">{user.name}</p>
               <p className="text-xs leading-none text-muted-foreground">
                 {user.email}
               </p>
@@ -75,18 +74,22 @@ export function UserMenu({ user }: UserMenuProps) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.push("/dashboard")}>
-            <LayoutDashboard className="mr-2 h-4 w-4" />
-            <span className="uppercase text-xs tracking-wider">Dashboard</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/hackathons")}>
-            <Trophy className="mr-2 h-4 w-4" />
-            <span className="uppercase text-xs tracking-wider">Hackathons</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/settings")}>
-            <Settings className="mr-2 h-4 w-4" />
-            <span className="uppercase text-xs tracking-wider">Settings</span>
-          </DropdownMenuItem>
+          <Link href="/dashboard">
+            <DropdownMenuItem>
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              <span className="uppercase text-xs tracking-wider">
+                Dashboard
+              </span>
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/hackathons">
+            <DropdownMenuItem>
+              <Trophy className="mr-2 h-4 w-4" />
+              <span className="uppercase text-xs tracking-wider">
+                Hackathons
+              </span>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} className="text-destructive">

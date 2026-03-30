@@ -34,29 +34,28 @@
 
 El proyecto cuenta con una base sólida que cubre las funcionalidades core:
 
-| Componente                | Estado       | Notas                                                                                                                                                     |
-| ------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Stack técnico**         | ✅ Completo  | Next.js 16, Drizzle ORM, Better Auth, React Email                                                                                                         |
-| **Auth**                  | ✅ Funcional | Email/password + Google + GitHub OAuth                                                                                                                    |
-| **Database schema**       | ✅ Listo     | Users, Hackathons, Participants, Organizers                                                                                                               |
-| **Hero section**          | ✅ Listo     | Globe 3D implementado                                                                                                                                     |
-| **Listado de hackatones** | ✅ Básico    | Página con cards simples                                                                                                                                  |
-| **Detalle de hackatón**   | ⚠️ Parcial   | Sin: personalización visual por evento, posibilidad de ver participantes, dejar comentarios, reaccionar con emotes como en discord, sistema de equipos    |
-| **Dashboard organizador** | ⚠️ Básico    | Solo CRUD, sin gestión de participantes, sin edicion de hackatones, sin ver participantes, sin ver comentarios, sin ver reacciones, sin stats, sin charts |
-| **Seed de datos**         | ✅ Listo     | 5 usuarios + 3 hackatones mockeados                                                                                                                       |
-| **Theme toggle**          | ⚠️ Parcial   | Existe provider, sin animación de arrastre                                                                                                                |
+| Componente                | Estado       | Notas                                                                                                                                               |
+| ------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Stack técnico**         | ✅ Completo  | Next.js 16, Drizzle ORM, Better Auth, React Email                                                                                                   |
+| **Auth**                  | ✅ Funcional | Solo Google + GitHub OAuth (email/password deshabilitado)                                                                                           |
+| **Database schema**       | ✅ Listo     | Users, Hackathons, Participants, Organizers, Teams, TeamMembers, TeamJoinRequests                                                                   |
+| **Hero section**          | ✅ Listo     | Globe 3D implementado                                                                                                                               |
+| **Listado de hackatones** | ✅ Básico    | Página con cards simples                                                                                                                            |
+| **Detalle de hackatón**   | ⚠️ Parcial   | Sin: personalización visual por evento, posibilidad de ver participantes, dejar comentarios, reacción con emotes, sistema de equipos (schema listo) |
+| **Dashboard organizador** | ⚠️ Parcial   | CRUD completo + edición de hackatones, sin: gestión de participantes, exportar emails, stats, charts                                                |
+| **Seed de datos**         | ✅ Listo     | 5 usuarios + 3 hackatones mockeados                                                                                                                 |
+| **Theme toggle**          | ✅ Listo     | Animación de arrastre/slide implementada                                                                                                            |
+| **Sistema de equipos**    | ⚠️ Parcial   | Schema de base de datos listo (teams, team_members, team_join_requests), sin UI todavía                                                             |
 
 ### Lo que falta implementar
 
 1. **Personalización por evento** — Colores de fondo, figuras geométricas dinámicas
 2. **Pagina de hackatones** — Eliminar grid tradicional, diseño único y creativo
-3. **Animación theme toggle** — Transición tipo "arrastre" de pantalla
-4. **Dashboard completo** — Ver participantes, exportar emails, compartir en redes, ver stats, ver charts
-5. **Página de detalle avanzada** — Markdown, requisitos, cómo inscribirse, organizadores, comentarios, reacciones, compartir en redes especial foco en X (twitter), uso de og image
-6. **Pagina de perfil de usuario comun** — Ver hackatones en los que esta inscrito, editar su perfil, conectarlo a github o google y asi obtener su foto de perfil y nombre de usuario
-7. **Eliminar inicio de sesion con email y contraseña** — Solo permitir inicio de sesion con github o google
-8. **SEO** — Optimizar la pagina para motores de busqueda, uso de meta tags, sitemap, robots, etc
-9. **Sistema de equipos** — Formación de equipos dentro de hackatones, gestión de cupos, redes sociales de contacto, solicitud/aceptación
+3. **Dashboard completo** — Ver participantes, exportar emails (CSV), compartir en redes, ver stats, charts
+4. **Página de detalle avanzada** — Cómo inscribirse, organizadores, comentarios, reacciones, compartir en redes con OG image
+5. **Pagina de perfil de usuario** — Ver hackatones inscritos, editar perfil, conectar GitHub/Google
+6. **UI Sistema de equipos** — Crear/editar equipo, unirse a equipo, gestionar solicitudes, lista de equipos
+7. **SEO** — Meta tags dinámicos, sitemap, robots.txt, Open Graph
 
 ---
 
@@ -167,9 +166,9 @@ Cada hackatón debe tener su propia landing con personalización visual.
 
 **Criterios de aceptación**:
 
-- [ ] Un usuario puede tener rol de organizer
-- [ ] El dashboard solo es accesible para organizers autenticados
-- [ ] Los participantes ven contenido diferente a los organizadores
+- [x] Un usuario puede tener rol de organizer
+- [x] El dashboard solo es accesible para organizers autenticados
+- [x] Los participantes ven contenido diferente a los organizadores
 
 ### 3.4 Dashboard del Organizador
 
@@ -203,8 +202,8 @@ Cada hackatón debe tener su propia landing con personalización visual.
 
 **Criterios de aceptación**:
 
-- [ ] El organizador puede crear un hackatón desde cero
-- [ ] Puede editar todos los campos de un evento existente
+- [x] El organizador puede crear un hackatón desde cero
+- [x] Puede editar todos los campos de un evento existente
 - [ ] Puede configurar el máximo de miembros por equipo (entre 2 y 10)
 - [ ] Puede ver la lista completa de participantes
 - [ ] Puede exportar emails en formato CSV
@@ -316,16 +315,16 @@ El creador del equipo puede:
 
 **Criterios de aceptación**:
 
-- [ ] Un participante puede crear un equipo dentro de un hackatón donde está registrado
-- [ ] El equipo tiene un nombre por defecto editable por el creador ("Equipo de {username}")
-- [ ] El equipo muestra las redes sociales de contacto configuradas
-- [ ] Otros participantes pueden solicitar unirse al equipo
-- [ ] El creador recibe y puede aceptar o rechazar solicitudes
-- [ ] El sistema impide que un usuario esté en más de un equipo por hackatón
-- [ ] Los participantes sin equipo pueden trabajar individualmente
-- [ ] No existe sistema de mensajería interno en la plataforma
-- [ ] El organizador define el máximo de miembros por equipo al crear/editar el hackatón
-- [ ] Cuando un equipo se llena, cambia automáticamente a estado `full`
+- [ ] Un participante puede crear un equipo dentro de un hackatón donde está registrado (UI pendiente)
+- [ ] El equipo tiene un nombre por defecto editable por el creador ("Equipo de {username}") (UI pendiente)
+- [x] El equipo muestra las redes sociales de contacto configuradas (schema listo)
+- [ ] Otros participantes pueden solicitar unirse al equipo (UI pendiente)
+- [ ] El creador recibe y puede aceptar o rechazar solicitudes (UI pendiente)
+- [x] El sistema impide que un usuario esté en más de un equipo por hackatón (schema/restricciones listo)
+- [x] Los participantes sin equipo pueden trabajar individualmente (ya soportado)
+- [x] No existe sistema de mensajería interno en la plataforma (no está en el scope)
+- [ ] El organizador define el máximo de miembros por equipo al crear/editar el hackatón (UI pendiente)
+- [x] Cuando un equipo se llena, cambia automáticamente a estado `full` (schema listo)
 
 ---
 
@@ -357,10 +356,10 @@ El creador del equipo puede:
 
 **Criterios de aceptación**:
 
-- [ ] El theme toggle está accesible desde cualquier página
-- [ ] La animación de cambio es fluida tipo slide
-- [ ] La preferencia se persiste en localStorage
-- [ ] No hay flash de contenido durante el cambio
+- [x] El theme toggle está accesible desde cualquier página
+- [x] La animación de cambio es fluida tipo slide
+- [x] La preferencia se persiste en localStorage
+- [x] No hay flash de contenido durante el cambio
 
 ### 4.3 Animaciones
 

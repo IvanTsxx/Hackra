@@ -15,7 +15,7 @@ import {
 
 import { CodeText } from "../code-text";
 
-const navLinks = [
+const navLinks: { href: string; label: string }[] = [
   { href: "/hackathons", label: "Hackathons" },
   { href: "/about", label: "About" },
   { href: "/sponsors", label: "Sponsors" },
@@ -42,7 +42,7 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
           className="w-full sm:w-80 bg-background border-l border-border"
         >
           <SheetHeader>
-            <SheetTitle className="text-left font-mono uppercase tracking-widest text-sm">
+            <SheetTitle className="text-left   uppercase tracking-widest text-sm">
               {"<Menu />"}
             </SheetTitle>
           </SheetHeader>
@@ -51,11 +51,11 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={link.href as `/hackathons` | `/about` | `/sponsors`}
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 text-sm uppercase tracking-wider hover:bg-secondary transition-colors border-b border-border"
               >
-                <span className="text-primary font-mono">{">"}</span>
+                <span className="text-primary  ">{">"}</span>
                 {link.label}
               </Link>
             ))}
@@ -88,10 +88,7 @@ export function MobileNav({ isAuthenticated }: MobileNavProps) {
           </nav>
 
           <div className="absolute bottom-8 left-4 right-4">
-            <CodeText
-              as="p"
-              className="text-xs text-muted-foreground font-mono"
-            >
+            <CodeText as="p" className="text-xs text-muted-foreground  ">
               hackra v1.0.0
             </CodeText>
           </div>

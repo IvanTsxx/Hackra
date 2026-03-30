@@ -24,7 +24,7 @@ export const TechStackMarquee = () => (
       {techStack.map((tech, idx) => (
         <span
           key={idx}
-          className="px-6 py-1 text-xs font-mono text-muted-foreground hover:text-primary transition-colors cursor-default uppercase tracking-widest"
+          className="px-6 py-1 text-xs   text-muted-foreground hover:text-primary transition-colors cursor-default uppercase tracking-widest"
         >
           [{tech}]
         </span>

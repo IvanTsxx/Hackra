@@ -44,13 +44,13 @@ export function HackathonCard({
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2 text-primary">
             <Terminal className="w-4 h-4" />
-            <span className="text-[10px] font-mono uppercase tracking-widest">
+            <span className="text-[10px]   uppercase tracking-widest">
               hackathon
             </span>
           </div>
           <Badge
             variant={isFull ? "destructive" : "secondary"}
-            className="text-[10px] uppercase tracking-wider font-mono"
+            className="text-[10px] uppercase tracking-wider  "
           >
             {isFull ? "FULL" : `${spotsLeft} SLOTS`}
           </Badge>
@@ -58,19 +58,19 @@ export function HackathonCard({
 
         {/* Title & Description */}
         <div className="flex-1">
-          <h3 className="text-base font-bold font-mono line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+          <h3 className="text-base font-bold   line-clamp-2 mb-2 group-hover:text-primary transition-colors">
             {">"} {title}
           </h3>
           <CodeText
             as="p"
-            className="text-xs text-muted-foreground font-mono line-clamp-2"
+            className="text-xs text-muted-foreground   line-clamp-2"
           >
             {description}
           </CodeText>
         </div>
 
         {/* Meta Info */}
-        <div className="space-y-2 text-xs font-mono">
+        <div className="space-y-2 text-xs  ">
           <div className="flex items-center gap-2 text-muted-foreground">
             <CalendarIcon className="w-3 h-3 text-primary" />
             <span>
@@ -104,7 +104,7 @@ export function HackathonCard({
           <Button
             size="sm"
             variant="outline"
-            className="text-[10px] uppercase tracking-wider font-mono"
+            className="text-[10px] uppercase tracking-wider  "
           >
             {">"} view_details
           </Button>

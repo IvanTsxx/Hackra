@@ -2,57 +2,59 @@ import "dotenv/config";
 import { v4 as uuid } from "uuid";
 
 import { db } from ".";
-import { auth } from "../auth";
-import { hackathons, participants, organizers } from "./schema";
+import { hackathons, participants, organizers, users } from "./schema";
 
 async function seedDatabase() {
   try {
     console.log("[seed] Starting database seed...");
 
     // ============================================
-    // CREATE USERS USING BETTER AUTH API
+    // CREATE USERS DIRECTLY IN DB (email/password disabled)
     // ============================================
 
-    // Create test organizer using Better Auth API
-    const organizerResult = await auth.api.signUpEmail({
-      body: {
+    // Create test organizer directly in DB
+    const [organizer] = await db
+      .insert(users)
+      .values({
+        bio: "Organizer of hackathons",
+        company: "Hackra",
         email: "organizer@example.com",
+        emailVerified: true,
+        id: uuid(),
         name: "Alex Chen",
-        password: "password123",
+        organizerRole: "lead",
         role: "admin",
         userType: "organizer",
-      },
-    });
-
-    if (!organizerResult.user) {
-      throw new Error("Failed to create organizer");
-    }
+      })
+      .onConflictDoNothing()
+      .returning();
 
     console.log(
-      `[seed] Created organizer: organizer@example.com (id: ${organizerResult.user.id})`
+      `[seed] Created organizer: organizer@example.com (id: ${organizer?.id})`
     );
 
-    // Create test participants using Better Auth API
+    // Create test participants directly in DB
     const participantIds: string[] = [];
     for (let i = 0; i < 10; i += 1) {
-      const result = await auth.api.signUpEmail({
-        body: {
+      const [user] = await db
+        .insert(users)
+        .values({
           email: `dev${i}@example.com`,
+          emailVerified: true,
+          id: uuid(),
           name: `Developer ${i + 1}`,
-          password: "password123",
           role: "user",
           userType: "participant",
-        },
-      });
+        })
+        .onConflictDoNothing()
+        .returning();
 
-      if (!result.user) {
-        throw new Error(`Failed to create participant dev${i}`);
+      if (user) {
+        participantIds.push(user.id);
       }
-
-      participantIds.push(result.user.id);
     }
 
-    console.log("[seed] Created 10 participant users with accounts");
+    console.log("[seed] Created 10 participant users");
 
     // ============================================
     // CREATE HACKATHONS
@@ -232,12 +234,8 @@ async function seedDatabase() {
       for (let i = 0; i < numParticipants; i += 1) {
         if (participantIds[i]) {
           await db.insert(participants).values({
-            createdAt: new Date(),
             hackathonId,
-            id: uuid(),
             status: "registered",
-            teamName: `Team ${String.fromCodePoint(65 + i)}`,
-            updatedAt: new Date(),
             userId: participantIds[i],
           });
         }
@@ -256,7 +254,7 @@ async function seedDatabase() {
         hackathonId,
         id: uuid(),
         role: "admin",
-        userId: organizerResult.user.id,
+        userId: organizer?.id,
       });
     }
 

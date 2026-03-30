@@ -29,15 +29,15 @@ export default async function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <CodeText
-              className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+              className="text-xs text-primary  uppercase tracking-widest mb-4"
               as="p"
             >
               features.map()
             </CodeText>
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 font-mono">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 ">
               {">"} EVERYTHING YOU NEED TO HACK
             </h2>
-            <p className="text-sm text-muted-foreground font-mono">
+            <p className="text-sm text-muted-foreground ">
               {"/* From discovery to deployment, we have got you covered */"}
             </p>
           </div>
@@ -69,14 +69,11 @@ export default async function Home() {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <feature.icon className="w-5 h-5 text-primary" />
-                  <h3 className="text-sm font-bold font-mono uppercase tracking-wider">
+                  <h3 className="text-sm font-bold  uppercase tracking-wider">
                     {feature.title}
                   </h3>
                 </div>
-                <CodeText
-                  as="p"
-                  className="text-xs text-muted-foreground font-mono"
-                >
+                <CodeText as="p" className="text-xs text-muted-foreground ">
                   {feature.description}
                 </CodeText>
               </div>
@@ -92,14 +89,14 @@ export default async function Home() {
           <div className="max-w-3xl mx-auto text-center">
             <CodeText
               as="p"
-              className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+              className="text-xs text-primary  uppercase tracking-widest mb-4"
             >
               call_to_action
             </CodeText>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 font-mono">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 ">
               {">"} READY TO START BUILDING?
             </h2>
-            <p className="text-sm text-muted-foreground mb-8 font-mono">
+            <p className="text-sm text-muted-foreground mb-8 ">
               {
                 "/* Join thousands of developers who are already competing, learning, and shipping. */"
               }

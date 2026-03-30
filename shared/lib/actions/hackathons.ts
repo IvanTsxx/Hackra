@@ -56,6 +56,26 @@ export async function getHackathonBySlug(slug: string) {
   };
 }
 
+export async function getHackathonById(id: string) {
+  const [hackathon] = await db
+    .select()
+    .from(hackathons)
+    .where(eq(hackathons.id, id))
+    .limit(1);
+
+  if (!hackathon) return null;
+
+  const [participantCountResult] = await db
+    .select({ count: count() })
+    .from(participants)
+    .where(eq(participants.hackathonId, hackathon.id));
+
+  return {
+    ...hackathon,
+    participantCount: participantCountResult?.count ?? 0,
+  };
+}
+
 export async function getFeaturedHackathon() {
   const result = await db
     .select({
@@ -174,6 +194,7 @@ export async function updateHackathon(
   id: string,
   data: Partial<{
     title: string;
+    slug: string;
     description: string;
     longDescription: string;
     location: string;
@@ -184,6 +205,7 @@ export async function updateHackathon(
     maxParticipants: number;
     published: boolean;
     accentColor: string;
+    coverImage: string;
     requirements: string[];
     technologies: string[];
     prizes: { place: string; prize: string }[];

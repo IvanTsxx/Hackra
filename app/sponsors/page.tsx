@@ -17,14 +17,14 @@ export default function SponsorsPage() {
           <div className="text-center max-w-3xl mx-auto">
             <CodeText
               as="p"
-              className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+              className="text-xs text-primary  uppercase tracking-widest mb-4"
             >
               sponsors()
             </CodeText>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 font-mono">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 ">
               {">"} OUR SPONSORS
             </h1>
-            <p className="text-lg text-muted-foreground font-mono">
+            <p className="text-lg text-muted-foreground ">
               {
                 "/* Thank you to the amazing companies that make Hackra possible */"
               }
@@ -39,31 +39,31 @@ export default function SponsorsPage() {
           <div className="max-w-2xl mx-auto text-center">
             <CodeText
               as="p"
-              className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+              className="text-xs text-primary  uppercase tracking-widest mb-4"
             >
               become_a_sponsor
             </CodeText>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 font-mono">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 ">
               {">"} PARTNER WITH US
             </h2>
-            <p className="text-muted-foreground font-mono text-sm mb-8">
+            <p className="text-muted-foreground  text-sm mb-8">
               {
                 "/* Join industry leaders in supporting the developer community. Reach talented developers, showcase your brand, and shape the future of tech. */"
               }
             </p>
             <div className="p-6 border border-border bg-card/50 mb-8">
               <Heart className="w-8 h-8 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-bold font-mono uppercase tracking-wider mb-2">
+              <h3 className="text-lg font-bold  uppercase tracking-wider mb-2">
                 Interested in Sponsoring?
               </h3>
-              <p className="text-muted-foreground font-mono text-sm mb-4">
+              <p className="text-muted-foreground  text-sm mb-4">
                 {
                   "/* Contact us at sponsors@hackra.dev to learn about sponsorship opportunities. */"
                 }
               </p>
               <a
                 href="mailto:sponsors@hackra.dev"
-                className="inline-block px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-mono uppercase tracking-wider"
+                className="inline-block px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 text-xs  uppercase tracking-wider"
               >
                 {"<"} Contact Us {"/>"}
               </a>
@@ -78,11 +78,11 @@ export default function SponsorsPage() {
           <div className="text-center mb-12">
             <CodeText
               as="p"
-              className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+              className="text-xs text-primary  uppercase tracking-widest mb-4"
             >
               sponsorship_tiers
             </CodeText>
-            <h2 className="text-2xl md:text-3xl font-bold font-mono">
+            <h2 className="text-2xl md:text-3xl font-bold ">
               {">"} SPONSORSHIP TIERS
             </h2>
           </div>
@@ -119,18 +119,13 @@ export default function SponsorsPage() {
               },
             ].map((plan, idx) => (
               <div key={idx} className="p-6 border border-border bg-card/50">
-                <h3 className="text-sm font-bold font-mono uppercase tracking-wider mb-2">
+                <h3 className="text-sm font-bold  uppercase tracking-wider mb-2">
                   {plan.tier}
                 </h3>
-                <p className="text-2xl font-bold font-mono mb-4">
-                  {plan.price}
-                </p>
+                <p className="text-2xl font-bold  mb-4">{plan.price}</p>
                 <ul className="space-y-2">
                   {plan.features.map((feature, fIdx) => (
-                    <li
-                      key={fIdx}
-                      className="text-xs text-muted-foreground font-mono"
-                    >
+                    <li key={fIdx} className="text-xs text-muted-foreground ">
                       • {feature}
                     </li>
                   ))}

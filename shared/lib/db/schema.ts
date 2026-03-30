@@ -127,7 +127,56 @@ export const participants = pgTable("participants", {
     .references(() => hackathons.id, { onDelete: "cascade" }),
   id: uuid("id").defaultRandom().primaryKey(),
   status: text("status").default("registered"),
-  teamName: text("team_name"),
+  teamId: uuid("team_id"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+});
+
+export const teams = pgTable("teams", {
+  createdAt: timestamp("created_at").defaultNow(),
+  description: text("description"),
+  hackathonId: uuid("hackathon_id")
+    .notNull()
+    .references(() => hackathons.id, { onDelete: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  maxMembers: integer("max_members").default(4),
+  name: text("name").notNull(),
+  slug: text("slug").notNull(),
+  socials: jsonb("socials")
+    .$type<{
+      github?: string;
+      twitter?: string;
+      linkedin?: string;
+      discord?: string;
+      website?: string;
+    }>()
+    .default({}),
+  status: text("status").default("open"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const teamMembers = pgTable("team_members", {
+  createdAt: timestamp("created_at").defaultNow(),
+  id: uuid("id").defaultRandom().primaryKey(),
+  role: text("role").default("member"),
+  teamId: uuid("team_id")
+    .notNull()
+    .references(() => teams.id, { onDelete: "cascade" }),
+  updatedAt: timestamp("updated_at").defaultNow(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+});
+
+export const teamJoinRequests = pgTable("team_join_requests", {
+  createdAt: timestamp("created_at").defaultNow(),
+  id: uuid("id").defaultRandom().primaryKey(),
+  status: text("status").default("pending"),
+  teamId: uuid("team_id")
+    .notNull()
+    .references(() => teams.id, { onDelete: "cascade" }),
   updatedAt: timestamp("updated_at").defaultNow(),
   userId: text("user_id")
     .notNull()
@@ -185,11 +234,49 @@ export const participantsRelations = relations(participants, ({ one }) => ({
     fields: [participants.hackathonId],
     references: [hackathons.id],
   }),
+  team: one(teams, {
+    fields: [participants.teamId],
+    references: [teams.id],
+  }),
   user: one(users, {
     fields: [participants.userId],
     references: [users.id],
   }),
 }));
+
+export const teamsRelations = relations(teams, ({ one, many }) => ({
+  hackathon: one(hackathons, {
+    fields: [teams.hackathonId],
+    references: [hackathons.id],
+  }),
+  joinRequests: many(teamJoinRequests),
+  members: many(teamMembers),
+}));
+
+export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
+  team: one(teams, {
+    fields: [teamMembers.teamId],
+    references: [teams.id],
+  }),
+  user: one(users, {
+    fields: [teamMembers.userId],
+    references: [users.id],
+  }),
+}));
+
+export const teamJoinRequestsRelations = relations(
+  teamJoinRequests,
+  ({ one }) => ({
+    team: one(teams, {
+      fields: [teamJoinRequests.teamId],
+      references: [teams.id],
+    }),
+    user: one(users, {
+      fields: [teamJoinRequests.userId],
+      references: [users.id],
+    }),
+  })
+);
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -197,3 +284,7 @@ export type Hackathon = typeof hackathons.$inferSelect;
 export type NewHackathon = typeof hackathons.$inferInsert;
 export type Participant = typeof participants.$inferSelect;
 export type Organizer = typeof organizers.$inferSelect;
+export type Team = typeof teams.$inferSelect;
+export type NewTeam = typeof teams.$inferInsert;
+export type TeamMember = typeof teamMembers.$inferSelect;
+export type TeamJoinRequest = typeof teamJoinRequests.$inferSelect;

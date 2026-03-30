@@ -41,10 +41,10 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-border">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-mono uppercase tracking-wider">
+        <CardTitle className="text-2xl  uppercase tracking-wider">
           {">"} LOGIN
         </CardTitle>
-        <CardDescription className="font-mono text-xs">
+        <CardDescription className=" text-xs">
           <CodeText>Sign in to your account to continue</CodeText>
         </CardDescription>
       </CardHeader>
@@ -57,7 +57,7 @@ export function LoginForm() {
             variant="outline"
             onClick={() => handleSocialLogin("google")}
             disabled={isDisabled}
-            className="gap-2 text-xs uppercase tracking-wider font-mono"
+            className="gap-2 text-xs uppercase tracking-wider "
           >
             {socialLoading === "google" ? (
               <Spinner className="w-4 h-4" />
@@ -72,7 +72,7 @@ export function LoginForm() {
             variant="outline"
             onClick={() => handleSocialLogin("github")}
             disabled={isDisabled}
-            className="gap-2 text-xs uppercase tracking-wider font-mono"
+            className="gap-2 text-xs uppercase tracking-wider "
           >
             {socialLoading === "github" ? (
               <Spinner className="w-4 h-4" />

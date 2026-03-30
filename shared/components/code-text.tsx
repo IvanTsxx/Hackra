@@ -1,24 +1,33 @@
-import type { ElementType, ComponentPropsWithoutRef } from "react";
+import type { ReactNode } from "react";
 
-type CodeTextProps<T extends ElementType> = {
-  as?: T;
-  children: React.ReactNode;
+type ElementType =
+  | "p"
+  | "span"
+  | "div"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6"
+  | "label"
+  | "li"
+  | "td"
+  | "th";
+
+interface CodeTextProps {
+  as?: ElementType;
+  children: ReactNode;
   className?: string;
-} & ComponentPropsWithoutRef<T>;
+}
 
-export function CodeText<T extends ElementType = "p">({
-  as,
+export function CodeText({
+  as: Component = "p",
   children,
   className,
-  ...props
-}: CodeTextProps<T>) {
-  const Component = as || "p";
-
+}: CodeTextProps) {
   return (
-    <Component
-      className={`font-mono text-muted-foreground ${className ?? ""}`}
-      {...props}
-    >
+    <Component className={`text-muted-foreground ${className ?? ""}`}>
       {"// "} {children}
     </Component>
   );

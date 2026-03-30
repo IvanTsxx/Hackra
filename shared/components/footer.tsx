@@ -5,7 +5,7 @@ import { CodeText } from "./code-text";
 export const Footer = () => (
   <footer className="py-8 border-t border-border">
     <div className="container mx-auto px-4">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground font-mono">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground ">
         <CodeText as="p">hackra v1.0.0 | built with &lt;3</CodeText>
         <div className="flex items-center gap-6">
           <Link

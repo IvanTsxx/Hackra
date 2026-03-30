@@ -25,14 +25,14 @@ export async function sendEmail({
   text?: string;
 }) {
   try {
-    const html = react ? render(react) : undefined;
+    const html = react ? await render(react) : undefined;
 
     const response = await transporter.sendMail({
       from: process.env.SMTP_FROM || "noreply@hackathonhub.com",
+      html,
       subject,
+      text,
       to,
-      ...(html && { html }),
-      ...(text && { text }),
     });
 
     console.log("[v0] Email sent:", response.messageId);

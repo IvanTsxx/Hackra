@@ -42,14 +42,14 @@ export default async function OnboardingPage() {
         <div className="text-center mb-8">
           <CodeText
             as="p"
-            className="text-xs text-primary font-mono uppercase tracking-widest mb-4"
+            className="text-xs text-primary  uppercase tracking-widest mb-4"
           >
             onboarding.init()
           </CodeText>
-          <h1 className="text-2xl md:text-3xl font-bold mb-4 font-mono">
+          <h1 className="text-2xl md:text-3xl font-bold mb-4 ">
             {">"} CHOOSE YOUR PATH
           </h1>
-          <p className="text-sm text-muted-foreground font-mono">
+          <p className="text-sm text-muted-foreground ">
             {
               "/* Select how you want to participate in the hackathon community */"
             }
@@ -61,15 +61,15 @@ export default async function OnboardingPage() {
           <Card className="bg-card/80 backdrop-blur-sm border-border hover:border-primary/50 transition-colors">
             <CardHeader>
               <Terminal className="w-8 h-8 text-primary mb-2" />
-              <CardTitle className="font-mono uppercase tracking-wider">
+              <CardTitle className=" uppercase tracking-wider">
                 Participant
               </CardTitle>
-              <CardDescription className="font-mono text-xs">
+              <CardDescription className=" text-xs">
                 <CodeText>Join hackathons and build projects</CodeText>
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ul className="text-xs text-muted-foreground font-mono space-y-2 mb-6">
+              <ul className="text-xs text-muted-foreground  space-y-2 mb-6">
                 <li>• Browse and join hackathons</li>
                 <li>• Build teams and projects</li>
                 <li>• Submit your work</li>
@@ -79,7 +79,7 @@ export default async function OnboardingPage() {
                 <input type="hidden" name="userType" value="participant" />
                 <Button
                   type="submit"
-                  className="w-full gap-2 uppercase tracking-wider text-xs font-mono"
+                  className="w-full gap-2 uppercase tracking-wider text-xs "
                 >
                   {">"} Join as Participant
                 </Button>
@@ -101,15 +101,15 @@ export default async function OnboardingPage() {
                 <path d="M2 17l10 5 10-5" />
                 <path d="M2 12l10 5 10-5" />
               </svg>
-              <CardTitle className="font-mono uppercase tracking-wider">
+              <CardTitle className=" uppercase tracking-wider">
                 Organizer
               </CardTitle>
-              <CardDescription className="font-mono text-xs">
+              <CardDescription className=" text-xs">
                 <CodeText>Host and manage hackathons</CodeText>
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ul className="text-xs text-muted-foreground font-mono space-y-2 mb-6">
+              <ul className="text-xs text-muted-foreground  space-y-2 mb-6">
                 <li>• Create hackathons</li>
                 <li>• Manage participants</li>
                 <li>• Set prizes and rules</li>
@@ -120,7 +120,7 @@ export default async function OnboardingPage() {
                 <Button
                   type="submit"
                   variant="outline"
-                  className="w-full gap-2 uppercase tracking-wider text-xs font-mono"
+                  className="w-full gap-2 uppercase tracking-wider text-xs "
                 >
                   {">"} Join as Organizer
                 </Button>
