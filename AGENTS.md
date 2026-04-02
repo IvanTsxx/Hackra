@@ -2,6 +2,40 @@
 
 Hackra is a hackathon platform built with Next.js 16, React 19, TypeScript, Prisma 7 (PostgreSQL), Better Auth, Tailwind CSS 4, and shadcn/ui. Package manager: **Bun**.
 
+## Available Skills
+
+These skills are installed in `.agents/skills/` and should be loaded before writing code in their respective domains.
+
+### Core Skills (auto-load when relevant)
+
+| Skill                   | When to Load                                                                         | What It Provides                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `ultracite`             | Writing any TS/TSX code, linting, formatting                                         | Code standards, CLI commands (`bunx ultracite check/fix/doctor`), Oxlint + Oxfmt rules              |
+| `next-best-practices`   | Writing Next.js pages, layouts, API routes, metadata                                 | RSC boundaries, async patterns, data fetching, error handling, Suspense, route handlers             |
+| `shadcn`                | Adding, fixing, or composing UI components                                           | Component docs via `npx shadcn@latest docs`, composition rules, forms, styling, icons, CLI workflow |
+| `web-design-guidelines` | Reviewing UI code for accessibility/design compliance                                | Checks against Vercel Web Interface Guidelines, fetches latest rules from source                    |
+| `find-skills`           | User asks "how do I do X", "is there a skill for X", or wants to extend capabilities | Search and install skills from the ecosystem via `npx skills find [query]`                          |
+
+### Domain-Specific Skills
+
+| Skill                                 | When to Load                                                                 | What It Provides                                                              |
+| ------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `better-auth-best-practices`          | Configuring Better Auth server/client, OAuth, sessions, plugins              | Auth setup patterns, database adapters, environment variables                 |
+| `better-auth-security-best-practices` | Securing auth setup, rate limiting, CSRF, session hardening                  | Security patterns, token encryption, audit logging                            |
+| `prisma-cli`                          | Running Prisma CLI commands, migrations, schema setup                        | All CLI commands (`prisma init/generate/migrate/db/studio`), MCP server setup |
+| `prisma-client-api`                   | Writing database queries, CRUD operations, filtering                         | Model queries, operators, transactions, client methods                        |
+| `prisma-database-setup`               | Setting up or changing database connections                                  | PostgreSQL, MySQL, SQLite, MongoDB configuration guides                       |
+| `vercel-composition-patterns`         | Refactoring components with prop proliferation, building component libraries | Compound components, render props, context providers, React 19 API changes    |
+| `emil-design-eng`                     | UI polish, component design, animation decisions                             | Emil Kowalski's design philosophy, micro-interactions, visual refinement      |
+
+### Skill Loading Rules
+
+1. **Detect context first** — match the task to a skill before writing code
+2. **Load the skill** — use the `skill` tool to load full instructions
+3. **Apply ALL patterns** from the loaded skill — they are your coding standards
+4. **Multiple skills can apply** — load all relevant ones (e.g., `shadcn` + `next-best-practices` for a new page)
+5. **For unknown domains** — use `find-skills` to search the ecosystem
+
 ## Commands
 
 | Command               | Description                                |

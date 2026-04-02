@@ -1,126 +1,244 @@
-# Ultracite Code Standards
+# Hackra — Agent Guidelines
 
-This project uses **Ultracite**, a zero-config preset that enforces strict code quality standards through automated formatting and linting.
+Hackra is a hackathon platform built with Next.js 16, React 19, TypeScript, Prisma 7 (PostgreSQL), Better Auth, Tailwind CSS 4, and shadcn/ui. Package manager: **Bun**.
 
-## Quick Reference
+## Available Skills
 
-- **Format code**: `bun x ultracite fix`
-- **Check for issues**: `bun x ultracite check`
-- **Diagnose setup**: `bun x ultracite doctor`
+These skills are installed in `.claude/skills/` and should be loaded before writing code in their respective domains.
 
-Oxlint + Oxfmt (the underlying engine) provides robust linting and formatting. Most issues are automatically fixable.
+### Core Skills (auto-load when relevant)
 
----
+| Skill                   | When to Load                                                                         | What It Provides                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `ultracite`             | Writing any TS/TSX code, linting, formatting                                         | Code standards, CLI commands (`bunx ultracite check/fix/doctor`), Oxlint + Oxfmt rules              |
+| `next-best-practices`   | Writing Next.js pages, layouts, API routes, metadata                                 | RSC boundaries, async patterns, data fetching, error handling, Suspense, route handlers             |
+| `shadcn`                | Adding, fixing, or composing UI components                                           | Component docs via `npx shadcn@latest docs`, composition rules, forms, styling, icons, CLI workflow |
+| `web-design-guidelines` | Reviewing UI code for accessibility/design compliance                                | Checks against Vercel Web Interface Guidelines, fetches latest rules from source                    |
+| `find-skills`           | User asks "how do I do X", "is there a skill for X", or wants to extend capabilities | Search and install skills from the ecosystem via `npx skills find [query]`                          |
 
-## Core Principles
+### Domain-Specific Skills
 
-Write code that is **accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
+| Skill                                 | When to Load                                                                 | What It Provides                                                              |
+| ------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `better-auth-best-practices`          | Configuring Better Auth server/client, OAuth, sessions, plugins              | Auth setup patterns, database adapters, environment variables                 |
+| `better-auth-security-best-practices` | Securing auth setup, rate limiting, CSRF, session hardening                  | Security patterns, token encryption, audit logging                            |
+| `prisma-cli`                          | Running Prisma CLI commands, migrations, schema setup                        | All CLI commands (`prisma init/generate/migrate/db/studio`), MCP server setup |
+| `prisma-client-api`                   | Writing database queries, CRUD operations, filtering                         | Model queries, operators, transactions, client methods                        |
+| `prisma-database-setup`               | Setting up or changing database connections                                  | PostgreSQL, MySQL, SQLite, MongoDB configuration guides                       |
+| `vercel-composition-patterns`         | Refactoring components with prop proliferation, building component libraries | Compound components, render props, context providers, React 19 API changes    |
+| `emil-design-eng`                     | UI polish, component design, animation decisions                             | Emil Kowalski's design philosophy, micro-interactions, visual refinement      |
 
-### Type Safety & Explicitness
+### Skill Loading Rules
 
-- Use explicit types for function parameters and return values when they enhance clarity
-- Prefer `unknown` over `any` when the type is genuinely unknown
-- Use const assertions (`as const`) for immutable values and literal types
-- Leverage TypeScript's type narrowing instead of type assertions
-- Use meaningful variable names instead of magic numbers - extract constants with descriptive names
+1. **Detect context first** — match the task to a skill before writing code
+2. **Load the skill** — use the `skill` tool to load full instructions
+3. **Apply ALL patterns** from the loaded skill — they are your coding standards
+4. **Multiple skills can apply** — load all relevant ones (e.g., `shadcn` + `next-best-practices` for a new page)
+5. **For unknown domains** — use `find-skills` to search the ecosystem
 
-### Modern JavaScript/TypeScript
+## Commands
 
-- Use arrow functions for callbacks and short functions
-- Prefer `for...of` loops over `.forEach()` and indexed `for` loops
-- Use optional chaining (`?.`) and nullish coalescing (`??`) for safer property access
-- Prefer template literals over string concatenation
-- Use destructuring for object and array assignments
-- Use `const` by default, `let` only when reassignment is needed, never `var`
+| Command               | Description                                |
+| --------------------- | ------------------------------------------ |
+| `bun run dev`         | Start dev server (Turbopack)               |
+| `bun run build`       | Production build                           |
+| `bun run start`       | Start production server                    |
+| `bun run typecheck`   | TypeScript check (`tsc --noEmit`)          |
+| `bun run check`       | Ultracite lint + format check              |
+| `bun run fix`         | Ultracite auto-fix (run before committing) |
+| `bun run db:push`     | Push Prisma schema to DB                   |
+| `bun run db:generate` | Generate Prisma client                     |
+| `bun run db:migrate`  | Run Prisma migrations                      |
+| `bun run db:studio`   | Open Prisma Studio                         |
+| `bun run db:seed`     | Seed database (`shared/lib/db/seed.ts`)    |
+| `bun run db:reset`    | Reset DB + regenerate + seed               |
 
-### Async & Promises
+**Tests**: No test framework installed. When adding tests, prefer Vitest. Use `it()`/`test()` with async/await (no `done` callbacks). Don't commit `.only` or `.skip`.
 
-- Always `await` promises in async functions - don't forget to use the return value
-- Use `async/await` syntax instead of promise chains for better readability
-- Handle errors appropriately in async code with try-catch blocks
-- Don't use async functions as Promise executors
+**Husky + lint-staged**: Pre-commit hook runs `bun x ultracite fix` on `*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}`.
 
-### React & JSX
+## Code Style
 
-- Use function components over class components
-- Call hooks at the top level only, never conditionally
-- Specify all dependencies in hook dependency arrays correctly
-- Use the `key` prop for elements in iterables (prefer unique IDs over array indices)
-- Nest children between opening and closing tags instead of passing as props
+**Ultracite** (Oxlint + Oxfmt) is the single source of truth. Run `bun run fix` before committing.
+
+### Formatting (Oxfmt)
+
+- 80 char print width, 2-space indent, spaces (no tabs)
+- Double quotes, semicolons required, trailing commas (ES5)
+- LF line endings, bracket spacing enabled, arrow parens always
+- Imports auto-sorted ascending, case-insensitive, grouped with blank lines
+- `bracketSameLine: false`, `quoteProps: "as-needed"`
+
+### Disabled Oxlint Rules
+
+`func-style`, `curly`, `no-nested-ternary`, `no-use-before-define`, `complexity`, `no-shadow`, `nextjs/no-img-element`, `max-statements`, `no-negated-condition`, `unicorn/catch-error-name`, `unicorn/no-array-reduce`, `unicorn/no-nested-ternary`
+
+### TypeScript
+
+- Strict mode, `noEmit`, `moduleResolution: bundler`, `target: ES2017`
+- Prefer explicit types for function signatures and return values
+- Use `unknown` over `any`; leverage type narrowing over assertions
+- Use `as const` for immutable values and literal types
+- Extract magic numbers into named constants
+
+### React
+
+- Function components only (no classes), `"use client"` for client components
+- Server components by default (no directive needed)
+- Hooks at top level only, never conditionally — specify all dependencies
+- React 19: use `ref` as prop (no `forwardRef`), define props via `interface`
+- Use `key` prop on iterables (prefer unique IDs over indices)
 - Don't define components inside other components
-- Use semantic HTML and ARIA attributes for accessibility:
-  - Provide meaningful alt text for images
-  - Use proper heading hierarchy
-  - Add labels for form inputs
-  - Include keyboard event handlers alongside mouse events
-  - Use semantic elements (`<button>`, `<nav>`, etc.) instead of divs with roles
+- Use semantic HTML and ARIA attributes for accessibility
 
-### Error Handling & Debugging
+### Naming Conventions
 
-- Remove `console.log`, `debugger`, and `alert` statements from production code
-- Throw `Error` objects with descriptive messages, not strings or other values
-- Use `try-catch` blocks meaningfully - don't catch errors just to rethrow them
-- Prefer early returns over nested conditionals for error cases
+- **Files**: kebab-case (`hackathon-card.tsx`, `use-auth.ts`)
+- **Components**: PascalCase (`HackathonCard`, `ThemeProvider`)
+- **Functions/variables**: camelCase (`getHackathons`, `isLoading`)
+- **Types/interfaces**: PascalCase (`HackathonCardProps`, `TeamMember`)
+- **Database models**: PascalCase in Prisma, snake_case tables via `@@map()`
+- **Constants**: UPPER_SNAKE_CASE for true constants
 
-### Code Organization
+### Import Order
 
-- Keep functions focused and under reasonable cognitive complexity limits
-- Extract complex conditions into well-named boolean variables
-- Use early returns to reduce nesting
-- Prefer simple conditionals over nested ternary operators
-- Group related code together and separate concerns
+1. External packages (`next`, `react`, `@prisma/client`)
+2. Internal `@/` aliased imports
+3. Relative imports (`./`, `../`)
+   Auto-sorted by Oxfmt with `experimentalSortImports`.
+
+### Error Handling
+
+- Throw `Error` objects with descriptive messages, never strings
+- Use `try-catch` meaningfully — don't catch just to rethrow
+- Prefer early returns over nested conditionals
+- Remove `console.log`/`debugger`/`alert` from production code
+- Validate/sanitize user input with Zod schemas
 
 ### Security
 
-- Add `rel="noopener"` when using `target="_blank"` on links
-- Avoid `dangerouslySetInnerHTML` unless absolutely necessary
-- Don't use `eval()` or assign directly to `document.cookie`
-- Validate and sanitize user input
+- Add `rel="noopener"` on `target="_blank"` links
+- Avoid `dangerouslySetInnerHTML`; never use `eval()`
+- Never assign directly to `document.cookie`
 
 ### Performance
 
 - Avoid spread syntax in accumulators within loops
-- Use top-level regex literals instead of creating them in loops
-- Prefer specific imports over namespace imports
+- Use top-level regex literals, not inside loops
+- Prefer specific imports over namespace imports (`import { foo }` not `import * as`)
 - Avoid barrel files (index files that re-export everything)
-- Use proper image components (e.g., Next.js `<Image>`) over `<img>` tags
+- Use Next.js `<Image>` over `<img>` tags
 
-### Framework-Specific Guidance
+## Project Structure
 
-**Next.js:**
+```
+app/                    — Next.js App Router (routes, layouts, API)
+  api/auth/[...all]/    — Better Auth catch-all route
+  generated/prisma/     — Auto-generated Prisma client (gitignored)
+shared/                 — Shared code
+  components/           — Feature components (navbar, cards, etc.)
+  components/ui/        — shadcn/ui primitives
+  lib/                  — Utilities (auth, prisma, utils, email)
+prisma/                 — Database schema + migrations
+emails/                 — React Email templates
+```
 
-- Use Next.js `<Image>` component for images
-- Use `next/head` or App Router metadata API for head elements
-- Use Server Components for async data fetching instead of async Client Components
+## Path Aliases
 
-**React 19+:**
+- `@/*` → root
+- `@/shared/*` → `./shared/*`
+- `@/components/*` → `./shared/components/*`
+- `@/ui/*` → `./shared/components/ui/*`
+- `@/lib/*` → `./shared/lib/*`
+- `@/hooks/*` → `./shared/hooks/*`
+- `@/utils/*` → `./shared/utils/*`
 
-- Use ref as a prop instead of `React.forwardRef`
+## Conventions
 
-**Solid/Svelte/Vue/Qwik:**
+**Database**: Prisma singleton with `globalForPrisma` for dev hot-reload. Client generated to `app/generated/prisma/`. Uses `@prisma/adapter-pg` with `@neondatabase/serverless` for PostgreSQL. `relationMode: "prisma"`. All models use `@@map()` for snake_case table names.
 
-- Use `class` and `for` attributes (not `className` or `htmlFor`)
+**Auth**: Better Auth with OAuth only (GitHub + Google). Email/password disabled. Session: 7 days, cookie cache: 5 min. Uses `toNextJsHandler()` for Next.js route. Additional user fields: `username` (required), `bio`, `githubUsername`, `location`, `position`, `techStack`, `karmaPoints`.
 
----
+**Styling**: Tailwind CSS v4 with `@import "tailwindcss"`. CSS variables with oklch. Brand colors: `--brand-green` (oklch 0.72 0.19 145), `--brand-purple` (oklch 0.62/0.72 0.19 285). Custom utilities: `.glass`, `.glow-green`, `.pixel-grid`, `.scanlines`, `.pixel-border`, `.glow-primary`, `.terminal-cursor`. Use `cn()` (clsx + tailwind-merge) for conditional classes. `--radius: 0` (sharp corners by default).
 
-## Testing
+**Fonts**: Geist Pixel family (Square, Circle, Grid, Line, Triangle) via `geist/font/pixel`. Applied as CSS variables on `<html>`. Body uses `font-pixel-grid`.
 
-- Write assertions inside `it()` or `test()` blocks
-- Avoid done callbacks in async tests - use async/await instead
-- Don't use `.only` or `.skip` in committed code
-- Keep test suites reasonably flat - avoid excessive `describe` nesting
+**Animations**: Motion (Framer Motion) for micro-interactions (`whileHover`, `AnimatePresence`). CSS keyframes for marquee, text-flip, cursor-blink, scanlines.
 
-## When Oxlint + Oxfmt Can't Help
+**State**: `nuqs` for URL search params (wrapped in `<NuqsAdapter>` in layout). No global state manager.
 
-Oxlint + Oxfmt's linter will catch most issues automatically. Focus your attention on:
+**Next.js config**: React Compiler enabled, typed routes, `images.unoptimized: true`.
 
-1. **Business logic correctness** - Oxlint + Oxfmt can't validate your algorithms
-2. **Meaningful naming** - Use descriptive names for functions, variables, and types
-3. **Architecture decisions** - Component structure, data flow, and API design
-4. **Edge cases** - Handle boundary conditions and error states
-5. **User experience** - Accessibility, performance, and usability considerations
-6. **Documentation** - Add comments for complex logic, but prefer self-documenting code
+**Emails**: React Email templates in `emails/` directory. Uses `@react-email/components`.
 
----
+## Next.js Best Practices
 
-Most formatting and common issues are automatically fixed by Oxlint + Oxfmt. Run `bun x ultracite fix` before committing to ensure compliance.
+### RSC Boundaries
+
+- **Server Components by default** — only add `"use client"` when needed (hooks, events, browser APIs)
+- **Never make client components async** — fetch data in parent server component, pass as props
+- **Props to client components must be serializable** — no `Date`, `Map`, `Set`, class instances, or functions (except Server Actions)
+- Convert `Date` to `.toISOString()` before passing to client components
+
+### Async Patterns (Next.js 15+)
+
+- `params` and `searchParams` are **Promises** — always `await` them: `const { slug } = await params`
+- `cookies()` and `headers()` are **async** — `const store = await cookies()`
+- Type page props as: `type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ q?: string }> }`
+- Use `React.use()` for non-async components that need to consume promises
+
+### Data Fetching
+
+- **Reads**: Fetch directly in Server Components (no API layer needed)
+- **Mutations**: Use Server Actions (`"use server"`) with `revalidatePath`/`revalidateTag`
+- **External APIs/Webhooks**: Use Route Handlers (`route.ts`)
+- Avoid data waterfalls — use `Promise.all()` for parallel fetches or `Suspense` for streaming
+- Use `cache()` from React to deduplicate fetches between `generateMetadata` and page
+
+### Error Handling
+
+- Use `error.tsx` (must be `"use client"`) for route-level errors
+- Use `global-error.tsx` (must include `<html>` and `<body>`) for root layout errors
+- Use `notFound()` for 404s, `redirect()` for navigation, `forbidden()`/`unauthorized()` for auth
+- **Don't wrap navigation APIs in try-catch** — they throw special errors Next.js handles internally
+- Use `unstable_rethrow(error)` in catch blocks to re-throw Next.js navigation errors
+
+### Metadata & SEO
+
+- Use `metadata` export for static metadata, `generateMetadata` for dynamic
+- Both only work in **Server Components** — move client logic to child components
+- Use `cache()` to avoid duplicate fetches between metadata and page content
+- Set title templates in root layout: `title: { default: "Hackra", template: "%s | Hackra" }`
+
+### Images
+
+- Always use `next/image` — `<img>` is disabled by lint rule
+- Use `priority` for above-the-fold (LCP) images
+- Always add `sizes` attribute with `fill` for proper responsive behavior
+- Configure `remotePatterns` in `next.config.ts` for external image domains
+
+### Suspense Boundaries
+
+- `useSearchParams()` always requires wrapping in `<Suspense>` to avoid full CSR bailout
+- `usePathname()` requires Suspense in dynamic routes
+- `useParams()` and `useRouter()` do not require Suspense
+
+### Route Handlers
+
+- `route.ts` and `page.tsx` **cannot coexist** in the same folder
+- Use Server Actions for UI mutations, Route Handlers for external APIs/webhooks
+- Use `Response.json()` for responses, not `new Response(JSON.stringify(...))`
+
+## Key Files
+
+- `shared/lib/auth.ts` — Better Auth configuration
+- `shared/lib/prisma.ts` — Prisma client singleton (with `globalForPrisma`)
+- `shared/lib/utils.ts` — `cn()` utility (clsx + tailwind-merge)
+- `prisma/schema.prisma` — Database schema (10 models + 2 enums)
+- `next.config.ts` — Next.js configuration
+- `app/globals.css` — Tailwind v4 theme, CSS variables, custom utilities
+- `app/layout.tsx` — Root layout (ThemeProvider, NuqsAdapter, Navbar, Footer, Toaster)
+- `app/api/auth/[...all]/route.ts` — Better Auth catch-all handler
+- `.oxlintrc.json` / `.oxfmtrc.jsonc` — Lint/format config
+
+Run `bun run fix` before committing. Focus on business logic, naming, architecture, and edge cases — Ultracite handles the rest.
