@@ -49,7 +49,7 @@ export const FeaturedHackathon = ({ hackathon }: FeaturedHackathonProps) => (
               joined
             </p>
           </div>
-          <Link href={`/hackathons/${hackathon.slug}`}>
+          <Link href={`/hackathon/${hackathon.slug}`}>
             <Button size="sm" className="uppercase tracking-wider text-xs">
               {">"} View
             </Button>

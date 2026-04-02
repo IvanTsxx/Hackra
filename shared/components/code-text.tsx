@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { cn } from "../lib/utils";
+
 type ElementType =
   | "p"
   | "span"
@@ -27,7 +29,12 @@ export function CodeText({
   className,
 }: CodeTextProps) {
   return (
-    <Component className={`text-muted-foreground ${className ?? ""}`}>
+    <Component
+      className={cn(
+        "text-muted-foreground text-brand-green lowercase text-xs",
+        className
+      )}
+    >
       {"// "} {children}
     </Component>
   );

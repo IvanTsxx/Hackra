@@ -1,0 +1,61 @@
+import Image from "next/image";
+
+import type { User } from "@/lib/mock-data";
+import { cn } from "@/lib/utils";
+
+interface AvatarGroupProps {
+  users: User[];
+  max?: number;
+  size?: "sm" | "md";
+  className?: string;
+}
+
+export function AvatarGroup({
+  users,
+  max = 5,
+  size = "sm",
+  className,
+}: AvatarGroupProps) {
+  const visible = users.slice(0, max);
+  const overflow = users.length - max;
+
+  const sizeClass =
+    size === "sm" ? "w-6 h-6 text-[9px]" : "w-8 h-8 text-[10px]";
+  const borderClass = "border-2 border-background";
+
+  return (
+    <div className={cn("flex items-center", className)}>
+      <div className="flex -space-x-1.5">
+        {visible.map((user) => (
+          <div
+            key={user.id}
+            className={cn(
+              sizeClass,
+              borderClass,
+              "rounded-full overflow-hidden bg-secondary flex-shrink-0"
+            )}
+          >
+            <Image
+              src={user.avatar}
+              alt={user.name}
+              width={32}
+              height={32}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+        {overflow > 0 && (
+          <div
+            className={cn(
+              sizeClass,
+              borderClass,
+              "rounded-full bg-secondary text-muted-foreground flex items-center justify-center font-mono flex-shrink-0"
+            )}
+          >
+            +{overflow}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

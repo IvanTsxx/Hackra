@@ -1,140 +1,107 @@
-import { Heart } from "lucide-react";
+import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 
+import { SPONSORS } from "@/lib/mock-data";
 import { CodeText } from "@/shared/components/code-text";
 
+const TIER_ORDER = ["platinum", "gold", "silver", "bronze"] as const;
+
 export const metadata = {
-  description: "Sponsors - Hackra",
-  title: "Sponsors - Hackra",
+  description: "Meet the companies powering hackathons on Hackra.",
+  title: "Sponsors — Hackra",
 };
 
 export default function SponsorsPage() {
+  const grouped = TIER_ORDER.reduce(
+    (acc, tier) => {
+      acc[tier] = SPONSORS.filter((s) => s.tier === tier);
+      return acc;
+    },
+    {} as Record<string, typeof SPONSORS>
+  );
+
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero Section */}
-      <section className="py-20 relative">
-        <div className="absolute inset-0 dot-grid opacity-20" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-3xl mx-auto">
-            <CodeText
-              as="p"
-              className="text-xs text-primary  uppercase tracking-widest mb-4"
-            >
-              sponsors()
-            </CodeText>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 ">
-              {">"} OUR SPONSORS
-            </h1>
-            <p className="text-lg text-muted-foreground ">
-              {
-                "/* Thank you to the amazing companies that make Hackra possible */"
-              }
-            </p>
-          </div>
-        </div>
-      </section>
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 pb-16">
+      <div className="mb-12 space-y-2">
+        <CodeText as="p">sponsors</CodeText>
+        <h1 className="font-pixel text-2xl md:text-3xl text-foreground">
+          SPONSORS
+        </h1>
+        <p className="font-mono text-sm text-muted-foreground max-w-xl">
+          The companies and teams powering hackathons and prizes on Hackra.
+        </p>
+      </div>
 
-      {/* Become Sponsor */}
-      <section className="py-20 border-t border-border">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <CodeText
-              as="p"
-              className="text-xs text-primary  uppercase tracking-widest mb-4"
-            >
-              become_a_sponsor
-            </CodeText>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 ">
-              {">"} PARTNER WITH US
-            </h2>
-            <p className="text-muted-foreground  text-sm mb-8">
-              {
-                "/* Join industry leaders in supporting the developer community. Reach talented developers, showcase your brand, and shape the future of tech. */"
-              }
-            </p>
-            <div className="p-6 border border-border bg-card/50 mb-8">
-              <Heart className="w-8 h-8 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-bold  uppercase tracking-wider mb-2">
-                Interested in Sponsoring?
-              </h3>
-              <p className="text-muted-foreground  text-sm mb-4">
-                {
-                  "/* Contact us at sponsors@hackra.dev to learn about sponsorship opportunities. */"
-                }
-              </p>
-              <a
-                href="mailto:sponsors@hackra.dev"
-                className="inline-block px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 text-xs  uppercase tracking-wider"
-              >
-                {"<"} Contact Us {"/>"}
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Tier Benefits */}
-      <section className="py-20 border-t border-border">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <CodeText
-              as="p"
-              className="text-xs text-primary  uppercase tracking-widest mb-4"
-            >
-              sponsorship_tiers
-            </CodeText>
-            <h2 className="text-2xl md:text-3xl font-bold ">
-              {">"} SPONSORSHIP TIERS
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {[
-              {
-                features: [
-                  "Logo on website",
-                  "Social media shoutout",
-                  "2 hackathon mentions",
-                ],
-                price: "$1,000",
-                tier: "STARTUP",
-              },
-              {
-                features: [
-                  "All Startup features",
-                  "Logo on all materials",
-                  "Dedicated hackathon page",
-                  "10 hackathon mentions",
-                ],
-                price: "$5,000",
-                tier: "GROWTH",
-              },
-              {
-                features: [
-                  "All Growth features",
-                  "Workshop hosting",
-                  "Branded challenges",
-                  "Unlimited mentions",
-                ],
-                price: "$10,000+",
-                tier: "ENTERPRISE",
-              },
-            ].map((plan, idx) => (
-              <div key={idx} className="p-6 border border-border bg-card/50">
-                <h3 className="text-sm font-bold  uppercase tracking-wider mb-2">
-                  {plan.tier}
-                </h3>
-                <p className="text-2xl font-bold  mb-4">{plan.price}</p>
-                <ul className="space-y-2">
-                  {plan.features.map((feature, fIdx) => (
-                    <li key={fIdx} className="text-xs text-muted-foreground ">
-                      • {feature}
-                    </li>
-                  ))}
-                </ul>
+      <div className="space-y-12">
+        {TIER_ORDER.map((tier) => {
+          const list = grouped[tier];
+          if (!list?.length) return null;
+          return (
+            <div key={tier}>
+              <div className="flex items-center gap-3 mb-5">
+                <span
+                  className={`font-pixel text-[10px] tracking-widest px-2 py-0.5 border ${
+                    tier === "platinum"
+                      ? "border-foreground/30 text-foreground"
+                      : tier === "gold"
+                        ? "border-yellow-500/40 text-yellow-500/80"
+                        : tier === "silver"
+                          ? "border-zinc-400/40 text-zinc-400/80"
+                          : "border-orange-700/40 text-orange-700/80"
+                  }`}
+                >
+                  {tier.toUpperCase()}
+                </span>
+                <div className="flex-1 border-t border-border/20" />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </div>
+              <div
+                className={`grid gap-4 ${tier === "platinum" ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"}`}
+              >
+                {list.map((sponsor) => (
+                  <a
+                    key={sponsor.id}
+                    href={sponsor.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group border border-border/40 p-5 hover:border-border/70 transition-all bg-card/20 space-y-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="w-24 h-8 bg-secondary/30 flex items-center justify-center">
+                        <span className="font-pixel text-xs text-muted-foreground">
+                          {sponsor.name}
+                        </span>
+                      </div>
+                      <ExternalLink
+                        size={11}
+                        className="text-muted-foreground/40 group-hover:text-muted-foreground transition-colors"
+                      />
+                    </div>
+                    {tier === "platinum" || tier === "gold" ? (
+                      <p className="font-mono text-xs text-muted-foreground leading-relaxed">
+                        {sponsor.description}
+                      </p>
+                    ) : null}
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-16 border border-brand-green/20 bg-brand-green/5 p-8 text-center space-y-3">
+        <p className="font-pixel text-sm text-foreground">BECOME A SPONSOR</p>
+        <p className="font-mono text-xs text-muted-foreground max-w-md mx-auto">
+          Reach thousands of developers. Fund prizes, get exposure, and support
+          the builder community.
+        </p>
+        <Link
+          href="/create"
+          className="inline-block font-pixel text-xs border border-brand-green/50 text-brand-green px-6 py-2.5 hover:bg-brand-green/10 transition-colors mt-2"
+        >
+          GET IN TOUCH →
+        </Link>
+      </div>
+    </main>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { Points, PointMaterial } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Points, PointMaterial, OrbitControls } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
 import { useTheme } from "next-themes";
 import { useRef, useMemo } from "react";
 import type * as THREE from "three";
@@ -13,7 +13,6 @@ interface GlobeProps {
 function Globe({ color }: GlobeProps) {
   const ref = useRef<THREE.Points>(null);
 
-  // Generate points on a sphere surface (wireframe globe effect)
   const points = useMemo(() => {
     const pts: number[] = [];
     const radius = 2;
@@ -45,20 +44,13 @@ function Globe({ color }: GlobeProps) {
     return new Float32Array(pts);
   }, []);
 
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.1;
-      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.1;
-    }
-  });
-
   return (
     <Points ref={ref} positions={points} stride={3}>
       <PointMaterial
         transparent
         color={color}
         size={0.03}
-        sizeAttenuation={true}
+        sizeAttenuation
         depthWrite={false}
       />
     </Points>
@@ -74,6 +66,7 @@ function FloatingParticles({ color }: FloatingParticlesProps) {
 
   const particles = useMemo(() => {
     const pts: number[] = [];
+
     for (let i = 0; i < 200; i += 1) {
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
@@ -85,14 +78,9 @@ function FloatingParticles({ color }: FloatingParticlesProps) {
         r * Math.cos(phi)
       );
     }
+
     return new Float32Array(pts);
   }, []);
-
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.03;
-    }
-  });
 
   return (
     <Points ref={ref} positions={particles} stride={3}>
@@ -100,7 +88,7 @@ function FloatingParticles({ color }: FloatingParticlesProps) {
         transparent
         color={color}
         size={0.02}
-        sizeAttenuation={true}
+        sizeAttenuation
         depthWrite={false}
         opacity={0.5}
       />
@@ -114,15 +102,28 @@ export function Globe3D() {
   const pointColor = resolvedTheme === "dark" ? "#4ade80" : "#0a0a0a";
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full cursor-grab">
       <Canvas
         camera={{ fov: 45, position: [0, 0, 6] }}
         gl={{ alpha: true, antialias: true }}
         style={{ background: "transparent" }}
       >
         <ambientLight intensity={0.5} />
+
         <Globe color={pointColor} />
         <FloatingParticles color={pointColor} />
+
+        <OrbitControls
+          enableZoom={false}
+          enablePan={false}
+          rotateSpeed={0.6}
+          autoRotate
+          autoRotateSpeed={0.5}
+          enableDamping
+          dampingFactor={0.05}
+          minPolarAngle={Math.PI / 3}
+          maxPolarAngle={(Math.PI / 3) * 2}
+        />
       </Canvas>
     </div>
   );

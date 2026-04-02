@@ -19,38 +19,32 @@ const Globe3D = dynamic(
   { ssr: false }
 );
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.2,
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+    y: 0,
+  },
+};
+
 export function HeroSection() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.2,
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
-      y: 0,
-    },
-  };
-
   return (
-    <section className="relative min-h-screen flex flex-col overflow-hidden">
-      {/* Pixel Grid Background */}
-      <div className="absolute inset-0 pixel-grid opacity-40" />
-
-      {/* Scanline overlay */}
-      <div className="absolute inset-0 scanlines pointer-events-none" />
-
+    <section className="min-h-screen flex flex-col overflow-hidden">
       {/* Two-column layout */}
-      <div className="flex-1 flex items-center relative z-10 pt-2">
-        <div className="container mx-auto px-4 py-16">
+      <div className="flex-1 flex items-center relative z-10">
+        <div className="px-4 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left column — Main Content */}
             <motion.div
@@ -60,15 +54,9 @@ export function HeroSection() {
               className="flex flex-col text-left"
             >
               {/* Terminal badge */}
-              <motion.div variants={itemVariants} className="mb-8">
+              <motion.div variants={itemVariants} className="mb-2">
                 <div className="inline-flex items-center gap-2 px-4 py-2 border border-border bg-card/80 backdrop-blur-sm">
-                  <Terminal className="w-4 h-4 text-primary" />
-                  <CodeText
-                    as="span"
-                    className="text-xs   uppercase tracking-widest"
-                  >
-                    hackra.init()
-                  </CodeText>
+                  <CodeText as="span">{">_"} hackra.init()</CodeText>
                 </div>
               </motion.div>
 
@@ -108,7 +96,7 @@ export function HeroSection() {
                 variants={itemVariants}
                 className="flex flex-col sm:flex-row gap-4 mb-16"
               >
-                <Link href="/hackathons">
+                <Link href="/explore">
                   <Button
                     size="lg"
                     className="gap-2 w-full sm:w-auto uppercase tracking-wider text-xs glow-primary"
@@ -117,7 +105,7 @@ export function HeroSection() {
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
-                <Link href="/signup">
+                {/*  <Link href="/signup">
                   <Button
                     size="lg"
                     variant="outline"
@@ -125,7 +113,7 @@ export function HeroSection() {
                   >
                     {"<"} Create Account {"/>"}
                   </Button>
-                </Link>
+                </Link> */}
               </motion.div>
 
               {/* Stats */}

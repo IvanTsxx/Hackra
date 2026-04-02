@@ -1,44 +1,57 @@
 "use client";
 
+import type { HTMLAttributes } from "react";
+import type { MarqueeProps as FastMarqueeProps } from "react-fast-marquee";
+import FastMarquee from "react-fast-marquee";
+
 import { cn } from "@/lib/utils";
 
-interface MarqueeProps {
-  children: React.ReactNode;
-  className?: string;
-  reverse?: boolean;
-  pauseOnHover?: boolean;
-  speed?: "slow" | "normal" | "fast";
-}
+export type MarqueeProps = HTMLAttributes<HTMLDivElement>;
 
-export function Marquee({
-  children,
-  className,
-  reverse = false,
+export const Marquee = ({ className, ...props }: MarqueeProps) => (
+  <div
+    className={cn("relative w-full overflow-hidden", className)}
+    {...props}
+  />
+);
+
+export type MarqueeContentProps = FastMarqueeProps;
+
+export const MarqueeContent = ({
+  loop = 0,
+  autoFill = true,
   pauseOnHover = true,
-  speed = "normal",
-}: MarqueeProps) {
-  const speedMap = {
-    fast: "15s",
-    normal: "30s",
-    slow: "60s",
-  };
+  ...props
+}: MarqueeContentProps) => (
+  <FastMarquee
+    autoFill={autoFill}
+    loop={loop}
+    pauseOnHover={pauseOnHover}
+    {...props}
+  />
+);
 
-  return (
-    <div
-      className={cn(
-        "flex overflow-hidden mask-[linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]",
-        className
-      )}
-    >
-      <div
-        className={cn("flex shrink-0 gap-8", pauseOnHover && "hover:paused")}
-        style={{
-          animation: `marquee ${speedMap[speed]} linear infinite ${reverse ? "reverse" : ""}`,
-        }}
-      >
-        {children}
-        {children}
-      </div>
-    </div>
-  );
-}
+export type MarqueeFadeProps = HTMLAttributes<HTMLDivElement> & {
+  side: "left" | "right";
+};
+
+export const MarqueeFade = ({
+  className,
+  side,
+  ...props
+}: MarqueeFadeProps) => (
+  <div
+    className={cn(
+      "absolute top-0 bottom-0 z-10 h-full w-24 from-background to-transparent",
+      side === "left" ? "left-0 bg-linear-to-r" : "right-0 bg-linear-to-l",
+      className
+    )}
+    {...props}
+  />
+);
+
+export type MarqueeItemProps = HTMLAttributes<HTMLDivElement>;
+
+export const MarqueeItem = ({ className, ...props }: MarqueeItemProps) => (
+  <div className={cn("mx-2 shrink-0 object-contain", className)} {...props} />
+);

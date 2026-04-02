@@ -1,0 +1,177 @@
+"use client";
+
+import { Sun, Moon, Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import type { Route } from "next";
+import { useTheme } from "next-themes";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+
+import { AuthModal } from "@/components/auth-modal";
+import { Button } from "@/components/ui/button";
+
+const NAV_LINKS: { href: Route; label: string }[] = [
+  { href: "/explore", label: "HACKATHONS" },
+  { href: "/sponsors", label: "SPONSORS" },
+];
+
+export function Navbar() {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authTab, setAuthTab] = useState<"login" | "signup">("login");
+
+  const openLogin = () => {
+    setAuthTab("login");
+    setAuthOpen(true);
+  };
+  const openSignup = () => {
+    setAuthTab("signup");
+    setAuthOpen(true);
+  };
+
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <span className="font-pixel text-sm border border-border/70 px-2 py-0.5 text-foreground group-hover:border-brand-green/50 transition-colors">
+              [HR]
+            </span>
+            <span className="font-pixel text-sm text-muted-foreground tracking-widest">
+              HACKRA
+            </span>
+          </Link>
+
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-8">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop actions */}
+          <div className="hidden md:flex items-center gap-2">
+            <button
+              onClick={openLogin}
+              className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors px-3 py-1"
+            >
+              LOGIN
+            </button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={openSignup}
+              className="font-pixel text-xs tracking-widest rounded-none border-foreground/30 hover:border-brand-green/70 hover:text-brand-green transition-all"
+            >
+              SIGN UP
+            </Button>
+            <button
+              onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
+              className="ml-1 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Toggle theme"
+            >
+              {mounted &&
+                (resolvedTheme === "dark" ? (
+                  <Sun size={15} />
+                ) : (
+                  <Moon size={15} />
+                ))}
+            </button>
+          </div>
+
+          {/* Mobile menu toggle */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
+              className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Toggle theme"
+            >
+              {mounted &&
+                (resolvedTheme === "dark" ? (
+                  <Sun size={15} />
+                ) : (
+                  <Moon size={15} />
+                ))}
+            </button>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.15 }}
+              className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-md px-4 py-4 flex flex-col gap-4"
+            >
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <div className="flex items-center gap-3 pt-2 border-t border-border/30">
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    openLogin();
+                  }}
+                  className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground"
+                >
+                  LOGIN
+                </button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    openSignup();
+                  }}
+                  className="font-pixel text-xs tracking-widest rounded-none"
+                >
+                  SIGN UP
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      <AuthModal
+        open={authOpen}
+        onOpenChange={setAuthOpen}
+        defaultTab={authTab}
+      />
+    </>
+  );
+}

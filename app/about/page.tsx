@@ -145,17 +145,17 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/hackathons"
+              href="/explore"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 text-xs  uppercase tracking-wider"
             >
               {"<"} Browse Hackathons {"/>"}
             </Link>
-            <Link
+            {/*   <Link
               href="/signup?type=organizer"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-border hover:border-primary/50 text-xs  uppercase tracking-wider"
             >
               {"<"} Organize Event {"/>"}
-            </Link>
+            </Link> */}
           </div>
         </div>
       </section>

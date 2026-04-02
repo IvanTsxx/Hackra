@@ -5,12 +5,14 @@ import {
   GeistPixelLine,
   GeistPixelTriangle,
 } from "geist/font/pixel";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import "./globals.css";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/shared/components/ui/sonner";
 
 export default function RootLayout({
   children,
@@ -31,11 +33,19 @@ export default function RootLayout({
         "font-pixel-grid"
       )}
     >
-      <body>
+      <body className="relative">
         <ThemeProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <NuqsAdapter>
+            <Navbar />
+            {/* Pixel Grid Background */}
+            <div className="absolute inset-0 pixel-grid opacity-40 -z-10" />
+
+            {/* Scanline overlay */}
+            <div className="absolute inset-0 scanlines pointer-events-none -z-10" />
+            {children}
+            <Footer />
+            <Toaster position="top-right" richColors />
+          </NuqsAdapter>
         </ThemeProvider>
       </body>
     </html>

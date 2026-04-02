@@ -1,12 +1,11 @@
-import { ArrowRight, Terminal, Shield, Globe } from "lucide-react";
 import Link from "next/link";
 
-import { FeaturedHackathon } from "@/components/home/featured-hackathon";
 import { HeroSection } from "@/components/home/hero-section";
 import { TechStackMarquee } from "@/components/home/tech-stack-marquee";
-import { Button } from "@/components/ui/button";
-import { getFeaturedHackathon } from "@/lib/actions/hackathons";
 import { CodeText } from "@/shared/components/code-text";
+import { HackathonCard } from "@/shared/components/hackathon-card";
+import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee";
+import { HACKATHONS } from "@/shared/lib/mock-data";
 
 export const metadata = {
   description:
@@ -14,113 +13,66 @@ export const metadata = {
   title: "Hackra | Build. Compete. Together.",
 };
 
-export default async function Home() {
-  const featuredHackathon = await getFeaturedHackathon();
+const featured = HACKATHONS.filter((h) => h.status !== "ended").slice(0, 3);
 
+export default function Home() {
   return (
     <div className="min-h-screen">
       <HeroSection />
       <TechStackMarquee />
-      {featuredHackathon && <FeaturedHackathon hackathon={featuredHackathon} />}
 
-      {/* Features Section */}
-      <section className="py-24 relative border-b border-border">
-        <div className="absolute inset-0 pixel-grid opacity-20" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <CodeText
-              className="text-xs text-primary  uppercase tracking-widest mb-4"
-              as="p"
-            >
-              features.map()
+      {/* Featured Hackathons */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <CodeText as="p" className="text-xs text-brand-green mb-1">
+              Featured
             </CodeText>
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 ">
-              {">"} EVERYTHING YOU NEED TO HACK
-            </h2>
-            <p className="text-sm text-muted-foreground ">
-              {"/* From discovery to deployment, we have got you covered */"}
-            </p>
+            <h2 className="text-xl text-foreground">ACTIVE_HACKATHONS</h2>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              {
-                description:
-                  "Browse and filter hackathons by date, location, technology, and prize pools.",
-                icon: Terminal,
-                title: "EASY_DISCOVERY",
-              },
-              {
-                description:
-                  "One-click registration with your GitHub or Google account. Form teams instantly.",
-                icon: Shield,
-                title: "SEAMLESS_AUTH",
-              },
-              {
-                description:
-                  "Connect with developers worldwide and build projects that matter.",
-                icon: Globe,
-                title: "GLOBAL_NETWORK",
-              },
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                className="group p-6 border border-border bg-card hover:border-primary/50 transition-colors"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <feature.icon className="w-5 h-5 text-primary" />
-                  <h3 className="text-sm font-bold  uppercase tracking-wider">
-                    {feature.title}
-                  </h3>
-                </div>
-                <CodeText as="p" className="text-xs text-muted-foreground ">
-                  {feature.description}
-                </CodeText>
-              </div>
-            ))}
-          </div>
+          <Link
+            href="/explore"
+            className="text-xs text-muted-foreground hover:text-brand-green transition-colors"
+          >
+            VIEW ALL →
+          </Link>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {featured.map((hackathon) => (
+            <HackathonCard key={hackathon.slug} hackathon={hackathon} />
+          ))}
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 relative">
-        <div className="absolute inset-0 pixel-grid opacity-20" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <CodeText
-              as="p"
-              className="text-xs text-primary  uppercase tracking-widest mb-4"
+      <SponsorsMarquee />
+
+      {/* CTA Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+        <div className="glass border border-border/40 p-10 md:p-16 text-center space-y-6">
+          <CodeText as="p" className="text-xs text-brand-green">
+            GET_STARTED
+          </CodeText>
+          <h2 className="text-2xl md:text-4xl text-foreground text-balance">
+            READY TO BUILD SOMETHING GREAT?
+          </h2>
+          <p className="text-sm text-muted-foreground max-w-lg mx-auto leading-relaxed">
+            {
+              "/* Join the next wave of hackathons. Meet your future co-founders. Launch your next big idea. */"
+            }
+          </p>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Link
+              href="/explore"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-foreground text-background text-xs tracking-wider hover:opacity-90 transition-opacity"
             >
-              call_to_action
-            </CodeText>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 ">
-              {">"} READY TO START BUILDING?
-            </h2>
-            <p className="text-sm text-muted-foreground mb-8 ">
-              {
-                "/* Join thousands of developers who are already competing, learning, and shipping. */"
-              }
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/hackathons">
-                <Button
-                  size="lg"
-                  className="gap-2 uppercase tracking-wider text-xs glow-primary"
-                >
-                  {"<"} Explore Hackathons {"/>"}
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/signup?type=organizer">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="uppercase tracking-wider text-xs"
-                >
-                  {"<"} Organize Event {"/>"}
-                </Button>
-              </Link>
-            </div>
+              EXPLORE HACKATHONS
+            </Link>
+            <Link
+              href="/create"
+              className="inline-flex items-center gap-2 px-6 py-2.5 border border-border/60 text-foreground text-xs tracking-wider hover:border-brand-green/50 hover:text-brand-green transition-all"
+            >
+              HOST ONE
+            </Link>
           </div>
         </div>
       </section>

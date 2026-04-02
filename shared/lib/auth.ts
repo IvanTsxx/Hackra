@@ -1,27 +1,17 @@
 // oxlint-disable typescript/no-non-null-assertion
 import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { prismaAdapter } from "better-auth/adapters/prisma";
 
-import { db } from "./db";
-import * as schema from "./db/schema";
+import { prisma } from "@/shared/lib/prisma";
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
-  database: drizzleAdapter(db, {
-    provider: "pg",
-    schema: {
-      account: schema.account,
-      session: schema.session,
-      user: schema.users,
-      verification: schema.verifications,
-    },
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
   }),
-  // OAuth-only: email/password disabled
-  // Set enabled: true to re-enable in the future
+
   emailAndPassword: {
     enabled: false,
-    maxPasswordLength: 128,
-    minPasswordLength: 8,
   },
   secret: process.env.BETTER_AUTH_SECRET!,
   session: {
@@ -45,20 +35,32 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       bio: {
+        required: false,
         type: "string",
       },
-      company: {
+      githubUsername: {
+        required: false,
         type: "string",
       },
-      organizerRole: {
+      karmaPoints: {
+        required: false,
+        type: "number",
+      },
+      location: {
+        required: false,
         type: "string",
       },
-      role: {
-        defaultValue: "user",
+      position: {
+        // Frontend, Backend, Fullstack, etc.
+        required: false,
         type: "string",
       },
-      userType: {
-        defaultValue: "participant",
+      techStack: {
+        required: false,
+        type: "string[]",
+      },
+      username: {
+        required: true,
         type: "string",
       },
     },
