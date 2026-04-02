@@ -16,7 +16,8 @@
     "curly": "off",
     "nextjs/no-img-element": "off",
     "unicorn/no-array-reduce": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "unicorn/no-array-for-each": "off"
   },
   "ignorePatterns": [
     ".next/**",
