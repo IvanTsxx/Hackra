@@ -8,13 +8,15 @@ These skills are installed in `.agents/skills/` and should be loaded before writ
 
 ### Core Skills (auto-load when relevant)
 
-| Skill                   | When to Load                                                                         | What It Provides                                                                                    |
-| ----------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| `ultracite`             | Writing any TS/TSX code, linting, formatting                                         | Code standards, CLI commands (`bunx ultracite check/fix/doctor`), Oxlint + Oxfmt rules              |
-| `next-best-practices`   | Writing Next.js pages, layouts, API routes, metadata                                 | RSC boundaries, async patterns, data fetching, error handling, Suspense, route handlers             |
-| `shadcn`                | Adding, fixing, or composing UI components                                           | Component docs via `npx shadcn@latest docs`, composition rules, forms, styling, icons, CLI workflow |
-| `web-design-guidelines` | Reviewing UI code for accessibility/design compliance                                | Checks against Vercel Web Interface Guidelines, fetches latest rules from source                    |
-| `find-skills`           | User asks "how do I do X", "is there a skill for X", or wants to extend capabilities | Search and install skills from the ecosystem via `npx skills find [query]`                          |
+| Skill                   | When to Load                                                                               | What It Provides                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `architect-nextjs`      | Setting up new features, deciding component placement, refactoring, architecture decisions | Scope Rule (local vs shared), Screaming Architecture, route groups, Server Actions placement        |
+| `ultracite`             | Writing any TS/TSX code, linting, formatting                                               | Code standards, CLI commands (`bunx ultracite check/fix/doctor`), Oxlint + Oxfmt rules              |
+| `next-cache-components` | Using Next.js 16 caching (PPR, `use cache`, `cacheLife`, `cacheTag`)                       | Partial Prerendering, cache directives, cache invalidation patterns                                 |
+| `next-best-practices`   | Writing Next.js pages, layouts, API routes, metadata                                       | RSC boundaries, async patterns, data fetching, error handling, Suspense, route handlers             |
+| `shadcn`                | Adding, fixing, or composing UI components                                                 | Component docs via `npx shadcn@latest docs`, composition rules, forms, styling, icons, CLI workflow |
+| `web-design-guidelines` | Reviewing UI code for accessibility/design compliance                                      | Checks against Vercel Web Interface Guidelines, fetches latest rules from source                    |
+| `find-skills`           | User asks "how do I do X", "is there a skill for X", or wants to extend capabilities       | Search and install skills from the ecosystem via `npx skills find [query]`                          |
 
 ### Domain-Specific Skills
 
