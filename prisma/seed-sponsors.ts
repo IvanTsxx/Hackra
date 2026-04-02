@@ -1,11 +1,8 @@
-import { HACKATHONS, SPONSORS } from "../mock-data";
-import { prisma } from "../prisma";
+import { HACKATHONS, SPONSORS } from "../shared/lib/mock-data";
+import { prisma } from "./seed-client";
 
 export async function seedSponsors() {
   console.log("🌱 Seeding sponsors...");
-
-  // Clear existing sponsors (cascade will handle related records)
-  await prisma.sponsor.deleteMany();
 
   const sponsors = await prisma.sponsor.createManyAndReturn({
     data: SPONSORS.map((sponsor) => ({

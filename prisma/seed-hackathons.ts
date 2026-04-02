@@ -1,11 +1,8 @@
-import { HACKATHONS } from "../mock-data";
-import { prisma } from "../prisma";
+import { HACKATHONS } from "../shared/lib/mock-data";
+import { prisma } from "./seed-client";
 
 export async function seedHackathons() {
   console.log("🌱 Seeding hackathons...");
-
-  // Clear existing hackathons (cascade will handle related records)
-  await prisma.hackathon.deleteMany();
 
   const hackathons = await Promise.all(
     HACKATHONS.map(async (hack) => {

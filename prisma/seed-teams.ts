@@ -1,15 +1,8 @@
-import { TEAMS } from "../mock-data";
-import { prisma } from "../prisma";
+import { TEAMS } from "../shared/lib/mock-data";
+import { prisma } from "./seed-client";
 
 export async function seedTeams() {
   console.log("🌱 Seeding teams, members, questions, and applications...");
-
-  // Clear existing data in reverse dependency order
-  await prisma.teamApplicationAnswer.deleteMany();
-  await prisma.teamApplication.deleteMany();
-  await prisma.teamQuestion.deleteMany();
-  await prisma.teamMember.deleteMany();
-  await prisma.team.deleteMany();
 
   const createdTeams: string[] = [];
   const questionIdMap = new Map<string, string>();

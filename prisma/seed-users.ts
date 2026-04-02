@@ -1,11 +1,8 @@
-import { USERS } from "../mock-data";
-import { prisma } from "../prisma";
+import { USERS } from "../shared/lib/mock-data";
+import { prisma } from "./seed-client";
 
 export async function seedUsers() {
   console.log("🌱 Seeding users...");
-
-  // Clear existing users (cascade will handle related records)
-  await prisma.user.deleteMany();
 
   const users = await prisma.user.createManyAndReturn({
     data: USERS.map((user) => ({

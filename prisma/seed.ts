@@ -1,3 +1,4 @@
+import { prisma } from "./seed-client";
 import { seedHackathons } from "./seed-hackathons";
 import { seedSponsors } from "./seed-sponsors";
 import { seedTeams } from "./seed-teams";
@@ -5,6 +6,20 @@ import { seedUsers } from "./seed-users";
 
 async function main() {
   console.log("🚀 Starting database seed...\n");
+
+  // Clear ALL existing data in reverse dependency order
+  console.log("🧹 Clearing existing data...");
+  await prisma.teamApplicationAnswer.deleteMany();
+  await prisma.teamApplication.deleteMany();
+  await prisma.teamQuestion.deleteMany();
+  await prisma.teamMember.deleteMany();
+  await prisma.team.deleteMany();
+  await prisma.hackathonSponsor.deleteMany();
+  await prisma.hackathonParticipant.deleteMany();
+  await prisma.hackathon.deleteMany();
+  await prisma.sponsor.deleteMany();
+  await prisma.user.deleteMany();
+  console.log("✅ Cleared all existing data\n");
 
   // Order matters due to foreign key dependencies:
   // 1. Users (no dependencies)
@@ -27,6 +42,5 @@ try {
   console.error("❌ Seed failed:", error);
   process.exit(1);
 } finally {
-  const { prisma } = await import("../prisma");
   await prisma.$disconnect();
 }
