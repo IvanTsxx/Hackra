@@ -5,12 +5,17 @@ import { Calendar, MapPin, Users, Trophy, Wifi, Globe } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 
-import type { Hackathon } from "@/lib/mock-data";
+import type { HackathonGetPayload } from "@/app/generated/prisma/models";
 
 import { StatusPill, TagBadge } from "./tag-badge";
 
 interface HackathonCardProps {
-  hackathon: Hackathon;
+  hackathon: HackathonGetPayload<{
+    include: {
+      prizes: true;
+      participants: true;
+    };
+  }>;
   variant?: "default" | "compact";
 }
 
@@ -30,17 +35,17 @@ export function HackathonCard({
   hackathon,
   variant = "default",
 }: HackathonCardProps) {
-  const accent = getAccentFromBg(hackathon.theme.bg);
+  const accent = getAccentFromBg(hackathon.themeBg || "#0a0a0a");
   /* const accentHex = hackathon.theme.bg; */
-  const isLive = hackathon.status === "live";
+  const isLive = hackathon.status === "LIVE";
   const topPrize = hackathon.prizes[0]?.amount;
 
   const endDate = new Date(hackathon.endDate);
   const startDate = new Date(hackathon.startDate);
   const timeLabel =
-    hackathon.status === "live"
+    hackathon.status === "LIVE"
       ? `ends ${formatDistanceToNow(endDate, { addSuffix: true })}`
-      : hackathon.status === "upcoming"
+      : hackathon.status === "UPCOMING"
         ? `starts ${formatDistanceToNow(startDate, { addSuffix: true })}`
         : `ended ${formatDistanceToNow(endDate, { addSuffix: true })}`;
 

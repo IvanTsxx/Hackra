@@ -41,10 +41,9 @@ const itemVariants: Variants = {
 
 export function HeroSection() {
   return (
-    <section className="min-h-screen flex flex-col overflow-hidden">
-      {/* Two-column layout */}
+    <section className="flex flex-col">
       <div className="flex-1 flex items-center relative z-10">
-        <div className="px-4 py-16">
+        <div className="px-4 py-16 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left column — Main Content */}
             <motion.div
@@ -144,7 +143,7 @@ export function HeroSection() {
             </motion.div>
 
             {/* Right column — 3D Globe */}
-            <div className="relative hidden lg:flex items-center justify-center h-[600px]">
+            <div className="relative hidden lg:flex items-center justify-center h-[600px] w-full">
               <Globe3D />
             </div>
           </div>

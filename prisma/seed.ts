@@ -15,6 +15,7 @@ async function main() {
   await prisma.teamMember.deleteMany();
   await prisma.team.deleteMany();
   await prisma.hackathonSponsor.deleteMany();
+  await prisma.hackathonPrize.deleteMany();
   await prisma.hackathonParticipant.deleteMany();
   await prisma.hackathon.deleteMany();
   await prisma.sponsor.deleteMany();

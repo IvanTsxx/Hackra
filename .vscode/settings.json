@@ -56,6 +56,6 @@
     "source.fixAll.oxc": "explicit"
   },
   "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma-insider"
+    "editor.defaultFormatter": "Prisma.prisma"
   }
 }

@@ -21,7 +21,7 @@ export async function seedTeams() {
         owner: {
           connect: { id: team.members[0].userId },
         },
-        technologies: team.techs,
+        techs: team.techs,
       },
     });
 

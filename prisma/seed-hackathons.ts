@@ -5,32 +5,41 @@ export async function seedHackathons() {
   console.log("🌱 Seeding hackathons...");
 
   const hackathons = await Promise.all(
-    HACKATHONS.map(async (hack) => {
-      const prizePool = generatePrizePool(hack.prizes);
-
-      return await prisma.hackathon.create({
-        data: {
-          capacity: hack.maxParticipants,
-          description: hack.description,
-          endDate: new Date(hack.endDate),
-          id: hack.slug,
-          image: hack.image,
-          location: hack.location,
-          maxTeamMembers: hack.maxTeamSize,
-          organizerId: hack.organizerId,
-          prizePool,
-          requiresApproval: hack.requiresApproval,
-          slug: hack.slug,
-          startDate: new Date(hack.startDate),
-          tags: hack.tags,
-          technologies: hack.techs,
-          themeColor: hack.theme.bg,
-          themeCustomClass: hack.theme.style,
-          themeGradient: hack.theme.gradient,
-          title: hack.title,
-        },
-      });
-    })
+    HACKATHONS.map(
+      async (hack) =>
+        await prisma.hackathon.create({
+          data: {
+            description: hack.description,
+            endDate: new Date(hack.endDate),
+            id: hack.slug,
+            image: hack.image,
+            isOnline: hack.isOnline,
+            location: hack.location,
+            locationMode: hack.location === "Online" ? "remote" : "in_person",
+            maxParticipants: hack.maxParticipants,
+            maxTeamSize: hack.maxTeamSize,
+            organizerId: hack.organizerId,
+            prizes: {
+              create: hack.prizes.map((prize, idx) => ({
+                amount: prize.amount,
+                description: prize.description,
+                place: prize.place,
+                sortOrder: idx,
+              })),
+            },
+            requiresApproval: hack.requiresApproval,
+            slug: hack.slug,
+            startDate: new Date(hack.startDate),
+            status: mapHackathonStatus(hack.status),
+            tags: hack.tags,
+            techs: hack.techs,
+            themeBg: hack.theme.bg,
+            themeGradient: hack.theme.gradient,
+            themeStyle: hack.theme.style,
+            title: hack.title,
+          },
+        })
+    )
   );
 
   console.log(`✅ Seeded ${hackathons.length} hackathons`);
@@ -51,10 +60,21 @@ export async function seedHackathons() {
   return { hackathons, participants };
 }
 
-function generatePrizePool(
-  prizes: { place: string; amount: string; description: string }[]
-): string | undefined {
-  if (prizes.length === 0) return undefined;
-  const firstPrize = prizes[0].amount;
-  return `${firstPrize}+`;
+function mapHackathonStatus(
+  status: "upcoming" | "live" | "ended"
+): "UPCOMING" | "LIVE" | "ENDED" {
+  switch (status) {
+    case "upcoming": {
+      return "UPCOMING";
+    }
+    case "live": {
+      return "LIVE";
+    }
+    case "ended": {
+      return "ENDED";
+    }
+    default: {
+      return "UPCOMING";
+    }
+  }
 }

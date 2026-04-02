@@ -104,7 +104,7 @@ export function Globe3D() {
   return (
     <div className="relative w-full h-full cursor-grab">
       <Canvas
-        camera={{ fov: 45, position: [0, 0, 6] }}
+        camera={{ fov: 55, position: [0, 0, 6] }}
         gl={{ alpha: true, antialias: true }}
         style={{ background: "transparent" }}
       >

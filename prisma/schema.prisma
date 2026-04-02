@@ -88,6 +88,14 @@ model Verification {
   @@map("verification")
 }
 
+enum HackathonStatus {
+  DRAFT
+  UPCOMING
+  LIVE
+  ENDED
+  CANCELLED
+}
+
 model Hackathon {
   id          String  @id @default(cuid())
   title       String
@@ -99,19 +107,18 @@ model Hackathon {
   endDate   DateTime
 
   location     String
+  locationMode String   @default("in_person") // "remote" | "in_person" | "hybrid"
+  isOnline     Boolean  @default(false)
   tags         String[]
-  technologies String[]
+  techs        String[]
 
   requiresApproval Boolean @default(false)
-  capacity         Int?
-  maxTeamMembers   Int
+  maxParticipants  Int?
+  maxTeamSize      Int
 
-  prizePool String?
-
-  // Personalización visual
-  themeColor       String?
-  themeGradient    String?
-  themeCustomClass String?
+  themeBg       String?
+  themeGradient String?
+  themeStyle    String? // "default" | "neon" | "minimal" | "cyber"
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -122,10 +129,14 @@ model Hackathon {
   teams        Team[]
   participants HackathonParticipant[]
   sponsors     HackathonSponsor[]
+  prizes       HackathonPrize[]
+
+  status HackathonStatus @default(DRAFT)
 
   @@index([organizerId])
   @@index([startDate])
   @@index([location])
+  @@map("hackathon")
 }
 
 model HackathonParticipant {
@@ -162,8 +173,8 @@ model Team {
   ownerId String
   owner   User   @relation("UserTeams", fields: [ownerId], references: [id])
 
-  maxMembers   Int
-  technologies String[]
+  maxMembers Int
+  techs      String[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -270,4 +281,17 @@ model HackathonSponsor {
 
   @@unique([hackathonId, sponsorId])
   @@index([sponsorId])
+}
+
+model HackathonPrize {
+  id          String    @id @default(cuid())
+  hackathonId String
+  hackathon   Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+  place       String // "1st", "2nd", "Track Winner"
+  amount      String // "$10,000"
+  description String // "Grand Prize"
+  sortOrder   Int       @default(0)
+
+  @@index([hackathonId])
+  @@map("hackathon_prize")
 }
