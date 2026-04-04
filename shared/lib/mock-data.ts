@@ -307,6 +307,50 @@ export const USERS: User[] = [
     techs: ["Solidity", "TypeScript", "React", "Node.js"],
     username: "zkdev",
   },
+  {
+    avatar: "/placeholder.svg?height=64&width=64",
+    bio: "Building LLM-powered products and experimenting with agents.",
+    githubUsername: "lucasai",
+    hackathonsCreated: 1,
+    hackathonsJoined: 10,
+    id: "u9",
+    karma: 2700,
+    location: "São Paulo, BR",
+    name: "Lucas Pereira",
+    role: "AI Engineer",
+    teamsCreated: 3,
+    techs: ["Python", "TypeScript", "Next.js", "Supabase"],
+    username: "aiwizard",
+  },
+  {
+    avatar: "/placeholder.svg?height=64&width=64",
+    bio: "CI/CD, infra as code, Kubernetes nerd.",
+    githubUsername: "sofidevops",
+    hackathonsCreated: 0,
+    hackathonsJoined: 6,
+    id: "u10",
+    karma: 3100,
+    location: "Buenos Aires, AR",
+    name: "Sofia Martínez",
+    role: "DevOps Engineer",
+    teamsCreated: 2,
+    techs: ["Docker", "Kubernetes", "AWS", "Go"],
+    username: "devopsqueen",
+  },
+  {
+    avatar: "/placeholder.svg?height=64&width=64",
+    bio: "Designing intuitive UX for dev tools and SaaS.",
+    hackathonsCreated: 0,
+    hackathonsJoined: 4,
+    id: "u11",
+    karma: 1900,
+    location: "Madrid, ES",
+    name: "Tomás Vega",
+    role: "Product Designer",
+    teamsCreated: 1,
+    techs: ["React", "Tailwind CSS", "Next.js"],
+    username: "uxmaster",
+  },
 ];
 
 export const TEAMS: Team[] = [
@@ -441,6 +485,49 @@ export const TEAMS: Team[] = [
     name: "Ferris Wheel",
     questions: ["Rust experience level?"],
     techs: ["Rust", "WebAssembly", "TypeScript", "React"],
+  },
+  {
+    applicants: [
+      {
+        answers: [
+          {
+            answer: "Yes, worked on chatbot interfaces.",
+            question: "Do you have experience with AI UX?",
+          },
+        ],
+        appliedAt: "2025-03-04",
+        message: "I can design the UX for agent interaction flows.",
+        status: "pending",
+        userId: "u11",
+      },
+    ],
+    createdAt: "2025-03-02",
+    description: "Autonomous agents that manage your daily workflows.",
+    hackathonSlug: "ai-agents-hackathon",
+    id: "t6",
+    maxMembers: 4,
+    members: [
+      { joinedAt: "2025-03-02", role: "owner", userId: "u9" },
+      { joinedAt: "2025-03-03", role: "member", userId: "u3" },
+    ],
+    name: "AutoPilot AI",
+    questions: ["Do you have experience with AI UX?"],
+    techs: ["Python", "Next.js", "Supabase"],
+  },
+  {
+    applicants: [],
+    createdAt: "2025-06-15",
+    description: "Tracking carbon emissions using blockchain.",
+    hackathonSlug: "climate-hack",
+    id: "t7",
+    maxMembers: 5,
+    members: [
+      { joinedAt: "2025-06-15", role: "owner", userId: "u8" },
+      { joinedAt: "2025-06-16", role: "member", userId: "u10" },
+    ],
+    name: "GreenChain",
+    questions: ["Have you worked with climate data?"],
+    techs: ["Solidity", "React", "Node.js"],
   },
 ];
 
@@ -844,31 +931,86 @@ Your game must incorporate **recursion** as a core mechanic, narrative, or aesth
     },
     title: "GameDev Jam 2025",
   },
+  {
+    description: `## LATAM Buildathon
+
+A hackathon focused on builders from Latin America.
+
+## Goals
+
+- Foster regional innovation
+- Connect developers across LATAM
+- Build scalable startups
+
+## Tracks
+
+- Fintech
+- AI
+- SaaS
+`,
+    endDate: "2025-07-15T18:00:00Z",
+    image: "/placeholder.svg?height=400&width=800",
+    isOnline: true,
+    location: "Online",
+    maxParticipants: 1200,
+    maxTeamSize: 5,
+    organizerId: "u9",
+    participants: ["u9", "u10"],
+    prizes: [
+      { amount: "$20,000", description: "Best Startup Idea", place: "1st" },
+      { amount: "$10,000", description: "Runner Up", place: "2nd" },
+    ],
+    requiresApproval: false,
+    slug: "latam-buildathon",
+    sponsors: ["supabase", "vercel"],
+    startDate: "2025-07-10T09:00:00Z",
+    status: "upcoming",
+    tags: ["LATAM", "Startup", "AI", "Fintech"],
+    teams: ["t7"],
+    techs: ["Next.js", "Node.js", "PostgreSQL"],
+    theme: {
+      bg: "#041a1a",
+      gradient: "from-cyan-950 to-zinc-950",
+      style: "neon",
+    },
+    title: "LATAM Buildathon 2025",
+  },
+  {
+    description: `## DevTools Hackathon
+
+Build tools for developers.
+
+## Ideas
+
+- CLI tools
+- Code generators
+- Observability platforms
+`,
+    endDate: "2025-08-05T18:00:00Z",
+    image: "/placeholder.svg?height=400&width=800",
+    isOnline: false,
+    location: "Berlin, DE",
+    maxParticipants: 400,
+    maxTeamSize: 4,
+    organizerId: "u10",
+    participants: ["u7", "u10"],
+    prizes: [{ amount: "$15,000", description: "Best DevTool", place: "1st" }],
+    requiresApproval: true,
+    slug: "devtools-hack",
+    sponsors: ["cloudflare", "neon"],
+    startDate: "2025-08-01T09:00:00Z",
+    status: "upcoming",
+    tags: ["DevTools", "CLI", "Infra"],
+    teams: [],
+    techs: ["Go", "Rust", "Node.js"],
+    theme: {
+      bg: "#0a0f1a",
+      gradient: "from-blue-950 to-zinc-950",
+      style: "minimal",
+    },
+    title: "DevTools Hackathon",
+  },
 ];
-
-export function getHackathon(slug: string): Hackathon | undefined {
-  return HACKATHONS.find((h) => h.slug === slug);
-}
-
-export function getUser(username: string): User | undefined {
-  return USERS.find((u) => u.username === username);
-}
-
-export function getUserById(id: string): User | undefined {
-  return USERS.find((u) => u.id === id);
-}
-
-export function getTeam(id: string): Team | undefined {
-  return TEAMS.find((t) => t.id === id);
-}
-
-export function getTeamsForHackathon(slug: string): Team[] {
-  return TEAMS.filter((t) => t.hackathonSlug === slug);
-}
-
-export function getSponsorsForHackathon(hackathon: Hackathon): Sponsor[] {
-  return SPONSORS.filter((s) => hackathon.sponsors.includes(s.id));
-}
 
 export const STATS = {
   developers: 50_000,

@@ -1,11 +1,16 @@
 // oxlint-disable typescript/no-non-null-assertion
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { customSession } from "better-auth/plugins";
 
 import { getUserById } from "@/data/user";
 import { prisma } from "@/shared/lib/prisma";
+
+const ADMIN_EMAILS = new Set(
+  (process.env.ADMIN_EMAILS || "").split(",").filter(Boolean)
+);
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
@@ -13,13 +18,51 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
 
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          if (ADMIN_EMAILS.has(user.email)) {
+            const userDB = await prisma.user.findUnique({
+              where: { id: user.id },
+            });
+            if (userDB && userDB.role !== "ADMIN") {
+              await prisma.user.update({
+                data: { role: "ADMIN" },
+                where: { id: user.id },
+              });
+            }
+          }
+        },
+      },
+    },
+  },
   emailAndPassword: {
     enabled: false,
+  },
+  hooks: {
+    after: createAuthMiddleware(async (ctx) => {
+      if (ctx.context.newSession) {
+        const { user } = ctx.context.newSession;
+        if (ADMIN_EMAILS.has(user.email)) {
+          const userDB = await prisma.user.findUnique({
+            where: { id: user.id },
+          });
+          if (userDB && userDB.role !== "ADMIN") {
+            await prisma.user.update({
+              data: { role: "ADMIN" },
+              where: { id: user.id },
+            });
+          }
+        }
+      }
+    }),
   },
   plugins: [
     nextCookies(),
     customSession(async ({ user, session }) => {
       const userDB = await getUserById(user.id);
+
       return {
         session,
         user: {

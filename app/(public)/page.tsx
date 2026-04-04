@@ -3,8 +3,8 @@ import { TechStackMarquee } from "@/components/home/tech-stack-marquee";
 import { getFeaturedHackatons } from "@/data/hackatons";
 import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee";
 
-import { Banner } from "./_components/banner";
-import { FeaturedHackatons } from "./_components/featured-hackatons";
+import { Banner } from "../_components/banner";
+import { FeaturedHackatons } from "../_components/featured-hackatons";
 
 export const metadata = {
   description:

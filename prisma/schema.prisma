@@ -33,8 +33,15 @@ model User {
   teamApplications    TeamApplication[]
   participations      HackathonParticipant[]
 
+  role Role @default(USER)
+
   @@unique([email])
   @@map("user")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Session {
@@ -133,9 +140,18 @@ model Hackathon {
 
   status HackathonStatus @default(DRAFT)
 
+  source       String?   // "luma", "manual"
+  externalId   String?   // ID or slug from Luma
+  externalUrl  String?   // Original URL (lu.ma/...)
+  lastSyncedAt DateTime? // Last sync timestamp
+  isReadOnly   Boolean   @default(false)
+
   @@index([organizerId])
   @@index([startDate])
   @@index([location])
+  @@index([source])
+  @@index([externalId])
+  @@index([externalUrl])
   @@map("hackathon")
 }
 

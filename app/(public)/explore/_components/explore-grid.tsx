@@ -3,7 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-import { loadMoreHackathons } from "@/app/explore/_actions";
+import { loadMoreHackathons } from "@/app/(public)/explore/_actions";
 import type { HackathonStatus } from "@/app/generated/prisma/enums";
 import type { HackathonGetPayload } from "@/app/generated/prisma/models";
 import { HackathonCard } from "@/components/hackathon-card";

@@ -5,6 +5,7 @@ import { Plus, X, Upload, Eye, Code, CalendarIcon } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Footer } from "@/components/footer";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
@@ -22,6 +23,8 @@ import type { Tech } from "@/lib/mock-data";
 import { CodeText } from "@/shared/components/code-text";
 import { ThemeCustomizer } from "@/shared/components/theme-customizer";
 import type { ThemeValue } from "@/shared/components/theme-customizer";
+
+import { createHackathonAction } from "./_actions";
 
 const AVAILABLE_TAGS = [
   "Frontend",
@@ -103,6 +106,7 @@ export default function CreateHackathonPage() {
   ]);
   const [theme, setTheme] = useState<ThemeValue>(DEFAULT_THEME);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toggleTag = (t: string) =>
     setSelectedTags((prev) =>
@@ -124,6 +128,57 @@ export default function CreateHackathonPage() {
     setPrizes((prev) =>
       prev.map((p, idx) => (idx === i ? { ...p, [field]: val } : p))
     );
+
+  const handleSubmit = async () => {
+    if (!startDate || !endDate) {
+      toast.error("Missing dates", {
+        description: "Please select both start and end dates.",
+      });
+      return;
+    }
+
+    if (!title.trim()) {
+      toast.error("Missing title", {
+        description: "Please provide a hackathon title.",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await createHackathonAction({
+        description,
+        endDate,
+        image: undefined,
+        location,
+        locationMode,
+        maxParticipants,
+        maxTeamSize,
+        requiresApproval,
+        startDate,
+        tags: selectedTags,
+        techs: selectedTechs,
+        themeBg: theme.bg,
+        themeGradient: theme.gradient,
+        themeStyle: theme.style,
+        title: title.trim(),
+      });
+
+      if (result.success) {
+        toast.success("Hackathon deployed!");
+        setSubmitted(true);
+      } else {
+        toast.error("Deploy failed", { description: result.error });
+      }
+    } catch {
+      toast.error("Deploy failed", {
+        description: "An unexpected error occurred.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const inputClass =
     "w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
@@ -757,10 +812,11 @@ export default function CreateHackathonPage() {
               </div>
 
               <Button
-                onClick={() => setSubmitted(true)}
-                className="w-full rounded-none font-pixel text-xs tracking-widest bg-foreground text-background hover:bg-foreground/90 h-11"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="w-full rounded-none font-pixel text-xs tracking-widest bg-foreground text-background hover:bg-foreground/90 h-11 disabled:opacity-50"
               >
-                DEPLOY HACKATHON →
+                {isSubmitting ? "DEPLOYING..." : "DEPLOY HACKATHON →"}
               </Button>
             </motion.div>
           )}

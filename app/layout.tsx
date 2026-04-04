@@ -1,3 +1,4 @@
+import "./globals.css";
 import {
   GeistPixelSquare,
   GeistPixelCircle,
@@ -7,9 +8,6 @@ import {
 } from "geist/font/pixel";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-import "./globals.css";
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { AuthModalDialog } from "@/shared/components/auth/auth-modal-dialog";
@@ -35,18 +33,11 @@ export default function RootLayout({
         "font-pixel-grid"
       )}
     >
-      <body className="relative">
+      <body>
         <ThemeProvider>
           <NuqsAdapter>
             <AuthProvider>
-              <Navbar />
-              {/* Pixel Grid Background */}
-              <div className="absolute inset-0 pixel-grid opacity-40 -z-10" />
-
-              {/* Scanline overlay */}
-              <div className="absolute inset-0 scanlines pointer-events-none -z-10" />
               {children}
-              <Footer />
               <Toaster position="top-right" richColors />
               <AuthModalDialog />
             </AuthProvider>
