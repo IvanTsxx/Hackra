@@ -100,7 +100,7 @@ export default async function HackathonDetailPage({
               </span>
             </div>
             <div className="absolute top-2 left-2">
-              <StatusPill status={hackathon.status} />
+              <StatusPill index={0} status={hackathon.status} />
             </div>
           </div>
 
@@ -153,7 +153,7 @@ export default async function HackathonDetailPage({
                     </DialogTitle>
                   </DialogHeader>
                   <div className="overflow-y-auto space-y-2 flex-1 pr-1">
-                    {participants.map((user) => (
+                    {participants.map((user, index) => (
                       <Link
                         key={user?.id}
                         href={`/user/${user?.username}`}
@@ -178,6 +178,7 @@ export default async function HackathonDetailPage({
                           label={user?.position || "N/A"}
                           variant="default"
                           className="ml-auto"
+                          index={index}
                         />
                       </Link>
                     ))}
@@ -219,8 +220,14 @@ export default async function HackathonDetailPage({
               TAGS
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {hackathon.tags.map((t) => (
-                <TagBadge key={t} label={t} variant="default" size="md" />
+              {hackathon.tags.map((t, index) => (
+                <TagBadge
+                  key={t}
+                  label={t}
+                  variant="default"
+                  size="md"
+                  index={index}
+                />
               ))}
             </div>
           </div>
@@ -231,8 +238,14 @@ export default async function HackathonDetailPage({
               TECHNOLOGIES
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {hackathon.techs.map((t) => (
-                <TagBadge key={t} label={t} variant="tech" size="md" />
+              {hackathon.techs.map((t, index) => (
+                <TagBadge
+                  key={t}
+                  label={t}
+                  variant="tech"
+                  size="md"
+                  index={index}
+                />
               ))}
             </div>
           </div>
@@ -244,7 +257,7 @@ export default async function HackathonDetailPage({
                 SPONSORS
               </p>
               <div className="space-y-2">
-                {sponsors.map((sponsor) => (
+                {sponsors.map((sponsor, index) => (
                   <div key={sponsor.id} className="flex items-center gap-2">
                     <Building size={11} className="text-muted-foreground" />
                     <span className="font-mono text-xs text-muted-foreground">
@@ -254,6 +267,7 @@ export default async function HackathonDetailPage({
                       label={sponsor.name.toUpperCase()}
                       variant="green"
                       size="sm"
+                      index={index}
                     />
                   </div>
                 ))}
