@@ -1,130 +1,23 @@
-"use client";
-
 import { Plus, ChevronRight } from "lucide-react";
-import { motion } from "motion/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { use, useState } from "react";
 
 import { TeamCard } from "@/components/team-card";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { getHackathon, getTeamsForHackathon } from "@/lib/mock-data";
-import type { Team } from "@/lib/mock-data";
+import { getHackathon } from "@/data/hackatons";
+import { getTeamsForHackathon } from "@/data/teams";
 import { CodeText } from "@/shared/components/code-text";
 
-function ApplyModal({
-  team,
-  open,
-  onOpenChange,
-}: {
-  team: Team | null;
-  open: boolean;
-  onOpenChange: (v: boolean) => void;
-}) {
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [message, setMessage] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  if (!team) return null;
-
-  const handleSubmit = () => {
-    setSubmitted(true);
-    setTimeout(() => {
-      onOpenChange(false);
-      setSubmitted(false);
-      setAnswers([]);
-      setMessage("");
-    }, 1500);
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="rounded-none border-border/50 max-w-md">
-        <DialogHeader>
-          <DialogTitle>
-            <CodeText className="tracking-wider">APPLY — {team.name}</CodeText>
-          </DialogTitle>
-        </DialogHeader>
-
-        {submitted ? (
-          <motion.div
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="py-8 text-center space-y-2"
-          >
-            <p className="font-pixel text-lg text-brand-green">SENT.</p>
-            <p className="font-mono text-xs text-muted-foreground">
-              Application submitted successfully
-            </p>
-          </motion.div>
-        ) : (
-          <div className="space-y-4 pt-2">
-            {team.questions.map((q, i) => (
-              <div key={i} className="space-y-1.5">
-                <label className="font-mono text-xs text-foreground">{q}</label>
-                <input
-                  type="text"
-                  value={answers[i] || ""}
-                  onChange={(e) => {
-                    const next = [...answers];
-                    next[i] = e.target.value;
-                    setAnswers(next);
-                  }}
-                  placeholder="Your answer..."
-                  className="w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs outline-none focus:border-brand-green/40"
-                />
-              </div>
-            ))}
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-xs text-muted-foreground">
-                MESSAGE (optional)
-              </label>
-              <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                rows={3}
-                placeholder="Tell the team why you want to join..."
-                className="w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs outline-none focus:border-brand-green/40 resize-none"
-              />
-            </div>
-
-            <Button
-              onClick={handleSubmit}
-              className="w-full rounded-none font-pixel text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-9"
-            >
-              SEND APPLICATION →
-            </Button>
-          </div>
-        )}
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-export default function TeamsPage({
+export default async function TeamsPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = use(params);
-  const hackathon = getHackathon(slug);
+  const { slug } = await params;
+  const hackathon = await getHackathon(slug);
   if (!hackathon) notFound();
 
-  const teams = getTeamsForHackathon(slug);
-  const [applyTeam, setApplyTeam] = useState<Team | null>(null);
-  const [applyOpen, setApplyOpen] = useState(false);
-
-  const openApply = (team: Team) => {
-    setApplyTeam(team);
-    setApplyOpen(true);
-  };
+  const teams = await getTeamsForHackathon(slug);
 
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16">
@@ -178,25 +71,10 @@ export default function TeamsPage({
       ) : (
         <div className="grid sm:grid-cols-2 gap-4">
           {teams.map((team, i) => (
-            <motion.div
-              key={team.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-            >
-              <TeamCard team={team} onApply={openApply} />
-            </motion.div>
+            <TeamCard team={team} i={i} key={team.id} />
           ))}
         </div>
       )}
-      <ApplyModal
-        team={applyTeam}
-        open={applyOpen}
-        onOpenChange={(v) => {
-          setApplyOpen(v);
-          if (!v) setApplyTeam(null);
-        }}
-      />
     </main>
   );
 }

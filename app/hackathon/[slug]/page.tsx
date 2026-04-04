@@ -1,21 +1,17 @@
-"use client";
-
 import { format } from "date-fns";
 import {
   Calendar,
   MapPin,
   Trophy,
-  Share2,
   Plus,
   CalendarPlus,
   ChevronRight,
   Building,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { use, useState } from "react";
 
 import { AvatarGroup } from "@/components/avatar-group";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
@@ -27,36 +23,44 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import type { USERS } from "@/lib/mock-data";
-import {
-  getHackathon,
-  getUserById,
-  getSponsorsForHackathon,
-  getTeamsForHackathon,
-} from "@/lib/mock-data";
+import { getHackathon } from "@/data/hackatons";
+import { getSponsorsForHackathon } from "@/data/sponsors";
+import { getTeamsForHackathon } from "@/data/teams";
+import { getUserById } from "@/data/user";
 import { CodeText } from "@/shared/components/code-text";
+import { auth } from "@/shared/lib/auth";
 
-export default function HackathonDetailPage({
+import { HackatonTitle } from "./_components/hackaton-title";
+import { ProgressParticipants } from "./_components/progress-participants";
+
+export default async function HackathonDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = use(params);
-  const hackathon = getHackathon(slug);
+  const { slug } = await params;
+  const hackathon = await getHackathon(slug);
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  const user = await getUserById(session?.user?.id || "");
 
   if (!hackathon) notFound();
 
-  const organizer = getUserById(hackathon.organizerId);
-  const sponsors = getSponsorsForHackathon(hackathon);
-  const teams = getTeamsForHackathon(slug);
-  const participants = hackathon.participants
-    .map((id) => getUserById(id))
-    .filter(Boolean) as (typeof USERS)[0][];
+  const [organizer, sponsors, teams] = await Promise.all([
+    getUserById(hackathon.organizerId),
+    getSponsorsForHackathon(hackathon.id),
+    getTeamsForHackathon(slug),
+  ]);
 
-  const [shareOpen, setShareOpen] = useState(false);
-  const [participantsOpen, setParticipantsOpen] = useState(false);
-  const [joined, setJoined] = useState(false);
+  const participants = hackathon.participants.map(({ user }) => user);
+
+  const joined = participants.some(
+    (participant) => participant?.id === user?.id
+  );
 
   const shareUrl =
     typeof window !== "undefined"
@@ -81,8 +85,8 @@ export default function HackathonDetailPage({
         {/* ── LEFT SIDEBAR ── */}
         <aside className="space-y-4">
           {/* Image */}
-          <div className="relative aspect-[4/3] overflow-hidden border border-border/40 bg-secondary/30">
-            {hackathon.image && (
+          <div className="relative aspect-4/3 overflow-hidden border border-border/40 bg-secondary/30">
+            {hackathon.image && !hackathon.image.includes("/placeholder") && (
               <Image
                 src={hackathon.image}
                 alt={hackathon.title}
@@ -111,7 +115,7 @@ export default function HackathonDetailPage({
                 className="flex items-center gap-3 group"
               >
                 <Image
-                  src={organizer.avatar}
+                  src={organizer.image || ""}
                   alt={organizer.name}
                   width={36}
                   height={36}
@@ -135,27 +139,57 @@ export default function HackathonDetailPage({
               PARTICIPANTS
             </p>
             <div className="flex items-center justify-between">
-              <button
-                onClick={() => setParticipantsOpen(true)}
-                className="flex items-center gap-2 group"
-              >
-                <AvatarGroup users={participants} max={5} />
-                <span className="font-mono text-xs text-muted-foreground group-hover:text-foreground transition-colors">
-                  {participants.length} / {hackathon.maxParticipants}
-                </span>
-              </button>
+              <Dialog>
+                <DialogTrigger className="flex items-center gap-2 group">
+                  <AvatarGroup users={participants} max={5} />
+                  <span className="font-mono text-xs text-muted-foreground group-hover:text-foreground transition-colors">
+                    {participants.length} / {hackathon.maxParticipants}
+                  </span>
+                </DialogTrigger>
+                <DialogContent className="rounded-none border-border/50 max-w-md max-h-[70vh] flex flex-col">
+                  <DialogHeader>
+                    <DialogTitle>
+                      <CodeText>PARTICIPANTS ({participants.length})</CodeText>
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="overflow-y-auto space-y-2 flex-1 pr-1">
+                    {participants.map((user) => (
+                      <Link
+                        key={user?.id}
+                        href={`/user/${user?.username}`}
+                        className="flex items-center gap-3 p-2 hover:bg-secondary/40 transition-colors"
+                      >
+                        <Image
+                          src={user?.image || ""}
+                          alt={user?.name || ""}
+                          width={28}
+                          height={28}
+                          className="rounded-full"
+                        />
+                        <div>
+                          <p className="font-mono text-xs text-foreground">
+                            {user?.name}
+                          </p>
+                          <p className="font-mono text-[10px] text-muted-foreground">
+                            @{user?.username}
+                          </p>
+                        </div>
+                        <TagBadge
+                          label={user?.position || "N/A"}
+                          variant="default"
+                          className="ml-auto"
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
             {/* Progress bar */}
-            <div className="w-full h-1 bg-secondary overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{
-                  width: `${(participants.length / hackathon.maxParticipants) * 100}%`,
-                }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                className="h-full bg-brand-green"
-              />
-            </div>
+            <ProgressParticipants
+              participants={participants.length}
+              hackathon={hackathon.maxParticipants || 1}
+            />
           </div>
 
           {/* Teams */}
@@ -217,7 +251,7 @@ export default function HackathonDetailPage({
                       {sponsor.name}
                     </span>
                     <TagBadge
-                      label={sponsor.tier.toUpperCase()}
+                      label={sponsor.name.toUpperCase()}
                       variant="green"
                       size="sm"
                     />
@@ -232,13 +266,7 @@ export default function HackathonDetailPage({
         <div className="space-y-6">
           {/* Title + actions */}
           <div className="space-y-4">
-            <motion.h1
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="font-pixel text-2xl md:text-3xl text-foreground leading-tight text-balance"
-            >
-              {hackathon.title}
-            </motion.h1>
+            <HackatonTitle title={hackathon.title} />
 
             {/* Meta */}
             <div className="flex flex-col sm:flex-row gap-3 font-mono text-xs text-muted-foreground">
@@ -260,7 +288,7 @@ export default function HackathonDetailPage({
             {/* Action buttons */}
             <div className="flex flex-wrap gap-2">
               <Button
-                onClick={() => setJoined(!joined)}
+                /*   onClick={() => setJoined(!joined)} */
                 className={`font-pixel text-xs tracking-wider rounded-none h-9 px-5 transition-all ${
                   joined
                     ? "bg-brand-green text-background hover:bg-brand-green/90"
@@ -269,14 +297,8 @@ export default function HackathonDetailPage({
               >
                 {joined ? "✓ JOINED" : "+ JOIN HACKATHON"}
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => setShareOpen(true)}
-                className="font-pixel text-xs tracking-wider rounded-none h-9 px-4 border-border/50 hover:border-brand-green/50 hover:text-brand-green transition-all"
-              >
-                <Share2 size={12} className="mr-1.5" />
-                INVITE
-              </Button>
+              <ShareModal url={shareUrl} title={hackathon.title} />
+
               <Button
                 variant="ghost"
                 className="font-pixel text-xs tracking-wider rounded-none h-9 px-4 text-muted-foreground hover:text-foreground"
@@ -337,80 +359,32 @@ export default function HackathonDetailPage({
               </p>
             </div>
             <div className="flex gap-2">
-              <Link href={`/hackathon/${slug}/teams`}>
-                <Button
-                  variant="outline"
-                  className="tracking-wider rounded-none border-border/50 hover:border-brand-green/50 hover:text-brand-green h-8 px-4 transition-all"
-                >
-                  BROWSE TEAMS
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                className="tracking-wider rounded-none border-border/50 hover:border-brand-green/50 hover:text-brand-green h-8 px-4 transition-all"
+                nativeButton={false}
+                render={<Link href={`/hackathon/${slug}/teams`} />}
+              >
+                BROWSE TEAMS
+              </Button>
               <Button
                 className="tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-8 px-4"
                 nativeButton={false}
                 type="button"
+                render={
+                  <Link
+                    href={`/hackathon/${slug}/teams/create`}
+                    className="flex items-center"
+                  />
+                }
               >
-                <Link
-                  href={`/hackathon/${slug}/teams/create`}
-                  className="flex items-center"
-                >
-                  <Plus size={11} className="mr-1" />
-                  CREATE TEAM
-                </Link>
+                <Plus size={11} className="mr-1" />
+                CREATE TEAM
               </Button>
             </div>
           </div>
         </div>
       </div>
-      {/* Share modal */}
-      <ShareModal
-        open={shareOpen}
-        onOpenChange={setShareOpen}
-        url={shareUrl}
-        title={hackathon.title}
-      />
-
-      {/* Participants modal */}
-      <Dialog open={participantsOpen} onOpenChange={setParticipantsOpen}>
-        <DialogContent className="rounded-none border-border/50 max-w-md max-h-[70vh] flex flex-col">
-          <DialogHeader>
-            <DialogTitle>
-              <CodeText>PARTICIPANTS ({participants.length})</CodeText>
-            </DialogTitle>
-          </DialogHeader>
-          <div className="overflow-y-auto space-y-2 flex-1 pr-1">
-            {participants.map((user) => (
-              <Link
-                key={user.id}
-                href={`/user/${user.username}`}
-                onClick={() => setParticipantsOpen(false)}
-                className="flex items-center gap-3 p-2 hover:bg-secondary/40 transition-colors"
-              >
-                <Image
-                  src={user.avatar}
-                  alt={user.name}
-                  width={28}
-                  height={28}
-                  className="rounded-full"
-                />
-                <div>
-                  <p className="font-mono text-xs text-foreground">
-                    {user.name}
-                  </p>
-                  <p className="font-mono text-[10px] text-muted-foreground">
-                    @{user.username}
-                  </p>
-                </div>
-                <TagBadge
-                  label={user.role}
-                  variant="default"
-                  className="ml-auto"
-                />
-              </Link>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
     </main>
   );
 }

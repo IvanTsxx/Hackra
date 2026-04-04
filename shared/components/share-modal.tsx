@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, Link2, Check } from "lucide-react";
+import { Mail, Link2, Check, Share2 } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -9,24 +9,18 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import { CodeText } from "./code-text";
 import { Icons } from "./icons";
 
 interface ShareModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   url: string;
   title: string;
 }
 
-export function ShareModal({
-  open,
-  onOpenChange,
-  url,
-  title,
-}: ShareModalProps) {
+export function ShareModal({ url, title }: ShareModalProps) {
   const [copied, setCopied] = useState(false);
 
   const encodedUrl = encodeURIComponent(url);
@@ -66,7 +60,18 @@ export function ShareModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog>
+      <DialogTrigger
+        render={
+          <Button
+            variant="outline"
+            className="font-pixel text-xs tracking-wider rounded-none h-9 px-4 border-border/50 hover:border-brand-green/50 hover:text-brand-green transition-all"
+          />
+        }
+      >
+        <Share2 size={12} className="mr-1.5" />
+        INVITE
+      </DialogTrigger>
       <DialogContent className="rounded-none border-border/50 bg-background max-w-sm">
         <DialogHeader>
           <DialogTitle>

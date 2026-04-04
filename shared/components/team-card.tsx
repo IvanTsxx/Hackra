@@ -4,29 +4,38 @@ import { Users, Lock } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 
+import type { TeamGetPayload } from "@/app/generated/prisma/models";
+import { ApplyModal } from "@/app/hackathon/[slug]/teams/_components/apply-modal";
 import { Button } from "@/components/ui/button";
-import type { Team } from "@/lib/mock-data";
-import { USERS } from "@/lib/mock-data";
 
 import { AvatarGroup } from "./avatar-group";
 import { TagBadge } from "./tag-badge";
 
 interface TeamCardProps {
-  team: Team;
-  onApply?: (team: Team) => void;
+  team: TeamGetPayload<{
+    include: {
+      members: {
+        include: {
+          user: true;
+        };
+      };
+      questions: true;
+    };
+  }>;
+  i: number;
 }
 
-export function TeamCard({ team, onApply }: TeamCardProps) {
-  const members = team.members
-    .map((m) => USERS.find((u) => u.id === m.userId))
-    .filter(Boolean) as (typeof USERS)[0][];
+export function TeamCard({ team, i }: TeamCardProps) {
   const spotsLeft = team.maxMembers - team.members.length;
   const isFull = spotsLeft === 0;
+  const members = team.members.map((m) => m.user);
 
   return (
     <motion.article
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -1 }}
-      transition={{ duration: 0.2 }}
+      transition={{ delay: i * 0.08, duration: 0.2 }}
       className="glass border border-border/40 rounded-none p-4 space-y-4 hover:border-border/60 transition-all"
     >
       <div className="flex items-start justify-between gap-3">
@@ -79,16 +88,7 @@ export function TeamCard({ team, onApply }: TeamCardProps) {
               VIEW
             </Button>
           </Link>
-          {!isFull && onApply && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => onApply(team)}
-              className="font-pixel text-[10px] tracking-wider h-7 px-2 rounded-none border-foreground/30 hover:border-brand-green/60 hover:text-brand-green transition-all"
-            >
-              APPLY
-            </Button>
-          )}
+          {!isFull && <ApplyModal team={team} />}
           {team.questions.length > 0 && (
             <Lock size={10} className="text-muted-foreground/50" />
           )}

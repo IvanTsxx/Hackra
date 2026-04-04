@@ -1,10 +1,10 @@
 import Image from "next/image";
 
-import type { User } from "@/lib/mock-data";
+import type { User } from "@/app/generated/prisma/client";
 import { cn } from "@/lib/utils";
 
 interface AvatarGroupProps {
-  users: User[];
+  users: (User | null)[];
   max?: number;
   size?: "sm" | "md";
   className?: string;
@@ -28,16 +28,16 @@ export function AvatarGroup({
       <div className="flex -space-x-1.5">
         {visible.map((user) => (
           <div
-            key={user.id}
+            key={user?.id}
             className={cn(
               sizeClass,
               borderClass,
-              "rounded-full overflow-hidden bg-secondary flex-shrink-0"
+              "rounded-full overflow-hidden bg-secondary shrink-0"
             )}
           >
             <Image
-              src={user.avatar}
-              alt={user.name}
+              src={user?.image || ""}
+              alt={user?.name || ""}
               width={32}
               height={32}
               className="w-full h-full object-cover"
@@ -49,7 +49,7 @@ export function AvatarGroup({
             className={cn(
               sizeClass,
               borderClass,
-              "rounded-full bg-secondary text-muted-foreground flex items-center justify-center font-mono flex-shrink-0"
+              "rounded-full bg-secondary text-muted-foreground flex items-center justify-center font-mono shrink-0"
             )}
           >
             +{overflow}
