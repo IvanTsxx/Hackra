@@ -12,7 +12,7 @@ import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
-import { AuthModal } from "@/shared/components/auth/auth-modal";
+import { AuthModalDialog } from "@/shared/components/auth/auth-modal-dialog";
 import { Toaster } from "@/shared/components/ui/sonner";
 import { AuthProvider } from "@/shared/lib/auth-context";
 
@@ -48,7 +48,7 @@ export default function RootLayout({
               {children}
               <Footer />
               <Toaster position="top-right" richColors />
-              <AuthModal />
+              <AuthModalDialog />
             </AuthProvider>
           </NuqsAdapter>
         </ThemeProvider>

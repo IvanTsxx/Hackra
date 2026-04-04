@@ -12,6 +12,7 @@ import { useAuth } from "@/shared/lib/auth-context";
 
 import type { User } from "../lib/auth";
 import { signOut, useSession } from "../lib/auth-client";
+import { AuthModal } from "./auth";
 import { ThemeToggle } from "./theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
@@ -74,27 +75,16 @@ export function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-2">
-            {!user ? (
-              <>
-                <button
-                  type="button"
-                  onClick={openLogin}
-                  className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors px-3 py-1"
-                >
-                  LOGIN
-                </button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={openSignup}
-                  className="font-pixel text-xs tracking-widest rounded-none border-foreground/30 hover:border-brand-green/70 hover:text-brand-green transition-all"
-                >
-                  SIGN UP
-                </Button>
-              </>
-            ) : (
-              <UserMenu user={user} />
-            )}
+            <AuthModal>
+              <Button
+                variant="outline"
+                render={<Link href="/create" />}
+                nativeButton={false}
+              >
+                Create Hackathon
+              </Button>
+            </AuthModal>
+            {user && <UserMenu user={user} />}
             <ThemeToggle />
           </div>
 
@@ -146,29 +136,35 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <div className="flex items-center gap-3 pt-2 border-t border-border/30">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    openLogin();
-                  }}
-                  className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground"
-                >
-                  LOGIN
-                </button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    openSignup();
-                  }}
-                  className="font-pixel text-xs tracking-widest rounded-none"
-                >
-                  SIGN UP
-                </Button>
-              </div>
+              {!user ? (
+                <div className="flex items-center gap-3 pt-2 border-t border-border/30">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      openLogin();
+                    }}
+                    className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground"
+                  >
+                    LOGIN
+                  </button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      openSignup();
+                    }}
+                    className="font-pixel text-xs tracking-widest rounded-none"
+                  >
+                    SIGN UP
+                  </Button>
+                </div>
+              ) : (
+                <div className="pt-2 border-t border-border/30">
+                  <UserMenu user={user} />
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

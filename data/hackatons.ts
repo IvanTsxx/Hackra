@@ -185,3 +185,10 @@ export async function getExploreFilters(): Promise<ExploreFilterOptions> {
 
   return { locations, statuses, tags, techs, totalCount: allHackathons.length };
 }
+
+export const getAllHackathons = async () =>
+  await prisma.hackathon.findMany({
+    select: {
+      slug: true,
+    },
+  });

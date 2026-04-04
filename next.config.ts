@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   reactCompiler: true,
+  serverExternalPackages: ["@takumi-rs/core"],
   typedRoutes: true,
 };
 
