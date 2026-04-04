@@ -625,8 +625,8 @@ export default function CreateHackathonPage() {
                     {title || "HACKATHON TITLE"}
                   </p>
                   <div className="relative flex flex-wrap gap-1.5">
-                    {selectedTags.slice(0, 3).map((t) => (
-                      <TagBadge key={t} label={t} variant="default" />
+                    {selectedTags.slice(0, 3).map((t, i) => (
+                      <TagBadge key={t} label={t} variant="default" index={i} />
                     ))}
                   </div>
                   <p className="relative font-mono text-xs text-white/40">
@@ -680,8 +680,8 @@ export default function CreateHackathonPage() {
                       TAGS
                     </p>
                     <div className="flex flex-wrap gap-1">
-                      {selectedTags.map((t) => (
-                        <TagBadge key={t} label={t} />
+                      {selectedTags.map((t, i) => (
+                        <TagBadge key={t} label={t} index={i} />
                       ))}
                       {selectedTags.length === 0 && (
                         <span className="font-mono text-xs text-muted-foreground/50">
@@ -695,8 +695,8 @@ export default function CreateHackathonPage() {
                       TECHS
                     </p>
                     <div className="flex flex-wrap gap-1">
-                      {selectedTechs.map((t) => (
-                        <TagBadge key={t} label={t} variant="tech" />
+                      {selectedTechs.map((t, i) => (
+                        <TagBadge key={t} label={t} variant="tech" index={i} />
                       ))}
                       {selectedTechs.length === 0 && (
                         <span className="font-mono text-xs text-muted-foreground/50">

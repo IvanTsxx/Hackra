@@ -10,12 +10,25 @@ import { useState, useEffect } from "react";
 import { AuthModal } from "@/components/auth-modal";
 import { Button } from "@/components/ui/button";
 
+import type { User } from "../lib/auth";
+import { signOut, useSession } from "../lib/auth-client";
+import { ThemeToggle } from "./theme-toggle";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+
 const NAV_LINKS: { href: Route; label: string }[] = [
   { href: "/explore", label: "HACKATHONS" },
   { href: "/sponsors", label: "SPONSORS" },
 ];
 
 export function Navbar() {
+  const { data } = useSession();
+  const user = data?.user;
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,34 +77,27 @@ export function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-2">
-            <button
-              onClick={openLogin}
-              className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors px-3 py-1"
-            >
-              LOGIN
-            </button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={openSignup}
-              className="font-pixel text-xs tracking-widest rounded-none border-foreground/30 hover:border-brand-green/70 hover:text-brand-green transition-all"
-            >
-              SIGN UP
-            </Button>
-            <button
-              onClick={() =>
-                setTheme(resolvedTheme === "dark" ? "light" : "dark")
-              }
-              className="ml-1 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Toggle theme"
-            >
-              {mounted &&
-                (resolvedTheme === "dark" ? (
-                  <Sun size={15} />
-                ) : (
-                  <Moon size={15} />
-                ))}
-            </button>
+            {!user ? (
+              <>
+                <button
+                  onClick={openLogin}
+                  className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors px-3 py-1"
+                >
+                  LOGIN
+                </button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={openSignup}
+                  className="font-pixel text-xs tracking-widest rounded-none border-foreground/30 hover:border-brand-green/70 hover:text-brand-green transition-all"
+                >
+                  SIGN UP
+                </Button>
+              </>
+            ) : (
+              <UserMenu user={user} />
+            )}
+            <ThemeToggle />
           </div>
 
           {/* Mobile menu toggle */}
@@ -173,5 +179,46 @@ export function Navbar() {
         defaultTab={authTab}
       />
     </>
+  );
+}
+
+function UserMenu({ user }: { user: User }) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <Button size="sm" variant="outline" className="rounded-full p-0" />
+        }
+      >
+        <Avatar>
+          <AvatarImage src={user.image || ""} />
+          <AvatarFallback>{user.name?.charAt(0).toUpperCase()}</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem>
+          <Link href={`/user/${user.username}`}>Public Profile</Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem>
+          <Link href="/settings/profile">Settings</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <LogoutButton />
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function LogoutButton() {
+  return (
+    <Button
+      onClick={() => {
+        signOut();
+      }}
+    >
+      Logout
+    </Button>
   );
 }

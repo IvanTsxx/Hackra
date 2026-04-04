@@ -1,7 +1,10 @@
 // oxlint-disable typescript/no-non-null-assertion
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { nextCookies } from "better-auth/next-js";
+import { customSession } from "better-auth/plugins";
 
+import { getUserById } from "@/data/user";
 import { prisma } from "@/shared/lib/prisma";
 
 export const auth = betterAuth({
@@ -13,6 +16,18 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: false,
   },
+  plugins: [
+    nextCookies(),
+    customSession(async ({ user, session }) => {
+      const userDB = await getUserById(user.id);
+      return {
+        session,
+        user: {
+          ...userDB,
+        },
+      };
+    }),
+  ],
   secret: process.env.BETTER_AUTH_SECRET!,
   session: {
     cookieCache: {

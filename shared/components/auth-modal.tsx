@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
+import { signIn } from "../lib/auth-client";
 import { CodeText } from "./code-text";
 import { Icons } from "./icons";
 
@@ -33,6 +34,9 @@ export function AuthModal({
   const handleOAuth = (provider: "google" | "github") => {
     // Placeholder — integrate with your auth provider
     console.log(`[v0] OAuth with ${provider}`);
+    signIn.social({
+      provider,
+    });
   };
 
   return (
