@@ -19,7 +19,9 @@ interface ExploreFiltersProps {
     techs: FilterOption[];
     locations: FilterOption[];
     statuses: { value: HackathonStatus; count: number }[];
+    totalCount: number;
   };
+  filteredCount: number;
   totalCount: number;
 }
 
@@ -27,6 +29,7 @@ const STATUSES = ["UPCOMING", "LIVE", "ENDED"] as const;
 
 export function ExploreFilters({
   filterOptions,
+  filteredCount,
   totalCount,
 }: ExploreFiltersProps) {
   const [search, setSearch] = useQueryState("q", {
@@ -121,9 +124,16 @@ export function ExploreFilters({
         <h1 className="font-pixel text-2xl md:text-3xl text-foreground">
           HACKATHONS
         </h1>
-        <p className="font-mono text-sm text-muted-foreground">
-          {totalCount} hackathon{totalCount !== 1 ? "s" : ""} available
-        </p>
+        {hasFilters ? (
+          <p className="font-mono text-sm text-muted-foreground">
+            <span className="text-brand-green">{filteredCount}</span> of{" "}
+            <span>{totalCount}</span> hackathon{totalCount !== 1 ? "s" : ""}
+          </p>
+        ) : (
+          <p className="font-mono text-sm text-muted-foreground">
+            {totalCount} hackathon{totalCount !== 1 ? "s" : ""} available
+          </p>
+        )}
       </motion.div>
 
       {/* Search + Filter bar */}

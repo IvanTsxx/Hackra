@@ -46,7 +46,8 @@ export default async function ExplorePage({ searchParams }: Props) {
     <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-16">
       <ExploreFilters
         filterOptions={filterOptions}
-        totalCount={data.totalCount}
+        filteredCount={data.totalCount}
+        totalCount={filterOptions.totalCount}
       />
 
       <ExploreGrid

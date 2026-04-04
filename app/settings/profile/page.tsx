@@ -189,25 +189,29 @@ export default function SettingsProfilePage() {
                 </span>
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {AVAILABLE_TECHS.map((t) => (
-                  <button
+                {AVAILABLE_TECHS.map((t, i) => (
+                  <Button
                     key={t}
-                    type="button"
                     onClick={() => toggleTech(t)}
-                    className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
-                      techs.includes(t)
-                        ? "border-foreground/60 text-foreground bg-foreground/5"
-                        : "border-border/40 text-muted-foreground hover:border-border/70"
-                    }`}
+                    variant="ghost"
+                    className="p-0"
                   >
-                    {t}
-                  </button>
+                    <TagBadge
+                      index={i}
+                      className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
+                        techs.includes(t)
+                          ? "border-foreground/60 text-foreground bg-foreground/5"
+                          : "border-border/40 text-muted-foreground hover:border-border/70"
+                      }`}
+                      label={t}
+                    />
+                  </Button>
                 ))}
               </div>
               {techs.length > 0 && (
                 <div className="flex flex-wrap gap-1">
-                  {techs.map((t) => (
-                    <TagBadge key={t} label={t} variant="tech" />
+                  {techs.map((t, i) => (
+                    <TagBadge key={t} label={t} variant="tech" index={i} />
                   ))}
                 </div>
               )}

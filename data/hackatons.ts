@@ -136,6 +136,7 @@ interface ExploreFilterOptions {
   techs: FilterOption[];
   locations: FilterOption[];
   statuses: { value: HackathonStatus; count: number }[];
+  totalCount: number;
 }
 
 export async function getExploreFilters(): Promise<ExploreFilterOptions> {
@@ -182,5 +183,5 @@ export async function getExploreFilters(): Promise<ExploreFilterOptions> {
     .map(([value, count]) => ({ count, value }))
     .toSorted((a, b) => a.value.localeCompare(b.value));
 
-  return { locations, statuses, tags, techs };
+  return { locations, statuses, tags, techs, totalCount: allHackathons.length };
 }
