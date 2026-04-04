@@ -2,19 +2,16 @@
 
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { useState } from "react";
 
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-
-import { signIn } from "../lib/auth-client";
-import { CodeText } from "./code-text";
-import { Icons } from "./icons";
-
-interface AuthModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  defaultTab?: "login" | "signup";
-}
+import { CodeText } from "@/shared/components/code-text";
+import { Icons } from "@/shared/components/icons";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/shared/components/ui/dialog";
+import { signIn } from "@/shared/lib/auth-client";
+import { useAuth } from "@/shared/lib/auth-context";
 
 const FEATURES = [
   "> join 150+ hackathons",
@@ -23,24 +20,17 @@ const FEATURES = [
   "> earn karma points",
 ];
 
-export function AuthModal({
-  open,
-  onOpenChange,
-  defaultTab = "login",
-}: AuthModalProps) {
-  const [tab, setTab] = useState<"login" | "signup">(defaultTab);
+export function AuthModal() {
+  const { open, tab, setTab, closeAuth } = useAuth();
 
-  // oxlint-disable-next-line unicorn/consistent-function-scoping
   const handleOAuth = (provider: "google" | "github") => {
-    // Placeholder — integrate with your auth provider
-    console.log(`[v0] OAuth with ${provider}`);
     signIn.social({
       provider,
     });
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && closeAuth()}>
       <DialogContent className="rounded-none border-border/50 p-0 max-w-md overflow-hidden bg-background gap-0">
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-5 pb-0">
@@ -51,7 +41,8 @@ export function AuthModal({
             </DialogTitle>
           </div>
           <button
-            onClick={() => onOpenChange(false)}
+            type="button"
+            onClick={closeAuth}
             className="p-1 text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Close"
           >
@@ -63,10 +54,11 @@ export function AuthModal({
         <div className="flex border-b border-border/40 mt-4 px-6">
           {(["login", "signup"] as const).map((t) => (
             <button
+              type="button"
               key={t}
               onClick={() => setTab(t)}
               className={`font-pixel text-[10px] tracking-wider pb-2.5 px-1 mr-5 border-b-2 transition-all ${
-                tab === t
+                t === tab
                   ? "border-brand-green text-brand-green"
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
@@ -141,7 +133,7 @@ export function AuthModal({
                 <button
                   type="button"
                   onClick={() => setTab("signup")}
-                  className="text-brand-green hover:underline"
+                  className="text-brand-green hover:underline cursor-pointer bg-transparent border-0 p-0 font-mono text-[10px]"
                 >
                   SIGN UP FREE
                 </button>
@@ -152,7 +144,7 @@ export function AuthModal({
                 <button
                   type="button"
                   onClick={() => setTab("login")}
-                  className="text-brand-green hover:underline"
+                  className="text-brand-green hover:underline cursor-pointer bg-transparent border-0 p-0 font-mono text-[10px]"
                 >
                   LOG IN
                 </button>

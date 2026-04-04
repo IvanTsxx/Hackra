@@ -7,8 +7,8 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-import { AuthModal } from "@/components/auth-modal";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/shared/lib/auth-context";
 
 import type { User } from "../lib/auth";
 import { signOut, useSession } from "../lib/auth-client";
@@ -32,20 +32,17 @@ export function Navbar() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { openAuth } = useAuth();
 
   useEffect(() => {
     setMounted(true);
   }, []);
-  const [authOpen, setAuthOpen] = useState(false);
-  const [authTab, setAuthTab] = useState<"login" | "signup">("login");
 
   const openLogin = () => {
-    setAuthTab("login");
-    setAuthOpen(true);
+    openAuth("login");
   };
   const openSignup = () => {
-    setAuthTab("signup");
-    setAuthOpen(true);
+    openAuth("signup");
   };
 
   return (
@@ -80,6 +77,7 @@ export function Navbar() {
             {!user ? (
               <>
                 <button
+                  type="button"
                   onClick={openLogin}
                   className="font-pixel text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors px-3 py-1"
                 >
@@ -103,6 +101,7 @@ export function Navbar() {
           {/* Mobile menu toggle */}
           <div className="flex md:hidden items-center gap-2">
             <button
+              type="button"
               onClick={() =>
                 setTheme(resolvedTheme === "dark" ? "light" : "dark")
               }
@@ -117,6 +116,7 @@ export function Navbar() {
                 ))}
             </button>
             <button
+              type="button"
               onClick={() => setMenuOpen(!menuOpen)}
               className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Toggle menu"
@@ -148,6 +148,7 @@ export function Navbar() {
               ))}
               <div className="flex items-center gap-3 pt-2 border-t border-border/30">
                 <button
+                  type="button"
                   onClick={() => {
                     setMenuOpen(false);
                     openLogin();
@@ -172,12 +173,6 @@ export function Navbar() {
           )}
         </AnimatePresence>
       </header>
-
-      <AuthModal
-        open={authOpen}
-        onOpenChange={setAuthOpen}
-        defaultTab={authTab}
-      />
     </>
   );
 }

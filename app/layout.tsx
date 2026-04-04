@@ -12,7 +12,9 @@ import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import { AuthModal } from "@/shared/components/auth/auth-modal";
 import { Toaster } from "@/shared/components/ui/sonner";
+import { AuthProvider } from "@/shared/lib/auth-context";
 
 export default function RootLayout({
   children,
@@ -36,15 +38,18 @@ export default function RootLayout({
       <body className="relative">
         <ThemeProvider>
           <NuqsAdapter>
-            <Navbar />
-            {/* Pixel Grid Background */}
-            <div className="absolute inset-0 pixel-grid opacity-40 -z-10" />
+            <AuthProvider>
+              <Navbar />
+              {/* Pixel Grid Background */}
+              <div className="absolute inset-0 pixel-grid opacity-40 -z-10" />
 
-            {/* Scanline overlay */}
-            <div className="absolute inset-0 scanlines pointer-events-none -z-10" />
-            {children}
-            <Footer />
-            <Toaster position="top-right" richColors />
+              {/* Scanline overlay */}
+              <div className="absolute inset-0 scanlines pointer-events-none -z-10" />
+              {children}
+              <Footer />
+              <Toaster position="top-right" richColors />
+              <AuthModal />
+            </AuthProvider>
           </NuqsAdapter>
         </ThemeProvider>
       </body>
