@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { CodeText } from "@/shared/components/code-text";
 
 import { AnimatedSection } from "./_components/animated-section";
 
@@ -49,9 +50,7 @@ export default function SettingsNotificationsPage() {
         <div className="md:col-span-3">
           <AnimatedSection>
             <div className="space-y-1 mb-7">
-              <p className="font-mono text-xs text-brand-green tracking-widest">
-                {/* settings */}
-              </p>
+              <CodeText as="p">settings</CodeText>
               <h1 className="font-pixel text-2xl text-foreground">
                 NOTIFICATIONS
               </h1>

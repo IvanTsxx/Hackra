@@ -3,6 +3,7 @@ import { ChevronRight, Trash2, Mail, Shield } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { CodeText } from "@/shared/components/code-text";
 
 import { AnimatedSection } from "./_components/animated-section";
 
@@ -48,9 +49,7 @@ export default function SettingsAccountPage() {
         <div className="md:col-span-3">
           <AnimatedSection>
             <div className="space-y-1 mb-7">
-              <p className="font-mono text-xs text-brand-green tracking-widest">
-                {/* settings */}
-              </p>
+              <CodeText as="p">settings</CodeText>
               <h1 className="font-pixel text-2xl text-foreground">ACCOUNT</h1>
             </div>
           </AnimatedSection>
