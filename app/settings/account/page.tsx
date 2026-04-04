@@ -1,9 +1,10 @@
 import "server-only";
 import { ChevronRight, Trash2, Mail, Shield } from "lucide-react";
-import { motion } from "motion/react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+
+import { AnimatedSection } from "./_components/animated-section";
 
 const NAV_ITEMS: { active: boolean; href: string; label: string }[] = [
   { active: false, href: "/settings/profile", label: "PROFILE" },
@@ -45,16 +46,14 @@ export default function SettingsAccountPage() {
 
         {/* Content */}
         <div className="md:col-span-3">
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-1 mb-7"
-          >
-            <p className="font-mono text-xs text-brand-green tracking-widest">
-              {/* settings */}
-            </p>
-            <h1 className="font-pixel text-2xl text-foreground">ACCOUNT</h1>
-          </motion.div>
+          <AnimatedSection>
+            <div className="space-y-1 mb-7">
+              <p className="font-mono text-xs text-brand-green tracking-widest">
+                {/* settings */}
+              </p>
+              <h1 className="font-pixel text-2xl text-foreground">ACCOUNT</h1>
+            </div>
+          </AnimatedSection>
 
           <div className="space-y-8">
             {/* Email section */}

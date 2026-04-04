@@ -328,7 +328,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
         <span
           className={`font-mono text-xs transition-all duration-300 ${saved ? "text-brand-green opacity-100" : "opacity-0"}`}
         >
-          {/* SAVED. */}
+          {"// SAVED."}
         </span>
         <Button
           type="submit"
