@@ -195,15 +195,15 @@ function UserMenu({ user }: { user: User }) {
           <AvatarFallback>{user.name?.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem>
-          <Link href={`/user/${user.username}`}>Public Profile</Link>
+      <DropdownMenuContent className="glass group p-0 border-border/50 bg-transparent backdrop-blur-md">
+        <DropdownMenuItem className="glass">
+          <Link href={`/user/${user.username}`}>My Profile</Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem>
+        <DropdownMenuItem className="glass">
           <Link href="/settings/profile">Settings</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem variant="destructive">
           <LogoutButton />
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -214,6 +214,7 @@ function UserMenu({ user }: { user: User }) {
 function LogoutButton() {
   return (
     <Button
+      variant="destructive"
       onClick={() => {
         signOut();
       }}
