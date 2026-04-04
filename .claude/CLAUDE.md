@@ -258,6 +258,43 @@ export async function getProfileDTO(slug: string) {
 - `route.ts` and `page.tsx` **cannot coexist** in the same folder
 - Use Server Actions for UI mutations, Route Handlers for external APIs/webhooks
 
+## Animations (motion / framer-motion)
+
+**`motion` components (`motion.div`, `motion.span`, etc.) are CLIENT-ONLY.** They use browser APIs and hooks that crash in Server Components.
+
+### Rule: ALWAYS wrap motion in `"use client"` components
+
+1. **Never import `motion` in a Server Component** — no `motion/*` imports in files without `"use client"`
+2. **Extract animated sections into dedicated client components** — create a reusable component (e.g., `animated-header.tsx`) with `"use client"`, import motion there, then use that component in your server page
+3. **Prefer reusable animated wrappers** — if you animate a pattern (fade-in, slide-up), make it reusable (e.g., `<FadeIn>`, `<SlideUp>`) instead of sprinkling `motion.div` everywhere
+4. **Import path**: use `motion/react` (not `framer-motion` directly) — the project depends on `motion` package
+
+```tsx
+// ❌ WRONG: motion in a server component (page.tsx)
+import { motion } from "motion/react";
+export default function SettingsPage() {
+  return <motion.div initial={{ opacity: 0 }}>...</motion.div>;
+}
+
+// ✅ CORRECT: extract to a client component
+// components/animated-section.tsx
+("use client");
+import { motion } from "motion/react";
+export function AnimatedSection({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+      {children}
+    </motion.div>
+  );
+}
+
+// page.tsx (server component)
+import { AnimatedSection } from "./_components/animated-section";
+export default function SettingsPage() {
+  return <AnimatedSection>...</AnimatedSection>;
+}
+```
+
 ## Conventions
 
 **Database**: Prisma singleton with `globalForPrisma`. Uses `@prisma/adapter-pg` with `@neondatabase/serverless` for PostgreSQL. All models use `@@map()` for snake_case table names.
