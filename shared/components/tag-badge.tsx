@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "motion/react";
+
 import type { HackathonStatus } from "@/app/generated/prisma/enums";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +25,7 @@ interface TagBadgeProps {
   variant?: TagBadgeVariant;
   size?: "sm" | "md";
   className?: string;
+  index: number;
 }
 
 export function TagBadge({
@@ -28,22 +33,32 @@ export function TagBadge({
   variant = "default",
   size = "sm",
   className,
+  index,
 }: TagBadgeProps) {
   return (
-    <span
+    <motion.span
       className={cn(
         "inline-flex items-center border font-mono rounded-none",
         size === "sm" ? "px-1.5 py-0.5 text-[10px]" : "px-2 py-1 text-xs",
         variantStyles[variant],
         className
       )}
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.2, duration: 0.1 }}
     >
       {label}
-    </span>
+    </motion.span>
   );
 }
 
-export function StatusPill({ status }: { status: HackathonStatus }) {
+export function StatusPill({
+  status,
+  index,
+}: {
+  status: HackathonStatus;
+  index: number;
+}) {
   const config: Record<
     HackathonStatus,
     { label: string; variant: TagBadgeVariant }
@@ -62,6 +77,7 @@ export function StatusPill({ status }: { status: HackathonStatus }) {
       label={variant === "status-live" ? `● ${label}` : label}
       variant={variant}
       size="sm"
+      index={index}
     />
   );
 }

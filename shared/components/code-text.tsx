@@ -29,9 +29,7 @@ export function CodeText({
   className,
 }: CodeTextProps) {
   return (
-    <Component
-      className={cn("text-muted-foreground lowercase text-xs", className)}
-    >
+    <Component className={cn("text-brand-green lowercase text-xs", className)}>
       {"// "} {children}
     </Component>
   );

@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+
 import { USERS } from "../shared/lib/mock-data";
 import { prisma } from "./seed-client";
 
@@ -11,7 +13,7 @@ export async function seedUsers() {
       emailVerified: true,
       githubUsername: user.githubUsername,
       id: user.id,
-      image: user.avatar,
+      image: faker.image.avatar(),
       karmaPoints: user.karma,
       location: user.location,
       name: user.name,

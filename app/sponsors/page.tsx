@@ -1,23 +1,26 @@
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
-import { SPONSORS } from "@/lib/mock-data";
+import { Tier } from "@/app/generated/prisma/enums";
+import { getSponsors } from "@/data/sponsors";
 import { CodeText } from "@/shared/components/code-text";
 
-const TIER_ORDER = ["platinum", "gold", "silver", "bronze"] as const;
+const TIER_ORDER: Tier[] = [Tier.PLATINUM, Tier.GOLD, Tier.SILVER, Tier.BRONZE];
 
 export const metadata = {
   description: "Meet the companies powering hackathons on Hackra.",
   title: "Sponsors — Hackra",
 };
 
-export default function SponsorsPage() {
+export default async function SponsorsPage() {
+  const sponsors = await getSponsors();
+
   const grouped = TIER_ORDER.reduce(
     (acc, tier) => {
-      acc[tier] = SPONSORS.filter((s) => s.tier === tier);
+      acc[tier] = sponsors.filter((s) => s.tier === tier);
       return acc;
     },
-    {} as Record<string, typeof SPONSORS>
+    {} as Record<string, typeof sponsors>
   );
 
   return (
@@ -41,11 +44,11 @@ export default function SponsorsPage() {
               <div className="flex items-center gap-3 mb-5">
                 <span
                   className={`font-pixel text-[10px] tracking-widest px-2 py-0.5 border ${
-                    tier === "platinum"
+                    tier === "PLATINUM"
                       ? "border-foreground/30 text-foreground"
-                      : tier === "gold"
+                      : tier === "GOLD"
                         ? "border-yellow-500/40 text-yellow-500/80"
-                        : tier === "silver"
+                        : tier === "SILVER"
                           ? "border-zinc-400/40 text-zinc-400/80"
                           : "border-orange-700/40 text-orange-700/80"
                   }`}
@@ -55,7 +58,7 @@ export default function SponsorsPage() {
                 <div className="flex-1 border-t border-border/20" />
               </div>
               <div
-                className={`grid gap-4 ${tier === "platinum" ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"}`}
+                className={`grid gap-4 ${tier === "PLATINUM" ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"}`}
               >
                 {list.map((sponsor) => (
                   <a
@@ -76,7 +79,7 @@ export default function SponsorsPage() {
                         className="text-muted-foreground/40 group-hover:text-muted-foreground transition-colors"
                       />
                     </div>
-                    {tier === "platinum" || tier === "gold" ? (
+                    {tier === "PLATINUM" || tier === "GOLD" ? (
                       <p className="font-mono text-xs text-muted-foreground leading-relaxed">
                         {sponsor.description}
                       </p>

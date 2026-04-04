@@ -9,6 +9,8 @@ export async function seedSponsors() {
       description: sponsor.description,
       logo: sponsor.logo,
       name: sponsor.name,
+      tier: sponsor.tier,
+      url: sponsor.url,
     })),
   });
 

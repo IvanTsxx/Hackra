@@ -262,12 +262,21 @@ model TeamApplicationAnswer {
 model Sponsor {
   id          String  @id @default(cuid())
   name        String
+  url         String
   logo        String?
   description String?
+  tier        Tier
 
   createdAt DateTime @default(now())
 
   hackathons HackathonSponsor[]
+}
+
+enum Tier {
+  PLATINUM
+  GOLD
+  SILVER
+  BRONZE
 }
 
 model HackathonSponsor {

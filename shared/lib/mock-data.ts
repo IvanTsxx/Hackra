@@ -1,3 +1,5 @@
+import { Tier } from "@/app/generated/prisma/enums";
+
 export type Tech =
   | "Next.js"
   | "React"
@@ -30,7 +32,7 @@ export interface Sponsor {
   name: string;
   logo: string;
   description: string;
-  tier: "platinum" | "gold" | "silver" | "bronze";
+  tier: Tier;
   url: string;
 }
 
@@ -119,7 +121,7 @@ export const SPONSORS: Sponsor[] = [
     id: "vercel",
     logo: "/placeholder.svg?height=40&width=120",
     name: "Vercel",
-    tier: "platinum",
+    tier: Tier.PLATINUM,
     url: "https://vercel.com",
   },
   {
@@ -128,7 +130,7 @@ export const SPONSORS: Sponsor[] = [
     id: "supabase",
     logo: "/placeholder.svg?height=40&width=120",
     name: "Supabase",
-    tier: "platinum",
+    tier: Tier.PLATINUM,
     url: "https://supabase.com",
   },
   {
@@ -137,7 +139,7 @@ export const SPONSORS: Sponsor[] = [
     id: "cloudflare",
     logo: "/placeholder.svg?height=40&width=120",
     name: "Cloudflare",
-    tier: "gold",
+    tier: Tier.GOLD,
     url: "https://cloudflare.com",
   },
   {
@@ -145,7 +147,7 @@ export const SPONSORS: Sponsor[] = [
     id: "planetscale",
     logo: "/placeholder.svg?height=40&width=120",
     name: "PlanetScale",
-    tier: "gold",
+    tier: Tier.GOLD,
     url: "https://planetscale.com",
   },
   {
@@ -154,7 +156,7 @@ export const SPONSORS: Sponsor[] = [
     id: "liveblocks",
     logo: "/placeholder.svg?height=40&width=120",
     name: "Liveblocks",
-    tier: "silver",
+    tier: Tier.SILVER,
     url: "https://liveblocks.io",
   },
   {
@@ -163,7 +165,7 @@ export const SPONSORS: Sponsor[] = [
     id: "convex",
     logo: "/placeholder.svg?height=40&width=120",
     name: "Convex",
-    tier: "silver",
+    tier: Tier.SILVER,
     url: "https://convex.dev",
   },
   {
@@ -171,7 +173,7 @@ export const SPONSORS: Sponsor[] = [
     id: "neon",
     logo: "/placeholder.svg?height=40&width=120",
     name: "Neon",
-    tier: "bronze",
+    tier: Tier.BRONZE,
     url: "https://neon.tech",
   },
   {
@@ -179,7 +181,7 @@ export const SPONSORS: Sponsor[] = [
     id: "upstash",
     logo: "/placeholder.svg?height=40&width=120",
     name: "Upstash",
-    tier: "bronze",
+    tier: Tier.BRONZE,
     url: "https://upstash.com",
   },
 ];

@@ -16,6 +16,7 @@ interface HackathonCardProps {
       participants: true;
     };
   }>;
+  i: number;
   variant?: "default" | "compact";
 }
 
@@ -34,6 +35,7 @@ function getAccentFromBg(bg: string): string {
 export function HackathonCard({
   hackathon,
   variant = "default",
+  i,
 }: HackathonCardProps) {
   const accent = getAccentFromBg(hackathon.themeBg || "#0a0a0a");
   /* const accentHex = hackathon.theme.bg; */
@@ -51,7 +53,12 @@ export function HackathonCard({
 
   if (variant === "compact") {
     return (
-      <motion.div whileHover={{ x: 2 }} transition={{ duration: 0.15 }}>
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: i * 0.2, duration: 0.1 }}
+        whileHover={{ x: 2 }}
+      >
         <Link href={`/hackathon/${hackathon.slug}`} className="block group">
           <article
             className="flex items-center gap-4 border border-border/40 p-3 hover:border-border/70 transition-all duration-200 bg-card/30 overflow-hidden relative"

@@ -11,3 +11,5 @@ export const getSponsorsForHackathon = async (hackathonId: string) =>
       },
     },
   });
+
+export const getSponsors = async () => await prisma.sponsor.findMany();
