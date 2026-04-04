@@ -2,6 +2,42 @@
 
 Hackra is a hackathon platform built with Next.js 16, React 19, TypeScript, Prisma 7 (PostgreSQL), Better Auth, Tailwind CSS 4, and shadcn/ui. Package manager: **Bun**.
 
+## Available Skills
+
+These skills are installed in `.agents/skills/` and should be loaded before writing code in their respective domains.
+
+### Core Skills (auto-load when relevant)
+
+| Skill                   | When to Load                                                                               | What It Provides                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `architect-nextjs`      | Setting up new features, deciding component placement, refactoring, architecture decisions | Scope Rule (local vs shared), Screaming Architecture, route groups, Server Actions placement        |
+| `ultracite`             | Writing any TS/TSX code, linting, formatting                                               | Code standards, CLI commands (`bunx ultracite check/fix/doctor`), Oxlint + Oxfmt rules              |
+| `next-cache-components` | Using Next.js 16 caching (PPR, `use cache`, `cacheLife`, `cacheTag`)                       | Partial Prerendering, cache directives, cache invalidation patterns                                 |
+| `next-best-practices`   | Writing Next.js pages, layouts, API routes, metadata                                       | RSC boundaries, async patterns, data fetching, error handling, Suspense, route handlers             |
+| `shadcn`                | Adding, fixing, or composing UI components                                                 | Component docs via `npx shadcn@latest docs`, composition rules, forms, styling, icons, CLI workflow |
+| `web-design-guidelines` | Reviewing UI code for accessibility/design compliance                                      | Checks against Vercel Web Interface Guidelines, fetches latest rules from source                    |
+| `find-skills`           | User asks "how do I do X", "is there a skill for X", or wants to extend capabilities       | Search and install skills from the ecosystem via `npx skills find [query]`                          |
+
+### Domain-Specific Skills
+
+| Skill                                 | When to Load                                                                 | What It Provides                                                              |
+| ------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `better-auth-best-practices`          | Configuring Better Auth server/client, OAuth, sessions, plugins              | Auth setup patterns, database adapters, environment variables                 |
+| `better-auth-security-best-practices` | Securing auth setup, rate limiting, CSRF, session hardening                  | Security patterns, token encryption, audit logging                            |
+| `prisma-cli`                          | Running Prisma CLI commands, migrations, schema setup                        | All CLI commands (`prisma init/generate/migrate/db/studio`), MCP server setup |
+| `prisma-client-api`                   | Writing database queries, CRUD operations, filtering                         | Model queries, operators, transactions, client methods                        |
+| `prisma-database-setup`               | Setting up or changing database connections                                  | PostgreSQL, MySQL, SQLite, MongoDB configuration guides                       |
+| `vercel-composition-patterns`         | Refactoring components with prop proliferation, building component libraries | Compound components, render props, context providers, React 19 API changes    |
+| `emil-design-eng`                     | UI polish, component design, animation decisions                             | Emil Kowalski's design philosophy, micro-interactions, visual refinement      |
+
+### Skill Loading Rules
+
+1. **Detect context first** — match the task to a skill before writing code
+2. **Load the skill** — use the `skill` tool to load full instructions
+3. **Apply ALL patterns** from the loaded skill — they are your coding standards
+4. **Multiple skills can apply** — load all relevant ones (e.g., `shadcn` + `next-best-practices` for a new page)
+5. **For unknown domains** — use `find-skills` to search the ecosystem
+
 ## Commands
 
 | Command               | Description                                |
@@ -231,6 +267,125 @@ export async function getProfileDTO(slug: string) {
 **Styling**: Tailwind CSS v4 with `@import "tailwindcss"`. CSS variables with oklch. Brand colors: `--brand-green`, `--brand-purple`. Custom utilities: `.glass`, `.glow-green`, `.pixel-grid`, `.scanlines`, `.pixel-border`. Use `cn()` for conditional classes. `--radius: 0` (sharp corners by default).
 
 **State**: `nuqs` for URL search params (wrapped in `<NuqsAdapter>` in layout). No global state manager.
+
+## Forms (TanStack Form + Zod)
+
+**Always use TanStack Form (`@tanstack/react-form`) with Zod for all forms.** No react-hook-form, no manual state.
+
+### Standard Pattern
+
+```tsx
+"use client";
+
+import { useForm } from "@tanstack/react-form";
+import * as z from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+
+const formSchema = z.object({
+  title: z.string().min(5, "Title must be at least 5 characters."),
+});
+
+export function MyForm() {
+  const form = useForm({
+    defaultValues: { title: "" },
+    validators: { onSubmit: formSchema },
+    onSubmit: async ({ value }) => {
+      // handle submit
+    },
+  });
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+      }}
+    >
+      <FieldGroup>
+        <form.Field
+          name="title"
+          children={(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  aria-invalid={isInvalid}
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        />
+      </FieldGroup>
+      <Button type="submit">Submit</Button>
+    </form>
+  );
+}
+```
+
+### Key Rules
+
+1. **Zod schema first** — define `formSchema` with `z.object()` at module level
+2. **`validators.onSubmit`** — pass schema to `useForm({ validators: { onSubmit: formSchema } })`
+3. **Render prop pattern** — use `children={(field) => ...}` on `form.Field`, NOT the function-as-child JSX pattern
+4. **Invalid state** — `const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid`
+5. **Always wire**: `value={field.state.value}`, `onBlur={field.handleBlur}`, `onChange={(e) => field.handleChange(e.target.value)}`
+6. **Accessibility**: `data-invalid={isInvalid}` on `<Field>`, `aria-invalid={isInvalid}` on the control
+7. **Errors**: `{isInvalid && <FieldError errors={field.state.meta.errors} />}`
+8. **Reset**: `<Button type="button" onClick={() => form.reset()}>Reset</Button>`
+
+### Field Type Wiring
+
+| Control                 | Value binding                 | Change handler                                                        |
+| ----------------------- | ----------------------------- | --------------------------------------------------------------------- |
+| `<Input>`, `<Textarea>` | `value={field.state.value}`   | `onChange={(e) => field.handleChange(e.target.value)}`                |
+| `<Select>`              | `value={field.state.value}`   | `onValueChange={field.handleChange}`                                  |
+| `<Checkbox>`            | `checked={field.state.value}` | `onCheckedChange={(checked) => field.handleChange(checked === true)}` |
+| `<Switch>`              | `checked={field.state.value}` | `onCheckedChange={field.handleChange}`                                |
+| `<RadioGroup>`          | `value={field.state.value}`   | `onValueChange={field.handleChange}`                                  |
+
+### Array Fields
+
+Use `mode="array"` on the parent field. Access items via bracket notation:
+
+```tsx
+<form.Field name="emails" mode="array">
+  {(field) => (
+    <FieldGroup>
+      {field.state.value.map((_, index) => (
+        <form.Field key={index} name={`emails[${index}].address`}>
+          {(subField) => {
+            /* same pattern as scalar fields */
+          }}
+        </form.Field>
+      ))}
+      <Button type="button" onClick={() => field.pushValue({ address: "" })}>
+        Add
+      </Button>
+    </FieldGroup>
+  )}
+</form.Field>
+```
+
+- Add: `field.pushValue(item)`
+- Remove: `field.removeValue(index)`
+- Zod: `z.array(z.object({...})).min(1, "At least one required")`
 
 ## Key Files
 

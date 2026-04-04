@@ -52,7 +52,7 @@ These skills are installed in `.claude/skills/` and should be loaded before writ
 | `bun run db:generate` | Generate Prisma client                     |
 | `bun run db:migrate`  | Run Prisma migrations                      |
 | `bun run db:studio`   | Open Prisma Studio                         |
-| `bun run db:seed`     | Seed database (`shared/lib/db/seed.ts`)    |
+| `bun run db:seed`     | Seed database                              |
 | `bun run db:reset`    | Reset DB + regenerate + seed               |
 
 **Tests**: No test framework installed. When adding tests, prefer Vitest. Use `it()`/`test()` with async/await (no `done` callbacks). Don't commit `.only` or `.skip`.
@@ -107,7 +107,6 @@ These skills are installed in `.claude/skills/` and should be loaded before writ
 1. External packages (`next`, `react`, `@prisma/client`)
 2. Internal `@/` aliased imports
 3. Relative imports (`./`, `../`)
-   Auto-sorted by Oxfmt with `experimentalSortImports`.
 
 ### Error Handling
 
@@ -155,92 +154,247 @@ emails/                 — React Email templates
 - `@/hooks/*` → `./shared/hooks/*`
 - `@/utils/*` → `./shared/utils/*`
 
-## Conventions
+## Data Security (Next.js Best Practices)
 
-**Database**: Prisma singleton with `globalForPrisma` for dev hot-reload. Client generated to `app/generated/prisma/`. Uses `@prisma/adapter-pg` with `@neondatabase/serverless` for PostgreSQL. `relationMode: "prisma"`. All models use `@@map()` for snake_case table names.
+### Data Access Layer (DAL) Pattern
 
-**Auth**: Better Auth with OAuth only (GitHub + Google). Email/password disabled. Session: 7 days, cookie cache: 5 min. Uses `toNextJsHandler()` for Next.js route. Additional user fields: `username` (required), `bio`, `githubUsername`, `location`, `position`, `techStack`, `karmaPoints`.
+For new features, create a dedicated **Data Access Layer** — internal `server-only` modules that control data access:
 
-**Styling**: Tailwind CSS v4 with `@import "tailwindcss"`. CSS variables with oklch. Brand colors: `--brand-green` (oklch 0.72 0.19 145), `--brand-purple` (oklch 0.62/0.72 0.19 285). Custom utilities: `.glass`, `.glow-green`, `.pixel-grid`, `.scanlines`, `.pixel-border`, `.glow-primary`, `.terminal-cursor`. Use `cn()` (clsx + tailwind-merge) for conditional classes. `--radius: 0` (sharp corners by default).
+- Mark DAL files with `import 'server-only'` at the top
+- Perform authorization checks inside the DAL, not in components
+- Return minimal **Data Transfer Objects (DTOs)**, not raw database records
+- Only the DAL should access `process.env` and database packages
+- Use `cache()` from React for shared helpers (e.g., `getCurrentUser`)
 
-**Fonts**: Geist Pixel family (Square, Circle, Grid, Line, Triangle) via `geist/font/pixel`. Applied as CSS variables on `<html>`. Body uses `font-pixel-grid`.
+```ts
+// data/user-dto.ts
+import "server-only";
+import { cache } from "react";
+import { cookies } from "next/headers";
 
-**Animations**: Motion (Framer Motion) for micro-interactions (`whileHover`, `AnimatePresence`). CSS keyframes for marquee, text-flip, cursor-blink, scanlines.
+export const getCurrentUser = cache(async () => {
+  const token = cookies().get("session");
+  // ... validate and return minimal user info
+});
 
-**State**: `nuqs` for URL search params (wrapped in `<NuqsAdapter>` in layout). No global state manager.
+export async function getProfileDTO(slug: string) {
+  const currentUser = await getCurrentUser();
+  const userData = await db.user.findUnique({ where: { slug } });
+  return { username: userData?.username, bio: userData?.bio };
+}
+```
 
-**Next.js config**: React Compiler enabled, typed routes, `images.unoptimized: true`.
+### Server Actions Security
 
-**Emails**: React Email templates in `emails/` directory. Uses `@react-email/components`.
+- **Always re-verify auth inside actions** — page-level checks do NOT extend to Server Actions
+- **Check authorization (resource ownership)**, not just authentication — prevent IDOR vulnerabilities
+- **Validate all client input** — `searchParams`, `formData`, headers are untrusted
+- **Return minimal data** — only what the UI needs, never full database records
+- **No mutations during rendering** — use Server Actions for all side effects
+- **Use DAL for mutations** — keep `"use server"` files thin, delegate auth + DB logic to `server-only` modules
+
+### Server vs Client Security Model
+
+| Server Components                | Client Components                                        |
+| -------------------------------- | -------------------------------------------------------- |
+| Run only on server               | Run on server (prerender) AND browser                    |
+| Can access secrets, DB, env vars | Must NOT access privileged data or `server-only` modules |
+| Safe by default                  | Follow browser security assumptions                      |
+
+- Use `import 'server-only'` to prevent server code from leaking to client bundles
+- Props passed to client components must be serializable and safe for public exposure
+- Avoid passing sensitive data through component trees — read from DAL directly
+
+### Audit Checklist
+
+- **DAL**: Are DB packages and `process.env` only imported in `server-only` modules?
+- **`"use client"` files**: Are props expecting private data? Are type signatures overly broad?
+- **`"use server"` files**: Are args validated? Is user re-authorized? Does action check resource ownership?
+- **`/[param]/` folders**: Are params validated as user input?
+- **`route.ts`**: Audit carefully — has elevated power
 
 ## Next.js Best Practices
 
 ### RSC Boundaries
 
-- **Server Components by default** — only add `"use client"` when needed (hooks, events, browser APIs)
+- **Server Components by default** — only add `"use client"` when needed
 - **Never make client components async** — fetch data in parent server component, pass as props
-- **Props to client components must be serializable** — no `Date`, `Map`, `Set`, class instances, or functions (except Server Actions)
+- **Props to client components must be serializable** — no `Date`, `Map`, `Set`, class instances, or functions
 - Convert `Date` to `.toISOString()` before passing to client components
 
 ### Async Patterns (Next.js 15+)
 
-- `params` and `searchParams` are **Promises** — always `await` them: `const { slug } = await params`
-- `cookies()` and `headers()` are **async** — `const store = await cookies()`
+- `params` and `searchParams` are **Promises** — always `await` them
+- `cookies()` and `headers()` are **async**
 - Type page props as: `type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ q?: string }> }`
-- Use `React.use()` for non-async components that need to consume promises
 
 ### Data Fetching
 
 - **Reads**: Fetch directly in Server Components (no API layer needed)
 - **Mutations**: Use Server Actions (`"use server"`) with `revalidatePath`/`revalidateTag`
 - **External APIs/Webhooks**: Use Route Handlers (`route.ts`)
-- Avoid data waterfalls — use `Promise.all()` for parallel fetches or `Suspense` for streaming
 - Use `cache()` from React to deduplicate fetches between `generateMetadata` and page
 
 ### Error Handling
 
 - Use `error.tsx` (must be `"use client"`) for route-level errors
 - Use `global-error.tsx` (must include `<html>` and `<body>`) for root layout errors
-- Use `notFound()` for 404s, `redirect()` for navigation, `forbidden()`/`unauthorized()` for auth
+- Use `notFound()` for 404s, `redirect()` for navigation
 - **Don't wrap navigation APIs in try-catch** — they throw special errors Next.js handles internally
-- Use `unstable_rethrow(error)` in catch blocks to re-throw Next.js navigation errors
 
 ### Metadata & SEO
 
 - Use `metadata` export for static metadata, `generateMetadata` for dynamic
 - Both only work in **Server Components** — move client logic to child components
 - Use `cache()` to avoid duplicate fetches between metadata and page content
-- Set title templates in root layout: `title: { default: "Hackra", template: "%s | Hackra" }`
-
-### Images
-
-- Always use `next/image` — `<img>` is disabled by lint rule
-- Use `priority` for above-the-fold (LCP) images
-- Always add `sizes` attribute with `fill` for proper responsive behavior
-- Configure `remotePatterns` in `next.config.ts` for external image domains
 
 ### Suspense Boundaries
 
-- `useSearchParams()` always requires wrapping in `<Suspense>` to avoid full CSR bailout
+- `useSearchParams()` always requires wrapping in `<Suspense>`
 - `usePathname()` requires Suspense in dynamic routes
-- `useParams()` and `useRouter()` do not require Suspense
 
 ### Route Handlers
 
 - `route.ts` and `page.tsx` **cannot coexist** in the same folder
 - Use Server Actions for UI mutations, Route Handlers for external APIs/webhooks
-- Use `Response.json()` for responses, not `new Response(JSON.stringify(...))`
+
+## Conventions
+
+**Database**: Prisma singleton with `globalForPrisma`. Uses `@prisma/adapter-pg` with `@neondatabase/serverless` for PostgreSQL. All models use `@@map()` for snake_case table names.
+
+**Auth**: Better Auth with OAuth only (GitHub + Google). Session: 7 days. Additional user fields: `username` (required), `bio`, `githubUsername`, `location`, `position`, `techStack`, `karmaPoints`.
+
+**Styling**: Tailwind CSS v4 with `@import "tailwindcss"`. CSS variables with oklch. Brand colors: `--brand-green`, `--brand-purple`. Custom utilities: `.glass`, `.glow-green`, `.pixel-grid`, `.scanlines`, `.pixel-border`. Use `cn()` for conditional classes. `--radius: 0` (sharp corners by default).
+
+**State**: `nuqs` for URL search params (wrapped in `<NuqsAdapter>` in layout). No global state manager.
+
+## Forms (TanStack Form + Zod)
+
+**Always use TanStack Form (`@tanstack/react-form`) with Zod for all forms.** No react-hook-form, no manual state.
+
+### Standard Pattern
+
+```tsx
+"use client";
+
+import { useForm } from "@tanstack/react-form";
+import * as z from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+
+const formSchema = z.object({
+  title: z.string().min(5, "Title must be at least 5 characters."),
+});
+
+export function MyForm() {
+  const form = useForm({
+    defaultValues: { title: "" },
+    validators: { onSubmit: formSchema },
+    onSubmit: async ({ value }) => {
+      // handle submit
+    },
+  });
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+      }}
+    >
+      <FieldGroup>
+        <form.Field
+          name="title"
+          children={(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  aria-invalid={isInvalid}
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        />
+      </FieldGroup>
+      <Button type="submit">Submit</Button>
+    </form>
+  );
+}
+```
+
+### Key Rules
+
+1. **Zod schema first** — define `formSchema` with `z.object()` at module level
+2. **`validators.onSubmit`** — pass schema to `useForm({ validators: { onSubmit: formSchema } })`
+3. **Render prop pattern** — use `children={(field) => ...}` on `form.Field`, NOT the function-as-child JSX pattern
+4. **Invalid state** — `const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid`
+5. **Always wire**: `value={field.state.value}`, `onBlur={field.handleBlur}`, `onChange={(e) => field.handleChange(e.target.value)}`
+6. **Accessibility**: `data-invalid={isInvalid}` on `<Field>`, `aria-invalid={isInvalid}` on the control
+7. **Errors**: `{isInvalid && <FieldError errors={field.state.meta.errors} />}`
+8. **Reset**: `<Button type="button" onClick={() => form.reset()}>Reset</Button>`
+
+### Field Type Wiring
+
+| Control                 | Value binding                 | Change handler                                                        |
+| ----------------------- | ----------------------------- | --------------------------------------------------------------------- |
+| `<Input>`, `<Textarea>` | `value={field.state.value}`   | `onChange={(e) => field.handleChange(e.target.value)}`                |
+| `<Select>`              | `value={field.state.value}`   | `onValueChange={field.handleChange}`                                  |
+| `<Checkbox>`            | `checked={field.state.value}` | `onCheckedChange={(checked) => field.handleChange(checked === true)}` |
+| `<Switch>`              | `checked={field.state.value}` | `onCheckedChange={field.handleChange}`                                |
+| `<RadioGroup>`          | `value={field.state.value}`   | `onValueChange={field.handleChange}`                                  |
+
+### Array Fields
+
+Use `mode="array"` on the parent field. Access items via bracket notation:
+
+```tsx
+<form.Field name="emails" mode="array">
+  {(field) => (
+    <FieldGroup>
+      {field.state.value.map((_, index) => (
+        <form.Field key={index} name={`emails[${index}].address`}>
+          {(subField) => {
+            /* same pattern as scalar fields */
+          }}
+        </form.Field>
+      ))}
+      <Button type="button" onClick={() => field.pushValue({ address: "" })}>
+        Add
+      </Button>
+    </FieldGroup>
+  )}
+</form.Field>
+```
+
+- Add: `field.pushValue(item)`
+- Remove: `field.removeValue(index)`
+- Zod: `z.array(z.object({...})).min(1, "At least one required")`
 
 ## Key Files
 
 - `shared/lib/auth.ts` — Better Auth configuration
-- `shared/lib/prisma.ts` — Prisma client singleton (with `globalForPrisma`)
+- `shared/lib/prisma.ts` — Prisma client singleton
 - `shared/lib/utils.ts` — `cn()` utility (clsx + tailwind-merge)
-- `prisma/schema.prisma` — Database schema (10 models + 2 enums)
+- `prisma/schema.prisma` — Database schema
 - `next.config.ts` — Next.js configuration
-- `app/globals.css` — Tailwind v4 theme, CSS variables, custom utilities
-- `app/layout.tsx` — Root layout (ThemeProvider, NuqsAdapter, Navbar, Footer, Toaster)
-- `app/api/auth/[...all]/route.ts` — Better Auth catch-all handler
-- `.oxlintrc.json` / `.oxfmtrc.jsonc` — Lint/format config
+- `app/globals.css` — Tailwind v4 theme, CSS variables
+- `app/layout.tsx` — Root layout (ThemeProvider, NuqsAdapter, Navbar, Footer)
 
 Run `bun run fix` before committing. Focus on business logic, naming, architecture, and edge cases — Ultracite handles the rest.
