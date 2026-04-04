@@ -77,7 +77,8 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-2">
             <AuthModal>
               <Button
-                variant="outline"
+                size="lg"
+                className="gap-2 w-full sm:w-auto uppercase tracking-wider text-xs glow-primary"
                 render={<Link href="/create" />}
                 nativeButton={false}
               >

@@ -28,7 +28,7 @@ export function AuthModal({ children }: AuthModalProps) {
         e.stopPropagation();
         openAuth();
       }}
-      className="inline-flex cursor-pointer"
+      className="inline-flex cursor-pointer bg-none p-0 m-0 border-none"
     >
       {children}
     </span>

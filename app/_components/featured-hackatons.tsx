@@ -24,8 +24,8 @@ export const FeaturedHackatons = async () => {
         </Link>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {featured.map((hackathon) => (
-          <HackathonCard key={hackathon.slug} hackathon={hackathon} />
+        {featured.map((hackathon, i) => (
+          <HackathonCard key={hackathon.slug} hackathon={hackathon} i={i} />
         ))}
       </div>
     </section>

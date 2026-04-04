@@ -241,7 +241,7 @@
 }
 
 /* Pixel border effect */
-.pixel-border {
+@utility pixel-border {
   box-shadow:
     2px 0 0 0 var(--border),
     -2px 0 0 0 var(--border),
@@ -250,7 +250,7 @@
 }
 
 /* Glow effect for primary elements */
-.glow-primary {
+@utility glow-primary {
   box-shadow: 0 0 16px oklch(0.85 0.15 145 / 0.3);
 }
 
