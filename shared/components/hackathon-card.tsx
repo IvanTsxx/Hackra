@@ -3,6 +3,7 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { Calendar, MapPin, Users, Trophy, Wifi, Globe } from "lucide-react";
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 
 import type { HackathonGetPayload } from "@/app/generated/prisma/models";
@@ -130,6 +131,19 @@ export function HackathonCard({
           borderTopWidth: 2,
         }}
       >
+        {/* Image area — always present for consistent card height */}
+        {hackathon.image && !hackathon.image.includes("/placeholder") && (
+          <div className="relative w-full h-40 overflow-hidden">
+            <Image
+              src={hackathon.image}
+              alt={hackathon.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </div>
+        )}
+
         {/* Scanline watermark */}
         <div
           className="absolute inset-0 pointer-events-none select-none overflow-hidden "
