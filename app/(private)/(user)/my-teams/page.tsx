@@ -4,8 +4,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { getUserTeams } from "@/data/applications";
+import { CodeText } from "@/shared/components/code-text";
 import { auth } from "@/shared/lib/auth";
 
+import { AnimatedSection } from "../_components/animated-section";
 import { MemberTeamCard, OwnedTeamCard } from "./_components/team-card";
 
 export default async function MyTeamsPage() {
@@ -22,7 +24,7 @@ export default async function MyTeamsPage() {
   const hasAnyContent = owned.length > 0 || memberOf.length > 0;
 
   return (
-    <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-16">
+    <section>
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
         <Link
@@ -35,10 +37,12 @@ export default async function MyTeamsPage() {
         <span className="text-foreground">MY TEAMS</span>
       </div>
 
-      <h1 className="font-pixel text-2xl md:text-3xl text-foreground mb-8">
-        MY TEAMS
-      </h1>
-
+      <AnimatedSection>
+        <div className="space-y-1 mb-7">
+          <CodeText as="p">navigation</CodeText>
+          <h1 className="font-pixel text-2xl text-foreground">MY TEAMS</h1>
+        </div>
+      </AnimatedSection>
       {/* Empty state when nothing at all */}
       {!hasAnyContent ? (
         <div className="glass border border-border/40 p-12 text-center space-y-4">
@@ -121,6 +125,6 @@ export default async function MyTeamsPage() {
           </section>
         </>
       )}
-    </main>
+    </section>
   );
 }

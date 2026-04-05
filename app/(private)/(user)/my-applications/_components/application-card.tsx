@@ -7,9 +7,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { cancelApplication } from "@/app/(private)/teams/_actions";
 import { TagBadge } from "@/components/tag-badge";
 import type { getUserApplications } from "@/data/applications";
+
+import { cancelApplication } from "../../teams/_actions";
 
 type Application = Awaited<ReturnType<typeof getUserApplications>>[number];
 

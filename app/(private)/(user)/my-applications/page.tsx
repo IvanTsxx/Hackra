@@ -8,9 +8,11 @@ import {
   getUserApplications,
   getUserParticipations,
 } from "@/data/applications";
+import { CodeText } from "@/shared/components/code-text";
 import { auth } from "@/shared/lib/auth";
 import { cn } from "@/shared/lib/utils";
 
+import { AnimatedSection } from "../_components/animated-section";
 import { ApplicationCard } from "./_components/application-card";
 
 const statusConfig: Record<
@@ -51,7 +53,7 @@ export default async function MyApplicationsPage() {
   const hasAnyContent = applications.length > 0 || participations.length > 0;
 
   return (
-    <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-16">
+    <section>
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
         <Link
@@ -64,9 +66,14 @@ export default async function MyApplicationsPage() {
         <span className="text-foreground">MY APPLICATIONS</span>
       </div>
 
-      <h1 className="font-pixel text-2xl md:text-3xl text-foreground mb-8">
-        MY APPLICATIONS
-      </h1>
+      <AnimatedSection>
+        <div className="space-y-1 mb-7">
+          <CodeText as="p">navigation</CodeText>
+          <h1 className="font-pixel text-2xl text-foreground">
+            MY APPLICATIONS
+          </h1>
+        </div>
+      </AnimatedSection>
 
       {/* Empty state when nothing at all */}
       {!hasAnyContent ? (
@@ -193,6 +200,6 @@ export default async function MyApplicationsPage() {
           </section>
         </>
       )}
-    </main>
+    </section>
   );
 }
