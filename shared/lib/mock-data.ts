@@ -81,7 +81,7 @@ export interface Team {
 
 export interface Prize {
   place: string;
-  amount: string;
+  amount: number;
   description: string;
 }
 
@@ -573,12 +573,12 @@ vercel --prod
     participants: ["u1", "u2", "u3", "u4", "u5", "u6"],
     prizes: [
       {
-        amount: "$25,000",
+        amount: 25_000,
         description: "Grand Prize + Vercel Pro for life",
         place: "1st",
       },
-      { amount: "$10,000", description: "Runner-up + Swag pack", place: "2nd" },
-      { amount: "$5,000", description: "3rd place + Swag pack", place: "3rd" },
+      { amount: 10_000, description: "Runner-up + Swag pack", place: "2nd" },
+      { amount: 5000, description: "3rd place + Swag pack", place: "3rd" },
     ],
     requiresApproval: false,
     slug: "vercel-ship-2025",
@@ -627,10 +627,10 @@ ExCeL London, Royal Docks, London E16 1XL`,
     organizerId: "u8",
     participants: ["u7", "u8"],
     prizes: [
-      { amount: "$50,000", description: "Best Overall Project", place: "1st" },
-      { amount: "$20,000", description: "Runner Up", place: "2nd" },
+      { amount: 50_000, description: "Best Overall Project", place: "1st" },
+      { amount: 20_000, description: "Runner Up", place: "2nd" },
       {
-        amount: "$10,000",
+        amount: 10_000,
         description: "Best ZK Application",
         place: "Track Winner",
       },
@@ -679,13 +679,13 @@ AI agents are systems that can:
     organizerId: "u4",
     participants: ["u1", "u3", "u4", "u5", "u6"],
     prizes: [
-      { amount: "$30,000", description: "Best Agent System", place: "1st" },
+      { amount: 30_000, description: "Best Agent System", place: "1st" },
       {
-        amount: "$15,000",
+        amount: 15_000,
         description: "Most Innovative Use Case",
         place: "2nd",
       },
-      { amount: "$5,000", description: "3rd Place", place: "3rd" },
+      { amount: 5000, description: "3rd Place", place: "3rd" },
     ],
     requiresApproval: false,
     slug: "ai-agents-hackathon",
@@ -731,8 +731,8 @@ Build fast, safe, and reliable software with **Rust** and **WebAssembly**.
     organizerId: "u7",
     participants: ["u7"],
     prizes: [
-      { amount: "$10,000", description: "Grand Prize", place: "1st" },
-      { amount: "$5,000", description: "Runner Up", place: "2nd" },
+      { amount: 10_000, description: "Grand Prize", place: "1st" },
+      { amount: 5000, description: "Runner Up", place: "2nd" },
     ],
     requiresApproval: false,
     slug: "rust-belt-hack",
@@ -774,11 +774,11 @@ Open source is the backbone of the internet. This hackathon celebrates and exten
     participants: ["u1", "u3", "u4"],
     prizes: [
       {
-        amount: "$15,000",
+        amount: 15_000,
         description: "Best Open Source Contribution",
         place: "1st",
       },
-      { amount: "$7,500", description: "Runner Up", place: "2nd" },
+      { amount: 7500, description: "Runner Up", place: "2nd" },
     ],
     requiresApproval: true,
     slug: "open-source-summit-hack",
@@ -825,8 +825,8 @@ const tokens = {
     organizerId: "u1",
     participants: ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"],
     prizes: [
-      { amount: "$20,000", description: "Best Design System", place: "1st" },
-      { amount: "$10,000", description: "Runner Up", place: "2nd" },
+      { amount: 20_000, description: "Best Design System", place: "1st" },
+      { amount: 10_000, description: "Runner Up", place: "2nd" },
     ],
     requiresApproval: false,
     slug: "design-systems-hack",
@@ -868,11 +868,11 @@ This hackathon is judged primarily on **real-world impact potential**, not techn
     participants: ["u5", "u6"],
     prizes: [
       {
-        amount: "$40,000",
+        amount: 40_000,
         description: "Most Impactful Project",
         place: "1st",
       },
-      { amount: "$15,000", description: "Runner Up", place: "2nd" },
+      { amount: 15_000, description: "Runner Up", place: "2nd" },
     ],
     requiresApproval: false,
     slug: "climate-hack",
@@ -913,8 +913,8 @@ Your game must incorporate **recursion** as a core mechanic, narrative, or aesth
     organizerId: "u7",
     participants: ["u1", "u7", "u8"],
     prizes: [
-      { amount: "$5,000", description: "Best Game", place: "1st" },
-      { amount: "$2,500", description: "Runner Up", place: "2nd" },
+      { amount: 5000, description: "Best Game", place: "1st" },
+      { amount: 2500, description: "Runner Up", place: "2nd" },
     ],
     requiresApproval: false,
     slug: "gamedev-jam",
@@ -957,8 +957,8 @@ A hackathon focused on builders from Latin America.
     organizerId: "u9",
     participants: ["u9", "u10"],
     prizes: [
-      { amount: "$20,000", description: "Best Startup Idea", place: "1st" },
-      { amount: "$10,000", description: "Runner Up", place: "2nd" },
+      { amount: 20_000, description: "Best Startup Idea", place: "1st" },
+      { amount: 10_000, description: "Runner Up", place: "2nd" },
     ],
     requiresApproval: false,
     slug: "latam-buildathon",
@@ -994,7 +994,7 @@ Build tools for developers.
     maxTeamSize: 4,
     organizerId: "u10",
     participants: ["u7", "u10"],
-    prizes: [{ amount: "$15,000", description: "Best DevTool", place: "1st" }],
+    prizes: [{ amount: 15_000, description: "Best DevTool", place: "1st" }],
     requiresApproval: true,
     slug: "devtools-hack",
     sponsors: ["cloudflare", "neon"],

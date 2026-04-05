@@ -313,7 +313,7 @@ model HackathonPrize {
   hackathonId String
   hackathon   Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
   place       String // "1st", "2nd", "Track Winner"
-  amount      String // "$10,000"
+  amount      Int // "$10,000"
   description String // "Grand Prize"
   sortOrder   Int       @default(0)
 

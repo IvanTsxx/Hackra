@@ -131,6 +131,9 @@ export default function CreateHackathonPage() {
   const [lumaPreviewError, setLumaPreviewError] = useState<string | null>(null);
   const [lumaLoading, setLumaLoading] = useState(false);
   const [lumaImported, setLumaImported] = useState(false);
+  const [importedImageUrl, setImportedImageUrl] = useState<
+    string | undefined
+  >();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const toggleTag = (t: string) =>
@@ -203,6 +206,7 @@ export default function CreateHackathonPage() {
       if (d.location) setLocation(d.location);
       setLocationMode(d.locationMode);
       if (d.maxParticipants) setMaxParticipants(d.maxParticipants);
+      if (d.image) setImportedImageUrl(d.image);
       setLumaImported(true);
       toast.success("Imported from Luma!", {
         description: "All fields have been auto-filled.",
@@ -477,12 +481,25 @@ export default function CreateHackathonPage() {
                 <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
                   COVER IMAGE
                 </label>
-                <div className="border border-dashed border-border/40 p-8 flex flex-col items-center gap-2 cursor-pointer hover:border-border/70 transition-colors">
-                  <Upload size={16} className="text-muted-foreground" />
-                  <span className="font-mono text-xs text-muted-foreground">
-                    DROP IMAGE OR CLICK TO UPLOAD
-                  </span>
-                </div>
+                {importedImageUrl ? (
+                  <div className="relative border border-border/40 overflow-hidden">
+                    <img
+                      src={importedImageUrl}
+                      alt="Cover"
+                      className="w-full h-40 object-cover"
+                    />
+                    <span className="absolute top-2 right-2 font-mono text-[9px] bg-brand-green/80 text-background px-2 py-0.5">
+                      FROM LUMA
+                    </span>
+                  </div>
+                ) : (
+                  <div className="border border-dashed border-border/40 p-8 flex flex-col items-center gap-2 cursor-pointer hover:border-border/70 transition-colors">
+                    <Upload size={16} className="text-muted-foreground" />
+                    <span className="font-mono text-xs text-muted-foreground">
+                      DROP IMAGE OR CLICK TO UPLOAD
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Date pickers */}
@@ -635,34 +652,57 @@ export default function CreateHackathonPage() {
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
-                    MAX PARTICIPANTS
-                  </label>
+                  <div className="flex items-center justify-between">
+                    <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                      MAX PARTICIPANTS
+                    </label>
+                    {lumaImported && (
+                      <span className="font-mono text-[9px] text-brand-green/70">
+                        Set by Luma
+                      </span>
+                    )}
+                  </div>
                   <input
                     type="number"
                     value={maxParticipants}
                     onChange={(e) => setMaxParticipants(+e.target.value)}
-                    className={inputClass}
+                    className={`${inputClass} ${lumaImported ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={lumaImported}
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
-                    MAX TEAM SIZE
-                  </label>
+                  <div className="flex items-center justify-between">
+                    <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                      MAX TEAM SIZE
+                    </label>
+                    {lumaImported && (
+                      <span className="font-mono text-[9px] text-brand-green/70">
+                        Set by Luma
+                      </span>
+                    )}
+                  </div>
                   <input
                     type="number"
                     value={maxTeamSize}
                     onChange={(e) => setMaxTeamSize(+e.target.value)}
-                    className={inputClass}
+                    className={`${inputClass} ${lumaImported ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={lumaImported}
                   />
                 </div>
               </div>
 
               <div className="flex items-center justify-between p-3 border border-border/40 bg-secondary/10">
                 <div>
-                  <p className="font-mono text-xs text-foreground">
-                    REQUIRES APPROVAL
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="font-mono text-xs text-foreground">
+                      REQUIRES APPROVAL
+                    </p>
+                    {lumaImported && (
+                      <span className="font-mono text-[9px] text-brand-green/70">
+                        Set by Luma
+                      </span>
+                    )}
+                  </div>
                   <p className="font-mono text-[10px] text-muted-foreground">
                     Participants need manual approval to join
                   </p>
@@ -670,6 +710,10 @@ export default function CreateHackathonPage() {
                 <Switch
                   checked={requiresApproval}
                   onCheckedChange={setRequiresApproval}
+                  disabled={lumaImported}
+                  className={
+                    lumaImported ? "opacity-50 cursor-not-allowed" : ""
+                  }
                 />
               </div>
             </motion.div>

@@ -32,7 +32,7 @@ export const TechStackMarquee = () => (
       {techStack.map((item) => (
         <MarqueeItem
           key={item}
-          className="flex items-center gap-2 text-muted-foreground/50 hover:text-muted-foreground transition-colors shrink-0"
+          className="flex items-center gap-2 text-muted-foreground/50 hover:text-brand-green transition-colors shrink-0"
         >
           <span className="uppercase">{item}</span>
         </MarqueeItem>

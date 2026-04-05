@@ -7,9 +7,10 @@ import { useAuth } from "@/shared/lib/auth-context";
 
 interface AuthModalProps {
   children: ReactNode;
+  mode?: "login" | "signup";
 }
 
-export function AuthModal({ children }: AuthModalProps) {
+export function AuthModal({ children, mode = "login" }: AuthModalProps) {
   const { data } = useSession();
   const { openAuth } = useAuth();
   const user = data?.user;
@@ -26,7 +27,7 @@ export function AuthModal({ children }: AuthModalProps) {
       onClickCapture={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        openAuth();
+        openAuth(mode);
       }}
       className="inline-flex cursor-pointer bg-none p-0 m-0 border-none"
     >

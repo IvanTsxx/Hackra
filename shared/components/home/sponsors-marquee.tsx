@@ -15,7 +15,7 @@ export const SponsorsMarquee = () => (
       {SPONSORS.map((item) => (
         <MarqueeItem
           key={item.id}
-          className="flex items-center gap-2 text-muted-foreground/50 hover:text-muted-foreground transition-colors shrink-0"
+          className="flex items-center gap-2 text-muted-foreground/50 hover:text-brand-green transition-colors shrink-0"
         >
           <span className="uppercase">{item.name}</span>
         </MarqueeItem>
