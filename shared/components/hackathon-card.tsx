@@ -76,7 +76,7 @@ export function HackathonCard({
             </span>
 
             <div className="shrink-0">
-              <StatusPill status={hackathon.status} />
+              <StatusPill index={i} status={hackathon.status} />
             </div>
 
             <div className="flex-1 min-w-0 space-y-0.5">
@@ -143,7 +143,7 @@ export function HackathonCard({
         {/* Header bar */}
         <div className="flex items-start justify-between gap-3 px-4 pt-4 pb-3 relative z-10">
           <div className="flex items-center gap-2 flex-wrap">
-            <StatusPill status={hackathon.status} />
+            <StatusPill index={i} status={hackathon.status} />
             {hackathon.isOnline ? (
               <span className="flex items-center gap-1  text-[9px] text-muted-foreground border border-border/30 px-1.5 py-0.5">
                 <Globe size={8} /> REMOTE
@@ -206,16 +206,17 @@ export function HackathonCard({
         {/* Tags + Techs */}
         <div className="px-4 pb-4 pt-1 space-y-2 relative z-10">
           <div className="flex flex-wrap gap-1.5">
-            {hackathon.tags.slice(0, 3).map((tag) => (
-              <TagBadge key={tag} label={tag} variant="default" />
+            {hackathon.tags.slice(0, 3).map((tag, index) => (
+              <TagBadge key={tag} index={index} label={tag} variant="default" />
             ))}
           </div>
           <div className="flex flex-wrap gap-1">
-            {hackathon.techs.slice(0, 4).map((tech) => (
-              <TagBadge key={tech} label={tech} variant="tech" />
+            {hackathon.techs.slice(0, 4).map((tech, index) => (
+              <TagBadge key={tech} index={index} label={tech} variant="tech" />
             ))}
             {hackathon.techs.length > 4 && (
               <TagBadge
+                index={hackathon.techs.length - 4 + 1}
                 label={`+${hackathon.techs.length - 4}`}
                 variant="tech"
               />

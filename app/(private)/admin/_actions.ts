@@ -14,6 +14,7 @@ import {
 } from "@/data/admin-hackatons";
 import { auth } from "@/shared/lib/auth";
 import { scrapeLumaEvent } from "@/shared/lib/luma-scraper";
+import type { LumaEventData } from "@/shared/lib/luma-scraper";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -46,6 +47,36 @@ function slugify(text: string): string {
     .replaceAll(/[^\w\s-]/g, "")
     .replaceAll(/[\s_]+/g, "-")
     .replaceAll(/^-+|-+$/g, "");
+}
+
+// ─── Preview Luma ────────────────────────────────────────────────────────────
+
+const previewLumaSchema = z.string().url("Must be a valid URL.");
+
+export async function previewLumaAction(url: string): Promise<{
+  success: boolean;
+  data?: LumaEventData;
+  error?: string;
+}> {
+  try {
+    await requireAdmin();
+
+    const parsed = previewLumaSchema.safeParse(url);
+    if (!parsed.success) {
+      return { error: parsed.error.flatten().formErrors[0], success: false };
+    }
+
+    const eventData = await scrapeLumaEvent(parsed.data);
+    return { data: eventData, success: true };
+  } catch (error) {
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to preview Luma event.",
+      success: false,
+    };
+  }
 }
 
 // ─── Import from Luma ────────────────────────────────────────────────────────
@@ -126,8 +157,6 @@ export async function publishHackathonAction(
 
     await publishHackathonDAL(id);
 
-    revalidatePath("/admin");
-    revalidatePath("/");
     return { success: true };
   } catch (error) {
     return {
@@ -135,6 +164,10 @@ export async function publishHackathonAction(
         error instanceof Error ? error.message : "Failed to publish hackathon.",
       success: false,
     };
+  } finally {
+    revalidatePath("/admin");
+    revalidatePath("/");
+    revalidatePath("/admin/hackathons");
   }
 }
 
@@ -182,6 +215,8 @@ export async function syncLumaEventAction(
         error instanceof Error ? error.message : "Failed to sync Luma event.",
       success: false,
     };
+  } finally {
+    revalidatePath("/admin/hackathons");
   }
 }
 
@@ -203,5 +238,7 @@ export async function deleteHackathonAction(
         error instanceof Error ? error.message : "Failed to delete hackathon.",
       success: false,
     };
+  } finally {
+    revalidatePath("/admin/hackathons");
   }
 }

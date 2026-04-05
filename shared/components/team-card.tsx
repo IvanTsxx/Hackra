@@ -5,7 +5,6 @@ import { motion } from "motion/react";
 import Link from "next/link";
 
 import type { TeamGetPayload } from "@/app/generated/prisma/models";
-import { ApplyModal } from "@/app/hackathon/[slug]/teams/_components/apply-modal";
 import { Button } from "@/components/ui/button";
 
 import { AvatarGroup } from "./avatar-group";
@@ -53,17 +52,21 @@ export function TeamCard({ team, i }: TeamCardProps) {
         </div>
         <div>
           {isFull ? (
-            <TagBadge label="FULL" variant="status-ended" />
+            <TagBadge index={i} label="FULL" variant="status-ended" />
           ) : (
-            <TagBadge label={`${spotsLeft} OPEN`} variant="status-live" />
+            <TagBadge
+              index={i}
+              label={`${spotsLeft} OPEN`}
+              variant="status-live"
+            />
           )}
         </div>
       </div>
 
       {/* Techs */}
       <div className="flex flex-wrap gap-1">
-        {team.techs.map((tech) => (
-          <TagBadge key={tech} label={tech} variant="tech" />
+        {team.techs.map((tech, index) => (
+          <TagBadge key={tech} index={index} label={tech} variant="tech" />
         ))}
       </div>
 
@@ -88,7 +91,7 @@ export function TeamCard({ team, i }: TeamCardProps) {
               VIEW
             </Button>
           </Link>
-          {!isFull && <ApplyModal team={team} />}
+
           {team.questions.length > 0 && (
             <Lock size={10} className="text-muted-foreground/50" />
           )}

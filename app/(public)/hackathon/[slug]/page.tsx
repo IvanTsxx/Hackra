@@ -125,11 +125,13 @@ export default async function HackathonDetailPage({
                   className="object-cover opacity-70"
                 />
               )}
-              <div className="absolute inset-0 flex items-center justify-center p-4">
-                <span className="font-pixel text-xl text-foreground/30 text-center leading-tight">
-                  {hackathon.title}
-                </span>
-              </div>
+              {!hackathon.image && (
+                <div className="absolute inset-0 flex items-center justify-center p-4">
+                  <span className="font-pixel text-xl text-foreground/30 text-center leading-tight">
+                    {hackathon.title}
+                  </span>
+                </div>
+              )}
               <div className="absolute top-2 left-2">
                 <StatusPill index={0} status={hackathon.status} />
               </div>

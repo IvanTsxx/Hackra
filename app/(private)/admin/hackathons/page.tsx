@@ -1,10 +1,8 @@
 import "server-only";
-import { formatDistanceToNow } from "date-fns";
-import { revalidatePath } from "next/cache";
-import { toast } from "sonner";
+import { format, formatDistanceToNow } from "date-fns";
+import { ExternalLink, MapPin, Users, Calendar, User } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -26,10 +24,10 @@ import {
 } from "@/shared/components/ui/dialog";
 
 import {
-  deleteHackathonAction,
-  publishHackathonAction,
-  syncLumaEventAction,
-} from "../_actions";
+  DeleteButton,
+  PublishButton,
+  SyncButton,
+} from "./_components/button-actions";
 
 const statusColors: Record<string, string> = {
   CANCELLED: "bg-red-500/10 text-red-500",
@@ -80,14 +78,103 @@ export default async function AdminHackathonsPage() {
                     <DialogTrigger>
                       <TableCell className="font-medium">{h.title}</TableCell>
                     </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>{h.title}</DialogTitle>
-                        <DialogDescription className="glass border border-border/40 p-5">
-                          <CodeText as="p">ABOUT</CodeText>
-                          <MarkdownRenderer content={h.description} />
-                        </DialogDescription>
+                    <DialogContent className="max-w-2xl overflow-x-hidden max-h-[80vh] overflow-y-auto">
+                      <DialogHeader className="gap-3">
+                        <DialogTitle className="text-lg">{h.title}</DialogTitle>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Badge className={statusColors[h.status] ?? ""}>
+                            {h.status}
+                          </Badge>
+                          {h.source === "luma" ? (
+                            <Badge
+                              variant="outline"
+                              className="border-purple-500/50 text-purple-400"
+                            >
+                              Luma
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary">Manual</Badge>
+                          )}
+                        </div>
                       </DialogHeader>
+                      <DialogDescription className="flex flex-col gap-4 text-sm text-foreground">
+                        {h.image && (
+                          <img
+                            src={h.image}
+                            alt={h.title}
+                            className="w-full rounded-lg object-cover"
+                            style={{ maxHeight: "200px" }}
+                          />
+                        )}
+
+                        <div className="grid grid-cols-2 gap-3 text-muted-foreground">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="size-4 shrink-0" />
+                            <span>
+                              {format(new Date(h.startDate), "MMM d, yyyy")}
+                              {h.endDate &&
+                                ` — ${format(new Date(h.endDate), "MMM d, yyyy")}`}
+                            </span>
+                          </div>
+                          {h.location && (
+                            <div className="flex items-center gap-2">
+                              <MapPin className="size-4 shrink-0" />
+                              <span className="truncate">{h.location}</span>
+                            </div>
+                          )}
+                          {h.organizer && (
+                            <div className="flex items-center gap-2">
+                              <User className="size-4 shrink-0" />
+                              <span className="truncate">
+                                {h.organizer.name}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex items-center gap-2">
+                            <Users className="size-4 shrink-0" />
+                            <span>{h.participants.length} participants</span>
+                          </div>
+                        </div>
+
+                        {h.externalUrl && (
+                          <a
+                            href={h.externalUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-brand-green underline underline-offset-2 hover:opacity-80"
+                          >
+                            <ExternalLink className="size-4" />
+                            View on Luma
+                          </a>
+                        )}
+
+                        {h.tags && h.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5">
+                            {h.tags.map((tag: string) => (
+                              <Badge key={tag} variant="outline">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+
+                        {h.techs && h.techs.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5">
+                            {h.techs.map((tech: string) => (
+                              <Badge key={tech} variant="secondary">
+                                {tech}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+
+                        <div className="border-t pt-3">
+                          <CodeText as="p" className="mb-2">
+                            ABOUT
+                          </CodeText>
+                          <MarkdownRenderer content={h.description} />
+                        </div>
+                      </DialogDescription>
                     </DialogContent>
                   </Dialog>
                   <TableCell>
@@ -134,74 +221,5 @@ export default async function AdminHackathonsPage() {
         </Table>
       </div>
     </div>
-  );
-}
-
-function PublishButton({ id }: { id: string }) {
-  return (
-    <form
-      action={async () => {
-        "use server";
-        const result = await publishHackathonAction(id);
-        if (result.success) {
-          revalidatePath("/admin/hackathons");
-          toast.success("Hackathon published!");
-        } else {
-          toast.error(result.error ?? "Failed to publish.");
-        }
-      }}
-    >
-      <Button type="submit" variant="default" size="sm">
-        Publish
-      </Button>
-    </form>
-  );
-}
-
-function SyncButton({
-  id,
-  externalUrl: _externalUrl,
-}: {
-  id: string;
-  externalUrl: string;
-}) {
-  return (
-    <form
-      action={async () => {
-        "use server";
-        const result = await syncLumaEventAction(id);
-        if (result.success) {
-          revalidatePath("/admin/hackathons");
-          toast.success("Event synced from Luma!");
-        } else {
-          toast.error(result.error ?? "Failed to sync.");
-        }
-      }}
-    >
-      <Button type="submit" variant="outline" size="sm">
-        Sync
-      </Button>
-    </form>
-  );
-}
-
-function DeleteButton({ id, title }: { id: string; title: string }) {
-  return (
-    <form
-      action={async () => {
-        "use server";
-        const result = await deleteHackathonAction(id);
-        if (result.success) {
-          revalidatePath("/admin/hackathons");
-          toast.success(`"${title}" deleted.`);
-        } else {
-          toast.error(result.error ?? "Failed to delete.");
-        }
-      }}
-    >
-      <Button type="submit" variant="destructive" size="sm">
-        Delete
-      </Button>
-    </form>
   );
 }
