@@ -13,7 +13,7 @@ const ADMIN_EMAILS = new Set(
 );
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  baseURL: process.env.BETTER_AUTH_URL || "https://hackra.localhost",
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -104,7 +104,7 @@ export const auth = betterAuth({
       },
     },
   },
-  trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:3000"],
+  trustedOrigins: [process.env.BETTER_AUTH_URL || "https://hackra.localhost"],
   user: {
     additionalFields: {
       bio: {

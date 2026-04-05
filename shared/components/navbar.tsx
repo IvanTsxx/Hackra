@@ -1,6 +1,16 @@
 "use client";
 
-import { Sun, Moon, Menu, X } from "lucide-react";
+import {
+  Sun,
+  Moon,
+  Menu,
+  X,
+  User,
+  Settings,
+  FileText,
+  Users,
+  LogOut,
+} from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Route } from "next";
 import { useTheme } from "next-themes";
@@ -10,7 +20,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/shared/lib/auth-context";
 
-import type { User } from "../lib/auth";
+import type { User as UserType } from "../lib/auth";
 import { signOut, useSession } from "../lib/auth-client";
 import { AuthModal } from "./auth";
 import { ThemeToggle } from "./theme-toggle";
@@ -18,7 +28,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
@@ -174,12 +187,16 @@ export function Navbar() {
   );
 }
 
-function UserMenu({ user }: { user: User }) {
+function UserMenu({ user }: { user: UserType }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button size="sm" variant="outline" className="rounded-full p-0" />
+          <Button
+            size="sm"
+            variant="outline"
+            className="rounded-full p-0 size-8"
+          />
         }
       >
         <Avatar>
@@ -187,15 +204,83 @@ function UserMenu({ user }: { user: User }) {
           <AvatarFallback>{user.name?.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="glass group p-0 border-border/50 bg-transparent backdrop-blur-md">
-        <DropdownMenuItem className="glass">
-          <Link href={`/user/${user.username}`}>My Profile</Link>
-        </DropdownMenuItem>
+      <DropdownMenuContent
+        align="end"
+        className="rounded-none border-border/50 bg-background/95 backdrop-blur-md p-0 min-w-56"
+      >
+        {/* Header with user info */}
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="px-3 py-2.5 border-b border-border/40">
+            <div className="flex items-center gap-2.5">
+              <Avatar size="sm">
+                <AvatarImage src={user.image || ""} />
+                <AvatarFallback>
+                  {user.name?.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col min-w-0">
+                <span className="font-pixel text-[10px] tracking-wider text-foreground truncate">
+                  {user.name?.toUpperCase()}
+                </span>
+                <span className="font-mono text-[10px] text-muted-foreground truncate">
+                  @{user.username}
+                </span>
+              </div>
+            </div>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
 
-        <DropdownMenuItem className="glass">
-          <Link href="/settings/profile">Settings</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem variant="destructive">
+        {/* Menu items */}
+        <div className="py-1">
+          <DropdownMenuItem className="rounded-none px-1 py-0.5">
+            <Link
+              href={`/user/${user.username}`}
+              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+            >
+              <User size={14} className="text-muted-foreground shrink-0" />
+              My Profile
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="rounded-none px-1 py-0.5">
+            <Link
+              href="/my-applications"
+              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+            >
+              <FileText size={14} className="text-muted-foreground shrink-0" />
+              My Applications
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="rounded-none px-1 py-0.5">
+            <Link
+              href="/my-teams"
+              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+            >
+              <Users size={14} className="text-muted-foreground shrink-0" />
+              My Teams
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem className="rounded-none px-1 py-0.5">
+            <Link
+              href="/settings/profile"
+              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+            >
+              <Settings size={14} className="text-muted-foreground shrink-0" />
+              Settings
+            </Link>
+          </DropdownMenuItem>
+        </div>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          variant="destructive"
+          className="rounded-none px-1 py-0.5"
+        >
           <LogoutButton />
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -205,13 +290,13 @@ function UserMenu({ user }: { user: User }) {
 
 function LogoutButton() {
   return (
-    <Button
-      variant="destructive"
-      onClick={() => {
-        signOut();
-      }}
+    <button
+      type="button"
+      onClick={() => signOut()}
+      className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider w-full"
     >
+      <LogOut size={14} className="shrink-0" />
       Logout
-    </Button>
+    </button>
   );
 }

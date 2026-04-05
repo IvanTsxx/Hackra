@@ -2,7 +2,9 @@
 import { Lock, Send, Unlock } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
+import { toast } from "sonner";
 
+import { applyToTeam } from "@/app/(private)/teams/_actions";
 import type { TeamGetPayload } from "@/app/generated/prisma/models";
 import { Button } from "@/components/ui/button";
 import { CodeText } from "@/shared/components/code-text";
@@ -33,8 +35,29 @@ export const TeamHeader = ({
   const [submitted, setSubmitted] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]);
   const [message, setMessage] = useState("");
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    const result = await applyToTeam({
+      answers:
+        team.questions.length > 0
+          ? team.questions.map((q, i) => ({
+              answer: answers[i] || "",
+              questionId: q.id,
+            }))
+          : undefined,
+      message: message || undefined,
+      teamId: team.id,
+    });
+
+    setIsSubmitting(false);
+
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+
     setSubmitted(true);
   };
 
@@ -133,9 +156,10 @@ export const TeamHeader = ({
                     </div>
                     <Button
                       type="submit"
+                      disabled={isSubmitting}
                       className="w-full rounded-none font-pixel text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-9"
                     >
-                      SEND APPLICATION →
+                      {isSubmitting ? "SENDING..." : "SEND APPLICATION →"}
                     </Button>
                   </form>
                 )}

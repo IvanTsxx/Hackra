@@ -17,7 +17,7 @@ interface WelcomeEmailProps {
 }
 
 export function WelcomeEmail({ name, userType }: WelcomeEmailProps) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://hackra.localhost";
 
   return (
     <Html>

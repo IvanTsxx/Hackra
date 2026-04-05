@@ -226,6 +226,7 @@ model TeamApplication {
 
   status  ApplicationStatus @default(PENDING)
   message String?
+  rejectionReason String?
 
   createdAt DateTime @default(now())
 

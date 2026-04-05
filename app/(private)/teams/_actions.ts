@@ -1,0 +1,221 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import { z } from "zod";
+
+import { auth } from "@/shared/lib/auth";
+import { prisma } from "@/shared/lib/prisma";
+
+const applySchema = z.object({
+  answers: z
+    .array(
+      z.object({
+        answer: z.string(),
+        questionId: z.string(),
+      })
+    )
+    .optional(),
+  message: z.string().optional(),
+  teamId: z.string(),
+});
+
+export async function applyToTeam(
+  raw: unknown
+): Promise<{ success: boolean; error?: string }> {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user?.id) return { error: "Unauthorized", success: false };
+
+  const parsed = applySchema.safeParse(raw);
+  if (!parsed.success) return { error: "Invalid input", success: false };
+
+  const { teamId, message, answers } = parsed.data;
+
+  const team = await prisma.team.findUnique({
+    include: { hackathon: true, members: true },
+    where: { id: teamId },
+  });
+  if (!team) return { error: "Team not found", success: false };
+  if (team.members.length >= team.maxMembers)
+    return { error: "Team is full", success: false };
+
+  const existing = await prisma.teamApplication.findUnique({
+    where: { teamId_userId: { teamId, userId: session.user.id } },
+  });
+  if (existing)
+    return { error: "Already applied to this team", success: false };
+
+  const isMember = await prisma.teamMember.findUnique({
+    where: { teamId_userId: { teamId, userId: session.user.id } },
+  });
+  if (isMember)
+    return { error: "Already a member of this team", success: false };
+
+  await prisma.teamApplication.create({
+    data: {
+      answers: answers
+        ? {
+            createMany: {
+              data: answers.map((a) => ({
+                answer: a.answer,
+                questionId: a.questionId,
+              })),
+            },
+          }
+        : undefined,
+      message,
+      teamId,
+      userId: session.user.id,
+    },
+  });
+
+  revalidatePath(`/hackathon/${team.hackathon.slug}/teams`);
+  revalidatePath(`/team/${teamId}`);
+  return { success: true };
+}
+
+const rejectSchema = z.object({
+  applicationId: z.string(),
+  reason: z.string().optional(),
+});
+
+export async function rejectApplication(
+  raw: unknown
+): Promise<{ success: boolean; error?: string }> {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user?.id) return { error: "Unauthorized", success: false };
+
+  const parsed = rejectSchema.safeParse(raw);
+  if (!parsed.success) return { error: "Invalid input", success: false };
+
+  const { applicationId, reason } = parsed.data;
+
+  const application = await prisma.teamApplication.findUnique({
+    include: {
+      team: { select: { hackathonId: true, id: true, ownerId: true } },
+    },
+    where: { id: applicationId },
+  });
+  if (!application) return { error: "Application not found", success: false };
+  if (application.team.ownerId !== session.user.id)
+    return { error: "Unauthorized", success: false };
+  if (application.status !== "PENDING")
+    return { error: "Application already processed", success: false };
+
+  await prisma.teamApplication.update({
+    data: { rejectionReason: reason, status: "REJECTED" },
+    where: { id: applicationId },
+  });
+
+  revalidatePath(`/teams/${application.team.id}/manage`);
+  return { success: true };
+}
+
+export async function acceptApplication(
+  raw: unknown
+): Promise<{ success: boolean; error?: string }> {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user?.id) return { error: "Unauthorized", success: false };
+
+  const applicationId = z.string().safeParse(raw);
+  if (!applicationId.success) return { error: "Invalid input", success: false };
+
+  const application = await prisma.teamApplication.findUnique({
+    include: {
+      team: {
+        select: {
+          hackathonId: true,
+          maxMembers: true,
+          members: true,
+          ownerId: true,
+        },
+      },
+    },
+    where: { id: applicationId.data },
+  });
+  if (!application) return { error: "Application not found", success: false };
+  if (application.team.ownerId !== session.user.id)
+    return { error: "Unauthorized", success: false };
+  if (application.status !== "PENDING")
+    return { error: "Application already processed", success: false };
+  if (application.team.members.length >= application.team.maxMembers)
+    return { error: "Team is full", success: false };
+
+  await prisma.$transaction([
+    prisma.teamApplication.update({
+      data: { status: "ACCEPTED" },
+      where: { id: applicationId.data },
+    }),
+    prisma.teamMember.create({
+      data: {
+        teamId: application.teamId,
+        userId: application.userId,
+      },
+    }),
+  ]);
+
+  revalidatePath(`/teams/${application.teamId}/manage`);
+  return { success: true };
+}
+
+export async function cancelApplication(
+  raw: unknown
+): Promise<{ success: boolean; error?: string }> {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user?.id) return { error: "Unauthorized", success: false };
+
+  const applicationId = z.string().safeParse(raw);
+  if (!applicationId.success) return { error: "Invalid input", success: false };
+
+  const application = await prisma.teamApplication.findUnique({
+    where: { id: applicationId.data },
+  });
+  if (!application) return { error: "Application not found", success: false };
+  if (application.userId !== session.user.id)
+    return { error: "Unauthorized", success: false };
+  if (application.status !== "PENDING")
+    return {
+      error: "Can only cancel pending applications",
+      success: false,
+    };
+
+  await prisma.teamApplication.delete({
+    where: { id: applicationId.data },
+  });
+
+  revalidatePath("/my-applications");
+  return { success: true };
+}
+
+export async function joinHackathon(
+  raw: unknown
+): Promise<{ success: boolean; error?: string }> {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user?.id) return { error: "Unauthorized", success: false };
+
+  const hackathonId = z.string().safeParse(raw);
+  if (!hackathonId.success) return { error: "Invalid input", success: false };
+
+  const existing = await prisma.hackathonParticipant.findUnique({
+    where: {
+      userId_hackathonId: {
+        hackathonId: hackathonId.data,
+        userId: session.user.id,
+      },
+    },
+  });
+  if (existing)
+    return { error: "Already registered for this hackathon", success: false };
+
+  await prisma.hackathonParticipant.create({
+    data: {
+      hackathonId: hackathonId.data,
+      status: "PENDING",
+      userId: session.user.id,
+    },
+  });
+
+  revalidatePath(`/hackathon/${hackathonId.data}`);
+  revalidatePath("/my-applications");
+  return { success: true };
+}

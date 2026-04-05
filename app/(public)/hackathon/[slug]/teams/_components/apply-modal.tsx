@@ -2,7 +2,9 @@
 
 import { motion } from "motion/react";
 import { useState } from "react";
+import { toast } from "sonner";
 
+import { applyToTeam } from "@/app/(private)/teams/_actions";
 import type { TeamGetPayload } from "@/app/generated/prisma/models";
 import {
   Dialog,
@@ -26,9 +28,30 @@ export function ApplyModal({
   const [answers, setAnswers] = useState<string[]>([]);
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const handleSubmit = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    const result = await applyToTeam({
+      answers:
+        team.questions.length > 0
+          ? team.questions.map((q, i) => ({
+              answer: answers[i] || "",
+              questionId: q.id,
+            }))
+          : undefined,
+      message: message || undefined,
+      teamId: team.id,
+    });
+
+    setIsSubmitting(false);
+
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+
     setSubmitted(true);
-    console.log("submit");
     setTimeout(() => {
       setSubmitted(false);
     }, 2000);
@@ -101,9 +124,10 @@ export function ApplyModal({
 
             <Button
               onClick={handleSubmit}
+              disabled={isSubmitting}
               className="w-full rounded-none font-pixel text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-9"
             >
-              SEND APPLICATION →
+              {isSubmitting ? "SENDING..." : "SEND APPLICATION →"}
             </Button>
           </div>
         )}

@@ -28,7 +28,7 @@ export function HackathonConfirmationEmail({
   endDate,
   location,
 }: HackathonConfirmationEmailProps) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://hackra.localhost";
   const hackathonUrl = `${baseUrl}/hackathons/${hackathonSlug}`;
 
   const start = new Date(startDate);
