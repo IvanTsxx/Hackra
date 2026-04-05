@@ -3,6 +3,26 @@ import * as cheerio from "cheerio";
 const TIMEOUT_MS = 10_000;
 const RATE_LIMIT_DELAY_MS = 1000;
 
+// 5 minutes TTL for in-memory cache
+const CACHE_TTL_MS = 5 * 60 * 1000;
+const lumaCache = new Map<string, { data: LumaEventData; timestamp: number }>();
+
+export function clearLumaCache(): void {
+  lumaCache.clear();
+}
+
+function getCachedLuma(url: string): LumaEventData | null {
+  const cached = lumaCache.get(url);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+  return null;
+}
+
+function setCachedLuma(url: string, data: LumaEventData): void {
+  lumaCache.set(url, { data, timestamp: Date.now() });
+}
+
 let lastRequestAt = 0;
 
 export interface LumaEventData {
@@ -186,6 +206,9 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
   if (!isValidLumaUrl(url)) {
     throw new Error(`Invalid Luma URL: ${url}`);
   }
+
+  const cached = getCachedLuma(url);
+  if (cached) return cached;
 
   await rateLimit();
 
@@ -453,7 +476,7 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
     participantCount = extractParticipantCount(participantText ?? null);
   }
 
-  return {
+  const result = {
     description,
     endDate,
     image,
@@ -463,4 +486,6 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
     startDate,
     title,
   };
+  setCachedLuma(url, result);
+  return result;
 }

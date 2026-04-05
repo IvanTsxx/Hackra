@@ -12,6 +12,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { AuthModalDialog } from "@/shared/components/auth/auth-modal-dialog";
 import { Toaster } from "@/shared/components/ui/sonner";
+import { TooltipProvider } from "@/shared/components/ui/tooltip";
 import { AuthProvider } from "@/shared/lib/auth-context";
 
 export default function RootLayout({
@@ -35,13 +36,15 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <NuqsAdapter>
-            <AuthProvider>
-              {children}
-              <Toaster position="top-right" richColors />
-              <AuthModalDialog />
-            </AuthProvider>
-          </NuqsAdapter>
+          <TooltipProvider>
+            <NuqsAdapter>
+              <AuthProvider>
+                {children}
+                <Toaster position="top-right" richColors />
+                <AuthModalDialog />
+              </AuthProvider>
+            </NuqsAdapter>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

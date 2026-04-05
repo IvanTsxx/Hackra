@@ -1,10 +1,21 @@
 "use client";
 
 import { format } from "date-fns";
-import { Plus, X, Upload, Eye, Code, CalendarIcon } from "lucide-react";
+import {
+  Plus,
+  X,
+  Upload,
+  Eye,
+  Code,
+  CalendarIcon,
+  Loader2,
+  Link2,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { Footer } from "@/components/footer";
@@ -24,7 +35,11 @@ import { CodeText } from "@/shared/components/code-text";
 import { ThemeCustomizer } from "@/shared/components/theme-customizer";
 import type { ThemeValue } from "@/shared/components/theme-customizer";
 
-import { createHackathonAction } from "./_actions";
+import {
+  createHackathonAction,
+  importLumaFormDataAction,
+  previewLumaAction,
+} from "./_actions";
 
 const AVAILABLE_TAGS = [
   "Frontend",
@@ -108,6 +123,16 @@ export default function CreateHackathonPage() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Luma import state
+  const [lumaUrl, setLumaUrl] = useState("");
+  const [lumaPreviewData, setLumaPreviewData] = useState<NonNullable<
+    Awaited<ReturnType<typeof previewLumaAction>>["data"]
+  > | null>(null);
+  const [lumaPreviewError, setLumaPreviewError] = useState<string | null>(null);
+  const [lumaLoading, setLumaLoading] = useState(false);
+  const [lumaImported, setLumaImported] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const toggleTag = (t: string) =>
     setSelectedTags((prev) =>
       prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
@@ -128,6 +153,73 @@ export default function CreateHackathonPage() {
     setPrizes((prev) =>
       prev.map((p, idx) => (idx === i ? { ...p, [field]: val } : p))
     );
+
+  const fetchPreview = useCallback(async (url: string) => {
+    setLumaLoading(true);
+    setLumaPreviewError(null);
+    setLumaPreviewData(null);
+
+    const result = await previewLumaAction(url);
+    setLumaLoading(false);
+
+    if (result.success && result.data) {
+      setLumaPreviewData(result.data);
+    } else {
+      setLumaPreviewError(result.error ?? "Failed to preview event.");
+    }
+  }, []);
+
+  const handleLumaUrlChange = useCallback(
+    (value: string) => {
+      setLumaPreviewData(null);
+      setLumaPreviewError(null);
+      setLumaLoading(false);
+
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+
+      const isValid = value.includes("luma.com") && URL.canParse(value);
+      if (!isValid) return;
+
+      debounceRef.current = setTimeout(() => {
+        void fetchPreview(value);
+      }, 1000);
+    },
+    [fetchPreview]
+  );
+
+  const handleImportFromLuma = useCallback(async () => {
+    if (!lumaUrl) return;
+    setLumaLoading(true);
+
+    const result = await importLumaFormDataAction(lumaUrl);
+    setLumaLoading(false);
+
+    if (result.success && result.data) {
+      const d = result.data;
+      setTitle(d.title);
+      setDescription(d.description);
+      setStartDate(d.startDate);
+      setEndDate(d.endDate);
+      if (d.location) setLocation(d.location);
+      setLocationMode(d.locationMode);
+      if (d.maxParticipants) setMaxParticipants(d.maxParticipants);
+      setLumaImported(true);
+      toast.success("Imported from Luma!", {
+        description: "All fields have been auto-filled.",
+      });
+    } else {
+      toast.error("Import failed", {
+        description: result.error ?? "Could not import event data.",
+      });
+    }
+  }, [lumaUrl]);
+
+  useEffect(
+    () => () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    },
+    []
+  );
 
   const handleSubmit = async () => {
     if (!startDate || !endDate) {
@@ -259,6 +351,115 @@ export default function CreateHackathonPage() {
               animate={{ opacity: 1, x: 0 }}
               className="space-y-5"
             >
+              {/* ─── LUMA IMPORT ─────────────────────────────────────────────── */}
+              <div className="space-y-3 border border-brand-green/30 bg-brand-green/5 p-4">
+                <div className="flex items-center gap-2">
+                  <Link2 size={12} className="text-brand-green" />
+                  <label className="font-mono text-[10px] text-brand-green tracking-widest">
+                    IMPORT FROM LUMA
+                  </label>
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={lumaUrl}
+                    onChange={(e) => {
+                      setLumaUrl(e.target.value);
+                      handleLumaUrlChange(e.target.value);
+                    }}
+                    onBlur={() => {
+                      const isValid =
+                        lumaUrl.includes("luma.com") && URL.canParse(lumaUrl);
+                      if (isValid) void fetchPreview(lumaUrl);
+                    }}
+                    placeholder="https://lu.ma/event-name"
+                    className={inputClass}
+                    disabled={lumaImported}
+                  />
+                  {lumaImported ? (
+                    <div className="flex items-center gap-1 text-brand-green font-mono text-xs shrink-0">
+                      <CheckCircle2 size={14} />
+                      Imported
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleImportFromLuma}
+                      disabled={lumaLoading || !lumaUrl}
+                      className="font-pixel text-[10px] bg-brand-green/20 text-brand-green border border-brand-green/40 px-3 hover:bg-brand-green/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all shrink-0"
+                    >
+                      {lumaLoading ? "..." : "IMPORT"}
+                    </button>
+                  )}
+                </div>
+
+                {lumaLoading && !lumaPreviewData && (
+                  <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                    <Loader2 size={12} className="animate-spin" />
+                    Fetching event data...
+                  </div>
+                )}
+
+                {lumaPreviewError && (
+                  <div className="flex items-center gap-2 font-mono text-xs text-red-400">
+                    <AlertCircle size={12} />
+                    {lumaPreviewError}
+                  </div>
+                )}
+
+                {lumaPreviewData && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-2 border border-border/30 bg-secondary/10 p-3"
+                  >
+                    {lumaPreviewData.image && (
+                      <img
+                        src={lumaPreviewData.image}
+                        alt={lumaPreviewData.title}
+                        className="w-full h-24 object-cover"
+                      />
+                    )}
+                    <p className="font-mono text-xs text-foreground">
+                      {lumaPreviewData.title}
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 font-mono text-[10px] text-muted-foreground">
+                      <div>
+                        <span className="text-foreground">Start:</span>{" "}
+                        {lumaPreviewData.startDate.toLocaleDateString("en-US", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </div>
+                      <div>
+                        <span className="text-foreground">End:</span>{" "}
+                        {lumaPreviewData.endDate.toLocaleDateString("en-US", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </div>
+                      {lumaPreviewData.location && (
+                        <div>
+                          <span className="text-foreground">Location:</span>{" "}
+                          {lumaPreviewData.location}
+                        </div>
+                      )}
+                      {lumaPreviewData.participantCount !== undefined && (
+                        <div>
+                          <span className="text-foreground">Going:</span>{" "}
+                          {lumaPreviewData.participantCount}
+                        </div>
+                      )}
+                    </div>
+                    <p className="font-mono text-[10px] text-brand-green/70">
+                      Click IMPORT to auto-fill all fields
+                    </p>
+                  </motion.div>
+                )}
+              </div>
+
               <div className="space-y-1">
                 <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
                   TITLE *

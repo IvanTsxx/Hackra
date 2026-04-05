@@ -15,3 +15,20 @@ export const getTeamsForHackathon = async (hackathonId: string) =>
       hackathonId,
     },
   });
+
+export const getTeamById = async (id: string) =>
+  await prisma.team.findUnique({
+    include: {
+      applications: true,
+      hackathon: true,
+      members: {
+        include: {
+          user: true,
+        },
+      },
+      questions: true,
+    },
+    where: {
+      id,
+    },
+  });
