@@ -21,6 +21,11 @@ export const getFeaturedHackatons = async () =>
       participants: true,
       prizes: true,
     },
+    orderBy: {
+      participants: {
+        _count: "desc",
+      },
+    },
     take: 3,
     where: {
       OR: [{ status: "LIVE" }, { status: "UPCOMING" }],
