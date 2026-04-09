@@ -10,6 +10,7 @@ import {
   FileText,
   Users,
   LogOut,
+  Trophy,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Route } from "next";
@@ -259,6 +260,17 @@ function UserMenu({ user }: { user: UserType }) {
             >
               <Users size={14} className="text-muted-foreground shrink-0" />
               My Teams
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="rounded-none px-1 py-0.5">
+            <Link
+              href="/my-hackathons"
+              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+              suppressHydrationWarning
+            >
+              <Trophy size={14} className="text-muted-foreground shrink-0" />
+              My Hackathons
             </Link>
           </DropdownMenuItem>
 

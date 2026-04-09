@@ -1,8 +1,11 @@
 "use client";
 
+import type { LucideProps } from "lucide-react";
 import { LayoutDashboardIcon, ShieldIcon, UploadIcon } from "lucide-react";
+import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
 
 import {
   Sidebar,
@@ -18,7 +21,13 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-const adminNavItems = [
+const adminNavItems: {
+  href: Route;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+  label: string;
+}[] = [
   { href: "/admin", icon: LayoutDashboardIcon, label: "Dashboard" },
   { href: "/admin/import", icon: UploadIcon, label: "Import" },
   { href: "/admin/hackathons", icon: ShieldIcon, label: "Hackathons" },

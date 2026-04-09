@@ -1,0 +1,48 @@
+"use client";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+import { ParticipantsList } from "./participants-list";
+
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+interface ParticipantsDialogProps {
+  hackathonId: string;
+  hackathonTitle: string;
+  requiresApproval: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+// ─── Component ───────────────────────────────────────────────────────────────
+
+export function ParticipantsDialog({
+  hackathonId,
+  hackathonTitle,
+  requiresApproval,
+  open,
+  onOpenChange,
+}: ParticipantsDialogProps) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Participants — {hackathonTitle}</DialogTitle>
+          <DialogDescription>
+            Manage participants and review join requests.
+          </DialogDescription>
+        </DialogHeader>
+        <ParticipantsList
+          hackathonId={hackathonId}
+          requiresApproval={requiresApproval}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+}

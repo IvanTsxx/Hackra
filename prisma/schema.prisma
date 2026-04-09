@@ -166,7 +166,7 @@ model HackathonParticipant {
   createdAt DateTime @default(now())
 
   user      User      @relation(fields: [userId], references: [id])
-  hackathon Hackathon @relation(fields: [hackathonId], references: [id])
+  hackathon Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
 
   @@unique([userId, hackathonId])
   @@index([hackathonId])
@@ -184,7 +184,7 @@ model Team {
   description String?
 
   hackathonId String
-  hackathon   Hackathon @relation(fields: [hackathonId], references: [id])
+  hackathon   Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
 
   ownerId String
   owner   User   @relation("UserTeams", fields: [ownerId], references: [id])
@@ -302,7 +302,7 @@ model HackathonSponsor {
   hackathonId String
   sponsorId   String
 
-  hackathon Hackathon @relation(fields: [hackathonId], references: [id])
+  hackathon Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
   sponsor   Sponsor   @relation(fields: [sponsorId], references: [id])
 
   @@unique([hackathonId, sponsorId])

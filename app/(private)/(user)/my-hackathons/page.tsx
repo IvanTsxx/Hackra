@@ -1,0 +1,110 @@
+import { ChevronRight, Users } from "lucide-react";
+import { headers } from "next/headers";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+
+import {
+  getHackathonPendingCounts,
+  getOrganizerHackathons,
+  getTotalPendingParticipants,
+} from "@/data/organizer-hackathons";
+import { CodeText } from "@/shared/components/code-text";
+import { auth } from "@/shared/lib/auth";
+
+import { AnimatedSection } from "../_components/animated-section";
+import { MyHackathonsClient } from "./_components/my-hackathons-client";
+
+export const metadata = {
+  description: "Manage your hackathons as an organizer.",
+  title: "My Hackathons | Hackra",
+};
+
+export default async function MyHackathonsPage() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user?.id) {
+    redirect("/");
+  }
+
+  const [hackathons, totalPending, pendingCounts] = await Promise.all([
+    getOrganizerHackathons(session.user.id),
+    getTotalPendingParticipants(session.user.id),
+    getHackathonPendingCounts(session.user.id),
+  ]);
+
+  return (
+    <section>
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+        <Link
+          href={`/user/${session.user.username}`}
+          className="hover:text-foreground"
+        >
+          {session.user.username?.toUpperCase()}
+        </Link>
+        <ChevronRight size={10} />
+        <span className="text-foreground">MY HACKATHONS</span>
+      </div>
+
+      <AnimatedSection>
+        <div className="space-y-1 mb-7">
+          <CodeText as="p">navigation</CodeText>
+          <div className="flex items-center gap-3">
+            <h1 className="font-pixel text-2xl text-foreground">
+              MY HACKATHONS
+            </h1>
+            {totalPending > 0 && (
+              <span className="inline-flex items-center border border-brand-green/40 bg-brand-green/5 font-mono rounded-none px-2 py-0.5 text-[10px] text-brand-green">
+                {totalPending} PENDING
+              </span>
+            )}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {hackathons.length === 0 ? (
+        <div className="glass border border-border/40 p-12 text-center space-y-4">
+          <div className="flex justify-center mb-2">
+            <div className="relative">
+              <Users
+                size={48}
+                className="text-muted-foreground/30"
+                strokeWidth={1}
+              />
+            </div>
+          </div>
+          <h3 className="font-pixel text-sm text-foreground tracking-wider">
+            NO HACKATHONS YET
+          </h3>
+          <p className="font-mono text-xs text-muted-foreground max-w-sm mx-auto">
+            Create your first hackathon and start accepting participants.
+          </p>
+          <Link
+            href="/create"
+            className="inline-flex items-center gap-2 font-pixel text-[10px] tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
+          >
+            CREATE YOUR FIRST HACKATHON →
+          </Link>
+        </div>
+      ) : (
+        <Suspense
+          fallback={
+            <div className="glass border border-border/40 p-8 text-center">
+              <p className="font-mono text-xs text-muted-foreground animate-pulse">
+                Loading hackathons...
+              </p>
+            </div>
+          }
+        >
+          <MyHackathonsClient
+            hackathons={hackathons}
+            pendingCounts={pendingCounts}
+          />
+        </Suspense>
+      )}
+    </section>
+  );
+}

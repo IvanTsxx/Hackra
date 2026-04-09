@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import {
   acceptApplication,
   rejectApplication,
-} from "@/app/(private)/teams/_actions";
+} from "@/app/(private)/(user)/teams/_actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

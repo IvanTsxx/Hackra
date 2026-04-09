@@ -1,13 +1,16 @@
 "use client";
 
+import type { LucideProps } from "lucide-react";
 import {
   BellIcon,
   LayoutDashboardIcon,
   SettingsIcon,
   UserIcon,
 } from "lucide-react";
+import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
 
 import {
   Sidebar,
@@ -23,13 +26,25 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-const mainNavItems = [
+const mainNavItems: {
+  href: Route;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+  label: string;
+}[] = [
   { href: "/my-teams", icon: LayoutDashboardIcon, label: "My Teams" },
   { href: "/my-applications", icon: UserIcon, label: "My Applications" },
   { href: "/create", icon: SettingsIcon, label: "Create" },
 ];
 
-const settingsNavItems = [
+const settingsNavItems: {
+  href: Route;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+  label: string;
+}[] = [
   { href: "/settings/profile", icon: UserIcon, label: "Profile" },
   { href: "/settings/notifications", icon: BellIcon, label: "Notifications" },
   { href: "/settings/account", icon: SettingsIcon, label: "Account" },

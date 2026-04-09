@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { applyToTeam } from "@/app/(private)/teams/_actions";
+import { applyToTeam } from "@/app/(private)/(user)/teams/_actions";
 import type { TeamGetPayload } from "@/app/generated/prisma/models";
 import {
   Dialog,
