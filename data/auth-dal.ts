@@ -50,3 +50,11 @@ export const requireAdminSession = cache(async (): Promise<SessionDTO> => {
     username: session.user.username!,
   };
 });
+
+export const getCurrentUser = cache(async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  return session?.user;
+});

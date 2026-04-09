@@ -22,17 +22,17 @@ import { toast } from "sonner";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { TagBadge } from "@/components/tag-badge";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import type { Tech } from "@/lib/mock-data";
 import { CodeText } from "@/shared/components/code-text";
 import { ThemeCustomizer } from "@/shared/components/theme-customizer";
 import type { ThemeValue } from "@/shared/components/theme-customizer";
+import { Calendar } from "@/shared/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/shared/components/ui/popover";
 import { useSession } from "@/shared/lib/auth-client";
 
 import { AnimatedSection } from "../_components/animated-section";

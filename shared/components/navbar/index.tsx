@@ -1,19 +1,15 @@
-import { headers } from "next/headers";
 import Link from "next/link";
 
+import { getCurrentUser } from "@/data/auth-dal";
 import { CreateHackatonButton } from "@/shared/components/create-hackaton-button";
 import { UserMenu } from "@/shared/components/navbar/user-menu";
 import { ThemeToggle } from "@/shared/components/theme-toggle";
-import { auth } from "@/shared/lib/auth";
 
 import { DesktopNav } from "./desktop-nav";
 import { MobileMenu } from "./mobile-menu";
 
 export async function Navbar() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const user = session?.user;
+  const user = await getCurrentUser();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md">
