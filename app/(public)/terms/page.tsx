@@ -30,7 +30,7 @@ export default function TermsPage() {
           <div className="max-w-3xl mx-auto">
             <CodeText
               as="p"
-              className="text-xs text-primary  uppercase tracking-widest mb-4"
+              className="text-xs text-brand-green  uppercase tracking-widest mb-4"
             >
               terms_of_service
             </CodeText>

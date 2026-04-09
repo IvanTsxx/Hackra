@@ -35,7 +35,7 @@ export default function AboutPage() {
           <div className="text-center max-w-3xl mx-auto">
             <CodeText
               as="p"
-              className="text-xs text-primary  uppercase tracking-widest mb-4"
+              className="text-xs text-brand-green  uppercase tracking-widest mb-4"
             >
               about_hackra()
             </CodeText>
@@ -58,7 +58,7 @@ export default function AboutPage() {
             <div>
               <CodeText
                 as="p"
-                className="text-xs text-primary  uppercase tracking-widest mb-4"
+                className="text-xs text-brand-green  uppercase tracking-widest mb-4"
               >
                 our_mission
               </CodeText>
@@ -104,7 +104,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <CodeText
               as="p"
-              className="text-xs text-primary  uppercase tracking-widest mb-4"
+              className="text-xs text-brand-green  uppercase tracking-widest mb-4"
             >
               core_values
             </CodeText>
@@ -148,7 +148,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 text-center">
           <CodeText
             as="p"
-            className="text-xs text-primary  uppercase tracking-widest mb-4"
+            className="text-xs text-brand-green  uppercase tracking-widest mb-4"
           >
             join_the_movement
           </CodeText>
