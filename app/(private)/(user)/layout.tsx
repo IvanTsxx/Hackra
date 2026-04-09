@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 import { requireSession } from "@/data/auth-dal";
 import { UserMenu } from "@/shared/components/navbar/user-menu";
+import { ThemeToggle } from "@/shared/components/theme-toggle";
 
 import { UserSidebar } from "./_components/user-sidebar";
 
@@ -47,7 +48,10 @@ const PrivateLayout: React.FC<PrivateLayoutFormProps> = async ({
               </span>
             </Link>
           </div>
-          <UserMenu user={user} />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <UserMenu user={user} />
+          </div>
         </header>
         <section className="flex-1 w-full max-w-4xl mx-auto px-4 lg:px-6">
           {children}

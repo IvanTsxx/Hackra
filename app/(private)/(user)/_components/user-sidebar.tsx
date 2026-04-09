@@ -8,6 +8,7 @@ import {
   UserIcon,
 } from "lucide-react";
 import type { Route } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
@@ -61,9 +62,22 @@ export function UserSidebar() {
             <SidebarMenuButton
               size="lg"
               render={
-                <Link href="/" className="flex items-center gap-2">
-                  <span className="text-lg font-bold tracking-tight">
-                    Hackra
+                <Link
+                  href="/"
+                  className="flex items-center gap-2 group"
+                  prefetch={false}
+                >
+                  <Image
+                    src="/hackra-logo.webp"
+                    alt="Logo"
+                    width={1600}
+                    height={1600}
+                    loading="eager"
+                    priority
+                    className="w-10 h-10"
+                  />
+                  <span className="font-pixel text-sm text-muted-foreground tracking-widest">
+                    HACKRA
                   </span>
                 </Link>
               }
