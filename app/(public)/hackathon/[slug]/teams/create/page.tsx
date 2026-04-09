@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
 
+import { CreateForm } from "@/app/(public)/hackathon/[slug]/teams/create/_components/create-form";
 import { getHackathon } from "@/data/hackatons";
-
-import { CreateForm } from "./_components/create-form";
 
 export default async function CreateTeamPage({
   params,

@@ -1,6 +1,11 @@
 {
   "version": 1,
   "skills": {
+    "ai-seo": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "computedHash": "0bda4a0839dbb8ecb19b40707299c2558ddc7b63164d1d8008209ce6d03772b7"
+    },
     "architect-nextjs": {
       "source": "ivantsxx/my-next-skills",
       "sourceType": "github",
@@ -85,6 +90,11 @@
       "source": "prisma/skills",
       "sourceType": "github",
       "computedHash": "d090d1206fb6a2dd9f7b9f658d851ccd653132512c53c6e0a164110d9ee80005"
+    },
+    "seo-content-writer": {
+      "source": "aaron-he-zhu/seo-geo-claude-skills",
+      "sourceType": "github",
+      "computedHash": "be1172a44a549939aa2d0ec19996095b9ddd1a1117c15df1e3790ecee81321ff"
     },
     "shadcn": {
       "source": "shadcn/ui",

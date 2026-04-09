@@ -16,10 +16,18 @@ import {
   getTeamMembers,
   getTeamWithOwner,
 } from "@/data/applications";
+import { getAllTeams } from "@/data/teams";
 import { auth } from "@/shared/lib/auth";
 import { cn } from "@/shared/lib/utils";
 
 import { ManageApplicationCard } from "./_components/manage-application-card";
+
+export async function generateStaticParams() {
+  const teams = await getAllTeams();
+  return teams.map((team) => ({
+    teamId: team.id,
+  }));
+}
 
 export default async function ManageTeamPage({
   params,

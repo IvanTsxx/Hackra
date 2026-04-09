@@ -29,3 +29,11 @@ export const getUserByUsername = async (username: string) =>
     },
     where: { username },
   });
+
+export const getAllUsers = async () =>
+  await prisma.user.findMany({
+    select: {
+      username: true,
+    },
+    take: 100,
+  });

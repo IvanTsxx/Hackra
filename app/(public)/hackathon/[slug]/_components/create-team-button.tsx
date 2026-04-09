@@ -13,7 +13,7 @@ export const CreateTeamButton = ({
 }) => (
   <>
     {isLoggedIn ? (
-      <Link href={`/teams/create/${slug}`}>
+      <Link href={`/hackathon/${slug}/teams/create`}>
         <Button className="font-pixel text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-4">
           <Plus size={12} className="mr-1.5" /> CREATE TEAM
         </Button>
@@ -21,7 +21,7 @@ export const CreateTeamButton = ({
     ) : (
       <AuthModalDialog
         isRender
-        callbackUrl={`/teams/create/${slug}`}
+        callbackUrl={`/hackathon/${slug}/teams/create`}
         renderComponent={
           <Button className="font-pixel text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-4" />
         }

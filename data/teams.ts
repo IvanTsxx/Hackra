@@ -32,3 +32,11 @@ export const getTeamById = async (id: string) =>
       id,
     },
   });
+
+export const getAllTeams = async () =>
+  await prisma.team.findMany({
+    select: {
+      id: true,
+    },
+    take: 100,
+  });

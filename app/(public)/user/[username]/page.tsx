@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { HackathonCard } from "@/components/hackathon-card";
 import { TagBadge } from "@/components/tag-badge";
-import { getUserByUsername } from "@/data/user";
+import { getAllUsers, getUserByUsername } from "@/data/user";
 import {
   Tabs,
   TabsContent,
@@ -12,6 +12,13 @@ import {
 } from "@/shared/components/ui/tabs";
 
 import { ProfileHeader } from "./_components/profile-header";
+
+export async function generateStaticParams() {
+  const users = await getAllUsers();
+  return users.map((user) => ({
+    username: user.username,
+  }));
+}
 
 export default async function UserProfilePage({
   params,

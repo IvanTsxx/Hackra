@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { AvatarGroup } from "@/components/avatar-group";
 import { TagBadge } from "@/components/tag-badge";
 import { getHackathon } from "@/data/hackatons";
-import { getTeamById } from "@/data/teams";
+import { getAllTeams, getTeamById } from "@/data/teams";
 import {
   Avatar,
   AvatarFallback,
@@ -13,6 +13,13 @@ import {
 } from "@/shared/components/ui/avatar";
 
 import { TeamHeader } from "./_components/team-header";
+
+export async function generateStaticParams() {
+  const teams = await getAllTeams();
+  return teams.map((team) => ({
+    id: team.id,
+  }));
+}
 
 export default async function TeamDetailPage({
   params,

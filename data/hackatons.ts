@@ -196,4 +196,5 @@ export const getAllHackathons = async () =>
     select: {
       slug: true,
     },
+    take: 100,
   });
