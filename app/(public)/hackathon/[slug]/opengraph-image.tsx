@@ -15,7 +15,7 @@ export default async function Image({
 
   return createOgImage(() => (
     <OgLayout
-      avatarSrc={null}
+      avatarSrc={hackathon?.organizer.image || null}
       topBar={{ label: "HACKRA", right: "HACKATHON" }}
       authorName={hackathon?.title || "Hackathon"}
       url={`https://hackra.dev/hackathon/${slug}`}

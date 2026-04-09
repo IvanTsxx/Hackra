@@ -35,6 +35,7 @@ export const getFeaturedHackatons = async () =>
 export const getHackathon = async (slug: string) =>
   await prisma.hackathon.findUnique({
     include: {
+      organizer: true,
       participants: {
         include: {
           user: true,
