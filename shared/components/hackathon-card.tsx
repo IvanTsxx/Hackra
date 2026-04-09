@@ -116,18 +116,13 @@ export function HackathonCard({
   const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
 
   return (
-    <motion.div
+    <motion.article
       whileHover={{ y: -3 }}
       transition={{ duration: 0.18, ease: "easeOut" }}
       className="relative overflow-hidden"
     >
-      <div
-        className={`absolute rounded-full w-44 h-44 blur-3xl opacity-5 -top-20 -right-20`}
-        style={{ backgroundColor: accent }}
-      />
-
-      <article
-        className="border border-border/40 hover:border-border/60 transition-all duration-200 bg-card/30 overflow-hidden relative flex flex-col pb-10 group"
+      <section
+        className="border border-border/40 hover:border-border/60 transition-all duration-200 bg-card/30 overflow-hidden relative flex flex-col pb-10 group h-[300px]"
         style={{
           borderTopColor: `color-mix(in oklch, ${accent} 55%, transparent)`,
           borderTopWidth: 2,
@@ -138,8 +133,14 @@ export function HackathonCard({
           className="absolute inset-0 pointer-events-none select-none overflow-hidden "
           aria-hidden="true"
         >
-          <span className="absolute bottom-0 text-5xl leading-none text-foreground opacity-[0.025] whitespace-nowrap">
-            {hackathon.title.split(" ").slice(0, 2).join(" ")}
+          <span className="absolute bottom-0 text-4xl leading-none opacity-[0.15] dark:opacity-[0.025] whitespace-nowrap">
+            {hackathon.title
+              .split(" ")
+              .slice(0, 3)
+              .join(" ")
+              .split(":")
+              .slice(0, 2)
+              .join(" ")}
           </span>
         </div>
 
@@ -179,13 +180,19 @@ export function HackathonCard({
         <div className="px-4 pb-3 relative z-10">
           <div className="flex items-start gap-2">
             {hasImage && (
-              <Image
-                // oxlint-disable-next-line typescript/no-non-null-assertion
-                src={hackathon.image!}
-                alt={hackathon.title}
-                fill
-                className="object-cover opacity-70"
-              />
+              <div className="w-full h-full">
+                <Image
+                  // oxlint-disable-next-line typescript/no-non-null-assertion
+                  src={hackathon.image!}
+                  alt={hackathon.title}
+                  width={1600}
+                  height={1600}
+                  className="w-full max-w-full h-full object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                />
+              </div>
             )}
             {!hasImage && (
               <div className="w-full h-full">
@@ -266,7 +273,7 @@ export function HackathonCard({
             }}
           />
         )}
-      </article>
-    </motion.div>
+      </section>
+    </motion.article>
   );
 }
