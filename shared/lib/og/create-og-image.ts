@@ -43,6 +43,18 @@ export async function createOgImage(
     }
   }
 
+  // Fallback to hackra-logo.jpeg if no avatar found
+  if (!avatarSrc) {
+    try {
+      const buf = await readFile(
+        path.join(process.cwd(), "public", "hackra-logo.jpeg")
+      );
+      avatarSrc = `data:image/jpeg;base64,${buf.toString("base64")}`;
+    } catch {
+      // no fallback
+    }
+  }
+
   // Takumi has Geist embedded by default - no font loading needed
   return new ImageResponse(render({ avatarSrc }), {
     height: OG_SIZE.height,
