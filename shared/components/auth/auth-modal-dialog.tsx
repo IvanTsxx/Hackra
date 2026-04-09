@@ -40,7 +40,7 @@ export function AuthModalDialog({
     | undefined;
   callbackUrl?: string;
 }) {
-  const handleOAuth = (provider: "google" | "github") => {
+  const handleOAuth = (provider: "github") => {
     signIn.social({
       callbackURL: callbackUrl,
       provider,
@@ -75,18 +75,6 @@ export function AuthModalDialog({
             transition={{ duration: 0.15 }}
             className="space-y-3"
           >
-            {/* Google */}
-            <button
-              type="button"
-              onClick={() => handleOAuth("google")}
-              className="w-full flex items-center gap-3 border border-border/50 bg-secondary/10 px-4 py-3 hover:border-border/80 hover:bg-secondary/20 transition-all group"
-            >
-              <Icons.Google className="w-4 h-4 shrink-0" />
-              <span className="font-pixel text-sm tracking-wider text-foreground/80 group-hover:text-foreground transition-colors">
-                CONTINUE WITH GOOGLE
-              </span>
-            </button>
-
             {/* GitHub */}
             <button
               type="button"

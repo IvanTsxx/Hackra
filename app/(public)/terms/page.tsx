@@ -70,7 +70,7 @@ export default function TermsPage() {
                 </h2>
                 <p className="text-muted-foreground  text-sm mb-4">
                   {
-                    "/* To use Hackra, you must create an account using Google or GitHub OAuth. You agree to: */"
+                    "/* To use Hackra, you must create an account using GitHub OAuth. You agree to: */"
                   }
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground  text-sm">

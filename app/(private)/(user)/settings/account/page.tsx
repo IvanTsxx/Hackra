@@ -61,7 +61,7 @@ export default function SettingsAccountPage() {
                 <p className="  text-xs text-muted-foreground">
                   Connected accounts
                 </p>
-                <p className="  text-sm text-foreground mt-1">GitHub, Google</p>
+                <p className="  text-sm text-foreground mt-1">GitHub</p>
               </div>
               <Button
                 variant="outline"

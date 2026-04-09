@@ -53,7 +53,7 @@ export default function PrivacyPage() {
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground  text-sm">
                   <li>Account information (name, email, profile picture)</li>
-                  <li>OAuth information from Google/GitHub</li>
+                  <li>OAuth information from GitHub</li>
                   <li>Organizer details (company, bio)</li>
                   <li>Participation data in hackathons</li>
                 </ul>

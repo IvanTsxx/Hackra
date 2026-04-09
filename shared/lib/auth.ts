@@ -91,18 +91,6 @@ export const auth = betterAuth({
         username: profile.login,
       }),
     },
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      mapProfileToUser: (profile) => {
-        // Extraer username del email (juan.perez@gmail.com → juan.perez)
-        const [usernameFromEmail] = profile.email.split("@");
-        return {
-          githubUsername: null,
-          username: usernameFromEmail,
-        };
-      },
-    },
   },
   trustedOrigins: [process.env.BETTER_AUTH_URL || "https://hackra.localhost"],
   user: {
