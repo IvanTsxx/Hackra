@@ -38,7 +38,7 @@ export function UserMenu({
         }
       >
         <Avatar>
-          <AvatarImage src={user.image || ""} />
+          <AvatarImage loading="eager" src={user.image || ""} />
           <AvatarFallback>{user.name?.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

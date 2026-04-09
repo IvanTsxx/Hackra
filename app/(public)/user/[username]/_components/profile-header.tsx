@@ -1,5 +1,5 @@
 "use client";
-import { MapPin, Settings } from "lucide-react";
+import { MapPin, Settings, Trophy, Users, Zap } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,17 +8,48 @@ import type { User } from "@/app/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/shared/components/icons";
 
+/*   const statItems = [
+    {
+      icon: <Trophy size={12} />,
+      label: "HACKATHONS CREATED",
+      value: user.organizedHackathons.length,
+    },
+    {
+      icon: <Trophy size={12} />,
+      label: "HACKATHONS PARTICIPATED",
+      value: user.participations.length,
+    },
+    {
+      icon: <Zap size={12} />,
+      label: "KARMA",
+      value: user.karmaPoints,
+    },
+    {
+      icon: <Users size={12} />,
+      label: "TEAMS CREATED",
+      value: user.ownedTeams.length,
+    },
+  ]; */
+
+const mapStatsIcons = {
+  created: Trophy,
+  karma: Zap,
+  participated: Trophy,
+  teams: Users,
+};
+
 export const ProfileHeader = ({
   user,
   isOwnProfile,
-  statItems,
+  stats,
 }: {
   user: User;
   isOwnProfile: boolean;
-  statItems: { icon: React.ReactNode; label: string; value: number }[];
+  stats: { icon: string; label: string; value: number }[];
 }) => {
   const { name, username, githubUsername, location, position, bio, image } =
     user;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -34,6 +65,8 @@ export const ProfileHeader = ({
               alt={name}
               width={80}
               height={80}
+              loading="eager"
+              priority
               className="rounded-full"
             />
           ) : (
@@ -99,15 +132,18 @@ export const ProfileHeader = ({
 
       {/* Stats row */}
       <div className="grid lg:grid-cols-4 grid-cols-2 gap-px mt-6 border border-border/30 overflow-hidden">
-        {statItems.map((item, i) => (
-          <div key={i} className="bg-secondary/10 p-4 text-center space-y-1">
-            <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
-              {item.icon}
-              <span className="  text-xs tracking-widest">{item.label}</span>
+        {stats.map((item, i) => {
+          const Icon = mapStatsIcons[item.icon as keyof typeof mapStatsIcons];
+          return (
+            <div key={i} className="bg-secondary/10 p-4 text-center space-y-1">
+              <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
+                <Icon size={12} />
+                <span className="  text-xs tracking-widest">{item.label}</span>
+              </div>
+              <p className="font-pixel text-xl text-foreground">{item.value}</p>
             </div>
-            <p className="font-pixel text-xl text-foreground">{item.value}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </motion.div>
   );

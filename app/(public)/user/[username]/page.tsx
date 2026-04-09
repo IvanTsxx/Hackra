@@ -1,4 +1,3 @@
-import { Trophy, Zap, Users } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -77,22 +76,22 @@ export default async function UserProfilePage({
 
   const statItems = [
     {
-      icon: <Trophy size={12} />,
+      icon: "created",
       label: "HACKATHONS CREATED",
       value: user.organizedHackathons.length,
     },
     {
-      icon: <Trophy size={12} />,
+      icon: "participated",
       label: "HACKATHONS PARTICIPATED",
       value: user.participations.length,
     },
     {
-      icon: <Zap size={12} />,
+      icon: "karma",
       label: "KARMA",
       value: user.karmaPoints,
     },
     {
-      icon: <Users size={12} />,
+      icon: "teams",
       label: "TEAMS CREATED",
       value: user.ownedTeams.length,
     },
@@ -104,7 +103,7 @@ export default async function UserProfilePage({
       <ProfileHeader
         user={user}
         isOwnProfile={isOwnProfile}
-        statItems={statItems}
+        stats={statItems}
       />
 
       <div className="grid md:grid-cols-3 gap-8">
