@@ -33,29 +33,6 @@ const fontOptions = [
   },
 ];
 
-// ── Color utilities (mirrored from hackathon-background.tsx) ───────────────────
-
-function hexToRgb(hex: string): [number, number, number] {
-  const r = Number.parseInt(hex.slice(1, 3), 16);
-  const g = Number.parseInt(hex.slice(3, 5), 16);
-  const b = Number.parseInt(hex.slice(5, 7), 16);
-  return [r, g, b];
-}
-
-function autoGradient(bg: string): string {
-  try {
-    const [r, g, b] = hexToRgb(bg);
-    // Shift hue by ~40° and lighten slightly for accent
-    const accentR = Math.min(r + 30, 255);
-    const accentG = Math.min(g + 10, 255);
-    const accentB = Math.max(b - 20, 0);
-    const accent = `rgb(${accentR}, ${accentG}, ${accentB})`;
-    return `linear-gradient(135deg, ${bg} 0%, ${accent} 100%)`;
-  } catch {
-    return `linear-gradient(135deg, ${bg} 0%, #1a1a2e 100%)`;
-  }
-}
-
 // ── Status helpers ─────────────────────────────────────────────────────────────
 
 const statusConfig: Record<
@@ -128,8 +105,6 @@ export default async function Image({
     );
   }
 
-  const bg = hackathon.themeBg || "#171717";
-  const gradient = autoGradient(bg);
   const status = statusConfig[hackathon.status] || statusConfig.DRAFT;
   const participantCount = hackathon.participants.length;
   const displayTags = hackathon.tags.slice(0, 3);
@@ -137,7 +112,7 @@ export default async function Image({
   return new ImageResponse(
     <div
       style={{
-        background: gradient,
+        background: "#171717",
         color: "#e5e5e5",
         display: "flex",
         flexDirection: "column",

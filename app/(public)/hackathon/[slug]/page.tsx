@@ -44,13 +44,34 @@ export async function generateMetadata({
   const hackathon = await getHackathon(slug);
   if (!hackathon) notFound();
 
+  const keywords = [...hackathon.tags, ...hackathon.techs].slice(0, 10);
+
   return {
+    alternates: {
+      canonical: `https://hackra.dev/hackathon/${slug}`,
+    },
     description: hackathon.description,
+    keywords: [
+      ...keywords,
+      "hackathon",
+      "coding competition",
+      "prizes",
+      hackathon.isOnline ? "online hackathon" : "in-person hackathon",
+    ],
     openGraph: {
       description: hackathon.description,
-      title: hackathon.title,
+      locale: "en_US",
+      siteName: "Hackra",
+      title: `${hackathon.title} | Hackra`,
+      type: "website",
+      url: `https://hackra.dev/hackathon/${slug}`,
     },
-    title: hackathon.title,
+    title: `${hackathon.title} | Hackra`,
+    twitter: {
+      card: "summary_large_image",
+      description: hackathon.description,
+      title: `${hackathon.title} | Hackra`,
+    },
   };
 }
 

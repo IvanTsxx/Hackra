@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -9,6 +10,26 @@ import { getTeamsForHackathon } from "@/data/teams";
 import { CodeText } from "@/shared/components/code-text";
 
 import { CreateTeamButton } from "../_components/create-team-button";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const hackathon = await getHackathon(slug);
+
+  if (!hackathon) {
+    return {
+      title: "Hackathon Not Found | Hackra",
+    };
+  }
+
+  return {
+    description: `Find and join teams for ${hackathon.title}. ${hackathon.description?.slice(0, 150)}...`,
+    title: `Teams | ${hackathon.title} | Hackra`,
+  };
+}
 
 export default async function TeamsPage({
   params,

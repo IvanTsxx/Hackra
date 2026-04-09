@@ -1,8 +1,24 @@
+import type { Metadata } from "next";
+
 import { CodeText } from "@/shared/components/code-text";
 
-export const metadata = {
-  description: "Privacy Policy - Hackra",
-  title: "Privacy Policy - Hackra",
+export const metadata: Metadata = {
+  description:
+    "Hackra Privacy Policy. Learn how we collect, use, and protect your personal information when using our hackathon platform.",
+  keywords: [
+    "privacy policy",
+    "data protection",
+    "hackathon privacy",
+    "personal data",
+    "information security",
+  ],
+  openGraph: {
+    description:
+      "Hackra Privacy Policy. Learn how we collect, use, and protect your personal information.",
+    title: "Privacy Policy | Hackra",
+    type: "website",
+  },
+  title: "Privacy Policy | Hackra",
 };
 
 export default function PrivacyPage() {

@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { HeroSection } from "@/components/home/hero-section";
 import { TechStackMarquee } from "@/components/home/tech-stack-marquee";
 import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee";
@@ -6,10 +8,43 @@ import { prisma } from "@/shared/lib/prisma";
 import { Banner } from "../_components/banner";
 import { FeaturedHackatons } from "../_components/featured-hackatons";
 
-export const metadata = {
+export const metadata: Metadata = {
   description:
-    "Connect with developers, build innovative projects, and compete in exciting hackathon events worldwide.",
+    "Discover hackathons worldwide. Connect with developers, build innovative projects, and compete in exciting coding events. Find online and in-person hackathons, form teams, and win prizes.",
+  keywords: [
+    "hackathon",
+    "coding competition",
+    "developer event",
+    "tech hackathon",
+    "online hackathon",
+    "build competition",
+    "prizes",
+    "team formation",
+    "developer community",
+    "coding event",
+    "programming contest",
+    "innovation challenge",
+  ],
+  openGraph: {
+    description:
+      "Discover hackathons worldwide. Connect with developers, build innovative projects, and compete in exciting coding events.",
+    locale: "en_US",
+    siteName: "Hackra",
+    title: "Hackra | Build. Compete. Together.",
+    type: "website",
+    url: "https://hackra.dev",
+  },
+  robots: {
+    follow: true,
+    index: true,
+  },
   title: "Hackra | Build. Compete. Together.",
+  twitter: {
+    card: "summary_large_image",
+    description:
+      "Discover hackathons worldwide. Connect with developers, build innovative projects, and compete in exciting coding events.",
+    title: "Hackra | Build. Compete. Together.",
+  },
 };
 
 function formatPrice(amount: number) {

@@ -1,11 +1,28 @@
 import { Code2, Terminal, Users, Trophy } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CodeText } from "@/shared/components/code-text";
 
-export const metadata = {
-  description: "About Hackra - The platform for hackathons",
-  title: "About - Hackra",
+export const metadata: Metadata = {
+  description:
+    "Learn about Hackra - the platform connecting developers worldwide through hackathons. Our mission is to democratize hackathons and make participating accessible to everyone.",
+  keywords: [
+    "about hackra",
+    "hackathon platform",
+    "developer community",
+    "coding events",
+    "build together",
+    "hackathon mission",
+    "open source hackathon",
+  ],
+  openGraph: {
+    description:
+      "Learn about Hackra - the platform connecting developers worldwide through hackathons.",
+    title: "About Hackra | The Hackathon Platform",
+    type: "website",
+  },
+  title: "About Hackra | The Hackathon Platform",
 };
 
 export default function AboutPage() {

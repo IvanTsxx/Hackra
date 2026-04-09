@@ -1,8 +1,24 @@
+import type { Metadata } from "next";
+
 import { CodeText } from "@/shared/components/code-text";
 
-export const metadata = {
-  description: "Terms of Service - Hackra",
-  title: "Terms of Service - Hackra",
+export const metadata: Metadata = {
+  description:
+    "Hackra Terms of Service. Read our terms and conditions for using the platform, organizing hackathons, and participating in events.",
+  keywords: [
+    "terms of service",
+    "hackathon terms",
+    "terms and conditions",
+    "platform terms",
+    "user agreement",
+  ],
+  openGraph: {
+    description:
+      "Hackra Terms of Service. Read our terms and conditions for using the platform.",
+    title: "Terms of Service | Hackra",
+    type: "website",
+  },
+  title: "Terms of Service | Hackra",
 };
 
 export default function TermsPage() {

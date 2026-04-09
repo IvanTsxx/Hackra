@@ -1,8 +1,32 @@
+import type { Metadata } from "next";
+
 import type { HackathonStatus } from "@/app/generated/prisma/enums";
 import { getExploreFilters, getHackathonsForExplore } from "@/data/hackatons";
 
 import { ExploreFilters } from "./_components/explore-filters";
 import { ExploreGrid } from "./_components/explore-grid";
+
+export const metadata: Metadata = {
+  description:
+    "Discover hackathons worldwide. Find online and in-person coding competitions, build teams, and compete for prizes. Filter by technology, location, and status.",
+  keywords: [
+    "hackathon",
+    "coding competition",
+    "developer event",
+    "tech hackathon",
+    "online hackathon",
+    "build competition",
+    "prizes",
+    "team formation",
+  ],
+  openGraph: {
+    description:
+      "Discover hackathons worldwide. Find online and in-person coding competitions, build teams, and compete for prizes.",
+    title: "Explore Hackathons | Hackra",
+    type: "website",
+  },
+  title: "Explore Hackathons | Hackra",
+};
 
 interface Props {
   searchParams: Promise<{

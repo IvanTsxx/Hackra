@@ -1,4 +1,5 @@
 import { ChevronRight, Users, Code2 } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -19,6 +20,38 @@ export async function generateStaticParams() {
   return teams.map((team) => ({
     id: team.id,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const team = await getTeamById(id);
+
+  if (!team) {
+    return {
+      title: "Team Not Found | Hackra",
+    };
+  }
+
+  const hackathon = await getHackathon(team.hackathon.slug);
+
+  const teamDescription =
+    team.description ||
+    `Team ${team.name} for ${hackathon?.title || "hackathon"}. Looking for ${team.maxMembers - team.members.length} more members.`;
+
+  return {
+    description: teamDescription,
+    openGraph: {
+      description:
+        team.description || `Join team ${team.name} for ${hackathon?.title}`,
+      title: `${team.name} | Hackra`,
+      type: "website",
+    },
+    title: `${team.name} | Hackra`,
+  };
 }
 
 export default async function TeamDetailPage({

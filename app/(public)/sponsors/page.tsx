@@ -1,4 +1,5 @@
 import { ExternalLink } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Tier } from "@/app/generated/prisma/enums";
@@ -7,9 +8,24 @@ import { CodeText } from "@/shared/components/code-text";
 
 const TIER_ORDER: Tier[] = [Tier.PLATINUM, Tier.GOLD, Tier.SILVER, Tier.BRONZE];
 
-export const metadata = {
-  description: "Meet the companies powering hackathons on Hackra.",
-  title: "Sponsors — Hackra",
+export const metadata: Metadata = {
+  description:
+    "Meet the companies and teams powering hackathons and prizes on Hackra. Discover sponsors supporting the developer community and innovation.",
+  keywords: [
+    "hackathon sponsors",
+    "hackathon sponsorships",
+    "tech sponsors",
+    "developer sponsors",
+    "prize sponsors",
+    "hackathon partners",
+  ],
+  openGraph: {
+    description:
+      "Meet the companies and teams powering hackathons and prizes on Hackra.",
+    title: "Sponsors | Hackra - Companies Powering Hackathons",
+    type: "website",
+  },
+  title: "Sponsors | Hackra - Companies Powering Hackathons",
 };
 
 export default async function SponsorsPage() {

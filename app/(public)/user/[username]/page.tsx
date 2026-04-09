@@ -1,4 +1,5 @@
 import { Trophy, Zap, Users } from "lucide-react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { HackathonCard } from "@/components/hackathon-card";
@@ -18,6 +19,43 @@ export async function generateStaticParams() {
   return users.map((user) => ({
     username: user.username,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}): Promise<Metadata> {
+  const { username } = await params;
+  const user = await getUserByUsername(username);
+
+  if (!user) {
+    return {
+      title: "User Not Found | Hackra",
+    };
+  }
+
+  const hackathonsCount = user.organizedHackathons.length;
+  const participationsCount = user.participations.length;
+
+  const userDescription =
+    user.bio ||
+    `${user.name} has participated in ${participationsCount} hackathons and organized ${hackathonsCount} hackathons on Hackra.`;
+
+  return {
+    description: userDescription,
+    openGraph: {
+      description:
+        user.bio ||
+        `${user.name} on Hackra - ${participationsCount} participations, ${hackathonsCount} organized`,
+      title: `${user.name} | Hackra`,
+      type: "profile",
+    },
+    title: `${user.name} | Hackra`,
+    twitter: {
+      card: "summary",
+    },
+  };
 }
 
 export default async function UserProfilePage({
