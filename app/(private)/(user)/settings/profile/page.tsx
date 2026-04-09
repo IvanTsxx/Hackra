@@ -1,6 +1,5 @@
 import { ChevronRight } from "lucide-react";
 import { headers } from "next/headers";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AnimatedSection } from "@/app/(private)/(user)/_components/animated-section";
@@ -31,11 +30,9 @@ export default async function SettingsProfilePage() {
     <section>
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
-        <Link href={`/user/${user.username}`} className="hover:text-foreground">
-          PROFILE
-        </Link>
+        <span>SETTINGS</span>
         <ChevronRight size={10} />
-        <span className="text-foreground">SETTINGS</span>
+        <span className="text-foreground">PROFILE</span>
       </div>
 
       <AnimatedSection>

@@ -1,12 +1,7 @@
 "use client";
 
 import type { LucideProps } from "lucide-react";
-import {
-  BellIcon,
-  LayoutDashboardIcon,
-  SettingsIcon,
-  UserIcon,
-} from "lucide-react";
+import { LayoutDashboardIcon, SettingsIcon, UserIcon } from "lucide-react";
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,6 +21,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { cn } from "@/shared/lib/utils";
 
 const mainNavItems: {
   href: Route;
@@ -47,7 +43,7 @@ const settingsNavItems: {
   label: string;
 }[] = [
   { href: "/settings/profile", icon: UserIcon, label: "Profile" },
-  { href: "/settings/notifications", icon: BellIcon, label: "Notifications" },
+  /* { href: "/settings/notifications", icon: BellIcon, label: "Notifications" }, */
   { href: "/settings/account", icon: SettingsIcon, label: "Account" },
 ];
 
@@ -91,22 +87,25 @@ export function UserSidebar() {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {mainNavItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    isActive={pathname === item.href}
-                    render={
-                      <Link
-                        href={item.href}
-                        className="flex items-center gap-2"
-                      >
-                        <item.icon />
-                        <span>{item.label}</span>
-                      </Link>
-                    }
-                  />
-                </SidebarMenuItem>
-              ))}
+              {mainNavItems.map((item) => {
+                const isActive = pathname.includes(item.href);
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      className={cn(isActive && "text-brand-green")}
+                      render={
+                        <Link
+                          href={item.href}
+                          className="flex items-center gap-2"
+                        >
+                          <item.icon />
+                          <span>{item.label}</span>
+                        </Link>
+                      }
+                    />
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -115,22 +114,26 @@ export function UserSidebar() {
           <SidebarGroupLabel>Settings</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {settingsNavItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    isActive={pathname === item.href}
-                    render={
-                      <Link
-                        href={item.href}
-                        className="flex items-center gap-2"
-                      >
-                        <item.icon />
-                        <span>{item.label}</span>
-                      </Link>
-                    }
-                  />
-                </SidebarMenuItem>
-              ))}
+              {settingsNavItems.map((item) => {
+                const isActive = pathname.includes(item.href);
+
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      className={cn(isActive && "text-brand-green")}
+                      render={
+                        <Link
+                          href={item.href}
+                          className="flex items-center gap-2"
+                        >
+                          <item.icon />
+                          <span>{item.label}</span>
+                        </Link>
+                      }
+                    />
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

@@ -1,6 +1,5 @@
 import "server-only";
 import { ChevronRight, Trash2, Mail, Shield } from "lucide-react";
-import Link from "next/link";
 
 import { AnimatedSection } from "@/app/(private)/(user)/_components/animated-section";
 import { Button } from "@/components/ui/button";
@@ -11,11 +10,9 @@ export default function SettingsAccountPage() {
     <section>
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
-        <Link href="/user/me" className="hover:text-foreground">
-          PROFILE
-        </Link>
+        <span>SETTINGS</span>
         <ChevronRight size={10} />
-        <span className="text-foreground">SETTINGS</span>
+        <span className="text-foreground">ACCOUNT</span>
       </div>
 
       <AnimatedSection>

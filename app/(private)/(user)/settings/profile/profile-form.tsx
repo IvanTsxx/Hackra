@@ -306,18 +306,6 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                   </Button>
                 ))}
               </div>
-              {techs.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  {techs.map((tech, i) => (
-                    <TagBadge
-                      key={tech}
-                      label={tech}
-                      variant="tech"
-                      index={i}
-                    />
-                  ))}
-                </div>
-              )}
             </div>
           );
         }}
