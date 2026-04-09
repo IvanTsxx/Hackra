@@ -49,6 +49,8 @@ Hackra is a hackathon platform built with Next.js 16, React 19, TypeScript, Pris
 | `brand-guidelines` | Applying Anthropic's brand colors and typography | `.claude/skills/brand-guidelines/SKILL.md` |
 | `testing-next-stack` | Setting up tests, Vitest, Playwright, RTL | `.claude/skills/testing-next-stack/SKILL.md` |
 | `better-upload` | File uploads with better-upload | `.claude/skills/better-upload/SKILL.md` |
+| `ai-seo` | AI-powered SEO optimization and analysis | `.claude/skills/ai-seo/SKILL.md` |
+| `seo-content-writer` | SEO content writing, meta tags, keywords | `.claude/skills/seo-content-writer/SKILL.md` |
 
 ### SDD (Spec-Driven Development) Skills
 
