@@ -16,6 +16,11 @@
       "sourceType": "github",
       "computedHash": "5717187bba9c22030c7174c74012f01c359f21e2ce87e0eb80e24244d8b8c915"
     },
+    "better-upload": {
+      "source": "IvanTsxx/better-upload-skills",
+      "sourceType": "github",
+      "computedHash": "4992d6d415893c55f826fe12ea063f6b2c3dcc0b2e497e26cc54af3219d520ef"
+    },
     "create-auth-skill": {
       "source": "better-auth/skills",
       "sourceType": "github",
