@@ -79,14 +79,14 @@ export function HackathonBackground({
   );
 
   return (
-    <div
-      className={cn("min-h-screen", styleClasses)}
+    <article
+      className={cn("w-full h-full", styleClasses)}
       style={{ background: gradientCss }}
     >
       {themeStyle === "cyber" && (
         <div className="pixel-grid absolute inset-0 opacity-20 pointer-events-none" />
       )}
       {children}
-    </div>
+    </article>
   );
 }

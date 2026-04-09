@@ -94,7 +94,7 @@ export default async function HackathonDetailPage({
       themeBg={hackathon.themeBg}
       themeStyle={hackathon.themeStyle}
     >
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-20 pb-16">
+      <main className="px-4 sm:px-6 pt-20 pb-16">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
           <Link

@@ -56,6 +56,7 @@
   --color-brand-purple: var(--brand-purple);
   --color-brand-dim: var(--brand-dim);
   --color-brand-glow: var(--brand-glow);
+  --container-8xl: 100rem;
 }
 
 :root {

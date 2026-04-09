@@ -7,7 +7,7 @@ interface PublicLayoutFormProps {
 }
 
 const PublicLayout: React.FC<PublicLayoutFormProps> = ({ children }) => (
-  <main className="relative max-w-7xl mx-auto">
+  <main className="relative max-w-8xl mx-auto">
     <Navbar />
     {/* Pixel Grid Background */}
     <div className="absolute inset-0 pixel-grid opacity-40 -z-10" />
