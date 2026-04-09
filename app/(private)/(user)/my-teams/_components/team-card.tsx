@@ -43,7 +43,7 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
           </Link>
           <Link
             href={`/hackathon/${team.hackathon.slug}`}
-            className="font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="  text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             {team.hackathon.title.toUpperCase()}
           </Link>
@@ -53,7 +53,7 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
 
       {/* Stats row */}
       <div className="flex items-center justify-between">
-        <span className="font-mono text-xs text-muted-foreground/60 flex items-center gap-1">
+        <span className="  text-xs text-muted-foreground/60 flex items-center gap-1">
           <Users size={10} />
           {memberCount}/{team.maxMembers} MEMBERS
         </span>
@@ -80,7 +80,7 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
           <ExternalLink size={10} />
           VIEW
         </Link>
-        <span className="font-mono text-xs text-muted-foreground/40 ml-auto">
+        <span className="  text-xs text-muted-foreground/40 ml-auto">
           Created{" "}
           {formatDistanceToNow(new Date(team.createdAt), { addSuffix: true })}
         </span>
@@ -110,7 +110,7 @@ export function MemberTeamCard({ team, index }: MemberTeamCardProps) {
           </Link>
           <Link
             href={`/hackathon/${team.team.hackathon.slug}`}
-            className="font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="  text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             {team.team.hackathon.title.toUpperCase()}
           </Link>
@@ -120,10 +120,10 @@ export function MemberTeamCard({ team, index }: MemberTeamCardProps) {
 
       {/* Owner + members row */}
       <div className="flex items-center justify-between">
-        <span className="font-mono text-xs text-muted-foreground/60">
+        <span className="  text-xs text-muted-foreground/60">
           Owner: @{team.team.owner.username}
         </span>
-        <span className="font-mono text-xs text-muted-foreground/60 flex items-center gap-1">
+        <span className="  text-xs text-muted-foreground/60 flex items-center gap-1">
           <Users size={10} />
           {memberCount}/{team.team.maxMembers}
         </span>
@@ -138,7 +138,7 @@ export function MemberTeamCard({ team, index }: MemberTeamCardProps) {
           <ExternalLink size={10} />
           VIEW TEAM
         </Link>
-        <span className="font-mono text-xs text-muted-foreground/40">
+        <span className="  text-xs text-muted-foreground/40">
           Joined{" "}
           {formatDistanceToNow(new Date(team.joinedAt), { addSuffix: true })}
         </span>

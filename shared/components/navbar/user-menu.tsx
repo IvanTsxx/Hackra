@@ -60,7 +60,7 @@ export function UserMenu({
                 <span className="font-pixel text-xs tracking-wider text-foreground truncate">
                   {user.name?.toUpperCase()}
                 </span>
-                <span className="font-mono text-xs text-muted-foreground truncate">
+                <span className="  text-xs text-muted-foreground truncate">
                   @{user.username}
                 </span>
               </div>

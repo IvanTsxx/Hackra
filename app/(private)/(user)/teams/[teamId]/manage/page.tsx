@@ -58,7 +58,7 @@ export default async function ManageTeamPage({
   return (
     <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/hackathon/${team.hackathon.slug}/teams`}
           className="hover:text-foreground"
@@ -75,14 +75,12 @@ export default async function ManageTeamPage({
 
       {/* Team header */}
       <div className="mb-8 space-y-2">
-        <p className="font-mono text-xs text-brand-green tracking-widest">
-          manage
-        </p>
+        <p className="  text-xs text-brand-green tracking-widest">manage</p>
         <h1 className="font-pixel text-2xl md:text-3xl text-foreground">
           {team.name.toUpperCase()}
         </h1>
         {team.description && (
-          <p className="font-mono text-sm text-muted-foreground max-w-xl">
+          <p className="  text-sm text-muted-foreground max-w-xl">
             {team.description}
           </p>
         )}
@@ -123,7 +121,7 @@ export default async function ManageTeamPage({
             <span className="font-pixel text-xs tracking-wider text-muted-foreground">
               TEAM CAPACITY
             </span>
-            <span className="font-mono text-xs text-foreground">
+            <span className="  text-xs text-foreground">
               {currentMembers} / {capacity} ({capacityPercent}%)
             </span>
           </div>
@@ -162,7 +160,7 @@ export default async function ManageTeamPage({
             <h3 className="font-pixel text-sm text-foreground tracking-wider">
               NO APPLICATIONS YET
             </h3>
-            <p className="font-mono text-xs text-muted-foreground max-w-sm mx-auto">
+            <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
               When people apply to join your team, their applications will
               appear here for review.
             </p>
@@ -252,7 +250,7 @@ export default async function ManageTeamPage({
             <h3 className="font-pixel text-sm text-foreground tracking-wider">
               NO MEMBERS YET
             </h3>
-            <p className="font-mono text-xs text-muted-foreground max-w-sm mx-auto">
+            <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
               Accept applications to build your team.
             </p>
           </div>
@@ -278,7 +276,7 @@ export default async function ManageTeamPage({
                   <p className="font-pixel text-xs text-foreground">
                     {member.user.name.toUpperCase()}
                   </p>
-                  <p className="font-mono text-xs text-muted-foreground">
+                  <p className="  text-xs text-muted-foreground">
                     @{member.user.username}
                   </p>
                 </div>
@@ -287,7 +285,7 @@ export default async function ManageTeamPage({
                     {member.user.techStack.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="border border-border/40 font-mono text-xs px-1.5 py-0.5 text-foreground/70"
+                        className="border border-border/40   text-xs px-1.5 py-0.5 text-foreground/70"
                       >
                         {tech}
                       </span>
@@ -320,7 +318,7 @@ function StatCard({
         {icon}
         <span className="font-pixel text-xs tracking-wider">{label}</span>
       </div>
-      <p className="font-mono text-lg text-foreground">{value}</p>
+      <p className="  text-lg text-foreground">{value}</p>
     </div>
   );
 }

@@ -26,7 +26,7 @@ export default async function MyTeamsPage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/user/${session.user.username}`}
           className="hover:text-foreground"
@@ -63,7 +63,7 @@ export default async function MyTeamsPage() {
           <h3 className="font-pixel text-sm text-foreground tracking-wider">
             NO TEAMS YET
           </h3>
-          <p className="font-mono text-xs text-muted-foreground max-w-sm mx-auto">
+          <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
             Create a team or join one to start collaborating on hackathons.
           </p>
           <Link
@@ -83,7 +83,7 @@ export default async function MyTeamsPage() {
 
             {owned.length === 0 ? (
               <div className="glass border border-border/40 p-8 text-center">
-                <p className="font-mono text-xs text-muted-foreground">
+                <p className="  text-xs text-muted-foreground">
                   You don&apos;t own any teams yet.{" "}
                   <Link
                     href="/explore"
@@ -111,7 +111,7 @@ export default async function MyTeamsPage() {
 
             {memberOf.length === 0 ? (
               <div className="glass border border-border/40 p-8 text-center">
-                <p className="font-mono text-xs text-muted-foreground">
+                <p className="  text-xs text-muted-foreground">
                   You&apos;re not a member of any teams yet.
                 </p>
               </div>

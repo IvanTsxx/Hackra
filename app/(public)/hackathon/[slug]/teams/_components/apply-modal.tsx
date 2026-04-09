@@ -84,7 +84,7 @@ export function ApplyModal({
             className="py-8 text-center space-y-2"
           >
             <p className="font-pixel text-lg text-brand-green">SENT.</p>
-            <p className="font-mono text-xs text-muted-foreground">
+            <p className="  text-xs text-muted-foreground">
               Application submitted successfully
             </p>
           </motion.div>
@@ -92,7 +92,7 @@ export function ApplyModal({
           <div className="space-y-4 pt-2">
             {team.questions.map((q, i) => (
               <div key={i} className="space-y-1.5">
-                <label className="font-mono text-xs text-foreground">
+                <label className="  text-xs text-foreground">
                   {q.question}
                 </label>
                 <input
@@ -104,13 +104,13 @@ export function ApplyModal({
                     setAnswers(next);
                   }}
                   placeholder="Your answer..."
-                  className="w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs outline-none focus:border-brand-green/40"
+                  className="w-full border border-border/40 bg-secondary/20 px-3 py-2   text-xs outline-none focus:border-brand-green/40"
                 />
               </div>
             ))}
 
             <div className="space-y-1.5">
-              <label className="font-mono text-xs text-muted-foreground">
+              <label className="  text-xs text-muted-foreground">
                 MESSAGE (optional)
               </label>
               <textarea
@@ -118,7 +118,7 @@ export function ApplyModal({
                 onChange={(e) => setMessage(e.target.value)}
                 rows={3}
                 placeholder="Tell the team why you want to join..."
-                className="w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs outline-none focus:border-brand-green/40 resize-none"
+                className="w-full border border-border/40 bg-secondary/20 px-3 py-2   text-xs outline-none focus:border-brand-green/40 resize-none"
               />
             </div>
 

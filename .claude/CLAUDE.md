@@ -2,33 +2,79 @@
 
 Hackra is a hackathon platform built with Next.js 16, React 19, TypeScript, Prisma 7 (PostgreSQL), Better Auth, Tailwind CSS 4, and shadcn/ui. Package manager: **Bun**.
 
-## Available Skills
+---
 
-These skills are installed in `.claude/skills/` and should be loaded before writing code in their respective domains.
+## Design System & References
+
+> **⚠️ IMPORTANTE**: Antes de hacer cualquier cambio de diseño, lee `@DESIGN.md` para entender el sistema de diseño de Hackra (fuentes pixel, bordes sharp, efectos glow, etc.).
+
+### References
+
+- **AGENTS.md**: Version for OpenCode with `.agents/skills` paths — [ver AGENTS.md](./AGENTS.md)
+- **GEMINI.md**: Version for Gemini with `.agents/skills` paths — [ver GEMINI.md](./GEMINI.md)
+- **DESIGN.md**: Complete design system documentation — [ver DESIGN.md](./DESIGN.md)
+
+---
+
+## Skills Registry
+
+> **¿Cuándo usar skills?** Las siguientes skills están registradas y disponibles. Carga la skill relevante ANTES de escribir código en esos dominios.
 
 ### Core Skills (auto-load when relevant)
 
-| Skill                   | When to Load                                                                               | What It Provides                                                                                    |
-| ----------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| `architect-nextjs`      | Setting up new features, deciding component placement, refactoring, architecture decisions | Scope Rule (local vs shared), Screaming Architecture, route groups, Server Actions placement        |
-| `ultracite`             | Writing any TS/TSX code, linting, formatting                                               | Code standards, CLI commands (`bunx ultracite check/fix/doctor`), Oxlint + Oxfmt rules              |
-| `next-cache-components` | Using Next.js 16 caching (PPR, `use cache`, `cacheLife`, `cacheTag`)                       | Partial Prerendering, cache directives, cache invalidation patterns                                 |
-| `next-best-practices`   | Writing Next.js pages, layouts, API routes, metadata                                       | RSC boundaries, async patterns, data fetching, error handling, Suspense, route handlers             |
-| `shadcn`                | Adding, fixing, or composing UI components                                                 | Component docs via `npx shadcn@latest docs`, composition rules, forms, styling, icons, CLI workflow |
-| `web-design-guidelines` | Reviewing UI code for accessibility/design compliance                                      | Checks against Vercel Web Interface Guidelines, fetches latest rules from source                    |
-| `find-skills`           | User asks "how do I do X", "is there a skill for X", or wants to extend capabilities       | Search and install skills from the ecosystem via `npx skills find [query]`                          |
+| Skill | When to Load | Location |
+| ----- | ------------ | -------- |
+| `architect-nextjs` | Setting up new features, deciding component placement | `.claude/skills/architect-nextjs/SKILL.md` |
+| `ultracite` | Writing any TS/TSX code, linting, formatting | `.claude/skills/ultracite/SKILL.md` |
+| `next-cache-components` | Using Next.js 16 caching (PPR, `use cache`, `cacheLife`, `cacheTag`) | `.claude/skills/next-cache-components/SKILL.md` |
+| `next-best-practices` | Writing Next.js pages, layouts, API routes, metadata | `.claude/skills/next-best-practices/SKILL.md` |
+| `shadcn` | Adding, fixing, or composing UI components | `.claude/skills/shadcn/SKILL.md` |
+| `web-design-guidelines` | Reviewing UI code for accessibility/design compliance | `.claude/skills/web-design-guidelines/SKILL.md` |
+| `find-skills` | User asks "how do I do X", "is there a skill for X" | `.claude/skills/find-skills/SKILL.md` |
 
 ### Domain-Specific Skills
 
-| Skill                                 | When to Load                                                                 | What It Provides                                                              |
-| ------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `better-auth-best-practices`          | Configuring Better Auth server/client, OAuth, sessions, plugins              | Auth setup patterns, database adapters, environment variables                 |
-| `better-auth-security-best-practices` | Securing auth setup, rate limiting, CSRF, session hardening                  | Security patterns, token encryption, audit logging                            |
-| `prisma-cli`                          | Running Prisma CLI commands, migrations, schema setup                        | All CLI commands (`prisma init/generate/migrate/db/studio`), MCP server setup |
-| `prisma-client-api`                   | Writing database queries, CRUD operations, filtering                         | Model queries, operators, transactions, client methods                        |
-| `prisma-database-setup`               | Setting up or changing database connections                                  | PostgreSQL, MySQL, SQLite, MongoDB configuration guides                       |
-| `vercel-composition-patterns`         | Refactoring components with prop proliferation, building component libraries | Compound components, render props, context providers, React 19 API changes    |
-| `emil-design-eng`                     | UI polish, component design, animation decisions                             | Emil Kowalski's design philosophy, micro-interactions, visual refinement      |
+| Skill | When to Load | Location |
+| ----- | ------------ | -------- |
+| `better-auth-best-practices` | Configuring Better Auth server/client, OAuth, sessions | `.claude/skills/better-auth-best-practices/SKILL.md` |
+| `better-auth-security-best-practices` | Securing auth setup, rate limiting, CSRF | `.claude/skills/better-auth-security-best-practices/SKILL.md` |
+| `prisma-cli` | Running Prisma CLI commands, migrations, schema | `.claude/skills/prisma-cli/SKILL.md` |
+| `prisma-client-api` | Writing database queries, CRUD operations | `.claude/skills/prisma-client-api/SKILL.md` |
+| `prisma-database-setup` | Setting up or changing database connections | `.claude/skills/prisma-database-setup/SKILL.md` |
+| `prisma-postgres` | Prisma Postgres specific operations | `.claude/skills/prisma-postgres/SKILL.md` |
+| `prisma-driver-adapter-implementation` | Prisma v7 driver adapter work | `.claude/skills/prisma-driver-adapter-implementation/SKILL.md` |
+| `vercel-composition-patterns` | Refactoring components with prop proliferation | `.claude/skills/vercel-composition-patterns/SKILL.md` |
+| `emil-design-eng` | UI polish, component design, animation | `.claude/skills/emil-design-eng/SKILL.md` |
+| `frontend-design` | Creating distinctive, production-grade frontend | `.claude/skills/frontend-design/SKILL.md` |
+| `brand-guidelines` | Applying Anthropic's brand colors and typography | `.claude/skills/brand-guidelines/SKILL.md` |
+| `testing-next-stack` | Setting up tests, Vitest, Playwright, RTL | `.claude/skills/testing-next-stack/SKILL.md` |
+| `better-upload` | File uploads with better-upload | `.claude/skills/better-upload/SKILL.md` |
+
+### SDD (Spec-Driven Development) Skills
+
+| Skill | When to Load | Location |
+| ----- | ------------ | -------- |
+| `sdd-init` | Initialize SDD context in project | `~/.claude/skills/sdd-init/SKILL.md` |
+| `sdd-explore` | Explore and investigate ideas | `~/.claude/skills/sdd-explore/SKILL.md` |
+| `sdd-propose` | Create change proposals | `~/.claude/skills/sdd-propose/SKILL.md` |
+| `sdd-spec` | Write specifications | `~/.claude/skills/sdd-spec/SKILL.md` |
+| `sdd-design` | Create technical design | `~/.claude/skills/sdd-design/SKILL.md` |
+| `sdd-tasks` | Break down into tasks | `~/.claude/skills/sdd-tasks/SKILL.md` |
+| `sdd-apply` | Implement tasks | `~/.claude/skills/sdd-apply/SKILL.md` |
+| `sdd-verify` | Validate implementation | `~/.claude/skills/sdd-verify/SKILL.md` |
+| `sdd-archive` | Archive completed change | `~/.claude/skills/sdd-archive/SKILL.md` |
+| `sdd-onboard` | Guided SDD walkthrough | `~/.claude/skills/sdd-onboard/SKILL.md` |
+
+### Workflow Skills
+
+| Skill | When to Load | Location |
+| ----- | ------------ | -------- |
+| `branch-pr` | Creating pull requests, PR workflow | `~/.claude/skills/branch-pr/SKILL.md` |
+| `issue-creation` | Creating GitHub issues | `~/.claude/skills/issue-creation/SKILL.md` |
+| `judgment-day` | Adversarial code review | `~/.claude/skills/judgment-day/SKILL.md` |
+| `skill-creator` | Creating new AI agent skills | `~/.claude/skills/skill-creator/SKILL.md` |
+| `skill-registry` | Update skill registry | `~/.claude/skills/skill-registry/SKILL.md` |
+| `go-testing` | Go testing patterns | `~/.claude/skills/go-testing/SKILL.md` |
 
 ### Skill Loading Rules
 
@@ -37,6 +83,8 @@ These skills are installed in `.claude/skills/` and should be loaded before writ
 3. **Apply ALL patterns** from the loaded skill — they are your coding standards
 4. **Multiple skills can apply** — load all relevant ones (e.g., `shadcn` + `next-best-practices` for a new page)
 5. **For unknown domains** — use `find-skills` to search the ecosystem
+
+---
 
 ## Commands
 

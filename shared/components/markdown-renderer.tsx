@@ -14,7 +14,10 @@ export function MarkdownRenderer({
 }: MarkdownRendererProps) {
   return (
     <div
-      className={cn("prose prose-sm max-w-none dark:prose-invert", className)}
+      className={cn(
+        "prose prose-neutral prose-sm max-w-none dark:prose-invert",
+        className
+      )}
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
@@ -39,13 +42,13 @@ export function MarkdownRenderer({
             const isBlock = className?.includes("language-");
             if (isBlock) {
               return (
-                <code className="block font-mono text-xs text-brand-green bg-secondary/60 border border-border/40 px-3 py-2 overflow-x-auto">
+                <code className="block   text-xs text-brand-green bg-secondary/60 border border-border/40 px-3 py-2 overflow-x-auto">
                   {children}
                 </code>
               );
             }
             return (
-              <code className="font-mono text-xs text-brand-green bg-secondary/60 px-1 py-0.5">
+              <code className="  text-xs text-brand-green bg-secondary/60 px-1 py-0.5">
                 {children}
               </code>
             );
@@ -67,7 +70,7 @@ export function MarkdownRenderer({
           ),
           hr: () => <hr className="border-border/40 my-6" />,
           li: ({ children }) => (
-            <li className="text-sm text-muted-foreground flex gap-2 items-start before:content-['—'] before:text-border/60 before:font-mono before:shrink-0">
+            <li className="text-sm text-muted-foreground flex gap-2 items-start before:content-['—'] before:text-border/60 before:  before:shrink-0">
               <span>{children}</span>
             </li>
           ),
@@ -77,7 +80,7 @@ export function MarkdownRenderer({
             </ol>
           ),
           p: ({ children }) => (
-            <p className="font-sans text-sm text-muted-foreground leading-relaxed mb-3">
+            <p className="  text-sm text-muted-foreground leading-relaxed mb-3">
               {children}
             </p>
           ),
@@ -97,12 +100,12 @@ export function MarkdownRenderer({
             </div>
           ),
           td: ({ children }) => (
-            <td className="font-mono text-xs border border-border/40 px-3 py-2 text-muted-foreground">
+            <td className="  text-xs border border-border/40 px-3 py-2 text-muted-foreground">
               {children}
             </td>
           ),
           th: ({ children }) => (
-            <th className="font-mono text-xs text-left border border-border/40 px-3 py-2 text-muted-foreground bg-secondary/50">
+            <th className="  text-xs text-left border border-border/40 px-3 py-2 text-muted-foreground bg-secondary/50">
               {children}
             </th>
           ),

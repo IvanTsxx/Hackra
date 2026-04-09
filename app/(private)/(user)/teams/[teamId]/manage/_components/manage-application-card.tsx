@@ -108,14 +108,14 @@ export function ManageApplicationCard({
             <p className="font-pixel text-xs text-foreground">
               {application.user.name.toUpperCase()}
             </p>
-            <p className="font-mono text-xs text-muted-foreground">
+            <p className="  text-xs text-muted-foreground">
               @{application.user.username} · {application.user.email}
             </p>
           </div>
         </div>
         <span
           className={cn(
-            "inline-flex items-center border font-mono rounded-none px-1.5 py-0.5 text-xs",
+            "inline-flex items-center border   rounded-none px-1.5 py-0.5 text-xs",
             cfg.variant
           )}
         >
@@ -125,7 +125,7 @@ export function ManageApplicationCard({
 
       {/* Bio */}
       {application.user.bio && (
-        <p className="font-mono text-xs text-muted-foreground line-clamp-2">
+        <p className="  text-xs text-muted-foreground line-clamp-2">
           {application.user.bio}
         </p>
       )}
@@ -136,7 +136,7 @@ export function ManageApplicationCard({
           {application.user.techStack.map((tech) => (
             <span
               key={tech}
-              className="border border-border/40 font-mono text-xs px-1.5 py-0.5 text-foreground/70"
+              className="border border-border/40   text-xs px-1.5 py-0.5 text-foreground/70"
             >
               {tech}
             </span>
@@ -147,27 +147,25 @@ export function ManageApplicationCard({
       {/* Message */}
       {application.message && (
         <div className="border border-border/30 bg-secondary/10 p-3">
-          <p className="font-mono text-xs text-muted-foreground/60 tracking-wider mb-1">
+          <p className="  text-xs text-muted-foreground/60 tracking-wider mb-1">
             MESSAGE:
           </p>
-          <p className="font-mono text-xs text-foreground">
-            {application.message}
-          </p>
+          <p className="  text-xs text-foreground">{application.message}</p>
         </div>
       )}
 
       {/* Answers to questions */}
       {application.answers.length > 0 && (
         <div className="space-y-2">
-          <p className="font-mono text-xs text-muted-foreground/60 tracking-wider">
+          <p className="  text-xs text-muted-foreground/60 tracking-wider">
             ANSWERS:
           </p>
           {application.answers.map((a) => (
             <div key={a.id} className="border-l-2 border-border/30 pl-3">
-              <p className="font-mono text-xs text-muted-foreground">
+              <p className="  text-xs text-muted-foreground">
                 {a.question.question}
               </p>
-              <p className="font-mono text-xs text-foreground">{a.answer}</p>
+              <p className="  text-xs text-foreground">{a.answer}</p>
             </div>
           ))}
         </div>
@@ -206,7 +204,7 @@ export function ManageApplicationCard({
               <div className="space-y-3 py-2">
                 <label
                   htmlFor="reject-reason"
-                  className="font-mono text-xs text-muted-foreground"
+                  className="  text-xs text-muted-foreground"
                 >
                   REASON (optional)
                 </label>
@@ -216,7 +214,7 @@ export function ManageApplicationCard({
                   onChange={(e) => setRejectReason(e.target.value)}
                   rows={3}
                   placeholder="Tell the applicant why..."
-                  className="rounded-none resize-none font-mono text-xs"
+                  className="rounded-none resize-none   text-xs"
                 />
               </div>
               <DialogFooter>
@@ -243,7 +241,7 @@ export function ManageApplicationCard({
         </div>
       )}
 
-      <p className="font-mono text-xs text-muted-foreground/40">
+      <p className="  text-xs text-muted-foreground/40">
         Applied{" "}
         {formatDistanceToNow(new Date(application.createdAt), {
           addSuffix: true,

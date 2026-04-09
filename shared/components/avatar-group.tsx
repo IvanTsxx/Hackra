@@ -48,7 +48,7 @@ export function AvatarGroup({
             className={cn(
               sizeClass,
               borderClass,
-              "rounded-full bg-secondary text-muted-foreground flex items-center justify-center font-mono shrink-0"
+              "rounded-full bg-secondary text-muted-foreground flex items-center justify-center   shrink-0"
             )}
           >
             +{overflow}

@@ -91,7 +91,7 @@ export function ShareModal({ url, title }: ShareModalProps) {
                 className={`flex items-center gap-2.5 px-3 py-2.5 border border-border/40 text-muted-foreground ${color} transition-colors hover:border-border/70`}
               >
                 <Icon size={14} />
-                <span className="font-mono text-xs">{label}</span>
+                <span className="  text-xs">{label}</span>
               </a>
             ))}
           </div>
@@ -100,14 +100,14 @@ export function ShareModal({ url, title }: ShareModalProps) {
           <div className="border border-border/40">
             <div className="flex items-center gap-2 px-3 py-2 bg-secondary/30">
               <Link2 size={12} className="text-muted-foreground shrink-0" />
-              <span className="font-mono text-sm text-muted-foreground truncate flex-1">
+              <span className="  text-sm text-muted-foreground truncate flex-1">
                 {url}
               </span>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleCopy}
-                className="h-6 px-2 font-mono text-xs shrink-0 rounded-none"
+                className="h-6 px-2   text-xs shrink-0 rounded-none"
               >
                 {copied ? (
                   <span className="flex items-center gap-1 text-brand-green">

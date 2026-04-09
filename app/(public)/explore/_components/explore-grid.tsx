@@ -118,7 +118,7 @@ export function ExploreGrid({
 
       {isLoading && (
         <div className="flex justify-center py-8">
-          <p className="font-mono text-xs text-muted-foreground animate-pulse">
+          <p className="  text-xs text-muted-foreground animate-pulse">
             loading more hackathons...
           </p>
         </div>
@@ -126,7 +126,7 @@ export function ExploreGrid({
 
       {!hasMore && hackathons.length > 0 && (
         <div className="flex justify-center py-8">
-          <p className="font-mono text-xs text-muted-foreground/50">
+          <p className="  text-xs text-muted-foreground/50">
             no more hackathons
           </p>
         </div>

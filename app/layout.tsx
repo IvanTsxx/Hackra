@@ -30,7 +30,7 @@ export default function RootLayout({
         GeistPixelLine.variable,
         GeistPixelSquare.variable,
         GeistPixelTriangle.variable,
-        "font-pixel-grid"
+        "font-pixel-triangle"
       )}
     >
       <body>

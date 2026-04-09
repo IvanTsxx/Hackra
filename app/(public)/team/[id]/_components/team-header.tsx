@@ -17,7 +17,7 @@ import {
 } from "@/shared/components/ui/dialog";
 
 const inputClass =
-  "w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
+  "w-full border border-border/40 bg-secondary/20 px-3 py-2   text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
 
 export const TeamHeader = ({
   team,
@@ -78,7 +78,7 @@ export const TeamHeader = ({
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <div
-            className={`flex items-center gap-1.5 border px-3 py-1.5 font-mono text-xs ${
+            className={`flex items-center gap-1.5 border px-3 py-1.5   text-xs ${
               isFull
                 ? "border-destructive/40 text-destructive/70"
                 : "border-brand-green/40 text-brand-green"
@@ -117,7 +117,7 @@ export const TeamHeader = ({
                   >
                     <Send size={20} className="mx-auto text-brand-green mb-3" />
                     <p className="font-pixel text-lg text-brand-green">SENT.</p>
-                    <p className="font-mono text-xs text-muted-foreground">
+                    <p className="  text-xs text-muted-foreground">
                       Your application was submitted.
                     </p>
                   </motion.div>
@@ -125,7 +125,7 @@ export const TeamHeader = ({
                   <form onSubmit={handleSubmit} className="space-y-4 pt-2">
                     {team.questions.map((q, i) => (
                       <div key={i} className="space-y-1.5">
-                        <label className="font-mono text-xs text-foreground">
+                        <label className="  text-xs text-foreground">
                           {q.question}
                         </label>
                         <input
@@ -143,7 +143,7 @@ export const TeamHeader = ({
                       </div>
                     ))}
                     <div className="space-y-1.5">
-                      <label className="font-mono text-xs text-muted-foreground">
+                      <label className="  text-xs text-muted-foreground">
                         COVER MESSAGE (optional)
                       </label>
                       <textarea
@@ -170,7 +170,7 @@ export const TeamHeader = ({
       </div>
 
       {team.description && (
-        <p className="font-mono text-sm text-muted-foreground leading-relaxed max-w-xl">
+        <p className="  text-sm text-muted-foreground leading-relaxed max-w-xl">
           {team.description}
         </p>
       )}

@@ -187,7 +187,7 @@ export function ThemeCustomizer({ value, onChange }: ThemeCustomizerProps) {
     <div className="space-y-5">
       {/* Preset grid */}
       <div className="space-y-2">
-        <span className="font-mono text-xs text-muted-foreground tracking-widest">
+        <span className="  text-xs text-muted-foreground tracking-widest">
           PRESETS
         </span>
         <div className="grid grid-cols-4 gap-2">
@@ -209,7 +209,7 @@ export function ThemeCustomizer({ value, onChange }: ThemeCustomizerProps) {
                 className="h-7 w-full"
                 style={{ background: preset.value.gradientCss }}
               />
-              <span className="font-mono text-xs text-muted-foreground group-hover:text-foreground transition-colors">
+              <span className="  text-xs text-muted-foreground group-hover:text-foreground transition-colors">
                 {preset.label}
               </span>
             </button>
@@ -220,10 +220,10 @@ export function ThemeCustomizer({ value, onChange }: ThemeCustomizerProps) {
       {/* Background color + auto gradient */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-xs text-muted-foreground tracking-widest">
+          <span className="  text-xs text-muted-foreground tracking-widest">
             BACKGROUND COLOR
           </span>
-          <span className="font-mono text-xs text-muted-foreground/50">
+          <span className="  text-xs text-muted-foreground/50">
             gradient auto-generated
           </span>
         </div>
@@ -236,9 +236,7 @@ export function ThemeCustomizer({ value, onChange }: ThemeCustomizerProps) {
               onChange={(e) => handleBgChange(e.target.value)}
               className="w-5 h-5 cursor-pointer border-none bg-transparent shrink-0"
             />
-            <span className="font-mono text-xs text-muted-foreground">
-              {value.bg}
-            </span>
+            <span className="  text-xs text-muted-foreground">{value.bg}</span>
           </label>
           {/* Gradient preview strip */}
           <div
@@ -252,8 +250,8 @@ export function ThemeCustomizer({ value, onChange }: ThemeCustomizerProps) {
       {/* Advanced mode toggle */}
       <div className="flex items-center justify-between p-3 border border-border/30 bg-secondary/5">
         <div className="space-y-0.5">
-          <p className="font-mono text-xs text-foreground">ADVANCED MODE</p>
-          <p className="font-mono text-xs text-muted-foreground">
+          <p className="  text-xs text-foreground">ADVANCED MODE</p>
+          <p className="  text-xs text-muted-foreground">
             Edit raw CSS gradient or Tailwind classes
           </p>
         </div>
@@ -268,7 +266,7 @@ export function ThemeCustomizer({ value, onChange }: ThemeCustomizerProps) {
       {advancedMode && (
         <div className="space-y-3 border border-border/20 p-4 bg-secondary/5">
           <div className="space-y-1">
-            <label className="font-mono text-xs text-muted-foreground tracking-widest">
+            <label className="  text-xs text-muted-foreground tracking-widest">
               CSS GRADIENT
             </label>
             <input
@@ -276,11 +274,11 @@ export function ThemeCustomizer({ value, onChange }: ThemeCustomizerProps) {
               value={value.gradientCss}
               onChange={(e) => handleCssGradientChange(e.target.value)}
               placeholder="linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)"
-              className="w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors"
+              className="w-full border border-border/40 bg-secondary/20 px-3 py-2   text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors"
             />
           </div>
           <div className="space-y-1">
-            <label className="font-mono text-xs text-muted-foreground tracking-widest">
+            <label className="  text-xs text-muted-foreground tracking-widest">
               TAILWIND GRADIENT CLASSES
             </label>
             <input
@@ -288,9 +286,9 @@ export function ThemeCustomizer({ value, onChange }: ThemeCustomizerProps) {
               value={value.gradient}
               onChange={(e) => handleTailwindChange(e.target.value)}
               placeholder="from-zinc-950 to-zinc-900"
-              className="w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors"
+              className="w-full border border-border/40 bg-secondary/20 px-3 py-2   text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors"
             />
-            <p className="font-mono text-xs text-muted-foreground/50">
+            <p className="  text-xs text-muted-foreground/50">
               {"Used as bg-gradient-to-br {value} in hackathon banners"}
             </p>
           </div>

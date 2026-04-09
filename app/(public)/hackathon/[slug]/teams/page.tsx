@@ -26,7 +26,7 @@ export default async function TeamsPage({
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
         <Link href="/explore" className="hover:text-foreground">
           HACKATHONS
         </Link>
@@ -47,7 +47,7 @@ export default async function TeamsPage({
             teams
           </CodeText>
           <h1 className="font-pixel text-2xl text-foreground">TEAMS</h1>
-          <p className="font-mono text-xs text-muted-foreground">
+          <p className="  text-xs text-muted-foreground">
             {teams.length} teams · max {hackathon.maxTeamSize} members each
           </p>
         </div>

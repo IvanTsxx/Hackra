@@ -53,7 +53,7 @@ export const ProfileHeader = ({
               <h1 className="font-pixel text-xl md:text-2xl text-foreground">
                 {name}
               </h1>
-              <p className="font-mono text-xs text-brand-green">@{username}</p>
+              <p className="  text-xs text-brand-green">@{username}</p>
             </div>
             <div className="flex items-center gap-2">
               {githubUsername && (
@@ -81,17 +81,17 @@ export const ProfileHeader = ({
             </div>
           </div>
 
-          <p className="font-mono text-xs text-muted-foreground leading-relaxed max-w-lg">
+          <p className="  text-xs text-muted-foreground leading-relaxed max-w-lg">
             {bio}
           </p>
 
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5 text-muted-foreground">
               <MapPin size={11} />
-              <span className="font-mono text-sm">{location}</span>
+              <span className="  text-sm">{location}</span>
             </div>
             <div className="flex items-center gap-1.5 text-muted-foreground">
-              <span className="font-mono text-sm">{position}</span>
+              <span className="  text-sm">{position}</span>
             </div>
           </div>
         </div>
@@ -103,9 +103,7 @@ export const ProfileHeader = ({
           <div key={i} className="bg-secondary/10 p-4 text-center space-y-1">
             <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
               {item.icon}
-              <span className="font-mono text-xs tracking-widest">
-                {item.label}
-              </span>
+              <span className="  text-xs tracking-widest">{item.label}</span>
             </div>
             <p className="font-pixel text-xl text-foreground">{item.value}</p>
           </div>

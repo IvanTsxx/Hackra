@@ -125,12 +125,12 @@ export function ExploreFilters({
           HACKATHONS
         </h1>
         {hasFilters ? (
-          <p className="font-mono text-sm text-muted-foreground">
+          <p className="  text-sm text-muted-foreground">
             <span className="text-brand-green">{filteredCount}</span> of{" "}
             <span>{totalCount}</span> hackathon{totalCount !== 1 ? "s" : ""}
           </p>
         ) : (
-          <p className="font-mono text-sm text-muted-foreground">
+          <p className="  text-sm text-muted-foreground">
             {totalCount} hackathon{totalCount !== 1 ? "s" : ""} available
           </p>
         )}
@@ -147,7 +147,7 @@ export function ExploreFilters({
               value={search}
               onChange={(e) => setSearch(e.target.value || null)}
               placeholder="search hackathons..."
-              className="flex-1 bg-transparent font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none"
+              className="flex-1 bg-transparent   text-xs text-foreground placeholder:text-muted-foreground/50 outline-none"
             />
             {search && (
               <button
@@ -163,7 +163,7 @@ export function ExploreFilters({
           {/* Location detect */}
           <button
             type="button"
-            className="flex items-center gap-1.5 border border-border/50 px-3 py-2 font-mono text-xs text-muted-foreground hover:text-foreground hover:border-border/80 transition-colors"
+            className="flex items-center gap-1.5 border border-border/50 px-3 py-2   text-xs text-muted-foreground hover:text-foreground hover:border-border/80 transition-colors"
           >
             <MapPin size={12} />
             <span className="hidden sm:inline">near me</span>
@@ -173,7 +173,7 @@ export function ExploreFilters({
           <button
             type="button"
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-1.5 border px-3 py-2 font-mono text-xs transition-colors ${
+            className={`flex items-center gap-1.5 border px-3 py-2   text-xs transition-colors ${
               showFilters || hasFilters
                 ? "border-brand-green/50 text-brand-green"
                 : "border-border/50 text-muted-foreground hover:text-foreground hover:border-border/80"
@@ -182,7 +182,7 @@ export function ExploreFilters({
             <Filter size={12} />
             <span>FILTERS</span>
             {hasFilters && (
-              <span className="w-4 h-4 rounded-full bg-brand-green text-background text-xs flex items-center justify-center font-mono">
+              <span className="w-4 h-4 rounded-full bg-brand-green text-background text-xs flex items-center justify-center  ">
                 {activeFilterCount}
               </span>
             )}
@@ -198,7 +198,7 @@ export function ExploreFilters({
           >
             {/* Status */}
             <div className="space-y-2">
-              <span className="font-mono text-xs text-muted-foreground tracking-widest">
+              <span className="  text-xs text-muted-foreground tracking-widest">
                 STATUS
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -207,7 +207,7 @@ export function ExploreFilters({
                     key={s}
                     type="button"
                     onClick={() => toggleStatus(s)}
-                    className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
+                    className={`  text-xs border px-2 py-0.5 transition-colors ${
                       statuses.includes(s)
                         ? "border-brand-green/60 text-brand-green bg-brand-green/5"
                         : "border-border/40 text-muted-foreground hover:border-border/70"
@@ -222,7 +222,7 @@ export function ExploreFilters({
             {/* Location */}
             {filterOptions.locations.length > 0 && (
               <div className="space-y-2">
-                <span className="font-mono text-xs text-muted-foreground tracking-widest">
+                <span className="  text-xs text-muted-foreground tracking-widest">
                   LOCATION
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -233,7 +233,7 @@ export function ExploreFilters({
                       onClick={() =>
                         setLocation(location === loc.value ? null : loc.value)
                       }
-                      className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
+                      className={`  text-xs border px-2 py-0.5 transition-colors ${
                         location === loc.value
                           ? "border-brand-green/60 text-brand-green bg-brand-green/5"
                           : "border-border/40 text-muted-foreground hover:border-border/70"
@@ -249,7 +249,7 @@ export function ExploreFilters({
             {/* Tags */}
             {filterOptions.tags.length > 0 && (
               <div className="space-y-2">
-                <span className="font-mono text-xs text-muted-foreground tracking-widest">
+                <span className="  text-xs text-muted-foreground tracking-widest">
                   TAGS
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -258,7 +258,7 @@ export function ExploreFilters({
                       key={t.value}
                       type="button"
                       onClick={() => toggleTag(t.value)}
-                      className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
+                      className={`  text-xs border px-2 py-0.5 transition-colors ${
                         tags.includes(t.value)
                           ? "border-brand-purple/60 text-brand-purple bg-brand-purple/5"
                           : "border-border/40 text-muted-foreground hover:border-border/70"
@@ -274,7 +274,7 @@ export function ExploreFilters({
             {/* Techs */}
             {filterOptions.techs.length > 0 && (
               <div className="space-y-2">
-                <span className="font-mono text-xs text-muted-foreground tracking-widest">
+                <span className="  text-xs text-muted-foreground tracking-widest">
                   TECHNOLOGIES
                 </span>
                 <div className="flex flex-wrap gap-1.5">
@@ -283,7 +283,7 @@ export function ExploreFilters({
                       key={t.value}
                       type="button"
                       onClick={() => toggleTech(t.value)}
-                      className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
+                      className={`  text-xs border px-2 py-0.5 transition-colors ${
                         techs.includes(t.value)
                           ? "border-foreground/50 text-foreground bg-foreground/5"
                           : "border-border/40 text-muted-foreground hover:border-border/70"
@@ -301,7 +301,7 @@ export function ExploreFilters({
                 <button
                   type="button"
                   onClick={clearAll}
-                  className="font-mono text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
+                  className="  text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
                 >
                   <X size={11} /> CLEAR ALL
                 </button>
@@ -319,7 +319,7 @@ export function ExploreFilters({
           className="flex flex-wrap gap-1.5 mb-6"
         >
           {search && (
-            <span className="flex items-center gap-1 border border-border/40 font-mono text-xs text-muted-foreground px-2 py-0.5">
+            <span className="flex items-center gap-1 border border-border/40   text-xs text-muted-foreground px-2 py-0.5">
               q: {search}
               <button type="button" onClick={() => setSearch(null)}>
                 <X size={9} />
@@ -327,7 +327,7 @@ export function ExploreFilters({
             </span>
           )}
           {location && (
-            <span className="flex items-center gap-1 border border-brand-green/30 font-mono text-xs text-brand-green px-2 py-0.5">
+            <span className="flex items-center gap-1 border border-brand-green/30   text-xs text-brand-green px-2 py-0.5">
               loc: {location}
               <button type="button" onClick={() => setLocation(null)}>
                 <X size={9} />
@@ -337,7 +337,7 @@ export function ExploreFilters({
           {tags.map((t) => (
             <span
               key={t}
-              className="flex items-center gap-1 border border-brand-purple/30 font-mono text-xs text-brand-purple px-2 py-0.5"
+              className="flex items-center gap-1 border border-brand-purple/30   text-xs text-brand-purple px-2 py-0.5"
             >
               tag: {t}
               <button type="button" onClick={() => toggleTag(t)}>
@@ -348,7 +348,7 @@ export function ExploreFilters({
           {techs.map((t) => (
             <span
               key={t}
-              className="flex items-center gap-1 border border-border/40 font-mono text-xs text-foreground px-2 py-0.5"
+              className="flex items-center gap-1 border border-border/40   text-xs text-foreground px-2 py-0.5"
             >
               tech: {t}
               <button type="button" onClick={() => toggleTech(t)}>
@@ -359,7 +359,7 @@ export function ExploreFilters({
           {statuses.map((s) => (
             <span
               key={s}
-              className="flex items-center gap-1 border border-border/40 font-mono text-xs text-muted-foreground px-2 py-0.5"
+              className="flex items-center gap-1 border border-border/40   text-xs text-muted-foreground px-2 py-0.5"
             >
               status: {s}
               <button type="button" onClick={() => toggleStatus(s)}>

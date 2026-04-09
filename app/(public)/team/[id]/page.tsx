@@ -32,7 +32,7 @@ export default async function TeamDetailPage({
   return (
     <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4 flex-wrap">
+      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4 flex-wrap">
         <Link href="/explore" className="hover:text-foreground">
           HACKATHONS
         </Link>
@@ -68,9 +68,7 @@ export default async function TeamDetailPage({
           <div className="glass border border-border/40 p-5 space-y-3">
             <div className="flex items-center gap-2 text-muted-foreground">
               <Code2 size={12} />
-              <span className="font-mono text-xs tracking-widest">
-                TECH_STACK
-              </span>
+              <span className="  text-xs tracking-widest">TECH_STACK</span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {team.techs.map((tech, i) => (
@@ -82,16 +80,16 @@ export default async function TeamDetailPage({
           {/* Application questions */}
           {team.questions.length > 0 && (
             <div className="glass border border-border/40 p-5 space-y-3">
-              <p className="font-mono text-xs tracking-widest text-muted-foreground">
+              <p className="  text-xs tracking-widest text-muted-foreground">
                 APPLICATION_QUESTIONS
               </p>
               <div className="space-y-2">
                 {team.questions.map((q, i) => (
                   <div key={i} className="flex gap-3 items-start">
-                    <span className="font-mono text-xs text-brand-green/60 mt-0.5 shrink-0">
+                    <span className="  text-xs text-brand-green/60 mt-0.5 shrink-0">
                       {String(i + 1).padStart(2, "0")}.
                     </span>
-                    <span className="font-mono text-xs text-foreground/80">
+                    <span className="  text-xs text-foreground/80">
                       {q.question}
                     </span>
                   </div>
@@ -109,10 +107,10 @@ export default async function TeamDetailPage({
                 </span>
               </div>
               <div>
-                <p className="font-mono text-xs text-foreground">
+                <p className="  text-xs text-foreground">
                   PENDING APPLICATIONS
                 </p>
-                <p className="font-mono text-xs text-muted-foreground">
+                <p className="  text-xs text-muted-foreground">
                   Awaiting owner review
                 </p>
               </div>
@@ -126,7 +124,7 @@ export default async function TeamDetailPage({
           <div className="glass border border-border/40 p-4 space-y-3">
             <div className="flex items-center gap-2 text-muted-foreground">
               <Users size={12} />
-              <span className="font-mono text-xs tracking-widest">
+              <span className="  text-xs tracking-widest">
                 MEMBERS ({team.members.length}/{team.maxMembers})
               </span>
             </div>
@@ -152,10 +150,10 @@ export default async function TeamDetailPage({
                       </Avatar>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-mono text-xs text-foreground group-hover:text-brand-green transition-colors truncate">
+                      <p className="  text-xs text-foreground group-hover:text-brand-green transition-colors truncate">
                         {user.name}
                       </p>
-                      <p className="font-mono text-xs text-muted-foreground">
+                      <p className="  text-xs text-muted-foreground">
                         {user.position}
                       </p>
                     </div>
@@ -169,9 +167,7 @@ export default async function TeamDetailPage({
           {hackathon && (
             <Link href={`/hackathon/${hackathon.slug}`} className="block">
               <div className="border border-border/40 p-4 space-y-1 hover:border-brand-green/40 transition-colors group">
-                <p className="font-mono text-xs text-muted-foreground">
-                  HACKATHON
-                </p>
+                <p className="  text-xs text-muted-foreground">HACKATHON</p>
                 <p className="font-pixel text-xs text-foreground group-hover:text-brand-green transition-colors">
                   {hackathon.title}
                 </p>

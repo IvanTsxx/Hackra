@@ -64,7 +64,7 @@ export default async function UserProfilePage({
         {/* Tech stack sidebar */}
         <div className="md:col-span-1 space-y-4">
           <div className="glass border border-border/40 p-5 space-y-3">
-            <p className="font-mono text-xs tracking-widest text-muted-foreground">
+            <p className="  text-xs tracking-widest text-muted-foreground">
               TECH_STACK
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -85,7 +85,7 @@ export default async function UserProfilePage({
           <TabsContent value="created">
             {userHackathonsCreated.length === 0 ? (
               <div className="border border-dashed border-border/30 p-8 text-center">
-                <p className="font-mono text-xs text-muted-foreground/50">
+                <p className="  text-xs text-muted-foreground/50">
                   No hackathons yet.
                 </p>
               </div>
@@ -103,7 +103,7 @@ export default async function UserProfilePage({
           <TabsContent value="participated">
             {userHackathonsParticipated.length === 0 ? (
               <div className="border border-dashed border-border/30 p-8 text-center">
-                <p className="font-mono text-xs text-muted-foreground/50">
+                <p className="  text-xs text-muted-foreground/50">
                   No hackathons yet.
                 </p>
               </div>

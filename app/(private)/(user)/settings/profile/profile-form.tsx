@@ -45,7 +45,7 @@ const formSchema = z.object({
 type ProfileFormValues = z.infer<typeof formSchema>;
 
 const inputClass =
-  "w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
+  "w-full border border-border/40 bg-secondary/20 px-3 py-2   text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
 
 interface ProfileFormProps {
   initialData: ProfileFormValues;
@@ -108,7 +108,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
               <div className="space-y-1">
                 <label
                   htmlFor={field.name}
-                  className="font-mono text-xs text-muted-foreground tracking-widest"
+                  className="  text-xs text-muted-foreground tracking-widest"
                 >
                   DISPLAY NAME
                 </label>
@@ -121,7 +121,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                   aria-invalid={isInvalid}
                 />
                 {isInvalid && (
-                  <span className="text-xs text-red-500 font-mono">
+                  <span className="text-xs text-red-500  ">
                     {field.state.meta.errors.join(", ")}
                   </span>
                 )}
@@ -138,7 +138,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
               <div className="space-y-1">
                 <label
                   htmlFor={field.name}
-                  className="font-mono text-xs text-muted-foreground tracking-widest"
+                  className="  text-xs text-muted-foreground tracking-widest"
                 >
                   ROLE / TITLE
                 </label>
@@ -152,7 +152,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                   aria-invalid={isInvalid}
                 />
                 {isInvalid && (
-                  <span className="text-xs text-red-500 font-mono">
+                  <span className="text-xs text-red-500  ">
                     {field.state.meta.errors.join(", ")}
                   </span>
                 )}
@@ -172,7 +172,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
             <div className="space-y-1">
               <label
                 htmlFor={field.name}
-                className="font-mono text-xs text-muted-foreground tracking-widest"
+                className="  text-xs text-muted-foreground tracking-widest"
               >
                 BIO
               </label>
@@ -186,7 +186,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                 aria-invalid={isInvalid}
               />
               {isInvalid && (
-                <span className="text-xs text-red-500 font-mono">
+                <span className="text-xs text-red-500  ">
                   {field.state.meta.errors.join(", ")}
                 </span>
               )}
@@ -206,7 +206,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
               <div className="space-y-1">
                 <label
                   htmlFor={field.name}
-                  className="font-mono text-xs text-muted-foreground tracking-widest"
+                  className="  text-xs text-muted-foreground tracking-widest"
                 >
                   LOCATION
                 </label>
@@ -220,7 +220,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                   aria-invalid={isInvalid}
                 />
                 {isInvalid && (
-                  <span className="text-xs text-red-500 font-mono">
+                  <span className="text-xs text-red-500  ">
                     {field.state.meta.errors.join(", ")}
                   </span>
                 )}
@@ -237,7 +237,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
               <div className="space-y-1">
                 <label
                   htmlFor={field.name}
-                  className="font-mono text-xs text-muted-foreground tracking-widest"
+                  className="  text-xs text-muted-foreground tracking-widest"
                 >
                   GITHUB USERNAME
                 </label>
@@ -246,7 +246,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                     isInvalid ? "border-red-500/50" : "border-border/40"
                   }`}
                 >
-                  <span className="px-2 font-mono text-xs text-muted-foreground/60 select-none border-r border-border/30">
+                  <span className="px-2   text-xs text-muted-foreground/60 select-none border-r border-border/30">
                     github.com/
                   </span>
                   <input
@@ -255,12 +255,12 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
                     placeholder="username"
-                    className="flex-1 px-2 py-2 font-mono text-xs text-foreground bg-transparent outline-none placeholder:text-muted-foreground/40"
+                    className="flex-1 px-2 py-2   text-xs text-foreground bg-transparent outline-none placeholder:text-muted-foreground/40"
                     aria-invalid={isInvalid}
                   />
                 </div>
                 {isInvalid && (
-                  <span className="text-xs text-red-500 font-mono">
+                  <span className="text-xs text-red-500  ">
                     {field.state.meta.errors.join(", ")}
                   </span>
                 )}
@@ -278,10 +278,10 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
           return (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-muted-foreground tracking-widest">
+                <span className="  text-xs text-muted-foreground tracking-widest">
                   TECH STACK
                 </span>
-                <span className="font-mono text-xs text-muted-foreground/50">
+                <span className="  text-xs text-muted-foreground/50">
                   {techs.length} selected
                 </span>
               </div>
@@ -296,7 +296,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                   >
                     <TagBadge
                       index={i}
-                      className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
+                      className={`  text-xs border px-2 py-0.5 transition-colors ${
                         techs.includes(tech)
                           ? "border-foreground/60 text-foreground bg-foreground/5"
                           : "border-border/40 text-muted-foreground hover:border-border/70"
@@ -314,7 +314,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
       {/* Divider + Save */}
       <div className="pt-2 border-t border-border/30 flex items-center justify-between gap-4">
         <span
-          className={`font-mono text-xs transition-all duration-300 ${saved ? "text-brand-green opacity-100" : "opacity-0"}`}
+          className={`  text-xs transition-all duration-300 ${saved ? "text-brand-green opacity-100" : "opacity-0"}`}
         >
           {"// SAVED."}
         </span>

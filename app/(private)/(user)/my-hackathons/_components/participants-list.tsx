@@ -64,9 +64,7 @@ export async function ParticipantsList({
   if (participants.length === 0) {
     return (
       <div className="py-8 text-center">
-        <p className="font-mono text-xs text-muted-foreground">
-          No participants yet.
-        </p>
+        <p className="  text-xs text-muted-foreground">No participants yet.</p>
       </div>
     );
   }
@@ -90,13 +88,13 @@ export async function ParticipantsList({
                 <TableCell className="font-medium">
                   {p.user.name ?? p.user.username}
                 </TableCell>
-                <TableCell className="font-mono text-xs text-muted-foreground">
+                <TableCell className="  text-xs text-muted-foreground">
                   {p.user.email}
                 </TableCell>
                 <TableCell>
                   <StatusBadge status={p.status} />
                 </TableCell>
-                <TableCell className="font-mono text-xs text-muted-foreground">
+                <TableCell className="  text-xs text-muted-foreground">
                   {format(new Date(p.createdAt), "MMM dd, yyyy")}
                 </TableCell>
                 {requiresApproval && (

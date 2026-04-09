@@ -30,7 +30,7 @@ export default async function SponsorsPage() {
         <h1 className="font-pixel text-2xl md:text-3xl text-foreground">
           SPONSORS
         </h1>
-        <p className="font-mono text-sm text-muted-foreground max-w-xl">
+        <p className="  text-sm text-muted-foreground max-w-xl">
           The companies and teams powering hackathons and prizes on Hackra.
         </p>
       </div>
@@ -80,7 +80,7 @@ export default async function SponsorsPage() {
                       />
                     </div>
                     {tier === "PLATINUM" || tier === "GOLD" ? (
-                      <p className="font-mono text-xs text-muted-foreground leading-relaxed">
+                      <p className="  text-xs text-muted-foreground leading-relaxed">
                         {sponsor.description}
                       </p>
                     ) : null}
@@ -94,7 +94,7 @@ export default async function SponsorsPage() {
 
       <div className="mt-16 border border-brand-green/20 bg-brand-green/5 p-8 text-center space-y-3">
         <p className="font-pixel text-sm text-foreground">BECOME A SPONSOR</p>
-        <p className="font-mono text-xs text-muted-foreground max-w-md mx-auto">
+        <p className="  text-xs text-muted-foreground max-w-md mx-auto">
           Reach thousands of developers. Fund prizes, get exposure, and support
           the builder community.
         </p>

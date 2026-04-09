@@ -45,7 +45,7 @@ export function TeamCard({ team, i }: TeamCardProps) {
             </h3>
           </Link>
           {team.description && (
-            <p className="font-mono text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+            <p className="  text-xs text-muted-foreground line-clamp-2 leading-relaxed">
               {team.description}
             </p>
           )}
@@ -75,7 +75,7 @@ export function TeamCard({ team, i }: TeamCardProps) {
           <AvatarGroup users={members} max={4} size="sm" />
           <div className="flex items-center gap-1 text-muted-foreground">
             <Users size={11} />
-            <span className="font-mono text-sm">
+            <span className="  text-sm">
               {team.members.length}/{team.maxMembers}
             </span>
           </div>

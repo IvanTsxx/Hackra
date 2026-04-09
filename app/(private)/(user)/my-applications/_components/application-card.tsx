@@ -65,13 +65,13 @@ export function ApplicationCard({
             <span className="font-pixel text-xs text-foreground">
               {application.team.name.toUpperCase()}
             </span>
-            <span className="font-mono text-xs text-muted-foreground">
+            <span className="  text-xs text-muted-foreground">
               {application.team.hackathon.title.toUpperCase()}
             </span>
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
-          <span className="font-mono text-xs text-muted-foreground/60 flex items-center gap-1">
+          <span className="  text-xs text-muted-foreground/60 flex items-center gap-1">
             <Send size={10} />
             {formatDistanceToNow(new Date(application.createdAt), {
               addSuffix: true,
@@ -90,7 +90,7 @@ export function ApplicationCard({
 
       {/* Message */}
       {application.message && (
-        <p className="font-mono text-xs text-muted-foreground line-clamp-2 border-l-2 border-border/30 pl-3">
+        <p className="  text-xs text-muted-foreground line-clamp-2 border-l-2 border-border/30 pl-3">
           {application.message}
         </p>
       )}
@@ -101,10 +101,10 @@ export function ApplicationCard({
         (application as { rejectionReason?: string | null })
           .rejectionReason && (
           <div className="border border-destructive/30 bg-destructive/5 p-3">
-            <p className="font-mono text-xs text-destructive/70 tracking-wider mb-1">
+            <p className="  text-xs text-destructive/70 tracking-wider mb-1">
               REASON:
             </p>
-            <p className="font-mono text-xs text-muted-foreground">
+            <p className="  text-xs text-muted-foreground">
               {
                 (application as { rejectionReason?: string | null })
                   .rejectionReason
@@ -115,7 +115,7 @@ export function ApplicationCard({
 
       {/* Actions */}
       <div className="flex items-center justify-between pt-1">
-        <span className="font-mono text-xs text-muted-foreground/40 flex items-center gap-1">
+        <span className="  text-xs text-muted-foreground/40 flex items-center gap-1">
           <Users size={10} />
           Owner: @{application.team.owner.username}
         </span>

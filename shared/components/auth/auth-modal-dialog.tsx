@@ -103,7 +103,7 @@ export function AuthModalDialog({
           {/* Divider */}
           <div className="flex items-center gap-3">
             <div className="flex-1 border-t border-border/30" />
-            <span className="font-mono text-xs text-muted-foreground/50 tracking-widest">
+            <span className="  text-xs text-muted-foreground/50 tracking-widest">
               NO PASSWORD REQUIRED
             </span>
             <div className="flex-1 border-t border-border/30" />
@@ -112,7 +112,7 @@ export function AuthModalDialog({
           {/* Feature list */}
           <div className="border border-border/20 bg-secondary/5 p-4 space-y-1.5">
             {FEATURES.map((f) => (
-              <p key={f} className="font-mono text-xs text-muted-foreground/70">
+              <p key={f} className="  text-xs text-muted-foreground/70">
                 {f}
               </p>
             ))}

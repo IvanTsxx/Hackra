@@ -50,7 +50,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
     setQuestions((prev) => prev.map((q, idx) => (idx === i ? val : q)));
 
   const inputClass =
-    "w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
+    "w-full border border-border/40 bg-secondary/20 px-3 py-2   text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
 
   if (submitted) {
     return (
@@ -60,7 +60,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
         className="text-center space-y-4 p-12 border border-brand-green/30 bg-brand-green/5"
       >
         <p className="font-pixel text-3xl text-brand-green">TEAM CREATED.</p>
-        <p className="font-mono text-xs text-muted-foreground">
+        <p className="  text-xs text-muted-foreground">
           {name} is ready to recruit.
         </p>
         <div className="flex gap-2 justify-center pt-2">
@@ -78,7 +78,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
   return (
     <main className="max-w-2xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4 flex-wrap">
+      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4 flex-wrap">
         <Link
           href={`/hackathon/${slug}`}
           className="hover:text-foreground truncate max-w-[150px]"
@@ -114,7 +114,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
       >
         {/* Name */}
         <div className="space-y-1">
-          <label className="font-mono text-xs text-muted-foreground tracking-widest">
+          <label className="  text-xs text-muted-foreground tracking-widest">
             TEAM NAME *
           </label>
           <input
@@ -129,7 +129,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
 
         {/* Description */}
         <div className="space-y-1">
-          <label className="font-mono text-xs text-muted-foreground tracking-widest">
+          <label className="  text-xs text-muted-foreground tracking-widest">
             DESCRIPTION (optional)
           </label>
           <textarea
@@ -143,7 +143,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
 
         {/* Technologies */}
         <div className="space-y-2">
-          <label className="font-mono text-xs text-muted-foreground tracking-widest">
+          <label className="  text-xs text-muted-foreground tracking-widest">
             REQUIRED TECHNOLOGIES
           </label>
           <div className="flex flex-wrap gap-1.5">
@@ -152,7 +152,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
                 key={t}
                 type="button"
                 onClick={() => toggleTech(t)}
-                className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
+                className={`  text-xs border px-2 py-0.5 transition-colors ${
                   selectedTechs.includes(t)
                     ? "border-foreground/60 text-foreground bg-foreground/5"
                     : "border-border/40 text-muted-foreground hover:border-border/70"
@@ -174,17 +174,17 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
         {/* Questions */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <label className="font-mono text-xs text-muted-foreground tracking-widest">
+            <label className="  text-xs text-muted-foreground tracking-widest">
               APPLICATION QUESTIONS
             </label>
-            <span className="font-mono text-xs text-muted-foreground/50">
+            <span className="  text-xs text-muted-foreground/50">
               Applicants will answer these
             </span>
           </div>
           <div className="space-y-2">
             {questions.map((q, i) => (
               <div key={i} className="flex gap-2 items-center">
-                <span className="font-mono text-xs text-muted-foreground/50 w-4 shrink-0">
+                <span className="  text-xs text-muted-foreground/50 w-4 shrink-0">
                   {i + 1}.
                 </span>
                 <input
@@ -210,7 +210,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
             <button
               type="button"
               onClick={addQuestion}
-              className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground hover:text-brand-green transition-colors"
+              className="flex items-center gap-1.5   text-xs text-muted-foreground hover:text-brand-green transition-colors"
             >
               <Plus size={11} /> ADD QUESTION
             </button>

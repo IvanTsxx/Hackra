@@ -278,7 +278,7 @@ export default function CreateHackathonPage() {
   };
 
   const inputClass =
-    "w-full border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
+    "w-full border border-border/40 bg-secondary/20 px-3 py-2   text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
 
   /* const isOnline = locationMode === "remote" || locationMode === "hybrid"; */
 
@@ -291,7 +291,7 @@ export default function CreateHackathonPage() {
           className="text-center space-y-4 p-12 border border-brand-green/30 bg-brand-green/5"
         >
           <p className="font-pixel text-3xl text-brand-green">DEPLOYED.</p>
-          <p className="font-mono text-xs text-muted-foreground">
+          <p className="  text-xs text-muted-foreground">
             Your hackathon has been created successfully.
           </p>
           <div className="flex gap-2 justify-center pt-2">
@@ -318,7 +318,7 @@ export default function CreateHackathonPage() {
 
   return (
     <section>
-      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/user/${user?.username}`}
           className="hover:text-foreground"
@@ -366,7 +366,7 @@ export default function CreateHackathonPage() {
             <div className="space-y-3 border border-brand-green/30 bg-brand-green/5 p-4">
               <div className="flex items-center gap-2">
                 <Link2 size={12} className="text-brand-green" />
-                <label className="font-mono text-xs text-brand-green tracking-widest">
+                <label className="  text-xs text-brand-green tracking-widest">
                   IMPORT FROM LUMA
                 </label>
               </div>
@@ -388,7 +388,7 @@ export default function CreateHackathonPage() {
                   disabled={lumaImported}
                 />
                 {lumaImported ? (
-                  <div className="flex items-center gap-1 text-brand-green font-mono text-xs shrink-0">
+                  <div className="flex items-center gap-1 text-brand-green   text-xs shrink-0">
                     <CheckCircle2 size={14} />
                     Imported
                   </div>
@@ -405,14 +405,14 @@ export default function CreateHackathonPage() {
               </div>
 
               {lumaLoading && !lumaPreviewData && (
-                <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-2   text-xs text-muted-foreground">
                   <Loader2 size={12} className="animate-spin" />
                   Fetching event data...
                 </div>
               )}
 
               {lumaPreviewError && (
-                <div className="flex items-center gap-2 font-mono text-xs text-red-400">
+                <div className="flex items-center gap-2   text-xs text-red-400">
                   <AlertCircle size={12} />
                   {lumaPreviewError}
                 </div>
@@ -431,10 +431,10 @@ export default function CreateHackathonPage() {
                       className="w-full h-24 object-cover"
                     />
                   )}
-                  <p className="font-mono text-xs text-foreground">
+                  <p className="  text-xs text-foreground">
                     {lumaPreviewData.title}
                   </p>
-                  <div className="grid grid-cols-2 gap-2 font-mono text-xs text-muted-foreground">
+                  <div className="grid grid-cols-2 gap-2   text-xs text-muted-foreground">
                     <div>
                       <span className="text-foreground">Start:</span>{" "}
                       {lumaPreviewData.startDate.toLocaleDateString("en-US", {
@@ -464,7 +464,7 @@ export default function CreateHackathonPage() {
                       </div>
                     )}
                   </div>
-                  <p className="font-mono text-xs text-brand-green/70">
+                  <p className="  text-xs text-brand-green/70">
                     Click IMPORT to auto-fill all fields
                   </p>
                 </motion.div>
@@ -472,7 +472,7 @@ export default function CreateHackathonPage() {
             </div>
 
             <div className="space-y-1">
-              <label className="font-mono text-xs text-muted-foreground tracking-widest">
+              <label className="  text-xs text-muted-foreground tracking-widest">
                 TITLE *
               </label>
               <input
@@ -485,7 +485,7 @@ export default function CreateHackathonPage() {
             </div>
 
             <div className="space-y-1">
-              <label className="font-mono text-xs text-muted-foreground tracking-widest">
+              <label className="  text-xs text-muted-foreground tracking-widest">
                 COVER IMAGE
               </label>
               {importedImageUrl ? (
@@ -495,14 +495,14 @@ export default function CreateHackathonPage() {
                     alt="Cover"
                     className="w-full h-40 object-cover"
                   />
-                  <span className="absolute top-2 right-2 font-mono text-xs bg-brand-green/80 text-background px-2 py-0.5">
+                  <span className="absolute top-2 right-2   text-xs bg-brand-green/80 text-background px-2 py-0.5">
                     FROM LUMA
                   </span>
                 </div>
               ) : (
                 <div className="border border-dashed border-border/40 p-8 flex flex-col items-center gap-2 cursor-pointer hover:border-border/70 transition-colors">
                   <Upload size={16} className="text-muted-foreground" />
-                  <span className="font-mono text-xs text-muted-foreground">
+                  <span className="  text-xs text-muted-foreground">
                     DROP IMAGE OR CLICK TO UPLOAD
                   </span>
                 </div>
@@ -512,7 +512,7 @@ export default function CreateHackathonPage() {
             {/* Date pickers */}
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="font-mono text-xs text-muted-foreground tracking-widest">
+                <label className="  text-xs text-muted-foreground tracking-widest">
                   START DATE *
                 </label>
                 <Popover>
@@ -520,7 +520,7 @@ export default function CreateHackathonPage() {
                     render={
                       <Button
                         type="button"
-                        className={`w-full flex items-center gap-2 border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs text-left transition-colors ${
+                        className={`w-full flex items-center gap-2 border border-border/40 bg-secondary/20 px-3 py-2   text-xs text-left transition-colors ${
                           startDate
                             ? "text-foreground"
                             : "text-muted-foreground/50"
@@ -552,7 +552,7 @@ export default function CreateHackathonPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="font-mono text-xs text-muted-foreground tracking-widest">
+                <label className="  text-xs text-muted-foreground tracking-widest">
                   END DATE *
                 </label>
                 <Popover>
@@ -560,7 +560,7 @@ export default function CreateHackathonPage() {
                     render={
                       <Button
                         type="button"
-                        className={`w-full flex items-center gap-2 border border-border/40 bg-secondary/20 px-3 py-2 font-mono text-xs text-left transition-colors ${
+                        className={`w-full flex items-center gap-2 border border-border/40 bg-secondary/20 px-3 py-2   text-xs text-left transition-colors ${
                           endDate
                             ? "text-foreground"
                             : "text-muted-foreground/50"
@@ -592,7 +592,7 @@ export default function CreateHackathonPage() {
 
             {/* Date range display */}
             {startDate && endDate && (
-              <div className="flex items-center gap-2 font-mono text-xs text-brand-green/70 border border-brand-green/20 bg-brand-green/5 px-3 py-2">
+              <div className="flex items-center gap-2   text-xs text-brand-green/70 border border-brand-green/20 bg-brand-green/5 px-3 py-2">
                 <CalendarIcon size={10} />
                 <span>
                   {format(startDate, "MMM d, yyyy")} →{" "}
@@ -608,7 +608,7 @@ export default function CreateHackathonPage() {
 
             {/* Location mode — 3-way segmented control */}
             <div className="space-y-3">
-              <label className="font-mono text-xs text-muted-foreground tracking-widest">
+              <label className="  text-xs text-muted-foreground tracking-widest">
                 PARTICIPATION MODE *
               </label>
               <div className="grid grid-cols-3 gap-0 border border-border/40 overflow-hidden">
@@ -626,9 +626,7 @@ export default function CreateHackathonPage() {
                     <span className="font-pixel text-xs tracking-wider">
                       {opt.label}
                     </span>
-                    <span className="font-mono text-xs opacity-70">
-                      {opt.desc}
-                    </span>
+                    <span className="  text-xs opacity-70">{opt.desc}</span>
                   </button>
                 ))}
               </div>
@@ -639,7 +637,7 @@ export default function CreateHackathonPage() {
                   animate={{ height: "auto", opacity: 1 }}
                   className="space-y-1"
                 >
-                  <label className="font-mono text-xs text-muted-foreground tracking-widest">
+                  <label className="  text-xs text-muted-foreground tracking-widest">
                     VENUE LOCATION{" "}
                     {locationMode === "hybrid" && "(physical venue)"}
                   </label>
@@ -657,11 +655,11 @@ export default function CreateHackathonPage() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <label className="font-mono text-xs text-muted-foreground tracking-widest">
+                  <label className="  text-xs text-muted-foreground tracking-widest">
                     MAX PARTICIPANTS
                   </label>
                   {lumaImported && (
-                    <span className="font-mono text-xs text-brand-green/70">
+                    <span className="  text-xs text-brand-green/70">
                       Set by Luma
                     </span>
                   )}
@@ -676,11 +674,11 @@ export default function CreateHackathonPage() {
               </div>
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <label className="font-mono text-xs text-muted-foreground tracking-widest">
+                  <label className="  text-xs text-muted-foreground tracking-widest">
                     MAX TEAM SIZE
                   </label>
                   {lumaImported && (
-                    <span className="font-mono text-xs text-brand-green/70">
+                    <span className="  text-xs text-brand-green/70">
                       Set by Luma
                     </span>
                   )}
@@ -698,16 +696,14 @@ export default function CreateHackathonPage() {
             <div className="flex items-center justify-between p-3 border border-border/40 bg-secondary/10">
               <div>
                 <div className="flex items-center gap-2">
-                  <p className="font-mono text-xs text-foreground">
-                    REQUIRES APPROVAL
-                  </p>
+                  <p className="  text-xs text-foreground">REQUIRES APPROVAL</p>
                   {lumaImported && (
-                    <span className="font-mono text-xs text-brand-green/70">
+                    <span className="  text-xs text-brand-green/70">
                       Set by Luma
                     </span>
                   )}
                 </div>
-                <p className="font-mono text-xs text-muted-foreground">
+                <p className="  text-xs text-muted-foreground">
                   Participants need manual approval to join
                 </p>
               </div>
@@ -731,7 +727,7 @@ export default function CreateHackathonPage() {
           >
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="font-mono text-xs text-muted-foreground tracking-widest">
+                <label className="  text-xs text-muted-foreground tracking-widest">
                   DESCRIPTION (MARKDOWN)
                 </label>
                 <button
@@ -739,7 +735,7 @@ export default function CreateHackathonPage() {
                   onClick={() =>
                     setPreviewMode(previewMode === "form" ? "preview" : "form")
                   }
-                  className="flex items-center gap-1 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex items-center gap-1   text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {previewMode === "form" ? (
                     <>
@@ -767,7 +763,7 @@ export default function CreateHackathonPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="font-mono text-xs text-muted-foreground tracking-widest">
+              <label className="  text-xs text-muted-foreground tracking-widest">
                 TAGS
               </label>
               <div className="flex flex-wrap gap-1.5">
@@ -776,7 +772,7 @@ export default function CreateHackathonPage() {
                     key={t}
                     type="button"
                     onClick={() => toggleTag(t)}
-                    className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
+                    className={`  text-xs border px-2 py-0.5 transition-colors ${
                       selectedTags.includes(t)
                         ? "border-brand-purple/60 text-brand-purple bg-brand-purple/5"
                         : "border-border/40 text-muted-foreground hover:border-border/70"
@@ -789,7 +785,7 @@ export default function CreateHackathonPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="font-mono text-xs text-muted-foreground tracking-widest">
+              <label className="  text-xs text-muted-foreground tracking-widest">
                 TECHNOLOGIES
               </label>
               <div className="flex flex-wrap gap-1.5">
@@ -798,7 +794,7 @@ export default function CreateHackathonPage() {
                     key={t}
                     type="button"
                     onClick={() => toggleTech(t)}
-                    className={`font-mono text-xs border px-2 py-0.5 transition-colors ${
+                    className={`  text-xs border px-2 py-0.5 transition-colors ${
                       selectedTechs.includes(t)
                         ? "border-foreground/60 text-foreground bg-foreground/5"
                         : "border-border/40 text-muted-foreground hover:border-border/70"
@@ -839,7 +835,7 @@ export default function CreateHackathonPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="font-mono text-xs text-muted-foreground">
+                    <label className="  text-xs text-muted-foreground">
                       PLACE
                     </label>
                     <input
@@ -850,7 +846,7 @@ export default function CreateHackathonPage() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="font-mono text-xs text-muted-foreground">
+                    <label className="  text-xs text-muted-foreground">
                       AMOUNT
                     </label>
                     <input
@@ -862,7 +858,7 @@ export default function CreateHackathonPage() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="font-mono text-xs text-muted-foreground">
+                  <label className="  text-xs text-muted-foreground">
                     DESCRIPTION
                   </label>
                   <input
@@ -899,7 +895,7 @@ export default function CreateHackathonPage() {
 
             {/* Live preview */}
             <div className="space-y-2">
-              <label className="font-mono text-xs text-muted-foreground tracking-widest">
+              <label className="  text-xs text-muted-foreground tracking-widest">
                 LIVE PREVIEW
               </label>
               <div
@@ -925,7 +921,7 @@ export default function CreateHackathonPage() {
                     <TagBadge key={t} label={t} variant="default" index={i} />
                   ))}
                 </div>
-                <p className="relative font-mono text-xs text-white/40">
+                <p className="relative   text-xs text-white/40">
                   {startDate ? format(startDate, "MMM d, yyyy") : "Start Date"}
                   {" — "}
                   {endDate ? format(endDate, "MMM d, yyyy") : "End Date"}
@@ -957,7 +953,7 @@ export default function CreateHackathonPage() {
                 <p className="relative font-pixel text-2xl text-white/90 mb-2">
                   {title || "UNTITLED"}
                 </p>
-                <p className="relative font-mono text-xs text-white/50">
+                <p className="relative   text-xs text-white/50">
                   {locationMode === "remote"
                     ? "Remote"
                     : locationMode === "hybrid"
@@ -970,50 +966,44 @@ export default function CreateHackathonPage() {
 
               <div className="grid sm:grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="font-mono text-xs text-muted-foreground mb-1">
-                    TAGS
-                  </p>
+                  <p className="  text-xs text-muted-foreground mb-1">TAGS</p>
                   <div className="flex flex-wrap gap-1">
                     {selectedTags.map((t, i) => (
                       <TagBadge key={t} label={t} index={i} />
                     ))}
                     {selectedTags.length === 0 && (
-                      <span className="font-mono text-xs text-muted-foreground/50">
+                      <span className="  text-xs text-muted-foreground/50">
                         none
                       </span>
                     )}
                   </div>
                 </div>
                 <div>
-                  <p className="font-mono text-xs text-muted-foreground mb-1">
-                    TECHS
-                  </p>
+                  <p className="  text-xs text-muted-foreground mb-1">TECHS</p>
                   <div className="flex flex-wrap gap-1">
                     {selectedTechs.map((t, i) => (
                       <TagBadge key={t} label={t} variant="tech" index={i} />
                     ))}
                     {selectedTechs.length === 0 && (
-                      <span className="font-mono text-xs text-muted-foreground/50">
+                      <span className="  text-xs text-muted-foreground/50">
                         none
                       </span>
                     )}
                   </div>
                 </div>
                 <div>
-                  <p className="font-mono text-xs text-muted-foreground mb-1">
-                    DATES
-                  </p>
-                  <span className="font-mono text-xs text-foreground">
+                  <p className="  text-xs text-muted-foreground mb-1">DATES</p>
+                  <span className="  text-xs text-foreground">
                     {startDate && endDate
                       ? `${format(startDate, "MMM d")} – ${format(endDate, "MMM d, yyyy")}`
                       : "Not set"}
                   </span>
                 </div>
                 <div>
-                  <p className="font-mono text-xs text-muted-foreground mb-1">
+                  <p className="  text-xs text-muted-foreground mb-1">
                     PARTICIPATION
                   </p>
-                  <span className="font-mono text-xs text-foreground capitalize">
+                  <span className="  text-xs text-foreground capitalize">
                     {locationMode.replace("_", " ")}
                     {(locationMode === "in_person" ||
                       locationMode === "hybrid") &&
@@ -1023,18 +1013,18 @@ export default function CreateHackathonPage() {
                   </span>
                 </div>
                 <div>
-                  <p className="font-mono text-xs text-muted-foreground mb-1">
+                  <p className="  text-xs text-muted-foreground mb-1">
                     MAX PARTICIPANTS
                   </p>
-                  <span className="font-mono text-xs text-foreground">
+                  <span className="  text-xs text-foreground">
                     {maxParticipants}
                   </span>
                 </div>
                 <div>
-                  <p className="font-mono text-xs text-muted-foreground mb-1">
+                  <p className="  text-xs text-muted-foreground mb-1">
                     MAX TEAM SIZE
                   </p>
-                  <span className="font-mono text-xs text-foreground">
+                  <span className="  text-xs text-foreground">
                     {maxTeamSize}
                   </span>
                 </div>

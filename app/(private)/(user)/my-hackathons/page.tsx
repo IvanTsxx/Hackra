@@ -38,7 +38,7 @@ export default async function MyHackathonsPage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/user/${session.user.username}`}
           className="hover:text-foreground"
@@ -57,7 +57,7 @@ export default async function MyHackathonsPage() {
               MY HACKATHONS
             </h1>
             {totalPending > 0 && (
-              <span className="inline-flex items-center border border-brand-green/40 bg-brand-green/5 font-mono rounded-none px-2 py-0.5 text-xs text-brand-green">
+              <span className="inline-flex items-center border border-brand-green/40 bg-brand-green/5   rounded-none px-2 py-0.5 text-xs text-brand-green">
                 {totalPending} PENDING
               </span>
             )}
@@ -79,7 +79,7 @@ export default async function MyHackathonsPage() {
           <h3 className="font-pixel text-sm text-foreground tracking-wider">
             NO HACKATHONS YET
           </h3>
-          <p className="font-mono text-xs text-muted-foreground max-w-sm mx-auto">
+          <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
             Create your first hackathon and start accepting participants.
           </p>
           <Link
@@ -93,7 +93,7 @@ export default async function MyHackathonsPage() {
         <Suspense
           fallback={
             <div className="glass border border-border/40 p-8 text-center">
-              <p className="font-mono text-xs text-muted-foreground animate-pulse">
+              <p className="  text-xs text-muted-foreground animate-pulse">
                 Loading hackathons...
               </p>
             </div>

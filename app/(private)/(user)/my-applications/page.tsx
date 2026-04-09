@@ -55,7 +55,7 @@ export default async function MyApplicationsPage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/user/${session.user.username}`}
           className="hover:text-foreground"
@@ -95,7 +95,7 @@ export default async function MyApplicationsPage() {
           <h3 className="font-pixel text-sm text-foreground tracking-wider">
             NO APPLICATIONS YET
           </h3>
-          <p className="font-mono text-xs text-muted-foreground max-w-sm mx-auto">
+          <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
             Join a team and start applying to hackathons. Your applications will
             appear here.
           </p>
@@ -116,7 +116,7 @@ export default async function MyApplicationsPage() {
 
             {applications.length === 0 ? (
               <div className="glass border border-border/40 p-8 text-center">
-                <p className="font-mono text-xs text-muted-foreground">
+                <p className="  text-xs text-muted-foreground">
                   No team applications yet.{" "}
                   <Link
                     href="/explore"
@@ -152,7 +152,7 @@ export default async function MyApplicationsPage() {
 
             {participations.length === 0 ? (
               <div className="glass border border-border/40 p-8 text-center">
-                <p className="font-mono text-xs text-muted-foreground">
+                <p className="  text-xs text-muted-foreground">
                   No hackathon registrations yet.
                 </p>
               </div>
@@ -169,7 +169,7 @@ export default async function MyApplicationsPage() {
                       <div className="flex items-center gap-3">
                         <span
                           className={cn(
-                            "inline-flex items-center border font-mono rounded-none px-1.5 py-0.5 text-xs",
+                            "inline-flex items-center border   rounded-none px-1.5 py-0.5 text-xs",
                             cfg.variant === "status-upcoming" &&
                               "border-foreground/20 text-muted-foreground",
                             cfg.variant === "status-live" &&
@@ -187,7 +187,7 @@ export default async function MyApplicationsPage() {
                           {p.hackathon.title.toUpperCase()}
                         </Link>
                       </div>
-                      <span className="font-mono text-xs text-muted-foreground/60">
+                      <span className="  text-xs text-muted-foreground/60">
                         {formatDistanceToNow(new Date(p.createdAt), {
                           addSuffix: true,
                         })}

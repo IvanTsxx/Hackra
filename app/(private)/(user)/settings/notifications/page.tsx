@@ -11,7 +11,7 @@ export default function SettingsNotificationsPage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
         <Link href="/user/me" className="hover:text-foreground">
           PROFILE
         </Link>
@@ -31,7 +31,7 @@ export default function SettingsNotificationsPage() {
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <Bell size={14} className="text-brand-green" />
-            <h2 className="font-mono text-xs tracking-widest text-foreground">
+            <h2 className="  text-xs tracking-widest text-foreground">
               GENERAL
             </h2>
           </div>
@@ -53,9 +53,7 @@ export default function SettingsNotificationsPage() {
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <Users size={14} className="text-brand-green" />
-            <h2 className="font-mono text-xs tracking-widest text-foreground">
-              TEAM
-            </h2>
+            <h2 className="  text-xs tracking-widest text-foreground">TEAM</h2>
           </div>
           <div className="border border-border/30 bg-secondary/10 divide-y divide-border/20">
             <NotificationRow
@@ -79,7 +77,7 @@ export default function SettingsNotificationsPage() {
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <Trophy size={14} className="text-brand-green" />
-            <h2 className="font-mono text-xs tracking-widest text-foreground">
+            <h2 className="  text-xs tracking-widest text-foreground">
               HACKATHONS
             </h2>
           </div>
@@ -105,9 +103,7 @@ export default function SettingsNotificationsPage() {
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <Mail size={14} className="text-brand-green" />
-            <h2 className="font-mono text-xs tracking-widest text-foreground">
-              EMAIL
-            </h2>
+            <h2 className="  text-xs tracking-widest text-foreground">EMAIL</h2>
           </div>
           <div className="border border-border/30 bg-secondary/10 divide-y divide-border/20">
             <NotificationRow
@@ -144,8 +140,8 @@ function NotificationRow({
   return (
     <div className="flex items-center justify-between p-4">
       <div className="flex-1">
-        <p className="font-mono text-xs text-foreground">{title}</p>
-        <p className="font-mono text-sm text-muted-foreground/60 mt-0.5">
+        <p className="  text-xs text-foreground">{title}</p>
+        <p className="  text-sm text-muted-foreground/60 mt-0.5">
           {description}
         </p>
       </div>

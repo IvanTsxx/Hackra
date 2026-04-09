@@ -48,13 +48,13 @@ export function ExploreEmptyState({
     >
       <div className="border border-border/30 p-8">
         <p className="font-pixel text-sm text-muted-foreground">{message}</p>
-        <p className="font-mono text-xs text-muted-foreground/60 mt-2">
+        <p className="  text-xs text-muted-foreground/60 mt-2">
           Try adjusting your filters
         </p>
         <button
           type="button"
           onClick={clearAll}
-          className="mt-4 font-mono text-xs text-brand-green hover:opacity-80 transition-opacity"
+          className="mt-4   text-xs text-brand-green hover:opacity-80 transition-opacity"
         >
           CLEAR FILTERS &rarr;
         </button>

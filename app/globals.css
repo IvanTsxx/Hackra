@@ -268,12 +268,6 @@
   right: -0.5rem;
 }
 
-/* Selection styling */
-::selection {
-  background: oklch(0.85 0.15 145 / 0.3);
-  color: oklch(0.95 0 0);
-}
-
 /* Glass card utility */
 @utility glass {
   background: oklch(1 0 0 / 0.04);

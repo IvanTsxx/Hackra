@@ -76,7 +76,7 @@ export function HackathonsTable({
             {hackathons.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center py-8">
-                  <p className="font-mono text-xs text-muted-foreground">
+                  <p className="  text-xs text-muted-foreground">
                     No hackathons found.
                   </p>
                 </TableCell>
@@ -113,7 +113,7 @@ function actionButton(
         <Tooltip>
           <TooltipTrigger>{button}</TooltipTrigger>
           <TooltipContent>
-            <p className="font-mono text-xs">{tooltip}</p>
+            <p className="  text-xs">{tooltip}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -154,7 +154,7 @@ function HackathonRow({
           {pendingCount > 0 && (
             <Badge
               variant="outline"
-              className="border-brand-green/40 text-brand-green bg-brand-green/5 font-mono text-xs"
+              className="border-brand-green/40 text-brand-green bg-brand-green/5   text-xs"
             >
               {pendingCount} PENDING
             </Badge>
@@ -164,10 +164,10 @@ function HackathonRow({
       <TableCell>
         <Badge variant={cfg.variant}>{cfg.label}</Badge>
       </TableCell>
-      <TableCell className="font-mono text-xs text-muted-foreground">
+      <TableCell className="  text-xs text-muted-foreground">
         {format(new Date(hackathon.startDate), "MMM dd, yyyy")}
       </TableCell>
-      <TableCell className="font-mono text-xs text-muted-foreground">
+      <TableCell className="  text-xs text-muted-foreground">
         {hackathon._count.participants}
       </TableCell>
       <TableCell>
