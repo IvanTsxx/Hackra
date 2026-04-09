@@ -10,7 +10,7 @@ export default function Image() {
       avatarSrc={avatarSrc}
       topBar={{ label: "HACKRA", right: "ABOUT" }}
       authorName="Hackra"
-      url="https://hackra.dev/about"
+      url="https://hackra.vercel.app/about"
     >
       {/* Main heading */}
       <div style={{ color: brandGreen, fontSize: 44, fontWeight: 700 }}>

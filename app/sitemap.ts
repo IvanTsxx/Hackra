@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 import { prisma } from "@/shared/lib/prisma";
 
-const BASE_URL = "https://hackra.dev";
+const BASE_URL = "https://hackra.vercel.app";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages

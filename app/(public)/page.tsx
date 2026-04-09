@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "Hackra",
     title: "Hackra | Build. Compete. Together.",
     type: "website",
-    url: "https://hackra.dev",
+    url: "https://hackra.vercel.app",
   },
   robots: {
     follow: true,

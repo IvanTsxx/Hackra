@@ -18,7 +18,7 @@ export default async function Image({
       avatarSrc={user?.image || null}
       topBar={{ label: "HACKRA", right: "PROFILE" }}
       authorName={user?.name || username}
-      url={`https://hackra.dev/user/${username}`}
+      url={`https://hackra.vercel.app/user/${username}`}
     >
       {/* Name */}
       <div style={{ color: brandGreen, fontSize: 44, fontWeight: 700 }}>

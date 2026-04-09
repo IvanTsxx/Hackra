@@ -48,7 +48,7 @@ export async function generateMetadata({
 
   return {
     alternates: {
-      canonical: `https://hackra.dev/hackathon/${slug}`,
+      canonical: `https://hackra.vercel.app/hackathon/${slug}`,
     },
     description: hackathon.description,
     keywords: [
@@ -64,7 +64,7 @@ export async function generateMetadata({
       siteName: "Hackra",
       title: `${hackathon.title} | Hackra`,
       type: "website",
-      url: `https://hackra.dev/hackathon/${slug}`,
+      url: `https://hackra.vercel.app/hackathon/${slug}`,
     },
     title: `${hackathon.title} | Hackra`,
     twitter: {
@@ -105,7 +105,7 @@ export default async function HackathonDetailPage({
   const shareUrl =
     typeof window !== "undefined"
       ? window.location.href
-      : `https://hackra.dev/hackathon/${slug}`;
+      : `https://hackra.vercel.app/hackathon/${slug}`;
 
   const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
 
