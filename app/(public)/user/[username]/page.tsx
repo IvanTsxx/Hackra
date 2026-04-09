@@ -53,7 +53,9 @@ export async function generateMetadata({
     },
     title: `${user.name} | Hackra`,
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
+      description: userDescription,
+      title: `${user.name} | Hackra`,
     },
   };
 }
