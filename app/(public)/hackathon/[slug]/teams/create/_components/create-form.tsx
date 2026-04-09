@@ -57,7 +57,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="text-center space-y-4 p-12 border border-brand-green/30 bg-brand-green/5"
+        className="text-center space-y-4 p-12 border border-brand-green/30 bg-brand-green/5 min-h-[calc(100vh-100px)] flex flex-col items-center justify-center"
       >
         <p className="font-pixel text-3xl text-brand-green">TEAM CREATED.</p>
         <p className="  text-xs text-muted-foreground">

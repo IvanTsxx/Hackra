@@ -209,7 +209,7 @@ function HackathonRow({
             aria-label={`View participants for ${hackathon.title}`}
           >
             <Eye size={12} />
-            VIEW
+            MANAGE PARTICIPANTS
           </button>
         </div>
       </TableCell>

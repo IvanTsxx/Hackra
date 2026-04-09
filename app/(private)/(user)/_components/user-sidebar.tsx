@@ -1,7 +1,12 @@
 "use client";
 
 import type { LucideProps } from "lucide-react";
-import { LayoutDashboardIcon, SettingsIcon, UserIcon } from "lucide-react";
+import {
+  LayoutDashboardIcon,
+  SettingsIcon,
+  TrophyIcon,
+  UserIcon,
+} from "lucide-react";
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,9 +35,10 @@ const mainNavItems: {
   >;
   label: string;
 }[] = [
-  { href: "/my-teams", icon: LayoutDashboardIcon, label: "My Teams" },
-  { href: "/my-applications", icon: UserIcon, label: "My Applications" },
   { href: "/create", icon: SettingsIcon, label: "Create" },
+  { href: "/my-applications", icon: UserIcon, label: "My Applications" },
+  { href: "/my-hackathons", icon: TrophyIcon, label: "My Hackathons" },
+  { href: "/my-teams", icon: LayoutDashboardIcon, label: "My Teams" },
 ];
 
 const settingsNavItems: {
