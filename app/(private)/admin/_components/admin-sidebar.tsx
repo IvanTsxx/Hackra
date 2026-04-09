@@ -1,8 +1,14 @@
 "use client";
 
 import type { LucideProps } from "lucide-react";
-import { LayoutDashboardIcon, ShieldIcon, UploadIcon } from "lucide-react";
+import {
+  LayoutDashboardIcon,
+  Shield,
+  ShieldIcon,
+  UploadIcon,
+} from "lucide-react";
 import type { Route } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
@@ -44,11 +50,26 @@ export function AdminSidebar() {
             <SidebarMenuButton
               size="lg"
               render={
-                <Link href="/admin" className="flex items-center gap-2">
-                  <ShieldIcon />
-                  <span className="text-lg font-bold tracking-tight">
-                    Admin
-                  </span>
+                <Link
+                  href="/"
+                  className="flex items-center gap-2 group"
+                  prefetch={false}
+                >
+                  <Image
+                    src="/hackra-logo.webp"
+                    alt="Logo"
+                    width={1600}
+                    height={1600}
+                    loading="eager"
+                    priority
+                    className="w-10 h-10"
+                  />
+                  <div className="flex items-start gap-2">
+                    <span className="font-pixel text-sm text-muted-foreground tracking-widest">
+                      HACKRA ADMIN
+                    </span>
+                    <Shield className="w-5 h-5" />
+                  </div>
                 </Link>
               }
             />
