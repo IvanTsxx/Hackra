@@ -10,10 +10,9 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
-import { AuthModalDialog } from "@/shared/components/auth/auth-modal-dialog";
+import { ModalProviders } from "@/shared/components/providers/modal-privders";
 import { Toaster } from "@/shared/components/ui/sonner";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
-import { AuthProvider } from "@/shared/lib/auth-context";
 
 export default function RootLayout({
   children,
@@ -38,11 +37,9 @@ export default function RootLayout({
         <ThemeProvider>
           <TooltipProvider>
             <NuqsAdapter>
-              <AuthProvider>
-                {children}
-                <Toaster position="top-right" richColors />
-                <AuthModalDialog />
-              </AuthProvider>
+              {children}
+              <Toaster position="top-right" richColors />
+              <ModalProviders />
             </NuqsAdapter>
           </TooltipProvider>
         </ThemeProvider>

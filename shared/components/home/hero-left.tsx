@@ -7,7 +7,7 @@ import Link from "next/link";
 
 import { useSession } from "@/shared/lib/auth-client";
 
-import { AuthModal } from "../auth";
+import { AuthModalDialog } from "../auth";
 import { CodeText } from "../code-text";
 import { Button } from "../ui/button";
 import { TextFlip } from "../ui/text-flip";
@@ -98,15 +98,18 @@ export const HeroLeft = ({
         </Link>
 
         {!user && (
-          <AuthModal mode="signup">
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto uppercase tracking-wider text-xs"
-            >
-              {"<"} Create Account {"/>"}
-            </Button>
-          </AuthModal>
+          <AuthModalDialog
+            isRender
+            renderComponent={
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto uppercase tracking-wider text-xs"
+              />
+            }
+          >
+            {"<"} Create Account {"/>"}
+          </AuthModalDialog>
         )}
       </motion.div>
 
