@@ -25,7 +25,6 @@ export const CreateHackatonButton = ({ user }: { user?: User | null }) => (
           <Button
             size="lg"
             className="gap-2 w-full sm:w-auto uppercase tracking-wider text-xs glow-primary"
-            nativeButton={false}
           />
         }
       >
