@@ -21,6 +21,11 @@
       "sourceType": "github",
       "computedHash": "4992d6d415893c55f826fe12ea063f6b2c3dcc0b2e497e26cc54af3219d520ef"
     },
+    "brand-guidelines": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "4aa754f4f7fc54ac3e7f6e2fb55c0e2fb14b7d70da077b41a86bd1889ff9094c"
+    },
     "create-auth-skill": {
       "source": "better-auth/skills",
       "sourceType": "github",
@@ -40,6 +45,11 @@
       "source": "vercel-labs/skills",
       "sourceType": "github",
       "computedHash": "d31e234f0c90694a670222cdd1dafa853e051d7066beda389f1097c22dadd461"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
     },
     "next-best-practices": {
       "source": "vercel-labs/next-skills",
@@ -80,6 +90,11 @@
       "source": "shadcn/ui",
       "sourceType": "github",
       "computedHash": "507f011a70e8b3ae242bdc0bb5b39fd91a1d4049a0f3c281991ccf84973d591c"
+    },
+    "testing-next-stack": {
+      "source": "hopeoverture/worldbuilding-app-skills",
+      "sourceType": "github",
+      "computedHash": "e27fb53952fe8318206dd6f4c76dd76564432dbac1cb6cc1b327836efa5002de"
     },
     "two-factor-authentication-best-practices": {
       "source": "better-auth/skills",
