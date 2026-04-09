@@ -6,6 +6,7 @@ import { Suspense } from "react";
 
 import {
   getHackathonPendingCounts,
+  getHackathonParticipants,
   getOrganizerHackathons,
   getTotalPendingParticipants,
 } from "@/data/organizer-hackathons";
@@ -29,11 +30,36 @@ export default async function MyHackathonsPage() {
     redirect("/");
   }
 
+  const userId = session.user.id as string;
+
   const [hackathons, totalPending, pendingCounts] = await Promise.all([
-    getOrganizerHackathons(session.user.id),
-    getTotalPendingParticipants(session.user.id),
-    getHackathonPendingCounts(session.user.id),
+    getOrganizerHackathons(userId),
+    getTotalPendingParticipants(userId),
+    getHackathonPendingCounts(userId),
   ]);
+
+  // Fetch participants for each hackathon
+  const participantsMap: Record<
+    string,
+    {
+      id: string;
+      status: string;
+      createdAt: Date;
+      user: {
+        id: string;
+        name: string | null;
+        username: string;
+        email: string;
+      };
+    }[]
+  > = {};
+
+  await Promise.all(
+    hackathons.map(async (hackathon) => {
+      const participants = await getHackathonParticipants(hackathon.id, userId);
+      participantsMap[hackathon.id] = participants;
+    })
+  );
 
   return (
     <section>
@@ -102,6 +128,7 @@ export default async function MyHackathonsPage() {
           <MyHackathonsClient
             hackathons={hackathons}
             pendingCounts={pendingCounts}
+            participantsMap={participantsMap}
           />
         </Suspense>
       )}

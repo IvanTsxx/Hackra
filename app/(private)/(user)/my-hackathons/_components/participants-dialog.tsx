@@ -12,10 +12,25 @@ import { ParticipantsList } from "./participants-list";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
+interface ParticipantUser {
+  id: string;
+  name: string | null;
+  username: string;
+  email: string;
+}
+
+interface Participant {
+  id: string;
+  status: string;
+  createdAt: Date;
+  user: ParticipantUser;
+}
+
 interface ParticipantsDialogProps {
   hackathonId: string;
   hackathonTitle: string;
   requiresApproval: boolean;
+  participants: Participant[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -26,6 +41,7 @@ export function ParticipantsDialog({
   hackathonId,
   hackathonTitle,
   requiresApproval,
+  participants,
   open,
   onOpenChange,
 }: ParticipantsDialogProps) {
@@ -39,8 +55,9 @@ export function ParticipantsDialog({
           </DialogDescription>
         </DialogHeader>
         <ParticipantsList
-          hackathonId={hackathonId}
+          participants={participants}
           requiresApproval={requiresApproval}
+          hackathonId={hackathonId}
         />
       </DialogContent>
     </Dialog>

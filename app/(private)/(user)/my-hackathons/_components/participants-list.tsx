@@ -1,5 +1,4 @@
 import { format } from "date-fns";
-import { headers } from "next/headers";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -10,16 +9,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getOrganizerHackathonById } from "@/data/organizer-hackathons";
-import { auth } from "@/shared/lib/auth";
 
 import { ParticipantRowActions } from "./participant-row-actions";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
+interface ParticipantUser {
+  id: string;
+  name: string | null;
+  username: string;
+  email: string;
+}
+
+interface Participant {
+  id: string;
+  status: string;
+  createdAt: Date;
+  user: ParticipantUser;
+}
+
 interface ParticipantsListProps {
-  hackathonId: string;
+  participants: Participant[];
   requiresApproval: boolean;
+  hackathonId: string;
 }
 
 // ─── Status Badge ────────────────────────────────────────────────────────────
@@ -51,15 +63,12 @@ function StatusBadge({ status }: { status: string }) {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-export async function ParticipantsList({
-  hackathonId,
+export function ParticipantsList({
+  participants: initialParticipants,
   requiresApproval,
+  hackathonId,
 }: ParticipantsListProps) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  const userId = session?.user?.id as string;
-
-  const hackathon = await getOrganizerHackathonById(hackathonId, userId);
-  const { participants } = hackathon;
+  const participants = initialParticipants;
 
   if (participants.length === 0) {
     return (

@@ -34,7 +34,21 @@ export interface HackathonDTO {
 
 interface MyHackathonsClientProps {
   hackathons: HackathonDTO[];
-  pendingCounts: Map<string, number>;
+  pendingCounts: Record<string, number>;
+  participantsMap: Record<
+    string,
+    {
+      id: string;
+      status: string;
+      createdAt: Date;
+      user: {
+        id: string;
+        name: string | null;
+        username: string;
+        email: string;
+      };
+    }[]
+  >;
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -42,6 +56,7 @@ interface MyHackathonsClientProps {
 export function MyHackathonsClient({
   hackathons,
   pendingCounts,
+  participantsMap,
 }: MyHackathonsClientProps) {
   const router = useRouter();
 
@@ -54,6 +69,17 @@ export function MyHackathonsClient({
     id: string;
     title: string;
     requiresApproval: boolean;
+    participants: {
+      id: string;
+      status: string;
+      createdAt: Date;
+      user: {
+        id: string;
+        name: string | null;
+        username: string;
+        email: string;
+      };
+    }[];
   } | null>(null);
 
   const handleEditSuccess = () => {
@@ -83,6 +109,7 @@ export function MyHackathonsClient({
         onParticipantsClick={(hackathon) =>
           setParticipantsHackathon({
             id: hackathon.id,
+            participants: participantsMap[hackathon.id] ?? [],
             requiresApproval: hackathon.requiresApproval,
             title: hackathon.title,
           })
@@ -121,6 +148,7 @@ export function MyHackathonsClient({
           hackathonId={participantsHackathon.id}
           hackathonTitle={participantsHackathon.title}
           requiresApproval={participantsHackathon.requiresApproval}
+          participants={participantsHackathon.participants}
           open={!!participantsHackathon}
           onOpenChange={(open) => {
             if (!open) {

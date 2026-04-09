@@ -22,59 +22,59 @@ Hackra is a hackathon platform built with Next.js 16, React 19, TypeScript, Pris
 
 ### Core Skills (auto-load when relevant)
 
-| Skill | When to Load | Location |
-| ----- | ------------ | -------- |
-| `architect-nextjs` | Setting up new features, deciding component placement | `.agents/skills/architect-nextjs/SKILL.md` |
-| `ultracite` | Writing any TS/TSX code, linting, formatting | `.agents/skills/ultracite/SKILL.md` |
+| Skill                   | When to Load                                                         | Location                                        |
+| ----------------------- | -------------------------------------------------------------------- | ----------------------------------------------- |
+| `architect-nextjs`      | Setting up new features, deciding component placement                | `.agents/skills/architect-nextjs/SKILL.md`      |
+| `ultracite`             | Writing any TS/TSX code, linting, formatting                         | `.agents/skills/ultracite/SKILL.md`             |
 | `next-cache-components` | Using Next.js 16 caching (PPR, `use cache`, `cacheLife`, `cacheTag`) | `.agents/skills/next-cache-components/SKILL.md` |
-| `next-best-practices` | Writing Next.js pages, layouts, API routes, metadata | `.agents/skills/next-best-practices/SKILL.md` |
-| `shadcn` | Adding, fixing, or composing UI components | `.agents/skills/shadcn/SKILL.md` |
-| `web-design-guidelines` | Reviewing UI code for accessibility/design compliance | `.agents/skills/web-design-guidelines/SKILL.md` |
-| `find-skills` | User asks "how do I do X", "is there a skill for X" | `.agents/skills/find-skills/SKILL.md` |
+| `next-best-practices`   | Writing Next.js pages, layouts, API routes, metadata                 | `.agents/skills/next-best-practices/SKILL.md`   |
+| `shadcn`                | Adding, fixing, or composing UI components                           | `.agents/skills/shadcn/SKILL.md`                |
+| `web-design-guidelines` | Reviewing UI code for accessibility/design compliance                | `.agents/skills/web-design-guidelines/SKILL.md` |
+| `find-skills`           | User asks "how do I do X", "is there a skill for X"                  | `.agents/skills/find-skills/SKILL.md`           |
 
 ### Domain-Specific Skills
 
-| Skill | When to Load | Location |
-| ----- | ------------ | -------- |
-| `better-auth-best-practices` | Configuring Better Auth server/client, OAuth, sessions | `.agents/skills/better-auth-best-practices/SKILL.md` |
-| `better-auth-security-best-practices` | Securing auth setup, rate limiting, CSRF | `.agents/skills/better-auth-security-best-practices/SKILL.md` |
-| `prisma-cli` | Running Prisma CLI commands, migrations, schema | `.agents/skills/prisma-cli/SKILL.md` |
-| `prisma-client-api` | Writing database queries, CRUD operations | `.agents/skills/prisma-client-api/SKILL.md` |
-| `prisma-database-setup` | Setting up or changing database connections | `.agents/skills/prisma-database-setup/SKILL.md` |
-| `prisma-postgres` | Prisma Postgres specific operations | `.agents/skills/prisma-postgres/SKILL.md` |
-| `prisma-driver-adapter-implementation` | Prisma v7 driver adapter work | `.agents/skills/prisma-driver-adapter-implementation/SKILL.md` |
-| `vercel-composition-patterns` | Refactoring components with prop proliferation | `.agents/skills/vercel-composition-patterns/SKILL.md` |
-| `emil-design-eng` | UI polish, component design, animation | `.agents/skills/emil-design-eng/SKILL.md` |
-| `frontend-design` | Creating distinctive, production-grade frontend | `.agents/skills/frontend-design/SKILL.md` |
-| `brand-guidelines` | Applying Anthropic's brand colors and typography | `.agents/skills/brand-guidelines/SKILL.md` |
-| `testing-next-stack` | Setting up tests, Vitest, Playwright, RTL | `.agents/skills/testing-next-stack/SKILL.md` |
-| `better-upload` | File uploads with better-upload | `.agents/skills/better-upload/SKILL.md` |
+| Skill                                  | When to Load                                           | Location                                                       |
+| -------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------- |
+| `better-auth-best-practices`           | Configuring Better Auth server/client, OAuth, sessions | `.agents/skills/better-auth-best-practices/SKILL.md`           |
+| `better-auth-security-best-practices`  | Securing auth setup, rate limiting, CSRF               | `.agents/skills/better-auth-security-best-practices/SKILL.md`  |
+| `prisma-cli`                           | Running Prisma CLI commands, migrations, schema        | `.agents/skills/prisma-cli/SKILL.md`                           |
+| `prisma-client-api`                    | Writing database queries, CRUD operations              | `.agents/skills/prisma-client-api/SKILL.md`                    |
+| `prisma-database-setup`                | Setting up or changing database connections            | `.agents/skills/prisma-database-setup/SKILL.md`                |
+| `prisma-postgres`                      | Prisma Postgres specific operations                    | `.agents/skills/prisma-postgres/SKILL.md`                      |
+| `prisma-driver-adapter-implementation` | Prisma v7 driver adapter work                          | `.agents/skills/prisma-driver-adapter-implementation/SKILL.md` |
+| `vercel-composition-patterns`          | Refactoring components with prop proliferation         | `.agents/skills/vercel-composition-patterns/SKILL.md`          |
+| `emil-design-eng`                      | UI polish, component design, animation                 | `.agents/skills/emil-design-eng/SKILL.md`                      |
+| `frontend-design`                      | Creating distinctive, production-grade frontend        | `.agents/skills/frontend-design/SKILL.md`                      |
+| `brand-guidelines`                     | Applying Anthropic's brand colors and typography       | `.agents/skills/brand-guidelines/SKILL.md`                     |
+| `testing-next-stack`                   | Setting up tests, Vitest, Playwright, RTL              | `.agents/skills/testing-next-stack/SKILL.md`                   |
+| `better-upload`                        | File uploads with better-upload                        | `.agents/skills/better-upload/SKILL.md`                        |
 
 ### SDD (Spec-Driven Development) Skills
 
-| Skill | When to Load | Location |
-| ----- | ------------ | -------- |
-| `sdd-init` | Initialize SDD context in project | `~/.opencode/skills/sdd-init/SKILL.md` |
-| `sdd-explore` | Explore and investigate ideas | `~/.opencode/skills/sdd-explore/SKILL.md` |
-| `sdd-propose` | Create change proposals | `~/.opencode/skills/sdd-propose/SKILL.md` |
-| `sdd-spec` | Write specifications | `~/.opencode/skills/sdd-spec/SKILL.md` |
-| `sdd-design` | Create technical design | `~/.opencode/skills/sdd-design/SKILL.md` |
-| `sdd-tasks` | Break down into tasks | `~/.opencode/skills/sdd-tasks/SKILL.md` |
-| `sdd-apply` | Implement tasks | `~/.opencode/skills/sdd-apply/SKILL.md` |
-| `sdd-verify` | Validate implementation | `~/.opencode/skills/sdd-verify/SKILL.md` |
-| `sdd-archive` | Archive completed change | `~/.opencode/skills/sdd-archive/SKILL.md` |
-| `sdd-onboard` | Guided SDD walkthrough | `~/.opencode/skills/sdd-onboard/SKILL.md` |
+| Skill         | When to Load                      | Location                                  |
+| ------------- | --------------------------------- | ----------------------------------------- |
+| `sdd-init`    | Initialize SDD context in project | `~/.opencode/skills/sdd-init/SKILL.md`    |
+| `sdd-explore` | Explore and investigate ideas     | `~/.opencode/skills/sdd-explore/SKILL.md` |
+| `sdd-propose` | Create change proposals           | `~/.opencode/skills/sdd-propose/SKILL.md` |
+| `sdd-spec`    | Write specifications              | `~/.opencode/skills/sdd-spec/SKILL.md`    |
+| `sdd-design`  | Create technical design           | `~/.opencode/skills/sdd-design/SKILL.md`  |
+| `sdd-tasks`   | Break down into tasks             | `~/.opencode/skills/sdd-tasks/SKILL.md`   |
+| `sdd-apply`   | Implement tasks                   | `~/.opencode/skills/sdd-apply/SKILL.md`   |
+| `sdd-verify`  | Validate implementation           | `~/.opencode/skills/sdd-verify/SKILL.md`  |
+| `sdd-archive` | Archive completed change          | `~/.opencode/skills/sdd-archive/SKILL.md` |
+| `sdd-onboard` | Guided SDD walkthrough            | `~/.opencode/skills/sdd-onboard/SKILL.md` |
 
 ### Workflow Skills
 
-| Skill | When to Load | Location |
-| ----- | ------------ | -------- |
-| `branch-pr` | Creating pull requests, PR workflow | `~/.opencode/skills/branch-pr/SKILL.md` |
-| `issue-creation` | Creating GitHub issues | `~/.opencode/skills/issue-creation/SKILL.md` |
-| `judgment-day` | Adversarial code review | `~/.opencode/skills/judgment-day/SKILL.md` |
-| `skill-creator` | Creating new AI agent skills | `~/.opencode/skills/skill-creator/SKILL.md` |
-| `skill-registry` | Update skill registry | `~/.opencode/skills/skill-registry/SKILL.md` |
-| `go-testing` | Go testing patterns | `~/.opencode/skills/go-testing/SKILL.md` |
+| Skill            | When to Load                        | Location                                     |
+| ---------------- | ----------------------------------- | -------------------------------------------- |
+| `branch-pr`      | Creating pull requests, PR workflow | `~/.opencode/skills/branch-pr/SKILL.md`      |
+| `issue-creation` | Creating GitHub issues              | `~/.opencode/skills/issue-creation/SKILL.md` |
+| `judgment-day`   | Adversarial code review             | `~/.opencode/skills/judgment-day/SKILL.md`   |
+| `skill-creator`  | Creating new AI agent skills        | `~/.opencode/skills/skill-creator/SKILL.md`  |
+| `skill-registry` | Update skill registry               | `~/.opencode/skills/skill-registry/SKILL.md` |
+| `go-testing`     | Go testing patterns                 | `~/.opencode/skills/go-testing/SKILL.md`     |
 
 ### Skill Loading Rules
 

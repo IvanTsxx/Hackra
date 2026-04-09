@@ -44,7 +44,7 @@ export async function getOrganizerHackathons(
 
 export async function getHackathonPendingCounts(
   userId: string
-): Promise<Map<string, number>> {
+): Promise<Record<string, number>> {
   const hackathons = await prisma.hackathon.findMany({
     select: { id: true },
     where: { organizerId: userId },
@@ -52,7 +52,7 @@ export async function getHackathonPendingCounts(
 
   const hackathonIds = hackathons.map((h) => h.id);
 
-  if (hackathonIds.length === 0) return new Map();
+  if (hackathonIds.length === 0) return {};
 
   const counts = await prisma.hackathonParticipant.groupBy({
     _count: {
@@ -65,11 +65,11 @@ export async function getHackathonPendingCounts(
     },
   });
 
-  const map = new Map<string, number>();
+  const result: Record<string, number> = {};
   for (const c of counts) {
-    map.set(c.hackathonId, c._count.hackathonId);
+    result[c.hackathonId] = c._count.hackathonId;
   }
-  return map;
+  return result;
 }
 
 export async function getTotalPendingParticipants(
@@ -151,6 +151,47 @@ export async function getPendingParticipantsCount(
   });
 
   return count;
+}
+
+export interface ParticipantWithUser {
+  id: string;
+  status: string;
+  createdAt: Date;
+  user: {
+    id: string;
+    name: string | null;
+    username: string;
+    email: string;
+  };
+}
+
+export async function getHackathonParticipants(
+  hackathonId: string,
+  userId: string
+): Promise<ParticipantWithUser[]> {
+  await verifyOwnership(hackathonId, userId);
+
+  const participants = await prisma.hackathonParticipant.findMany({
+    include: {
+      user: {
+        select: {
+          email: true,
+          id: true,
+          name: true,
+          username: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    where: { hackathonId },
+  });
+
+  return participants.map((p) => ({
+    createdAt: p.createdAt,
+    id: p.id,
+    status: p.status,
+    user: p.user,
+  }));
 }
 
 async function verifyOwnership(id: string, userId: string): Promise<void> {

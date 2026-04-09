@@ -28,7 +28,7 @@ type HackathonRow = HackathonDTO;
 
 interface HackathonsTableProps {
   hackathons: HackathonRow[];
-  pendingCounts: Map<string, number>;
+  pendingCounts: Record<string, number>;
   onEditClick: (hackathon: HackathonRow) => void;
   onDeleteClick: (hackathon: HackathonRow) => void;
   onParticipantsClick: (hackathon: HackathonRow) => void;
@@ -86,7 +86,7 @@ export function HackathonsTable({
                 <HackathonRow
                   key={hackathon.id}
                   hackathon={hackathon}
-                  pendingCount={pendingCounts.get(hackathon.id) ?? 0}
+                  pendingCount={pendingCounts[hackathon.id] ?? 0}
                   onEditClick={onEditClick}
                   onDeleteClick={onDeleteClick}
                   onParticipantsClick={onParticipantsClick}
