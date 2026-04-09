@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { CodeText } from "./code-text";
+import { Icons } from "./icons";
 
 export const Footer = () => (
   <footer className="py-8 border-t border-border">
@@ -31,6 +32,14 @@ export const Footer = () => (
             className="hover:text-foreground transition-colors uppercase tracking-wider"
           >
             Terms
+          </Link>
+          <Link
+            href="https://github.com/IvanTsxx/hackra"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground transition-colors uppercase tracking-wider"
+          >
+            <Icons.Github className="size-5" />
           </Link>
         </div>
       </div>

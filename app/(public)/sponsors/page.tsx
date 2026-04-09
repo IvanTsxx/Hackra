@@ -115,7 +115,10 @@ export default async function SponsorsPage() {
           the builder community.
         </p>
         <Link
-          href="/create"
+          href="https://github.com/sponsors/IvanTsxx"
+          target="_blank"
+          rel="noopener noreferrer"
+          prefetch={false}
           className="inline-block font-pixel text-xs border border-brand-green/50 text-brand-green px-6 py-2.5 hover:bg-brand-green/10 transition-colors mt-2"
         >
           GET IN TOUCH →

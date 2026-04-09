@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { HeroSection } from "@/components/home/hero-section";
 import { TechStackMarquee } from "@/components/home/tech-stack-marquee";
-import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee";
+/* import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee"; */
 import { prisma } from "@/shared/lib/prisma";
 
 import { Banner } from "../_components/banner";
@@ -83,7 +83,7 @@ export default async function Home() {
       <HeroSection stats={stats} />
       <TechStackMarquee />
       <FeaturedHackatons />
-      <SponsorsMarquee />
+      {/* <SponsorsMarquee /> */}
       <Banner />
     </section>
   );

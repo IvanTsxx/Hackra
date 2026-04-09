@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 import {
@@ -27,27 +25,8 @@ const PrivateLayout: React.FC<PrivateLayoutFormProps> = async ({
       <UserSidebar />
       <SidebarInset>
         <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4 justify-between">
-          <div className="flex items-center gap-2">
-            <SidebarTrigger />
-            <Link
-              href="/"
-              className="flex items-center gap-2 group"
-              prefetch={false}
-            >
-              <Image
-                src="/hackra-logo.webp"
-                alt="Logo"
-                width={1600}
-                height={1600}
-                loading="eager"
-                priority
-                className="w-10 h-10"
-              />
-              <span className="font-pixel text-sm text-muted-foreground tracking-widest">
-                HACKRA
-              </span>
-            </Link>
-          </div>
+          <SidebarTrigger />
+
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <UserMenu user={user} />
