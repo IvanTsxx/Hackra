@@ -30,6 +30,7 @@ export function AuthModalDialog({
   children,
   isRender = false,
   renderComponent,
+  callbackUrl,
 }: {
   children?: React.ReactNode;
   isRender?: boolean;
@@ -37,9 +38,11 @@ export function AuthModalDialog({
     | ReactElement<unknown, string | JSXElementConstructor<any>>
     | ComponentRenderFn<HTMLProps, DialogTriggerState>
     | undefined;
+  callbackUrl?: string;
 }) {
   const handleOAuth = (provider: "google" | "github") => {
     signIn.social({
+      callbackURL: callbackUrl,
       provider,
     });
   };

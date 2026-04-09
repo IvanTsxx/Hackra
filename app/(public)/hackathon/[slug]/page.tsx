@@ -1,13 +1,5 @@
 import { format } from "date-fns";
-import {
-  Calendar,
-  MapPin,
-  Trophy,
-  Plus,
-  CalendarPlus,
-  ChevronRight,
-  Building,
-} from "lucide-react";
+import { Calendar, MapPin, Trophy, ChevronRight, Building } from "lucide-react";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,6 +24,7 @@ import { getUserById } from "@/data/user";
 import { CodeText } from "@/shared/components/code-text";
 import { auth } from "@/shared/lib/auth";
 
+import { CreateTeamButton } from "./_components/create-team-button";
 import { HackathonBackground } from "./_components/hackathon-background";
 import { HackatonTitle } from "./_components/hackaton-title";
 import { ProgressParticipants } from "./_components/progress-participants";
@@ -362,13 +355,13 @@ export default async function HackathonDetailPage({
                 </Button>
                 <ShareModal url={shareUrl} title={hackathon.title} />
 
-                <Button
+                {/*   <Button
                   variant="ghost"
                   className="font-pixel text-xs tracking-wider rounded-none h-9 px-4 text-muted-foreground hover:text-foreground"
                 >
                   <CalendarPlus size={12} className="mr-1.5" />
                   CALENDAR
-                </Button>
+                </Button> */}
               </div>
             </div>
 
@@ -430,20 +423,7 @@ export default async function HackathonDetailPage({
                 >
                   BROWSE TEAMS
                 </Button>
-                <Button
-                  className="tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-8 px-4"
-                  nativeButton={false}
-                  type="button"
-                  render={
-                    <Link
-                      href={`/hackathon/${slug}/teams/create`}
-                      className="flex items-center"
-                    />
-                  }
-                >
-                  <Plus size={11} className="mr-1" />
-                  CREATE TEAM
-                </Button>
+                <CreateTeamButton isLoggedIn={!!user} slug={slug} />
               </div>
             </div>
           </div>

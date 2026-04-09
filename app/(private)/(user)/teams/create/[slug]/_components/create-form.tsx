@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useState } from "react";
 
 import type { Hackathon } from "@/app/generated/prisma/client";
-import { Navbar } from "@/components/navbar";
 import { TagBadge } from "@/components/tag-badge";
 import { Button } from "@/components/ui/button";
 import type { Tech } from "@/lib/mock-data";
@@ -55,27 +54,24 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Navbar />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center space-y-4 p-12 border border-brand-green/30 bg-brand-green/5"
-        >
-          <p className="font-pixel text-3xl text-brand-green">TEAM CREATED.</p>
-          <p className="font-mono text-xs text-muted-foreground">
-            {name} is ready to recruit.
-          </p>
-          <div className="flex gap-2 justify-center pt-2">
-            <Link
-              href={`/hackathon/${slug}/teams`}
-              className="font-pixel text-xs bg-foreground text-background px-4 py-2 hover:opacity-90"
-            >
-              VIEW TEAMS
-            </Link>
-          </div>
-        </motion.div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="text-center space-y-4 p-12 border border-brand-green/30 bg-brand-green/5"
+      >
+        <p className="font-pixel text-3xl text-brand-green">TEAM CREATED.</p>
+        <p className="font-mono text-xs text-muted-foreground">
+          {name} is ready to recruit.
+        </p>
+        <div className="flex gap-2 justify-center pt-2">
+          <Link
+            href={`/hackathon/${slug}/teams`}
+            className="font-pixel text-xs bg-foreground text-background px-4 py-2 hover:opacity-90"
+          >
+            VIEW TEAMS
+          </Link>
+        </div>
+      </motion.div>
     );
   }
 

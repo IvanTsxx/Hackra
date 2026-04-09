@@ -1,12 +1,14 @@
-import { Plus, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { TeamCard } from "@/components/team-card";
-import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/data/auth-dal";
 import { getHackathon } from "@/data/hackatons";
 import { getTeamsForHackathon } from "@/data/teams";
 import { CodeText } from "@/shared/components/code-text";
+
+import { CreateTeamButton } from "../_components/create-team-button";
 
 export default async function TeamsPage({
   params,
@@ -18,6 +20,8 @@ export default async function TeamsPage({
   if (!hackathon) notFound();
 
   const teams = await getTeamsForHackathon(slug);
+
+  const currentUser = await getCurrentUser();
 
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16">
@@ -47,11 +51,7 @@ export default async function TeamsPage({
             {teams.length} teams · max {hackathon.maxTeamSize} members each
           </p>
         </div>
-        <Link href={`/hackathon/${slug}/teams/create`}>
-          <Button className="font-pixel text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-4">
-            <Plus size={12} className="mr-1.5" /> CREATE TEAM
-          </Button>
-        </Link>
+        <CreateTeamButton isLoggedIn={!!currentUser} slug={slug} />
       </div>
 
       {teams.length === 0 ? (
@@ -59,14 +59,7 @@ export default async function TeamsPage({
           <p className="font-pixel text-sm text-muted-foreground">
             NO_TEAMS_YET
           </p>
-          <Link href={`/hackathon/${slug}/teams/create`}>
-            <Button
-              variant="outline"
-              className="font-pixel text-xs rounded-none border-brand-green/40 text-brand-green hover:bg-brand-green/5 h-8 px-4"
-            >
-              CREATE THE FIRST TEAM
-            </Button>
-          </Link>
+          <CreateTeamButton isLoggedIn={!!currentUser} slug={slug} />
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 gap-4">

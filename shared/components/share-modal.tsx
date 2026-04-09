@@ -79,7 +79,7 @@ export function ShareModal({ url, title }: ShareModalProps) {
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 pt-2">
+        <div className="space-y-4 grid grid-cols-1 pt-2">
           {/* Social links */}
           <div className="grid grid-cols-2 gap-2">
             {shareLinks.map(({ label, icon: Icon, href, color }) => (
