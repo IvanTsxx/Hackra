@@ -58,7 +58,7 @@ export default async function ManageTeamPage({
   return (
     <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/hackathon/${team.hackathon.slug}/teams`}
           className="hover:text-foreground"
@@ -120,7 +120,7 @@ export default async function ManageTeamPage({
       {capacity > 0 && (
         <div className="mb-8 glass border border-border/40 p-4 space-y-2">
           <div className="flex items-center justify-between">
-            <span className="font-pixel text-[10px] tracking-wider text-muted-foreground">
+            <span className="font-pixel text-xs tracking-wider text-muted-foreground">
               TEAM CAPACITY
             </span>
             <span className="font-mono text-xs text-foreground">
@@ -172,7 +172,7 @@ export default async function ManageTeamPage({
             {/* Pending */}
             {pendingApps.length > 0 && (
               <div>
-                <h3 className="font-pixel text-[10px] tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
+                <h3 className="font-pixel text-xs tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
                   <Clock size={12} />
                   PENDING ({pendingApps.length})
                 </h3>
@@ -191,7 +191,7 @@ export default async function ManageTeamPage({
             {/* Accepted */}
             {acceptedApps.length > 0 && (
               <div>
-                <h3 className="font-pixel text-[10px] tracking-wider text-brand-green/70 mb-3 flex items-center gap-1.5">
+                <h3 className="font-pixel text-xs tracking-wider text-brand-green/70 mb-3 flex items-center gap-1.5">
                   <UserCheck size={12} />
                   ACCEPTED ({acceptedApps.length})
                 </h3>
@@ -211,7 +211,7 @@ export default async function ManageTeamPage({
             {/* Rejected */}
             {rejectedApps.length > 0 && (
               <div>
-                <h3 className="font-pixel text-[10px] tracking-wider text-muted-foreground/50 mb-3 flex items-center gap-1.5">
+                <h3 className="font-pixel text-xs tracking-wider text-muted-foreground/50 mb-3 flex items-center gap-1.5">
                   <UserX size={12} />
                   REJECTED ({rejectedApps.length})
                 </h3>
@@ -263,7 +263,7 @@ export default async function ManageTeamPage({
                 key={member.id}
                 className="glass border border-border/40 p-4 flex items-center gap-4"
               >
-                <div className="w-8 h-8 rounded-none border border-border/40 bg-secondary/20 flex items-center justify-center font-pixel text-[10px] text-foreground shrink-0">
+                <div className="w-8 h-8 rounded-none border border-border/40 bg-secondary/20 flex items-center justify-center font-pixel text-xs text-foreground shrink-0">
                   {member.user.image ? (
                     <img
                       src={member.user.image}
@@ -278,7 +278,7 @@ export default async function ManageTeamPage({
                   <p className="font-pixel text-xs text-foreground">
                     {member.user.name.toUpperCase()}
                   </p>
-                  <p className="font-mono text-[10px] text-muted-foreground">
+                  <p className="font-mono text-xs text-muted-foreground">
                     @{member.user.username}
                   </p>
                 </div>
@@ -287,7 +287,7 @@ export default async function ManageTeamPage({
                     {member.user.techStack.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="border border-border/40 font-mono text-[9px] px-1.5 py-0.5 text-foreground/70"
+                        className="border border-border/40 font-mono text-xs px-1.5 py-0.5 text-foreground/70"
                       >
                         {tech}
                       </span>
@@ -318,7 +318,7 @@ function StatCard({
     <div className="glass border border-border/40 p-3 space-y-1">
       <div className={cn("flex items-center gap-1.5", color)}>
         {icon}
-        <span className="font-pixel text-[9px] tracking-wider">{label}</span>
+        <span className="font-pixel text-xs tracking-wider">{label}</span>
       </div>
       <p className="font-mono text-lg text-foreground">{value}</p>
     </div>

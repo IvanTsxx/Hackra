@@ -39,7 +39,7 @@ export function TagBadge({
     <motion.span
       className={cn(
         "inline-flex items-center border font-mono rounded-none",
-        size === "sm" ? "px-1.5 py-0.5 text-[10px]" : "px-2 py-1 text-xs",
+        size === "sm" ? "px-1.5 py-0.5 text-xs" : "px-2 py-1 text-xs",
         variantStyles[variant],
         className
       )}

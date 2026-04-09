@@ -108,14 +108,14 @@ export function ManageApplicationCard({
             <p className="font-pixel text-xs text-foreground">
               {application.user.name.toUpperCase()}
             </p>
-            <p className="font-mono text-[10px] text-muted-foreground">
+            <p className="font-mono text-xs text-muted-foreground">
               @{application.user.username} · {application.user.email}
             </p>
           </div>
         </div>
         <span
           className={cn(
-            "inline-flex items-center border font-mono rounded-none px-1.5 py-0.5 text-[10px]",
+            "inline-flex items-center border font-mono rounded-none px-1.5 py-0.5 text-xs",
             cfg.variant
           )}
         >
@@ -136,7 +136,7 @@ export function ManageApplicationCard({
           {application.user.techStack.map((tech) => (
             <span
               key={tech}
-              className="border border-border/40 font-mono text-[10px] px-1.5 py-0.5 text-foreground/70"
+              className="border border-border/40 font-mono text-xs px-1.5 py-0.5 text-foreground/70"
             >
               {tech}
             </span>
@@ -147,7 +147,7 @@ export function ManageApplicationCard({
       {/* Message */}
       {application.message && (
         <div className="border border-border/30 bg-secondary/10 p-3">
-          <p className="font-mono text-[10px] text-muted-foreground/60 tracking-wider mb-1">
+          <p className="font-mono text-xs text-muted-foreground/60 tracking-wider mb-1">
             MESSAGE:
           </p>
           <p className="font-mono text-xs text-foreground">
@@ -159,12 +159,12 @@ export function ManageApplicationCard({
       {/* Answers to questions */}
       {application.answers.length > 0 && (
         <div className="space-y-2">
-          <p className="font-mono text-[10px] text-muted-foreground/60 tracking-wider">
+          <p className="font-mono text-xs text-muted-foreground/60 tracking-wider">
             ANSWERS:
           </p>
           {application.answers.map((a) => (
             <div key={a.id} className="border-l-2 border-border/30 pl-3">
-              <p className="font-mono text-[10px] text-muted-foreground">
+              <p className="font-mono text-xs text-muted-foreground">
                 {a.question.question}
               </p>
               <p className="font-mono text-xs text-foreground">{a.answer}</p>
@@ -180,7 +180,7 @@ export function ManageApplicationCard({
             onClick={handleAccept}
             disabled={isProcessing}
             size="sm"
-            className="rounded-none font-pixel text-[10px] tracking-wider bg-brand-green/20 text-brand-green border border-brand-green/40 hover:bg-brand-green/30 h-8"
+            className="rounded-none font-pixel text-xs tracking-wider bg-brand-green/20 text-brand-green border border-brand-green/40 hover:bg-brand-green/30 h-8"
           >
             {isProcessing ? "PROCESSING..." : "ACCEPT →"}
           </Button>
@@ -191,7 +191,7 @@ export function ManageApplicationCard({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="rounded-none font-pixel text-[10px] tracking-wider border-destructive/40 text-destructive hover:bg-destructive/10 h-8"
+                  className="rounded-none font-pixel text-xs tracking-wider border-destructive/40 text-destructive hover:bg-destructive/10 h-8"
                 />
               }
             >
@@ -224,7 +224,7 @@ export function ManageApplicationCard({
                   render={
                     <Button
                       variant="outline"
-                      className="rounded-none font-pixel text-[10px] tracking-wider h-8"
+                      className="rounded-none font-pixel text-xs tracking-wider h-8"
                     />
                   }
                 >
@@ -233,7 +233,7 @@ export function ManageApplicationCard({
                 <Button
                   onClick={handleReject}
                   disabled={isProcessing}
-                  className="rounded-none font-pixel text-[10px] tracking-wider bg-destructive text-white hover:bg-destructive/90 h-8"
+                  className="rounded-none font-pixel text-xs tracking-wider bg-destructive text-white hover:bg-destructive/90 h-8"
                 >
                   {isProcessing ? "PROCESSING..." : "CONFIRM REJECT"}
                 </Button>
@@ -243,7 +243,7 @@ export function ManageApplicationCard({
         </div>
       )}
 
-      <p className="font-mono text-[10px] text-muted-foreground/40">
+      <p className="font-mono text-xs text-muted-foreground/40">
         Applied{" "}
         {formatDistanceToNow(new Date(application.createdAt), {
           addSuffix: true,

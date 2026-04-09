@@ -108,7 +108,7 @@ export const VercelInviteUserEmail = ({
             </Section>
             <Section className="mt-[32px] mb-[32px] text-center">
               <Button
-                className="rounded bg-[#000000] px-5 py-3 text-center font-semibold text-[12px] text-white no-underline"
+                className="rounded bg-[#000000] px-5 py-3 text-center font-semibold text-sm text-white no-underline"
                 href={inviteLink}
               >
                 Join the team
@@ -121,7 +121,7 @@ export const VercelInviteUserEmail = ({
               </Link>
             </Text>
             <Hr className="mx-0 my-[26px] w-full border border-[#eaeaea] border-solid" />
-            <Text className="text-[#666666] text-[12px] leading-[24px]">
+            <Text className="text-[#666666] text-sm leading-[24px]">
               This invitation was intended for{" "}
               <span className="text-black">{username}</span>. This invite was
               sent from <span className="text-black">{inviteFromIp}</span>{" "}

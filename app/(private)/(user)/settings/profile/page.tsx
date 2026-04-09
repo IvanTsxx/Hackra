@@ -30,7 +30,7 @@ export default async function SettingsProfilePage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
         <Link href={`/user/${user.username}`} className="hover:text-foreground">
           PROFILE
         </Link>

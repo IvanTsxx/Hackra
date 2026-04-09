@@ -11,7 +11,7 @@ export default function SettingsNotificationsPage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
         <Link href="/user/me" className="hover:text-foreground">
           PROFILE
         </Link>
@@ -145,7 +145,7 @@ function NotificationRow({
     <div className="flex items-center justify-between p-4">
       <div className="flex-1">
         <p className="font-mono text-xs text-foreground">{title}</p>
-        <p className="font-mono text-[11px] text-muted-foreground/60 mt-0.5">
+        <p className="font-mono text-sm text-muted-foreground/60 mt-0.5">
           {description}
         </p>
       </div>

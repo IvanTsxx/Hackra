@@ -43,7 +43,7 @@ export default async function SponsorsPage() {
             <div key={tier}>
               <div className="flex items-center gap-3 mb-5">
                 <span
-                  className={`font-pixel text-[10px] tracking-widest px-2 py-0.5 border ${
+                  className={`font-pixel text-xs tracking-widest px-2 py-0.5 border ${
                     tier === "PLATINUM"
                       ? "border-foreground/30 text-foreground"
                       : tier === "GOLD"

@@ -65,7 +65,7 @@ export function ParticipantRowActions({
       <Button
         variant="outline"
         size="sm"
-        className="h-7 px-2 text-[10px] font-pixel text-green-600 border-green-600/30 hover:bg-green-600/10"
+        className="h-7 px-2 text-xs font-pixel text-green-600 border-green-600/30 hover:bg-green-600/10"
         disabled={isPending}
         onClick={handleApprove}
       >
@@ -74,7 +74,7 @@ export function ParticipantRowActions({
       <Button
         variant="outline"
         size="sm"
-        className="h-7 px-2 text-[10px] font-pixel text-red-600 border-red-600/30 hover:bg-red-600/10"
+        className="h-7 px-2 text-xs font-pixel text-red-600 border-red-600/30 hover:bg-red-600/10"
         disabled={isPending}
         onClick={handleReject}
       >

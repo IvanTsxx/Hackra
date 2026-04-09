@@ -27,7 +27,7 @@ export function StatsCard({ icon, value, label, className }: StatsCardProps) {
       <span className="font-pixel text-2xl md:text-3xl text-foreground">
         {value}
       </span>
-      <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+      <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
         {label}
       </span>
     </motion.div>

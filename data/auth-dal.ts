@@ -11,6 +11,7 @@ export interface SessionDTO {
   username: string;
   email: string;
   role: string;
+  image: string;
 }
 
 export const requireSession = cache(async (): Promise<SessionDTO> => {
@@ -25,6 +26,7 @@ export const requireSession = cache(async (): Promise<SessionDTO> => {
   return {
     email: session.user.email!,
     id: session.user.id,
+    image: session.user.image!,
     role: session.user.role!,
     username: session.user.username!,
   };
@@ -46,6 +48,7 @@ export const requireAdminSession = cache(async (): Promise<SessionDTO> => {
   return {
     email: session.user.email!,
     id: session.user.id,
+    image: session.user.image!,
     role: session.user.role!,
     username: session.user.username!,
   };

@@ -19,8 +19,7 @@ export function AvatarGroup({
   const visible = users.slice(0, max);
   const overflow = users.length - max;
 
-  const sizeClass =
-    size === "sm" ? "w-6 h-6 text-[9px]" : "w-8 h-8 text-[10px]";
+  const sizeClass = size === "sm" ? "w-6 h-6 text-xs" : "w-8 h-8 text-xs";
   const borderClass = "border-2 border-background";
 
   return (

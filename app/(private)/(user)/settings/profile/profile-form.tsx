@@ -108,7 +108,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
               <div className="space-y-1">
                 <label
                   htmlFor={field.name}
-                  className="font-mono text-[10px] text-muted-foreground tracking-widest"
+                  className="font-mono text-xs text-muted-foreground tracking-widest"
                 >
                   DISPLAY NAME
                 </label>
@@ -138,7 +138,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
               <div className="space-y-1">
                 <label
                   htmlFor={field.name}
-                  className="font-mono text-[10px] text-muted-foreground tracking-widest"
+                  className="font-mono text-xs text-muted-foreground tracking-widest"
                 >
                   ROLE / TITLE
                 </label>
@@ -172,7 +172,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
             <div className="space-y-1">
               <label
                 htmlFor={field.name}
-                className="font-mono text-[10px] text-muted-foreground tracking-widest"
+                className="font-mono text-xs text-muted-foreground tracking-widest"
               >
                 BIO
               </label>
@@ -206,7 +206,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
               <div className="space-y-1">
                 <label
                   htmlFor={field.name}
-                  className="font-mono text-[10px] text-muted-foreground tracking-widest"
+                  className="font-mono text-xs text-muted-foreground tracking-widest"
                 >
                   LOCATION
                 </label>
@@ -237,7 +237,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
               <div className="space-y-1">
                 <label
                   htmlFor={field.name}
-                  className="font-mono text-[10px] text-muted-foreground tracking-widest"
+                  className="font-mono text-xs text-muted-foreground tracking-widest"
                 >
                   GITHUB USERNAME
                 </label>
@@ -278,10 +278,10 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
           return (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                <span className="font-mono text-xs text-muted-foreground tracking-widest">
                   TECH STACK
                 </span>
-                <span className="font-mono text-[10px] text-muted-foreground/50">
+                <span className="font-mono text-xs text-muted-foreground/50">
                   {techs.length} selected
                 </span>
               </div>

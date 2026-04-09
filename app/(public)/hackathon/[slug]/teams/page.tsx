@@ -22,7 +22,7 @@ export default async function TeamsPage({
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
         <Link href="/explore" className="hover:text-foreground">
           HACKATHONS
         </Link>

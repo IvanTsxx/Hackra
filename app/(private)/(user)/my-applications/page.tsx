@@ -55,7 +55,7 @@ export default async function MyApplicationsPage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/user/${session.user.username}`}
           className="hover:text-foreground"
@@ -101,7 +101,7 @@ export default async function MyApplicationsPage() {
           </p>
           <Link
             href="/explore"
-            className="inline-flex items-center gap-2 font-pixel text-[10px] tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
+            className="inline-flex items-center gap-2 font-pixel text-xs tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
           >
             BROWSE HACKATHONS →
           </Link>
@@ -169,7 +169,7 @@ export default async function MyApplicationsPage() {
                       <div className="flex items-center gap-3">
                         <span
                           className={cn(
-                            "inline-flex items-center border font-mono rounded-none px-1.5 py-0.5 text-[10px]",
+                            "inline-flex items-center border font-mono rounded-none px-1.5 py-0.5 text-xs",
                             cfg.variant === "status-upcoming" &&
                               "border-foreground/20 text-muted-foreground",
                             cfg.variant === "status-live" &&
@@ -187,7 +187,7 @@ export default async function MyApplicationsPage() {
                           {p.hackathon.title.toUpperCase()}
                         </Link>
                       </div>
-                      <span className="font-mono text-[10px] text-muted-foreground/60">
+                      <span className="font-mono text-xs text-muted-foreground/60">
                         {formatDistanceToNow(new Date(p.createdAt), {
                           addSuffix: true,
                         })}

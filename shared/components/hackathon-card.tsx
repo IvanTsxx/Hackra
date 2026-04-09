@@ -87,14 +87,14 @@ export function HackathonCard({
               <div className="flex items-center gap-3 text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Calendar size={9} />
-                  <span className=" text-[9px]">
+                  <span className=" text-xs">
                     {format(startDate, "MMM d")} –{" "}
                     {format(endDate, "MMM d, yyyy")}
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
                   {hackathon.isOnline ? <Wifi size={9} /> : <MapPin size={9} />}
-                  <span className=" text-[9px]">
+                  <span className=" text-xs">
                     {hackathon.isOnline ? "Online" : hackathon.location}
                   </span>
                 </div>
@@ -104,7 +104,7 @@ export function HackathonCard({
             {topPrize && (
               <div className="flex items-center gap-1 shrink-0">
                 <Trophy size={9} className="text-brand-green" />
-                <span className="text-[10px] text-brand-green">{topPrize}</span>
+                <span className="text-xs text-brand-green">{topPrize}</span>
               </div>
             )}
           </article>
@@ -112,6 +112,8 @@ export function HackathonCard({
       </motion.div>
     );
   }
+
+  const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
 
   return (
     <motion.div
@@ -131,19 +133,6 @@ export function HackathonCard({
           borderTopWidth: 2,
         }}
       >
-        {/* Image area — always present for consistent card height */}
-        {hackathon.image && !hackathon.image.includes("/placeholder") && (
-          <div className="relative w-full h-40 overflow-hidden">
-            <Image
-              src={hackathon.image}
-              alt={hackathon.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </div>
-        )}
-
         {/* Scanline watermark */}
         <div
           className="absolute inset-0 pointer-events-none select-none overflow-hidden "
@@ -159,12 +148,12 @@ export function HackathonCard({
           <div className="flex items-center gap-2 flex-wrap">
             <StatusPill index={i} status={hackathon.status} />
             {hackathon.isOnline ? (
-              <span className="flex items-center gap-1  text-[9px] text-muted-foreground border border-border/30 px-1.5 py-0.5">
+              <span className="flex items-center gap-1  text-xs text-muted-foreground border border-border/30 px-1.5 py-0.5">
                 <Globe size={8} /> REMOTE
               </span>
             ) : (
               hackathon.location !== "Online" && (
-                <span className="flex items-center gap-1  text-[9px] text-muted-foreground border border-border/30 px-1.5 py-0.5">
+                <span className="flex items-center gap-1  text-xs text-muted-foreground border border-border/30 px-1.5 py-0.5">
                   <MapPin size={8} /> {hackathon.location.split(",")[0]}
                 </span>
               )
@@ -179,7 +168,7 @@ export function HackathonCard({
               }}
             >
               <Trophy size={10} style={{ color: accent }} />
-              <span className="text-[11px]" style={{ color: accent }}>
+              <span className="text-sm" style={{ color: accent }}>
                 {topPrize}
               </span>
             </div>
@@ -188,27 +177,57 @@ export function HackathonCard({
 
         {/* Title */}
         <div className="px-4 pb-3 relative z-10">
-          <Link href={`/hackathon/${hackathon.slug}`}>
-            <h3 className="text-base md:text-lg leading-tight text-foreground group-hover:text-foreground/90 transition-colors text-balance hover:underline hover:decoration-brand-green hover:decoration-wavy hover:decoration-2 duration-200 ease-out">
-              {hackathon.title}
-            </h3>
-          </Link>
-          <p className=" text-[10px] text-muted-foreground/60 mt-1">
-            {timeLabel}
-          </p>
+          <div className="flex items-start gap-2">
+            {hasImage && (
+              <Image
+                // oxlint-disable-next-line typescript/no-non-null-assertion
+                src={hackathon.image!}
+                alt={hackathon.title}
+                fill
+                className="object-cover opacity-70"
+              />
+            )}
+            {!hasImage && (
+              <div className="w-full h-full">
+                <Image
+                  src="/hackra-logo.webp"
+                  alt={hackathon.title}
+                  width={1600}
+                  height={1600}
+                  className="w-full h-full object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                />
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2">
+              <Link href={`/hackathon/${hackathon.slug}`}>
+                <h3 className="text-base md:text-lg group-hover:text-foreground/90 transition-colors text-balance hover:underline hover:decoration-brand-green hover:decoration-wavy hover:decoration-2 duration-200 ease-out line-clamp-2">
+                  {hackathon.title} Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit. In ultrices suscipit odio in condimentum.
+                  Nunc nisi sapien, venenatis eget nisi quis, congue vehicula
+                  massa. Aenean molestie tincidunt diam, ac tristique odio
+                  tincidunt eget.
+                </h3>
+              </Link>
+              <p className="text-xs text-muted-foreground/60">{timeLabel}</p>
+            </div>
+          </div>
         </div>
 
         {/* Meta row */}
         <div className="flex items-center gap-4 px-4 pb-3 relative z-10 border-t border-border/20 pt-3">
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Calendar size={10} />
-            <span className=" text-[10px]">
+            <span className="text-xs">
               {format(startDate, "MMM d")} – {format(endDate, "MMM d")}
             </span>
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Users size={10} />
-            <span className=" text-[10px]">
+            <span className="text-xs">
               {hackathon.participants.length}
               <span className="text-muted-foreground/50">
                 /{hackathon.maxParticipants}

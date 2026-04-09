@@ -113,7 +113,7 @@ function actionButton(
         <Tooltip>
           <TooltipTrigger>{button}</TooltipTrigger>
           <TooltipContent>
-            <p className="font-mono text-[10px]">{tooltip}</p>
+            <p className="font-mono text-xs">{tooltip}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -154,7 +154,7 @@ function HackathonRow({
           {pendingCount > 0 && (
             <Badge
               variant="outline"
-              className="border-brand-green/40 text-brand-green bg-brand-green/5 font-mono text-[10px]"
+              className="border-brand-green/40 text-brand-green bg-brand-green/5 font-mono text-xs"
             >
               {pendingCount} PENDING
             </Badge>
@@ -176,7 +176,7 @@ function HackathonRow({
             <Button
               variant="outline"
               size="sm"
-              className="h-7 px-2 text-[10px] font-pixel"
+              className="h-7 px-2 text-xs font-pixel"
               disabled={isLive}
               onClick={() => onEditClick(hackathon)}
               aria-label={`Edit ${hackathon.title}`}
@@ -191,7 +191,7 @@ function HackathonRow({
             <Button
               variant="outline"
               size="sm"
-              className="h-7 px-2 text-[10px] font-pixel text-destructive border-destructive/30 hover:bg-destructive/10"
+              className="h-7 px-2 text-xs font-pixel text-destructive border-destructive/30 hover:bg-destructive/10"
               disabled={isLive}
               onClick={() => onDeleteClick(hackathon)}
               aria-label={`Delete ${hackathon.title}`}
@@ -205,7 +205,7 @@ function HackathonRow({
           <button
             type="button"
             onClick={() => onParticipantsClick(hackathon)}
-            className="inline-flex items-center gap-1 shrink-0 h-7 px-2 text-[10px] font-pixel border border-border bg-input/30 hover:bg-input/50 hover:text-foreground rounded-4xl transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 shrink-0 h-7 px-2 text-xs font-pixel border border-border bg-input/30 hover:bg-input/50 hover:text-foreground rounded-4xl transition-colors cursor-pointer"
             aria-label={`View participants for ${hackathon.title}`}
           >
             <Eye size={12} />

@@ -71,7 +71,7 @@ export default function AboutPage() {
                   <span className="text-2xl font-bold  block">
                     {stat.label}
                   </span>
-                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest ">
+                  <span className="text-xs text-muted-foreground uppercase tracking-widest ">
                     {stat.value}
                   </span>
                 </div>

@@ -38,7 +38,7 @@ export default async function MyHackathonsPage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/user/${session.user.username}`}
           className="hover:text-foreground"
@@ -57,7 +57,7 @@ export default async function MyHackathonsPage() {
               MY HACKATHONS
             </h1>
             {totalPending > 0 && (
-              <span className="inline-flex items-center border border-brand-green/40 bg-brand-green/5 font-mono rounded-none px-2 py-0.5 text-[10px] text-brand-green">
+              <span className="inline-flex items-center border border-brand-green/40 bg-brand-green/5 font-mono rounded-none px-2 py-0.5 text-xs text-brand-green">
                 {totalPending} PENDING
               </span>
             )}
@@ -84,7 +84,7 @@ export default async function MyHackathonsPage() {
           </p>
           <Link
             href="/create"
-            className="inline-flex items-center gap-2 font-pixel text-[10px] tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
+            className="inline-flex items-center gap-2 font-pixel text-xs tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
           >
             CREATE YOUR FIRST HACKATHON →
           </Link>

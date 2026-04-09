@@ -31,7 +31,7 @@ export const FeaturedHackathon = ({ hackathon }: FeaturedHackathonProps) => (
         <div className="flex-1">
           <CodeText
             as="p"
-            className="text-[10px] uppercase tracking-widest text-primary mb-2  "
+            className="text-xs uppercase tracking-widest text-primary mb-2  "
           >
             featured_event
           </CodeText>
@@ -45,7 +45,7 @@ export const FeaturedHackathon = ({ hackathon }: FeaturedHackathonProps) => (
             <p className="text-xl font-bold   text-primary">
               {hackathon.participantCount}
             </p>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-widest  ">
+            <p className="text-xs text-muted-foreground uppercase tracking-widest  ">
               joined
             </p>
           </div>

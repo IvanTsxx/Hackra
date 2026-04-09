@@ -64,7 +64,7 @@ export function ApplyModal({
           <Button
             size="sm"
             variant="outline"
-            className="font-pixel text-[10px] tracking-wider h-7 px-2 rounded-none border-foreground/30 hover:border-brand-green/60 hover:text-brand-green transition-all"
+            className="font-pixel text-xs tracking-wider h-7 px-2 rounded-none border-foreground/30 hover:border-brand-green/60 hover:text-brand-green transition-all"
           />
         }
       >

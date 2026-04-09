@@ -43,7 +43,7 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
           </Link>
           <Link
             href={`/hackathon/${team.hackathon.slug}`}
-            className="font-mono text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+            className="font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             {team.hackathon.title.toUpperCase()}
           </Link>
@@ -53,12 +53,12 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
 
       {/* Stats row */}
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[10px] text-muted-foreground/60 flex items-center gap-1">
+        <span className="font-mono text-xs text-muted-foreground/60 flex items-center gap-1">
           <Users size={10} />
           {memberCount}/{team.maxMembers} MEMBERS
         </span>
         {pendingApps > 0 && (
-          <span className="font-pixel text-[10px] tracking-wider text-brand-purple/80 border border-brand-purple/30 px-2 py-0.5">
+          <span className="font-pixel text-xs tracking-wider text-brand-purple/80 border border-brand-purple/30 px-2 py-0.5">
             {pendingApps} PENDING APP{pendingApps > 1 ? "S" : ""}
           </span>
         )}
@@ -68,19 +68,19 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
       <div className="flex items-center gap-3 pt-1 border-t border-border/30">
         <Link
           href={`/teams/${team.id}/manage`}
-          className="font-pixel text-[10px] tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
+          className="font-pixel text-xs tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
         >
           <Settings size={10} />
           MANAGE
         </Link>
         <Link
           href={`/team/${team.id}`}
-          className="font-pixel text-[10px] tracking-wider text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+          className="font-pixel text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
         >
           <ExternalLink size={10} />
           VIEW
         </Link>
-        <span className="font-mono text-[10px] text-muted-foreground/40 ml-auto">
+        <span className="font-mono text-xs text-muted-foreground/40 ml-auto">
           Created{" "}
           {formatDistanceToNow(new Date(team.createdAt), { addSuffix: true })}
         </span>
@@ -110,7 +110,7 @@ export function MemberTeamCard({ team, index }: MemberTeamCardProps) {
           </Link>
           <Link
             href={`/hackathon/${team.team.hackathon.slug}`}
-            className="font-mono text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+            className="font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             {team.team.hackathon.title.toUpperCase()}
           </Link>
@@ -120,10 +120,10 @@ export function MemberTeamCard({ team, index }: MemberTeamCardProps) {
 
       {/* Owner + members row */}
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[10px] text-muted-foreground/60">
+        <span className="font-mono text-xs text-muted-foreground/60">
           Owner: @{team.team.owner.username}
         </span>
-        <span className="font-mono text-[10px] text-muted-foreground/60 flex items-center gap-1">
+        <span className="font-mono text-xs text-muted-foreground/60 flex items-center gap-1">
           <Users size={10} />
           {memberCount}/{team.team.maxMembers}
         </span>
@@ -133,12 +133,12 @@ export function MemberTeamCard({ team, index }: MemberTeamCardProps) {
       <div className="flex items-center justify-between pt-1 border-t border-border/30">
         <Link
           href={`/team/${team.team.id}`}
-          className="font-pixel text-[10px] tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
+          className="font-pixel text-xs tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
         >
           <ExternalLink size={10} />
           VIEW TEAM
         </Link>
-        <span className="font-mono text-[10px] text-muted-foreground/40">
+        <span className="font-mono text-xs text-muted-foreground/40">
           Joined{" "}
           {formatDistanceToNow(new Date(team.joinedAt), { addSuffix: true })}
         </span>

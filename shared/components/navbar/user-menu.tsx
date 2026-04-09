@@ -21,7 +21,11 @@ import {
 } from "@/shared/components/ui/dropdown-menu";
 import type { User as UserType } from "@/shared/lib/auth";
 
-export function UserMenu({ user }: { user: UserType }) {
+export function UserMenu({
+  user,
+}: {
+  user: Pick<UserType, "name" | "username" | "image">;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -53,10 +57,10 @@ export function UserMenu({ user }: { user: UserType }) {
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col min-w-0">
-                <span className="font-pixel text-[10px] tracking-wider text-foreground truncate">
+                <span className="font-pixel text-xs tracking-wider text-foreground truncate">
                   {user.name?.toUpperCase()}
                 </span>
-                <span className="font-mono text-[10px] text-muted-foreground truncate">
+                <span className="font-mono text-xs text-muted-foreground truncate">
                   @{user.username}
                 </span>
               </div>
@@ -72,7 +76,7 @@ export function UserMenu({ user }: { user: UserType }) {
           >
             <Link
               href={`/user/${user.username}`}
-              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
             >
               <User size={14} className="text-muted-foreground shrink-0" />
               My Profile
@@ -85,7 +89,7 @@ export function UserMenu({ user }: { user: UserType }) {
           >
             <Link
               href="/my-applications"
-              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
             >
               <FileText size={14} className="text-muted-foreground shrink-0" />
               My Applications
@@ -98,7 +102,7 @@ export function UserMenu({ user }: { user: UserType }) {
           >
             <Link
               href="/my-teams"
-              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
             >
               <Users size={14} className="text-muted-foreground shrink-0" />
               My Teams
@@ -111,7 +115,7 @@ export function UserMenu({ user }: { user: UserType }) {
           >
             <Link
               href="/my-hackathons"
-              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
               suppressHydrationWarning
             >
               <Trophy size={14} className="text-muted-foreground shrink-0" />
@@ -127,7 +131,7 @@ export function UserMenu({ user }: { user: UserType }) {
           >
             <Link
               href="/settings/profile"
-              className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
             >
               <Settings size={14} className="text-muted-foreground shrink-0" />
               Settings

@@ -52,7 +52,7 @@ export const Stats = ({
       >
         {mapIcon(stat.icon)}
         <span className="text-xl md:text-2xl font-bold  ">{stat.value}</span>
-        <span className="text-[10px] text-muted-foreground uppercase tracking-widest  ">
+        <span className="text-xs text-muted-foreground uppercase tracking-widest  ">
           {stat.label}
         </span>
       </div>

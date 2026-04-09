@@ -72,7 +72,7 @@ export const ProfileHeader = ({
                   <Button
                     size="sm"
                     variant="outline"
-                    className="font-pixel text-[10px] tracking-wider rounded-none h-8 border-border/40 hover:border-brand-green/50 hover:text-brand-green"
+                    className="font-pixel text-xs tracking-wider rounded-none h-8 border-border/40 hover:border-brand-green/50 hover:text-brand-green"
                   >
                     <Settings size={11} className="mr-1.5" /> EDIT
                   </Button>
@@ -88,10 +88,10 @@ export const ProfileHeader = ({
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5 text-muted-foreground">
               <MapPin size={11} />
-              <span className="font-mono text-[11px]">{location}</span>
+              <span className="font-mono text-sm">{location}</span>
             </div>
             <div className="flex items-center gap-1.5 text-muted-foreground">
-              <span className="font-mono text-[11px]">{position}</span>
+              <span className="font-mono text-sm">{position}</span>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@ export const ProfileHeader = ({
           <div key={i} className="bg-secondary/10 p-4 text-center space-y-1">
             <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
               {item.icon}
-              <span className="font-mono text-[9px] tracking-widest">
+              <span className="font-mono text-xs tracking-widest">
                 {item.label}
               </span>
             </div>

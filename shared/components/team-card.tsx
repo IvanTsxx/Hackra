@@ -75,7 +75,7 @@ export function TeamCard({ team, i }: TeamCardProps) {
           <AvatarGroup users={members} max={4} size="sm" />
           <div className="flex items-center gap-1 text-muted-foreground">
             <Users size={11} />
-            <span className="font-mono text-[11px]">
+            <span className="font-mono text-sm">
               {team.members.length}/{team.maxMembers}
             </span>
           </div>
@@ -86,7 +86,7 @@ export function TeamCard({ team, i }: TeamCardProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="font-pixel text-[10px] tracking-wider h-7 px-2 rounded-none"
+              className="font-pixel text-xs tracking-wider h-7 px-2 rounded-none"
             >
               VIEW
             </Button>

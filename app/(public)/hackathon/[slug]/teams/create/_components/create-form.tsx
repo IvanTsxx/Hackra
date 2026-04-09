@@ -82,7 +82,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
   return (
     <main className="max-w-2xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4 flex-wrap">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4 flex-wrap">
         <Link
           href={`/hackathon/${slug}`}
           className="hover:text-foreground truncate max-w-[150px]"
@@ -118,7 +118,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
       >
         {/* Name */}
         <div className="space-y-1">
-          <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+          <label className="font-mono text-xs text-muted-foreground tracking-widest">
             TEAM NAME *
           </label>
           <input
@@ -133,7 +133,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
 
         {/* Description */}
         <div className="space-y-1">
-          <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+          <label className="font-mono text-xs text-muted-foreground tracking-widest">
             DESCRIPTION (optional)
           </label>
           <textarea
@@ -147,7 +147,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
 
         {/* Technologies */}
         <div className="space-y-2">
-          <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+          <label className="font-mono text-xs text-muted-foreground tracking-widest">
             REQUIRED TECHNOLOGIES
           </label>
           <div className="flex flex-wrap gap-1.5">
@@ -178,17 +178,17 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
         {/* Questions */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+            <label className="font-mono text-xs text-muted-foreground tracking-widest">
               APPLICATION QUESTIONS
             </label>
-            <span className="font-mono text-[10px] text-muted-foreground/50">
+            <span className="font-mono text-xs text-muted-foreground/50">
               Applicants will answer these
             </span>
           </div>
           <div className="space-y-2">
             {questions.map((q, i) => (
               <div key={i} className="flex gap-2 items-center">
-                <span className="font-mono text-[10px] text-muted-foreground/50 w-4 shrink-0">
+                <span className="font-mono text-xs text-muted-foreground/50 w-4 shrink-0">
                   {i + 1}.
                 </span>
                 <input

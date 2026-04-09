@@ -79,7 +79,7 @@ export function AuthModalDialog({
               className="w-full flex items-center gap-3 border border-border/50 bg-secondary/10 px-4 py-3 hover:border-border/80 hover:bg-secondary/20 transition-all group"
             >
               <Icons.Google className="w-4 h-4 shrink-0" />
-              <span className="font-pixel text-[11px] tracking-wider text-foreground/80 group-hover:text-foreground transition-colors">
+              <span className="font-pixel text-sm tracking-wider text-foreground/80 group-hover:text-foreground transition-colors">
                 CONTINUE WITH GOOGLE
               </span>
             </button>
@@ -91,7 +91,7 @@ export function AuthModalDialog({
               className="w-full flex items-center gap-3 border border-border/50 bg-secondary/10 px-4 py-3 hover:border-foreground/40 hover:bg-secondary/20 transition-all group"
             >
               <Icons.Github className="shrink-0 text-foreground/70 group-hover:text-foreground transition-colors" />
-              <span className="font-pixel text-[11px] tracking-wider text-foreground/80 group-hover:text-foreground transition-colors">
+              <span className="font-pixel text-sm tracking-wider text-foreground/80 group-hover:text-foreground transition-colors">
                 CONTINUE WITH GITHUB
               </span>
             </button>
@@ -100,7 +100,7 @@ export function AuthModalDialog({
           {/* Divider */}
           <div className="flex items-center gap-3">
             <div className="flex-1 border-t border-border/30" />
-            <span className="font-mono text-[9px] text-muted-foreground/50 tracking-widest">
+            <span className="font-mono text-xs text-muted-foreground/50 tracking-widest">
               NO PASSWORD REQUIRED
             </span>
             <div className="flex-1 border-t border-border/30" />
@@ -109,10 +109,7 @@ export function AuthModalDialog({
           {/* Feature list */}
           <div className="border border-border/20 bg-secondary/5 p-4 space-y-1.5">
             {FEATURES.map((f) => (
-              <p
-                key={f}
-                className="font-mono text-[10px] text-muted-foreground/70"
-              >
+              <p key={f} className="font-mono text-xs text-muted-foreground/70">
                 {f}
               </p>
             ))}

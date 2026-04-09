@@ -65,13 +65,13 @@ export function ApplicationCard({
             <span className="font-pixel text-xs text-foreground">
               {application.team.name.toUpperCase()}
             </span>
-            <span className="font-mono text-[10px] text-muted-foreground">
+            <span className="font-mono text-xs text-muted-foreground">
               {application.team.hackathon.title.toUpperCase()}
             </span>
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
-          <span className="font-mono text-[10px] text-muted-foreground/60 flex items-center gap-1">
+          <span className="font-mono text-xs text-muted-foreground/60 flex items-center gap-1">
             <Send size={10} />
             {formatDistanceToNow(new Date(application.createdAt), {
               addSuffix: true,
@@ -80,7 +80,7 @@ export function ApplicationCard({
           {application.status === "ACCEPTED" && (
             <Link
               href={`/team/${application.team.id}`}
-              className="font-pixel text-[10px] tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
+              className="font-pixel text-xs tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
             >
               VIEW TEAM <ExternalLink size={10} />
             </Link>
@@ -101,7 +101,7 @@ export function ApplicationCard({
         (application as { rejectionReason?: string | null })
           .rejectionReason && (
           <div className="border border-destructive/30 bg-destructive/5 p-3">
-            <p className="font-mono text-[10px] text-destructive/70 tracking-wider mb-1">
+            <p className="font-mono text-xs text-destructive/70 tracking-wider mb-1">
               REASON:
             </p>
             <p className="font-mono text-xs text-muted-foreground">
@@ -115,7 +115,7 @@ export function ApplicationCard({
 
       {/* Actions */}
       <div className="flex items-center justify-between pt-1">
-        <span className="font-mono text-[10px] text-muted-foreground/40 flex items-center gap-1">
+        <span className="font-mono text-xs text-muted-foreground/40 flex items-center gap-1">
           <Users size={10} />
           Owner: @{application.team.owner.username}
         </span>
@@ -124,7 +124,7 @@ export function ApplicationCard({
             type="button"
             onClick={handleCancel}
             disabled={isCancelling}
-            className="font-pixel text-[10px] tracking-wider text-destructive/70 hover:text-destructive transition-colors disabled:opacity-50"
+            className="font-pixel text-xs tracking-wider text-destructive/70 hover:text-destructive transition-colors disabled:opacity-50"
           >
             {isCancelling ? "CANCELLING..." : "CANCEL →"}
           </button>

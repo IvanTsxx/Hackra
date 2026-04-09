@@ -26,7 +26,7 @@ export default async function MyTeamsPage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/user/${session.user.username}`}
           className="hover:text-foreground"
@@ -68,7 +68,7 @@ export default async function MyTeamsPage() {
           </p>
           <Link
             href="/explore"
-            className="inline-flex items-center gap-2 font-pixel text-[10px] tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
+            className="inline-flex items-center gap-2 font-pixel text-xs tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
           >
             BROWSE HACKATHONS →
           </Link>

@@ -10,7 +10,7 @@ export default function SettingsAccountPage() {
   return (
     <section>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
         <Link href="/user/me" className="hover:text-foreground">
           PROFILE
         </Link>
@@ -95,7 +95,7 @@ export default function SettingsAccountPage() {
               <p className="font-mono text-xs text-muted-foreground">
                 Delete your account
               </p>
-              <p className="font-mono text-[11px] text-muted-foreground/60 mt-1">
+              <p className="font-mono text-sm text-muted-foreground/60 mt-1">
                 This action is irreversible. All your data, teams, and
                 hackathons will be permanently removed.
               </p>

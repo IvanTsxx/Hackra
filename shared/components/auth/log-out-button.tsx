@@ -18,7 +18,7 @@ export function LogoutButton() {
     <button
       type="button"
       onClick={handleLogout}
-      className="flex items-center gap-2.5 font-pixel text-[10px] tracking-wider w-full"
+      className="flex items-center gap-2.5 font-pixel text-xs tracking-wider w-full"
     >
       <LogOut size={14} className="shrink-0" />
       Logout

@@ -94,6 +94,8 @@ export default async function HackathonDetailPage({
       ? window.location.href
       : `https://hackra.dev/hackathon/${slug}`;
 
+  const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
+
   return (
     <HackathonBackground
       themeBg={hackathon.themeBg}
@@ -101,7 +103,7 @@ export default async function HackathonDetailPage({
     >
       <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-20 pb-16">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+        <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
           <Link
             href="/explore"
             className="hover:text-foreground transition-colors"
@@ -117,17 +119,29 @@ export default async function HackathonDetailPage({
           <aside className="space-y-4">
             {/* Image */}
             <div className="relative aspect-4/3 overflow-hidden border border-border/40 bg-secondary/30">
-              {hackathon.image && !hackathon.image.includes("/placeholder") && (
+              {hasImage && (
                 <Image
-                  src={hackathon.image}
+                  // oxlint-disable-next-line typescript/no-non-null-assertion
+                  src={hackathon.image!}
                   alt={hackathon.title}
                   fill
                   className="object-cover opacity-70"
                 />
               )}
-              {!hackathon.image && (
-                <div className="absolute inset-0 flex items-center justify-center p-4">
-                  <span className="font-pixel text-xl text-foreground/30 text-center leading-tight">
+              {!hasImage && (
+                <div className="relative">
+                  <Image
+                    src="/hackra-logo.webp"
+                    alt={hackathon.title}
+                    width={1600}
+                    height={1600}
+                    className="w-full h-full aspect-4/3 object-cover"
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    loading="eager"
+                  />
+
+                  <span className="text-xl absolute bottom-0 inset-x-0 bg-linear-to-t from-background/80 to-transparent pb-2 text-foreground/30 text-center leading-tight">
                     {hackathon.title}
                   </span>
                 </div>
@@ -140,7 +154,7 @@ export default async function HackathonDetailPage({
             {/* Organizer */}
             {organizer && (
               <div className="glass border border-border/40 p-4 space-y-3">
-                <p className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                <p className="font-mono text-xs text-muted-foreground tracking-widest">
                   ORGANIZER
                 </p>
                 <Link
@@ -158,7 +172,7 @@ export default async function HackathonDetailPage({
                     <p className="font-mono text-xs text-foreground group-hover:text-brand-green transition-colors">
                       {organizer.name}
                     </p>
-                    <p className="font-mono text-[10px] text-muted-foreground">
+                    <p className="font-mono text-xs text-muted-foreground">
                       @{organizer.username}
                     </p>
                   </div>
@@ -168,7 +182,7 @@ export default async function HackathonDetailPage({
 
             {/* Participants */}
             <div className="glass border border-border/40 p-4 space-y-3">
-              <p className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <p className="font-mono text-xs text-muted-foreground tracking-widest">
                 PARTICIPANTS
               </p>
               <div className="flex items-center justify-between">
@@ -205,7 +219,7 @@ export default async function HackathonDetailPage({
                             <p className="font-mono text-xs text-foreground">
                               {user?.name}
                             </p>
-                            <p className="font-mono text-[10px] text-muted-foreground">
+                            <p className="font-mono text-xs text-muted-foreground">
                               @{user?.username}
                             </p>
                           </div>
@@ -230,7 +244,7 @@ export default async function HackathonDetailPage({
 
             {/* Teams */}
             <div className="glass border border-border/40 p-4 space-y-3">
-              <p className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <p className="font-mono text-xs text-muted-foreground tracking-widest">
                 TEAMS
               </p>
               <div className="flex items-center justify-between">
@@ -251,7 +265,7 @@ export default async function HackathonDetailPage({
 
             {/* Tags */}
             <div className="glass border border-border/40 p-4 space-y-3">
-              <p className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <p className="font-mono text-xs text-muted-foreground tracking-widest">
                 TAGS
               </p>
               <div className="flex flex-wrap gap-1.5">
@@ -269,7 +283,7 @@ export default async function HackathonDetailPage({
 
             {/* Technologies */}
             <div className="glass border border-border/40 p-4 space-y-3">
-              <p className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <p className="font-mono text-xs text-muted-foreground tracking-widest">
                 TECHNOLOGIES
               </p>
               <div className="flex flex-wrap gap-1.5">
@@ -288,7 +302,7 @@ export default async function HackathonDetailPage({
             {/* Sponsors */}
             {sponsors.length > 0 && (
               <div className="glass border border-border/40 p-4 space-y-3">
-                <p className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                <p className="font-mono text-xs text-muted-foreground tracking-widest">
                   SPONSORS
                 </p>
                 <div className="space-y-2">
@@ -362,7 +376,7 @@ export default async function HackathonDetailPage({
             <div className="glass border border-border/40 p-5 space-y-4">
               <div className="flex items-center gap-2">
                 <Trophy size={13} className="text-brand-green" />
-                <p className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                <p className="font-mono text-xs text-muted-foreground tracking-widest">
                   PRIZES
                 </p>
               </div>
@@ -376,13 +390,13 @@ export default async function HackathonDetailPage({
                         : "border-border/30"
                     }`}
                   >
-                    <p className="font-mono text-[10px] text-muted-foreground">
+                    <p className="font-mono text-xs text-muted-foreground">
                       {prize.place}
                     </p>
                     <p className="font-pixel text-lg text-foreground">
                       {prize.amount}
                     </p>
-                    <p className="font-mono text-[10px] text-muted-foreground/70">
+                    <p className="font-mono text-xs text-muted-foreground/70">
                       {prize.description}
                     </p>
                   </div>

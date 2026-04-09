@@ -318,7 +318,7 @@ export default function CreateHackathonPage() {
 
   return (
     <section>
-      <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground mb-6 mt-4">
+      <div className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-6 mt-4">
         <Link
           href={`/user/${user?.username}`}
           className="hover:text-foreground"
@@ -341,7 +341,7 @@ export default function CreateHackathonPage() {
           <button
             key={s}
             onClick={() => setStep(i)}
-            className={`font-pixel text-[10px] tracking-wider px-4 py-2.5 border-b-2 transition-all whitespace-nowrap ${
+            className={`font-pixel text-xs tracking-wider px-4 py-2.5 border-b-2 transition-all whitespace-nowrap ${
               step === i
                 ? "border-brand-green text-brand-green"
                 : "border-transparent text-muted-foreground hover:text-foreground"
@@ -366,7 +366,7 @@ export default function CreateHackathonPage() {
             <div className="space-y-3 border border-brand-green/30 bg-brand-green/5 p-4">
               <div className="flex items-center gap-2">
                 <Link2 size={12} className="text-brand-green" />
-                <label className="font-mono text-[10px] text-brand-green tracking-widest">
+                <label className="font-mono text-xs text-brand-green tracking-widest">
                   IMPORT FROM LUMA
                 </label>
               </div>
@@ -397,7 +397,7 @@ export default function CreateHackathonPage() {
                     type="button"
                     onClick={handleImportFromLuma}
                     disabled={lumaLoading || !lumaUrl}
-                    className="font-pixel text-[10px] bg-brand-green/20 text-brand-green border border-brand-green/40 px-3 hover:bg-brand-green/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all shrink-0"
+                    className="font-pixel text-xs bg-brand-green/20 text-brand-green border border-brand-green/40 px-3 hover:bg-brand-green/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all shrink-0"
                   >
                     {lumaLoading ? "..." : "IMPORT"}
                   </button>
@@ -434,7 +434,7 @@ export default function CreateHackathonPage() {
                   <p className="font-mono text-xs text-foreground">
                     {lumaPreviewData.title}
                   </p>
-                  <div className="grid grid-cols-2 gap-2 font-mono text-[10px] text-muted-foreground">
+                  <div className="grid grid-cols-2 gap-2 font-mono text-xs text-muted-foreground">
                     <div>
                       <span className="text-foreground">Start:</span>{" "}
                       {lumaPreviewData.startDate.toLocaleDateString("en-US", {
@@ -464,7 +464,7 @@ export default function CreateHackathonPage() {
                       </div>
                     )}
                   </div>
-                  <p className="font-mono text-[10px] text-brand-green/70">
+                  <p className="font-mono text-xs text-brand-green/70">
                     Click IMPORT to auto-fill all fields
                   </p>
                 </motion.div>
@@ -472,7 +472,7 @@ export default function CreateHackathonPage() {
             </div>
 
             <div className="space-y-1">
-              <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <label className="font-mono text-xs text-muted-foreground tracking-widest">
                 TITLE *
               </label>
               <input
@@ -485,7 +485,7 @@ export default function CreateHackathonPage() {
             </div>
 
             <div className="space-y-1">
-              <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <label className="font-mono text-xs text-muted-foreground tracking-widest">
                 COVER IMAGE
               </label>
               {importedImageUrl ? (
@@ -495,7 +495,7 @@ export default function CreateHackathonPage() {
                     alt="Cover"
                     className="w-full h-40 object-cover"
                   />
-                  <span className="absolute top-2 right-2 font-mono text-[9px] bg-brand-green/80 text-background px-2 py-0.5">
+                  <span className="absolute top-2 right-2 font-mono text-xs bg-brand-green/80 text-background px-2 py-0.5">
                     FROM LUMA
                   </span>
                 </div>
@@ -512,7 +512,7 @@ export default function CreateHackathonPage() {
             {/* Date pickers */}
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                <label className="font-mono text-xs text-muted-foreground tracking-widest">
                   START DATE *
                 </label>
                 <Popover>
@@ -552,7 +552,7 @@ export default function CreateHackathonPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                <label className="font-mono text-xs text-muted-foreground tracking-widest">
                   END DATE *
                 </label>
                 <Popover>
@@ -608,7 +608,7 @@ export default function CreateHackathonPage() {
 
             {/* Location mode — 3-way segmented control */}
             <div className="space-y-3">
-              <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <label className="font-mono text-xs text-muted-foreground tracking-widest">
                 PARTICIPATION MODE *
               </label>
               <div className="grid grid-cols-3 gap-0 border border-border/40 overflow-hidden">
@@ -623,10 +623,10 @@ export default function CreateHackathonPage() {
                         : "bg-secondary/5 text-muted-foreground hover:text-foreground hover:bg-secondary/10"
                     }`}
                   >
-                    <span className="font-pixel text-[10px] tracking-wider">
+                    <span className="font-pixel text-xs tracking-wider">
                       {opt.label}
                     </span>
-                    <span className="font-mono text-[9px] opacity-70">
+                    <span className="font-mono text-xs opacity-70">
                       {opt.desc}
                     </span>
                   </button>
@@ -639,7 +639,7 @@ export default function CreateHackathonPage() {
                   animate={{ height: "auto", opacity: 1 }}
                   className="space-y-1"
                 >
-                  <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                  <label className="font-mono text-xs text-muted-foreground tracking-widest">
                     VENUE LOCATION{" "}
                     {locationMode === "hybrid" && "(physical venue)"}
                   </label>
@@ -657,11 +657,11 @@ export default function CreateHackathonPage() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                  <label className="font-mono text-xs text-muted-foreground tracking-widest">
                     MAX PARTICIPANTS
                   </label>
                   {lumaImported && (
-                    <span className="font-mono text-[9px] text-brand-green/70">
+                    <span className="font-mono text-xs text-brand-green/70">
                       Set by Luma
                     </span>
                   )}
@@ -676,11 +676,11 @@ export default function CreateHackathonPage() {
               </div>
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                  <label className="font-mono text-xs text-muted-foreground tracking-widest">
                     MAX TEAM SIZE
                   </label>
                   {lumaImported && (
-                    <span className="font-mono text-[9px] text-brand-green/70">
+                    <span className="font-mono text-xs text-brand-green/70">
                       Set by Luma
                     </span>
                   )}
@@ -702,12 +702,12 @@ export default function CreateHackathonPage() {
                     REQUIRES APPROVAL
                   </p>
                   {lumaImported && (
-                    <span className="font-mono text-[9px] text-brand-green/70">
+                    <span className="font-mono text-xs text-brand-green/70">
                       Set by Luma
                     </span>
                   )}
                 </div>
-                <p className="font-mono text-[10px] text-muted-foreground">
+                <p className="font-mono text-xs text-muted-foreground">
                   Participants need manual approval to join
                 </p>
               </div>
@@ -731,7 +731,7 @@ export default function CreateHackathonPage() {
           >
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+                <label className="font-mono text-xs text-muted-foreground tracking-widest">
                   DESCRIPTION (MARKDOWN)
                 </label>
                 <button
@@ -739,7 +739,7 @@ export default function CreateHackathonPage() {
                   onClick={() =>
                     setPreviewMode(previewMode === "form" ? "preview" : "form")
                   }
-                  className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex items-center gap-1 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {previewMode === "form" ? (
                     <>
@@ -767,7 +767,7 @@ export default function CreateHackathonPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <label className="font-mono text-xs text-muted-foreground tracking-widest">
                 TAGS
               </label>
               <div className="flex flex-wrap gap-1.5">
@@ -789,7 +789,7 @@ export default function CreateHackathonPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <label className="font-mono text-xs text-muted-foreground tracking-widest">
                 TECHNOLOGIES
               </label>
               <div className="flex flex-wrap gap-1.5">
@@ -839,7 +839,7 @@ export default function CreateHackathonPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="font-mono text-[10px] text-muted-foreground">
+                    <label className="font-mono text-xs text-muted-foreground">
                       PLACE
                     </label>
                     <input
@@ -850,7 +850,7 @@ export default function CreateHackathonPage() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="font-mono text-[10px] text-muted-foreground">
+                    <label className="font-mono text-xs text-muted-foreground">
                       AMOUNT
                     </label>
                     <input
@@ -862,7 +862,7 @@ export default function CreateHackathonPage() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="font-mono text-[10px] text-muted-foreground">
+                  <label className="font-mono text-xs text-muted-foreground">
                     DESCRIPTION
                   </label>
                   <input
@@ -899,7 +899,7 @@ export default function CreateHackathonPage() {
 
             {/* Live preview */}
             <div className="space-y-2">
-              <label className="font-mono text-[10px] text-muted-foreground tracking-widest">
+              <label className="font-mono text-xs text-muted-foreground tracking-widest">
                 LIVE PREVIEW
               </label>
               <div
@@ -970,7 +970,7 @@ export default function CreateHackathonPage() {
 
               <div className="grid sm:grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="font-mono text-[10px] text-muted-foreground mb-1">
+                  <p className="font-mono text-xs text-muted-foreground mb-1">
                     TAGS
                   </p>
                   <div className="flex flex-wrap gap-1">
@@ -985,7 +985,7 @@ export default function CreateHackathonPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] text-muted-foreground mb-1">
+                  <p className="font-mono text-xs text-muted-foreground mb-1">
                     TECHS
                   </p>
                   <div className="flex flex-wrap gap-1">
@@ -1000,7 +1000,7 @@ export default function CreateHackathonPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] text-muted-foreground mb-1">
+                  <p className="font-mono text-xs text-muted-foreground mb-1">
                     DATES
                   </p>
                   <span className="font-mono text-xs text-foreground">
@@ -1010,7 +1010,7 @@ export default function CreateHackathonPage() {
                   </span>
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] text-muted-foreground mb-1">
+                  <p className="font-mono text-xs text-muted-foreground mb-1">
                     PARTICIPATION
                   </p>
                   <span className="font-mono text-xs text-foreground capitalize">
@@ -1023,7 +1023,7 @@ export default function CreateHackathonPage() {
                   </span>
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] text-muted-foreground mb-1">
+                  <p className="font-mono text-xs text-muted-foreground mb-1">
                     MAX PARTICIPANTS
                   </p>
                   <span className="font-mono text-xs text-foreground">
@@ -1031,7 +1031,7 @@ export default function CreateHackathonPage() {
                   </span>
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] text-muted-foreground mb-1">
+                  <p className="font-mono text-xs text-muted-foreground mb-1">
                     MAX TEAM SIZE
                   </p>
                   <span className="font-mono text-xs text-foreground">
@@ -1067,7 +1067,7 @@ export default function CreateHackathonPage() {
           type="button"
           onClick={() => setStep((s) => Math.max(0, s - 1))}
           disabled={step === 0}
-          className="font-pixel text-[10px] tracking-wider text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-3 py-2"
+          className="font-pixel text-xs tracking-wider text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-3 py-2"
         >
           ← BACK
         </button>
@@ -1075,7 +1075,7 @@ export default function CreateHackathonPage() {
           <button
             type="button"
             onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}
-            className="font-pixel text-[10px] tracking-wider text-foreground border border-border/40 px-4 py-2 hover:border-brand-green/50 hover:text-brand-green transition-all"
+            className="font-pixel text-xs tracking-wider text-foreground border border-border/40 px-4 py-2 hover:border-brand-green/50 hover:text-brand-green transition-all"
           >
             NEXT →
           </button>
