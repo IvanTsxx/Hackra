@@ -19,8 +19,6 @@ import {
 } from "@/shared/components/ui/dialog";
 import { signIn } from "@/shared/lib/auth-client";
 
-import { Button } from "../ui/button";
-
 const FEATURES = [
   "> join 150+ hackathons",
   "> form and manage teams",
@@ -54,9 +52,7 @@ export function AuthModalDialog({
         ) : (
           <DialogTrigger>{children}</DialogTrigger>
         )
-      ) : (
-        <DialogTrigger render={<Button />}>Login</DialogTrigger>
-      )}
+      ) : null}
       <DialogContent className="rounded-none border-border/50 p-0 max-w-md overflow-hidden bg-background gap-0">
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-5 pb-0">
