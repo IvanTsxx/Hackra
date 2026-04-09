@@ -23,6 +23,8 @@
     ".next/**",
     "node_modules/**",
     "skills/*",
-    "app/generated/**"
+    "app/generated/**",
+    ".claude/**",
+    ".agents/**"
   ]
 }

@@ -20,4 +20,12 @@
   "tabWidth": 2,
   "trailingComma": "es5",
   "useTabs": false,
+  "ignorePatterns": [
+    ".next/**",
+    "node_modules/**",
+    "skills/*",
+    "app/generated/**",
+    ".claude/**",
+    ".agents/**",
+  ],
 }
