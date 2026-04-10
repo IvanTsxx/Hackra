@@ -86,7 +86,7 @@ export function ThemeToggle() {
             : "rotate(180deg) scale(0)",
         }}
       >
-        <Moon className="h-4 w-4 text-blue-400" />
+        <Moon className="h-4 w-4" />
       </span>
       <span
         className="absolute inset-0 flex items-center justify-center transition-transform duration-300"
@@ -97,7 +97,7 @@ export function ThemeToggle() {
             : "rotate(0deg) scale(1)",
         }}
       >
-        <Sun className="h-4 w-4 text-yellow-500" />
+        <Sun className="h-4 w-4" />
       </span>
     </Button>
   );

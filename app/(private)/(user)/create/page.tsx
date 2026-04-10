@@ -114,7 +114,7 @@ export default function CreateHackathonPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedTechs, setSelectedTechs] = useState<Tech[]>([]);
   const [requiresApproval, setRequiresApproval] = useState(false);
-  const [isPublished, setIsPublished] = useState(false);
+  const [isPublished, setIsPublished] = useState(true);
   const [maxParticipants, setMaxParticipants] = useState(500);
   const [maxTeamSize, setMaxTeamSize] = useState(4);
   const [prizes, setPrizes] = useState<PrizeEntry[]>([
@@ -344,6 +344,30 @@ export default function CreateHackathonPage() {
           <h1 className="font-pixel text-2xl text-foreground">CREATE</h1>
         </div>
       </AnimatedSection>
+
+      {/* Publicar switch - siempre visible, antes del stepper */}
+      <div className="flex items-center justify-between p-4 border border-border/40 bg-brand-green/5 mb-6">
+        <div className="flex items-center gap-3">
+          <div
+            className={`w-2 h-2 rounded-full ${
+              isPublished
+                ? "bg-brand-green animate-pulse"
+                : "bg-muted-foreground"
+            }`}
+          />
+          <div>
+            <p className="text-xs text-foreground tracking-wide">
+              {isPublished ? "PUBLICAR INMEDIATAMENTE" : "ESTADO: BORRADOR"}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {isPublished
+                ? "El hackathon será visible públicamente"
+                : "Guardar como borrador"}
+            </p>
+          </div>
+        </div>
+        <Switch checked={isPublished} onCheckedChange={setIsPublished} />
+      </div>
 
       {/* Step tabs */}
       <div className="flex border-b border-border/40 mb-8 overflow-x-auto">
@@ -723,18 +747,6 @@ export default function CreateHackathonPage() {
                 disabled={lumaImported}
                 className={lumaImported ? "opacity-50 cursor-not-allowed" : ""}
               />
-            </div>
-
-            <div className="flex items-center justify-between p-3 border border-border/40 bg-brand-purple/5">
-              <div>
-                <p className="  text-xs text-foreground">PUBLICAR HACKATHON</p>
-                <p className="  text-xs text-muted-foreground">
-                  {isPublished
-                    ? "El hackathon será visible públicamente"
-                    : "Guardar como borrador"}
-                </p>
-              </div>
-              <Switch checked={isPublished} onCheckedChange={setIsPublished} />
             </div>
           </motion.div>
         )}
