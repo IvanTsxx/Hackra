@@ -21,24 +21,14 @@ interface HackathonCardProps {
   variant?: "default" | "compact";
 }
 
-// Derive accent color from hackathon theme bg
-function getAccentFromBg(bg: string): string {
-  // Map known theme colors to specific accents
-  const map: Record<string, string> = {
-    "#030d0a": "oklch(0.72 0.19 145)",
-    "#0a0a0a": "oklch(0.72 0.19 145)",
-    "#0d0d1a": "oklch(0.72 0.19 285)",
-    "#1a0a00": "oklch(0.75 0.18 50)",
-  };
-  return map[bg] ?? "oklch(0.72 0.19 145)";
-}
+const DEFAULT_ACCENT = "oklch(0.72 0.19 145)";
 
 export function HackathonCard({
   hackathon,
   variant = "default",
   i,
 }: HackathonCardProps) {
-  const accent = getAccentFromBg(hackathon.themeBg || "#0a0a0a");
+  const accent = DEFAULT_ACCENT;
   /* const accentHex = hackathon.theme.bg; */
   const isLive = hackathon.status === "LIVE";
   const topPrize = hackathon.prizes[0]?.amount;

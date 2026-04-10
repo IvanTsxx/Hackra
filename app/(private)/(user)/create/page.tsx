@@ -904,62 +904,8 @@ export default function CreateHackathonPage() {
           </motion.div>
         )}
 
-        {/* ─── STEP 3 — THEME ──────────────────────────────────────────────── */}
+        {/* ─── STEP 3 — PREVIEW ────────────────────────────────────────────── */}
         {step === 3 && (
-          <motion.div
-            key="step3"
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="space-y-6"
-          >
-            <ThemeCustomizer value={theme} onChange={setTheme} />
-
-            {/* Live preview */}
-            <div className="space-y-2">
-              <label className="  text-xs text-muted-foreground tracking-widest">
-                LIVE PREVIEW
-              </label>
-              <div
-                className="border border-border/40 p-6 space-y-3 transition-all relative overflow-hidden"
-                style={{ background: theme.gradientCss }}
-              >
-                {/* Scanline overlay */}
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background:
-                      "repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px)",
-                  }}
-                />
-                <CodeText className="text-brand-green" as="span">
-                  preview
-                </CodeText>
-                <p className="relative font-pixel text-xl text-white/90">
-                  {title || "HACKATHON TITLE"}
-                </p>
-                <div className="relative flex flex-wrap gap-1.5">
-                  {selectedTags.slice(0, 3).map((t, i) => (
-                    <TagBadge key={t} label={t} variant="default" index={i} />
-                  ))}
-                </div>
-                <p className="relative   text-xs text-white/40">
-                  {startDate ? format(startDate, "MMM d, yyyy") : "Start Date"}
-                  {" — "}
-                  {endDate ? format(endDate, "MMM d, yyyy") : "End Date"}
-                  {" · "}
-                  {locationMode === "remote"
-                    ? "Remote"
-                    : locationMode === "hybrid"
-                      ? "Hybrid"
-                      : location || "TBD"}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* ─── STEP 4 — PREVIEW ────────────────────────────────────────────── */}
-        {step === 4 && (
           <motion.div
             key="step4"
             initial={{ opacity: 0, x: 10 }}
@@ -967,10 +913,7 @@ export default function CreateHackathonPage() {
             className="space-y-4"
           >
             <div className="glass border border-border/40 p-6 space-y-4">
-              <div
-                className="p-6 border border-white/10 relative overflow-hidden"
-                style={{ background: theme.gradientCss }}
-              >
+              <div className="p-6 border border-white/10 relative overflow-hidden bg-zinc-950">
                 <p className="relative font-pixel text-2xl text-white/90 mb-2">
                   {title || "UNTITLED"}
                 </p>

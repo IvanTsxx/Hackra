@@ -82,9 +82,6 @@ export async function createHackathonAction(raw: unknown): Promise<{
     status,
     tags: data.tags,
     techs: data.techs,
-    themeBg: data.themeBg,
-    themeGradient: data.themeGradient,
-    themeStyle: data.themeStyle,
     title: data.title,
   };
 
