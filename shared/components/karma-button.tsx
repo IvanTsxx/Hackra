@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import type { SessionDTO } from "@/data/auth-dal";
-import { giveKarma } from "@/data/karma";
+import { giveKarma } from "@/shared/actions/karma";
 
 import type { User } from "../lib/auth";
 import { AuthModalDialog } from "./auth";

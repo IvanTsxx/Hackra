@@ -8,7 +8,7 @@ import {
   karmaForCreateTeam,
   karmaForJoinHackathon,
   karmaForJoinTeam,
-} from "@/data/karma";
+} from "@/shared/actions/karma";
 import { auth } from "@/shared/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
 

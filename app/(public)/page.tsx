@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import dynamic from "next/dynamic";
 
 import { HeroSection } from "@/components/home/hero-section";
+import { CACHE_TAGS, CACHE_LIFE } from "@/data/cache-constants";
 import { TechStackMarquee } from "@/shared/components/home/tech-stack-marquee";
 /* import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee"; */
 import { JsonLd } from "@/shared/components/json-ld";
@@ -106,6 +108,10 @@ function formatPrice(amount: number) {
 }
 
 export default async function Home() {
+  "use cache";
+  cacheLife(CACHE_LIFE.HOME_DATA);
+  cacheTag(CACHE_TAGS.HOME_DATA);
+
   const [hackathonsCount, developersCount, prizesCount, sponsors] =
     await Promise.all([
       prisma.hackathon.count(),

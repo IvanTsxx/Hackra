@@ -1,7 +1,14 @@
 import "server-only";
+import { cacheLife, cacheTag } from "next/cache";
+
 import type { HackathonStatus } from "@/app/generated/prisma/enums";
 import type { HackathonGetPayload } from "@/app/generated/prisma/models";
 import { prisma } from "@/shared/lib/prisma";
+
+import { CACHE_TAGS, CACHE_LIFE } from "./cache-constants";
+
+// oxlint-disable require-await
+// "use cache" is an implicit await - the function is cached by Next.js at runtime
 
 export const HACKATHON_INITIAL_SIZE = 6;
 export const HACKATHON_LOAD_MORE_SIZE = 3;
@@ -15,8 +22,12 @@ type ExploreHackathon = HackathonGetPayload<{
   include: typeof hackathonExploreInclude;
 }>;
 
-export const getFeaturedHackatons = async () =>
-  await prisma.hackathon.findMany({
+export async function getFeaturedHackatons() {
+  "use cache";
+  cacheLife(CACHE_LIFE.FEATURED_HACKATHONS);
+  cacheTag(CACHE_TAGS.FEATURED_HACKATHONS);
+
+  return prisma.hackathon.findMany({
     include: {
       participants: true,
       prizes: true,
@@ -31,9 +42,14 @@ export const getFeaturedHackatons = async () =>
       OR: [{ status: "LIVE" }, { status: "UPCOMING" }],
     },
   });
+}
 
-export const getHackathon = async (slug: string) =>
-  await prisma.hackathon.findUnique({
+export async function getHackathon(slug: string) {
+  "use cache";
+  cacheLife(CACHE_LIFE.HACKATHON_BY_SLUG);
+  cacheTag(CACHE_TAGS.HACKATHON_BY_SLUG(slug));
+
+  return prisma.hackathon.findUnique({
     include: {
       organizer: true,
       participants: {
@@ -45,6 +61,7 @@ export const getHackathon = async (slug: string) =>
     },
     where: { slug },
   });
+}
 
 interface ExploreFilters {
   q?: string;
@@ -143,6 +160,10 @@ interface ExploreFilterOptions {
 }
 
 export async function getExploreFilters(): Promise<ExploreFilterOptions> {
+  "use cache";
+  cacheLife(CACHE_LIFE.HACKATHONS_LIST);
+  cacheTag(CACHE_TAGS.HACKATHONS_LIST);
+
   const allHackathons = await prisma.hackathon.findMany({
     select: {
       isOnline: true,

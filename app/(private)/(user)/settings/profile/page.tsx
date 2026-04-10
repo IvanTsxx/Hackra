@@ -7,7 +7,7 @@ import { CodeText } from "@/shared/components/code-text";
 import { auth } from "@/shared/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
 
-import { ProfileForm } from "./profile-form";
+import { ProfileForm } from "./_components/profile-form";
 
 export default async function SettingsProfilePage() {
   const session = await auth.api.getSession({

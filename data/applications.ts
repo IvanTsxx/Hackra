@@ -1,5 +1,12 @@
 import "server-only";
+import { cacheLife, cacheTag } from "next/cache";
+
 import { prisma } from "@/shared/lib/prisma";
+
+import { CACHE_TAGS, CACHE_LIFE } from "./cache-constants";
+
+// oxlint-disable require-await
+// "use cache" is an implicit await - the function is cached by Next.js at runtime
 
 // Get all team applications for a user with team and hackathon info
 export function getUserApplications(userId: string) {
@@ -57,7 +64,11 @@ export async function getTeamApplicationsForOwner(
 }
 
 // Get team members for a team
-export function getTeamMembers(teamId: string) {
+export async function getTeamMembers(teamId: string) {
+  "use cache";
+  cacheLife(CACHE_LIFE.TEAM_BY_ID);
+  cacheTag(CACHE_TAGS.TEAM_BY_ID(teamId));
+
   return prisma.teamMember.findMany({
     include: {
       user: {
@@ -76,7 +87,11 @@ export function getTeamMembers(teamId: string) {
 }
 
 // Get team with owner info for authorization
-export function getTeamWithOwner(teamId: string) {
+export async function getTeamWithOwner(teamId: string) {
+  "use cache";
+  cacheLife(CACHE_LIFE.TEAM_BY_ID);
+  cacheTag(CACHE_TAGS.TEAM_BY_ID(teamId));
+
   return prisma.team.findUnique({
     include: {
       hackathon: { select: { slug: true, title: true } },
