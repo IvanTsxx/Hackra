@@ -4,11 +4,14 @@ import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 
-import type { User } from "@/app/generated/prisma/client";
+import type { User as DatabaseUser } from "@/app/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import type { SessionDTO } from "@/data/auth-dal";
 import { Icons } from "@/shared/components/icons";
 import { KarmaButton } from "@/shared/components/karma-button";
+import type { User as SessionUser } from "@/shared/lib/auth";
+
+type AnyUser = SessionDTO | SessionUser | DatabaseUser | null;
 
 /*   const statItems = [
     {
@@ -46,10 +49,10 @@ export const ProfileHeader = ({
   stats,
   currentUser,
 }: {
-  user: User;
+  user: DatabaseUser;
   isOwnProfile: boolean;
   stats: { icon: string; label: string; value: number }[];
-  currentUser?: SessionDTO | null;
+  currentUser?: AnyUser;
 }) => {
   const { name, username, githubUsername, location, position, bio, image } =
     user;

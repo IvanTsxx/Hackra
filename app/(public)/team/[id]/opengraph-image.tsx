@@ -21,7 +21,7 @@ export default async function Image({
       avatarSrc={avatarSrc}
       topBar={{ label: "HACKRA", right: "TEAM" }}
       authorName={team.name}
-      url={`https://hackra.vercel.app/team/${id}`}
+      url={`https://https://hackra.bongi.dev/team/${id}`}
     >
       {/* Team name */}
       <div style={{ color: brandGreen, fontSize: 44, fontWeight: 700 }}>

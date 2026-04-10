@@ -18,7 +18,7 @@ export default async function Image({
       avatarSrc={hackathon?.organizer.image || null}
       topBar={{ label: "HACKRA", right: "HACKATHON" }}
       authorName={hackathon?.title || "Hackathon"}
-      url={`https://hackra.vercel.app/hackathon/${slug}`}
+      url={`https://https://hackra.bongi.dev/hackathon/${slug}`}
     >
       {/* Title */}
       <div style={{ color: brandGreen, fontSize: 44, fontWeight: 700 }}>

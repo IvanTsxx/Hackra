@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://hackra.vercel.app";
+const BASE_URL = "https://https://hackra.bongi.dev";
 
 export default function robots(): MetadataRoute.Robots {
   return {

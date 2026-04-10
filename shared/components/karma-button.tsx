@@ -4,13 +4,14 @@ import { ChevronUpIcon, ChevronDownIcon } from "lucide-react";
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
+import type { SessionDTO } from "@/data/auth-dal";
 import { giveKarma } from "@/data/karma";
 
 import type { User } from "../lib/auth";
 import { AuthModalDialog } from "./auth";
 
 interface KarmaButtonProps {
-  user?: User | null;
+  user?: SessionDTO | User | null;
   targetId: string;
   currentKarma: number;
   onKarmaGiven?: (newKarma: number) => void;
