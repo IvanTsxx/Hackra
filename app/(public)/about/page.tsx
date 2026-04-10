@@ -2,6 +2,7 @@ import { Code2, Terminal, Users, Trophy } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { getHomeStats } from "@/data/home";
 import { CodeText } from "@/shared/components/code-text";
 
 export const metadata: Metadata = {
@@ -25,7 +26,41 @@ export const metadata: Metadata = {
   title: "About Hackra | The Hackathon Platform",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const stats = await getHomeStats();
+
+  const statsData = [
+    {
+      icon: Trophy,
+      label: stats.totalHackathons > 0 ? `${stats.totalHackathons}+` : "0",
+      show: stats.totalHackathons > 0,
+      value: "HACKATHONS",
+    },
+    {
+      icon: Users,
+      label:
+        stats.totalDevelopers > 0
+          ? `${stats.totalDevelopers.toLocaleString()}+`
+          : "0",
+      show: stats.totalDevelopers > 0,
+      value: "DEVELOPERS",
+    },
+    {
+      icon: Code2,
+      label: stats.totalProjects > 0 ? `${stats.totalProjects}+` : "0",
+      show: stats.totalProjects > 0,
+      value: "PROJECTS",
+    },
+    {
+      icon: Terminal,
+      label:
+        stats.totalPrizeAmount > 0
+          ? `$${stats.totalPrizeAmount.toLocaleString()}+`
+          : "$0",
+      show: stats.totalPrizeAmount > 0,
+      value: "PRIZES",
+    },
+  ].filter((s) => s.show);
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
@@ -77,12 +112,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {[
-                { icon: Trophy, label: "150+", value: "HACKATHONS" },
-                { icon: Users, label: "50K+", value: "DEVELOPERS" },
-                { icon: Code2, label: "12K+", value: "PROJECTS" },
-                { icon: Terminal, label: "$2M+", value: "PRIZES" },
-              ].map((stat, idx) => (
+              {statsData.map((stat, idx) => (
                 <div key={idx} className="p-4 border border-border bg-card/50">
                   <stat.icon className="w-5 h-5 text-primary mb-2" />
                   <span className="text-2xl font-bold  block">

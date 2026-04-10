@@ -6,10 +6,11 @@ export interface HomeStats {
   totalHackathons: number;
   totalDevelopers: number;
   totalPrizeAmount: number;
+  totalProjects: number;
 }
 
 export async function getHomeStats(): Promise<HomeStats> {
-  const [hackathons, participants, prizes] = await Promise.all([
+  const [hackathons, participants, prizes, projects] = await Promise.all([
     prisma.hackathon.count({
       where: {
         status: {
@@ -23,11 +24,13 @@ export async function getHomeStats(): Promise<HomeStats> {
         amount: true,
       },
     }),
+    prisma.team.count(),
   ]);
 
   return {
     totalDevelopers: participants,
     totalHackathons: hackathons,
     totalPrizeAmount: prizes._sum.amount ?? 0,
+    totalProjects: projects,
   };
 }
