@@ -1,9 +1,16 @@
+import { getHomeStats } from "@/data/home";
 import { createOgImage, OG_COLORS, OgLayout } from "@/shared/lib/og";
 
 export const dynamic = "force-dynamic";
 
-export default function Image() {
+export default async function Image() {
   const { textLight, brandGreen } = OG_COLORS;
+  const stats = await getHomeStats();
+
+  const hasStats =
+    stats.totalHackathons > 0 ||
+    stats.totalDevelopers > 0 ||
+    stats.totalPrizeAmount > 0;
 
   return createOgImage(({ avatarSrc }) => (
     <OgLayout
@@ -28,35 +35,35 @@ export default function Image() {
         The platform for hackathons worldwide
       </div>
 
-      {/* Stats */}
-      <div
-        style={{
-          display: "flex",
-          gap: 24,
-          marginTop: 16,
-        }}
-      >
-        <span style={{ color: textLight, fontSize: 24 }}>
-          <span style={{ color: brandGreen }}>*</span> 150+ HACKATHONS
-        </span>
-        <span style={{ color: textLight, fontSize: 24 }}>
-          <span style={{ color: brandGreen }}>*</span> 50K+ DEVELOPERS
-        </span>
-        <span style={{ color: textLight, fontSize: 24 }}>
-          <span style={{ color: brandGreen }}>*</span> $2M+ PRIZES
-        </span>
-      </div>
-
-      {/* CTA */}
-      <div
-        style={{
-          color: brandGreen,
-          fontSize: 24,
-          marginTop: 16,
-        }}
-      >
-        Join the community →
-      </div>
+      {/* Stats - only show if there are stats */}
+      {hasStats && (
+        <div
+          style={{
+            display: "flex",
+            gap: 24,
+            marginTop: 16,
+          }}
+        >
+          {stats.totalHackathons > 0 && (
+            <span style={{ color: textLight, fontSize: 24 }}>
+              <span style={{ color: brandGreen }}>*</span>{" "}
+              {stats.totalHackathons}+ HACKATHONS
+            </span>
+          )}
+          {stats.totalDevelopers > 0 && (
+            <span style={{ color: textLight, fontSize: 24 }}>
+              <span style={{ color: brandGreen }}>*</span>{" "}
+              {stats.totalDevelopers.toLocaleString()}+ DEVELOPERS
+            </span>
+          )}
+          {stats.totalPrizeAmount > 0 && (
+            <span style={{ color: textLight, fontSize: 24 }}>
+              <span style={{ color: brandGreen }}>*</span> $
+              {stats.totalPrizeAmount.toLocaleString()}+ PRIZES
+            </span>
+          )}
+        </div>
+      )}
     </OgLayout>
   ));
 }
