@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { AvatarGroup } from "@/components/avatar-group";
 import { TagBadge } from "@/components/tag-badge";
+import { getCurrentUser } from "@/data/auth-dal";
 import { getHackathon } from "@/data/hackatons";
 import { getAllTeams, getTeamById } from "@/data/teams";
 import {
@@ -69,6 +70,8 @@ export default async function TeamDetailPage({
   const openSpots = team.maxMembers - team.members.length;
   const isFull = openSpots <= 0;
 
+  const currentUser = await getCurrentUser();
+
   return (
     <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
@@ -99,7 +102,12 @@ export default async function TeamDetailPage({
       </div>
 
       {/* Header */}
-      <TeamHeader team={team} openSpots={openSpots} isFull={isFull} />
+      <TeamHeader
+        team={team}
+        openSpots={openSpots}
+        isFull={isFull}
+        isOwner={team.hackathon.organizerId === currentUser?.id}
+      />
 
       <div className="grid md:grid-cols-3 gap-6">
         {/* Main content */}
@@ -179,7 +187,7 @@ export default async function TeamDetailPage({
                   <Link
                     key={user.id}
                     href={`/user/${user.username}`}
-                    className="flex items-center gap-4 group"
+                    className="flex px-2 py-3 items-center gap-4 group"
                   >
                     <div className="w-4 h-4 bg-secondary flex items-center justify-center shrink-0">
                       <Avatar>

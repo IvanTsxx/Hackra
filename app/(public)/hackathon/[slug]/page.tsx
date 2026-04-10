@@ -365,6 +365,7 @@ export default async function HackathonDetailPage({
               <JoinHackathonButton
                 hackathonId={hackathon.id}
                 isJoined={joined}
+                isOwner={user?.id === hackathon.organizerId}
               />
               <ShareModal url={shareUrl} title={hackathon.title} />
 
@@ -436,7 +437,11 @@ export default async function HackathonDetailPage({
               >
                 BROWSE TEAMS
               </Button>
-              <CreateTeamButton isLoggedIn={!!user} slug={slug} />
+              <CreateTeamButton
+                isLoggedIn={!!user}
+                slug={slug}
+                isOwner={user?.id === hackathon.organizerId}
+              />
             </div>
           </div>
         </div>

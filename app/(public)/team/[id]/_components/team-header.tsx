@@ -23,6 +23,7 @@ export const TeamHeader = ({
   team,
   openSpots,
   isFull,
+  isOwner,
 }: {
   team: TeamGetPayload<{
     include: {
@@ -31,6 +32,7 @@ export const TeamHeader = ({
   }>;
   openSpots: number;
   isFull: boolean;
+  isOwner: boolean;
 }) => {
   const [submitted, setSubmitted] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -91,7 +93,7 @@ export const TeamHeader = ({
                 : `${openSpots} SPOT${openSpots !== 1 ? "S" : ""} OPEN`}
             </span>
           </div>
-          {!isFull && (
+          {!isFull && !isOwner && (
             <Dialog>
               <DialogTrigger
                 render={

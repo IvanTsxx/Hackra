@@ -72,7 +72,11 @@ export default async function TeamsPage({
             {teams.length} teams · max {hackathon.maxTeamSize} members each
           </p>
         </div>
-        <CreateTeamButton isLoggedIn={!!currentUser} slug={slug} />
+        <CreateTeamButton
+          isOwner={hackathon.organizerId === currentUser?.id}
+          isLoggedIn={!!currentUser}
+          slug={slug}
+        />
       </div>
 
       {teams.length === 0 ? (
@@ -80,7 +84,11 @@ export default async function TeamsPage({
           <p className="font-pixel text-sm text-muted-foreground">
             NO_TEAMS_YET
           </p>
-          <CreateTeamButton isLoggedIn={!!currentUser} slug={slug} />
+          <CreateTeamButton
+            isOwner={hackathon.organizerId === currentUser?.id}
+            isLoggedIn={!!currentUser}
+            slug={slug}
+          />
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 gap-4">

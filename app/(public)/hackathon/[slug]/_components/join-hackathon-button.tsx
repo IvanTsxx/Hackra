@@ -9,14 +9,19 @@ import { Button } from "@/components/ui/button";
 interface JoinHackathonButtonProps {
   hackathonId: string;
   isJoined: boolean;
+  isOwner?: boolean;
 }
 
 export function JoinHackathonButton({
   hackathonId,
   isJoined: initialIsJoined,
+  isOwner,
 }: JoinHackathonButtonProps) {
   const [isJoined, setIsJoined] = useState(initialIsJoined);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Don't show button if user is the organizer
+  if (isOwner) return null;
 
   const handleJoin = async () => {
     setIsLoading(true);
