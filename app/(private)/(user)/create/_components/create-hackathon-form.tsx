@@ -118,8 +118,10 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
   const form = useForm({
     defaultValues: {
       description:
-        "## Overview\n\nDescribe your hackathon here...\n\n## What to Build\n\n- Build something amazing\n- Use the provided tech stack\n\n## Judging Criteria\n\n- Innovation\n- Technical Execution\n- Design & UX",
+        "## Overview\n\nDescribe your hackathon here...\n\n## What to Build\n\n- Build something amazing\nUse the provided tech stack\n\n## Judging Criteria\n\n- Innovation\n- Technical Execution\n- Design & UX",
       endDate: undefined as Date | undefined,
+      externalId: undefined as string | undefined,
+      externalUrl: undefined as string | undefined,
       isPublished: true,
       location: "",
       locationMode: "in_person" as LocationMode,
@@ -127,6 +129,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       maxTeamSize: 4,
       prizes: [] as PrizeEntry[],
       requiresApproval: false,
+      source: "manual",
       startDate: undefined as Date | undefined,
       tags: [] as string[],
       techs: [] as string[],
@@ -136,13 +139,16 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       const result = await createHackathonAction({
         description: value.description,
         endDate: value.endDate,
-        image: undefined,
+        externalId: value.externalId,
+        externalUrl: value.externalUrl,
+        image: importedImageUrl,
         isPublished: value.isPublished,
         location: value.location,
         locationMode: value.locationMode,
         maxParticipants: value.maxParticipants,
         maxTeamSize: value.maxTeamSize,
         requiresApproval: value.requiresApproval,
+        source: value.source,
         startDate: value.startDate,
         tags: value.tags,
         techs: value.techs,
@@ -288,6 +294,11 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
         toast.info("Event is full - registrations will require approval");
       }
       if (d.image) setImportedImageUrl(d.image);
+
+      // Luma metadata fields
+      if (d.externalId) form.setFieldValue("externalId", d.externalId);
+      if (d.externalUrl) form.setFieldValue("externalUrl", d.externalUrl);
+      form.setFieldValue("source", "luma");
 
       if (d.tags && d.tags.length > 0) {
         console.log(d.tags);

@@ -83,6 +83,8 @@ export default async function HackathonDetailPage({
 }) {
   const { slug } = await params;
   const hackathon = await getHackathon(slug);
+  console.log("hackathon");
+  console.dir(hackathon, { depth: null });
   const session = await auth.api.getSession({
     headers: await headers(),
   });
