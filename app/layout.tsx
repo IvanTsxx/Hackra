@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import {
   GeistPixelSquare,
   GeistPixelCircle,
@@ -42,6 +43,7 @@ export default function RootLayout({
               <ModalProviders />
             </NuqsAdapter>
           </TooltipProvider>
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
