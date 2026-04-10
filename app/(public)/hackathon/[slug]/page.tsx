@@ -9,6 +9,7 @@ import { AvatarGroup } from "@/components/avatar-group";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { ShareModal } from "@/components/share-modal";
 import { TagBadge, StatusPill } from "@/components/tag-badge";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -83,8 +84,7 @@ export default async function HackathonDetailPage({
 }) {
   const { slug } = await params;
   const hackathon = await getHackathon(slug);
-  console.log("hackathon");
-  console.dir(hackathon, { depth: null });
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -124,6 +124,14 @@ export default async function HackathonDetailPage({
         </Link>
         <ChevronRight size={10} />
         <span className="text-foreground truncate">{hackathon.title}</span>
+        {hackathon.source === "luma" && (
+          <Badge
+            variant="outline"
+            className="ml-2 border-purple-500/50 text-purple-400 text-[10px]"
+          >
+            LUMA
+          </Badge>
+        )}
       </div>
 
       <div className="grid lg:grid-cols-[320px_1fr] gap-8">
@@ -381,37 +389,39 @@ export default async function HackathonDetailPage({
             </div>
           </div>
 
-          {/* Prizes */}
-          <div className="glass border border-border/40 p-5 space-y-4">
-            <div className="flex items-center gap-2">
-              <Trophy size={13} className="text-brand-green" />
-              <p className="  text-xs text-muted-foreground tracking-widest">
-                PRIZES
-              </p>
+          {/* Prizes - solo mostrar si hay prizes */}
+          {hackathon.prizes && hackathon.prizes.length > 0 && (
+            <div className="glass border border-border/40 p-5 space-y-4">
+              <div className="flex items-center gap-2">
+                <Trophy size={13} className="text-brand-green" />
+                <p className="  text-xs text-muted-foreground tracking-widest">
+                  PRIZES
+                </p>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-3">
+                {hackathon.prizes.map((prize, i) => (
+                  <div
+                    key={`${prize.place}-${prize.amount}-${i}`}
+                    className={`border p-3 space-y-1 ${
+                      i === 0
+                        ? "border-brand-green/40 bg-brand-green/5"
+                        : "border-border/30"
+                    }`}
+                  >
+                    <p className="  text-xs text-muted-foreground">
+                      {prize.place}
+                    </p>
+                    <p className="font-pixel text-lg text-foreground">
+                      {prize.amount}
+                    </p>
+                    <p className="  text-xs text-muted-foreground/70">
+                      {prize.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="grid sm:grid-cols-3 gap-3">
-              {hackathon.prizes.map((prize, i) => (
-                <div
-                  key={i}
-                  className={`border p-3 space-y-1 ${
-                    i === 0
-                      ? "border-brand-green/40 bg-brand-green/5"
-                      : "border-border/30"
-                  }`}
-                >
-                  <p className="  text-xs text-muted-foreground">
-                    {prize.place}
-                  </p>
-                  <p className="font-pixel text-lg text-foreground">
-                    {prize.amount}
-                  </p>
-                  <p className="  text-xs text-muted-foreground/70">
-                    {prize.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          )}
 
           {/* Description (Markdown) */}
           <div className="glass border border-border/40 p-5">

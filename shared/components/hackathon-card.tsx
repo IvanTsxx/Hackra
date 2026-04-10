@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { HackathonGetPayload } from "@/app/generated/prisma/models";
+import { Badge } from "@/components/ui/badge";
 
 import { StatusPill, TagBadge } from "./tag-badge";
 
@@ -66,8 +67,16 @@ export function HackathonCard({
               {hackathon.title.split(" ").slice(0, 2).join(" ")}
             </span>
 
-            <div className="shrink-0">
+            <div className="shrink-0 flex items-center gap-1.5">
               <StatusPill index={i} status={hackathon.status} />
+              {hackathon.source === "luma" && (
+                <Badge
+                  variant="outline"
+                  className="border-purple-500/50 text-purple-400 text-[8px] py-0 h-5 px-1"
+                >
+                  L
+                </Badge>
+              )}
             </div>
 
             <div className="flex-1 min-w-0 space-y-0.5">
@@ -138,6 +147,14 @@ export function HackathonCard({
         <div className="flex items-start justify-between gap-3 px-4 pt-4 pb-3 relative z-10">
           <div className="flex items-center gap-2 flex-wrap">
             <StatusPill index={i} status={hackathon.status} />
+            {hackathon.source === "luma" && (
+              <Badge
+                variant="outline"
+                className="border-purple-500/50 text-purple-400 text-[8px] py-0 h-5 px-1.5"
+              >
+                LUMA
+              </Badge>
+            )}
             {hackathon.isOnline ? (
               <span className="flex items-center gap-1  text-xs text-muted-foreground border border-border/30 px-1.5 py-0.5">
                 <Globe size={8} /> REMOTE
