@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { HackathonCard } from "@/components/hackathon-card";
 import { TagBadge } from "@/components/tag-badge";
+import { getCurrentUser } from "@/data/auth-dal";
 import { getAllUsers, getUserByUsername } from "@/data/user";
 import {
   Tabs,
@@ -68,11 +69,12 @@ export default async function UserProfilePage({
   const user = await getUserByUsername(username);
   if (!user) notFound();
 
+  const currentUser = await getCurrentUser();
   const userHackathonsCreated = user.organizedHackathons;
   const userHackathonsParticipated = user.participations.map(
     (participation) => participation.hackathon
   );
-  const isOwnProfile = user.username === "evilrabbit";
+  const isOwnProfile = currentUser?.username === user.username;
 
   const statItems = [
     {
@@ -104,6 +106,7 @@ export default async function UserProfilePage({
         user={user}
         isOwnProfile={isOwnProfile}
         stats={statItems}
+        currentUser={currentUser}
       />
 
       <div className="grid md:grid-cols-3 gap-8">

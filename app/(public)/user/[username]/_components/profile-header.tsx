@@ -6,7 +6,9 @@ import Link from "next/link";
 
 import type { User } from "@/app/generated/prisma/client";
 import { Button } from "@/components/ui/button";
+import type { SessionDTO } from "@/data/auth-dal";
 import { Icons } from "@/shared/components/icons";
+import { KarmaButton } from "@/shared/components/karma-button";
 
 /*   const statItems = [
     {
@@ -42,10 +44,12 @@ export const ProfileHeader = ({
   user,
   isOwnProfile,
   stats,
+  currentUser,
 }: {
   user: User;
   isOwnProfile: boolean;
   stats: { icon: string; label: string; value: number }[];
+  currentUser?: SessionDTO | null;
 }) => {
   const { name, username, githubUsername, location, position, bio, image } =
     user;
@@ -86,9 +90,14 @@ export const ProfileHeader = ({
               <h1 className="font-pixel text-xl md:text-2xl text-foreground">
                 {name}
               </h1>
-              <p className="  text-xs text-brand-green">@{username}</p>
+              <p className="  text-xs text-brand-green mt-1">@{username}</p>
             </div>
             <div className="flex items-center gap-2">
+              <KarmaButton
+                user={currentUser}
+                targetId={user.id}
+                currentKarma={user.karmaPoints}
+              />
               {githubUsername && (
                 <a
                   href={`https://github.com/${user.githubUsername}`}

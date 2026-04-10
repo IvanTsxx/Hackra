@@ -4,6 +4,11 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
 
+import {
+  karmaForCreateTeam,
+  karmaForJoinHackathon,
+  karmaForJoinTeam,
+} from "@/data/karma";
 import { auth } from "@/shared/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
 
@@ -154,6 +159,9 @@ export async function acceptApplication(
     }),
   ]);
 
+  // Give karma to the user who joined the team
+  await karmaForJoinTeam(application.userId);
+
   revalidatePath(`/teams/${application.teamId}/manage`);
   return { success: true };
 }
@@ -230,6 +238,9 @@ export async function joinHackathon(
       userId: session.user.id,
     },
   });
+
+  // Give karma for joining hackathon
+  await karmaForJoinHackathon(session.user.id);
 
   revalidatePath(`/hackathon/${hackathonId.data}`);
   revalidatePath("/my-applications");
@@ -316,6 +327,9 @@ export async function createTeam(
         userId: session.user.id,
       },
     });
+
+    // Give karma to team creator
+    await karmaForCreateTeam(session.user.id);
 
     revalidatePath(`/hackathon/${team.hackathon.slug}/teams`);
     return { success: true, teamId: team.id };

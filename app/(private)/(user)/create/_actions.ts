@@ -7,6 +7,7 @@ import * as z from "zod";
 import { HackathonStatus } from "@/app/generated/prisma/enums";
 import { createHackathon } from "@/data/admin-hackatons";
 import type { CreateHackathonDTO } from "@/data/admin-hackatons";
+import { karmaForCreateHackathon } from "@/data/karma";
 import { auth } from "@/shared/lib/auth";
 import type { LumaEventData } from "@/shared/lib/luma-scraper";
 import { createHackathonSchema } from "@/shared/lib/validation";
@@ -103,6 +104,8 @@ export async function createHackathonAction(raw: unknown): Promise<{
 
   try {
     await createHackathon(dto);
+    // Give karma to organizer
+    await karmaForCreateHackathon(session.user.id);
     revalidatePath("/");
     revalidatePath("/explore");
     return { success: true };
