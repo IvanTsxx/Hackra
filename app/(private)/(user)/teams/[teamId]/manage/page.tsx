@@ -20,6 +20,7 @@ import { getAllTeams } from "@/data/teams";
 import { auth } from "@/shared/lib/auth";
 import { cn } from "@/shared/lib/utils";
 
+import { EditTeamForm } from "./_components/edit-team-form";
 import { ManageApplicationCard } from "./_components/manage-application-card";
 
 export async function generateStaticParams() {
@@ -92,6 +93,18 @@ export default async function ManageTeamPage({
             {team.description}
           </p>
         )}
+      </div>
+
+      {/* Edit Team Form */}
+      <div className="mb-8">
+        <EditTeamForm
+          team={{
+            description: team.description,
+            id: team.id,
+            name: team.name,
+            techs: team.techs,
+          }}
+        />
       </div>
 
       {/* Team stats */}

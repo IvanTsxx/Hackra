@@ -196,6 +196,20 @@ export async function joinHackathon(
   const hackathonId = z.string().safeParse(raw);
   if (!hackathonId.success) return { error: "Invalid input", success: false };
 
+  // Check if user is the organizer
+  const hackathon = await prisma.hackathon.findUnique({
+    select: { organizerId: true, requiresApproval: true },
+    where: { id: hackathonId.data },
+  });
+  if (!hackathon) return { error: "Hackathon not found", success: false };
+
+  if (hackathon.organizerId === session.user.id) {
+    return {
+      error: "You cannot join your own hackathon as a participant",
+      success: false,
+    };
+  }
+
   const existing = await prisma.hackathonParticipant.findUnique({
     where: {
       userId_hackathonId: {
@@ -207,13 +221,7 @@ export async function joinHackathon(
   if (existing)
     return { error: "Already registered for this hackathon", success: false };
 
-  // Check if hackathon requires approval
-  const hackathon = await prisma.hackathon.findUnique({
-    select: { requiresApproval: true },
-    where: { id: hackathonId.data },
-  });
-
-  const status = hackathon?.requiresApproval ? "PENDING" : "APPROVED";
+  const status = hackathon.requiresApproval ? "PENDING" : "APPROVED";
 
   await prisma.hackathonParticipant.create({
     data: {
@@ -257,6 +265,32 @@ export async function createTeam(
   });
   if (!hackathon) return { error: "Hackathon not found", success: false };
 
+  // Check if user is the organizer
+  if (hackathon.organizerId === session.user.id) {
+    return {
+      error: "You cannot create a team in your own hackathon",
+      success: false,
+    };
+  }
+
+  // Check if user already has a team in this hackathon
+  const existingTeam = await prisma.team.findFirst({
+    where: {
+      hackathonId,
+      members: {
+        some: {
+          userId: session.user.id,
+        },
+      },
+    },
+  });
+  if (existingTeam) {
+    return {
+      error: "You already have a team in this hackathon",
+      success: false,
+    };
+  }
+
   try {
     const team = await prisma.team.create({
       data: {
@@ -288,5 +322,58 @@ export async function createTeam(
   } catch (error) {
     console.error("createTeam error:", error);
     return { error: "Failed to create team", success: false };
+  }
+}
+
+// ─── Update Team ────────────────────────────────────────────────────────────
+
+const updateTeamSchema = z.object({
+  description: z.string().optional(),
+  name: z.string().min(2, "Name must be at least 2 characters").optional(),
+  teamId: z.string(),
+  techs: z.array(z.string()).optional(),
+});
+
+export async function updateTeam(
+  raw: unknown
+): Promise<{ success: boolean; error?: string }> {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user?.id) return { error: "Unauthorized", success: false };
+
+  const parsed = updateTeamSchema.safeParse(raw);
+  if (!parsed.success) {
+    return {
+      error: parsed.error.issues.map((e) => e.message).join(", "),
+      success: false,
+    };
+  }
+
+  const { name, description, techs, teamId } = parsed.data;
+
+  const team = await prisma.team.findUnique({
+    include: { hackathon: true },
+    where: { id: teamId },
+  });
+  if (!team) return { error: "Team not found", success: false };
+  if (team.ownerId !== session.user.id)
+    return { error: "Unauthorized", success: false };
+
+  try {
+    await prisma.team.update({
+      data: {
+        ...(name && { name }),
+        ...(description !== undefined && { description }),
+        ...(techs && { techs }),
+      },
+      where: { id: teamId },
+    });
+
+    revalidatePath(`/hackathon/${team.hackathon.slug}/teams`);
+    revalidatePath(`/team/${teamId}`);
+    revalidatePath(`/teams/${teamId}/manage`);
+    return { success: true };
+  } catch (error) {
+    console.error("updateTeam error:", error);
+    return { error: "Failed to update team", success: false };
   }
 }
