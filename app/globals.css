@@ -218,6 +218,41 @@
   animation-play-state: paused;
 }
 
+/* Fade-in-up animation — starts hidden, NOT LCP-safe. Use below the fold only. */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* LCP-safe reveal animation — content is visible from first paint.
+ * Starts at opacity:1 (never hidden) with a subtle 8px slide-up.
+ * Safe for above-the-fold / LCP elements because the browser
+ * considers the element "contentful" immediately. */
+@keyframes reveal-up {
+  from {
+    opacity: 1;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-reveal-up {
+  animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* Text flip animation */
 @keyframes text-flip-in {
   0% {

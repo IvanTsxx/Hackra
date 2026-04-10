@@ -12,10 +12,14 @@ export function HeroSection({
         <div className="px-4 py-16 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left column — Main Content */}
-            <HeroLeft stats={stats} />
+            <div className="order-2 lg:order-1">
+              <HeroLeft stats={stats} />
+            </div>
 
             {/* Right column — 3D Globe */}
-            <HeroRight />
+            <div className="order-1 lg:order-2">
+              <HeroRight />
+            </div>
           </div>
         </div>
       </div>

@@ -1,8 +1,20 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 
 import { getFeaturedHackatons } from "@/data/hackatons";
 import { CodeText } from "@/shared/components/code-text";
-import { HackathonCard } from "@/shared/components/hackathon-card";
+
+const HackathonCard = dynamic(
+  async () => {
+    const mod = await import("@/shared/components/hackathon-card");
+    return { default: mod.HackathonCard };
+  },
+  {
+    loading: () => (
+      <div className="border border-border/40 bg-card/30 h-[300px] animate-pulse" />
+    ),
+  }
+);
 
 export const FeaturedHackatons = async () => {
   const featured = await getFeaturedHackatons();

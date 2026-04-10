@@ -51,7 +51,6 @@ interface ExploreFilters {
   location?: string;
   tags?: string[];
   techs?: string[];
-  statuses?: HackathonStatus[];
   cursor?: string;
 }
 
@@ -65,7 +64,7 @@ interface ExploreResult {
 export async function getHackathonsForExplore(
   params: ExploreFilters
 ): Promise<ExploreResult> {
-  const { q, location, tags, techs, statuses, cursor } = params;
+  const { q, location, tags, techs, cursor } = params;
 
   const where: {
     status?: { in: HackathonStatus[] };
@@ -77,11 +76,9 @@ export async function getHackathonsForExplore(
       title?: { contains: string; mode: "insensitive" };
       description?: { contains: string; mode: "insensitive" };
     }[];
-  } = {};
-
-  if (statuses && statuses.length > 0) {
-    where.status = { in: statuses };
-  }
+  } = {
+    status: { in: ["LIVE", "UPCOMING"] },
+  };
 
   if (tags && tags.length > 0) {
     where.tags = { hasSome: tags };

@@ -11,7 +11,7 @@ const Globe3D = dynamic(
 );
 
 export const HeroRight = () => (
-  <div className="relative hidden lg:flex items-center justify-center h-[600px] w-full">
+  <div className="relative flex items-center justify-center h-[350px] lg:h-[600px] w-full">
     <Globe3D />
   </div>
 );

@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -46,7 +47,19 @@ export function JoinHackathonButton({
           : "bg-foreground text-background hover:bg-foreground/90"
       }`}
     >
-      {isLoading ? "JOINING..." : isJoined ? "✓ JOINED" : "+ JOIN HACKATHON"}
+      {isLoading ? (
+        "JOINING..."
+      ) : isJoined ? (
+        <span className="flex items-center gap-1">
+          <Check size={14} className="mr-1.5" />
+          JOINED
+        </span>
+      ) : (
+        <span className="flex items-center gap-1">
+          <Plus size={14} className="mr-1.5" />
+          JOIN HACKATHON
+        </span>
+      )}
     </Button>
   );
 }

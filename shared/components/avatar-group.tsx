@@ -39,6 +39,7 @@ export function AvatarGroup({
               alt={user?.name || ""}
               width={32}
               height={32}
+              sizes="24px"
               className="w-full h-full object-cover"
             />
           </div>

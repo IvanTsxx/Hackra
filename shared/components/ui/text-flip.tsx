@@ -13,14 +13,21 @@ interface TextFlipProps {
 
 export function TextFlip({ words, className, duration = 2000 }: TextFlipProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
+    setHasMounted(true);
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % words.length);
     }, duration);
 
     return () => clearInterval(interval);
   }, [words.length, duration]);
+
+  // Render first word immediately for LCP, then animate once JS hydrates
+  if (!hasMounted) {
+    return <span className={cn("inline-block", className)}>{words[0]}</span>;
+  }
 
   return (
     <span className={cn("inline-block relative overflow-hidden", className)}>

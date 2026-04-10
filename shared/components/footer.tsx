@@ -37,6 +37,7 @@ export const Footer = () => (
             href="https://github.com/IvanTsxx/hackra"
             target="_blank"
             rel="noopener noreferrer nofollow"
+            aria-label="GitHub"
             className="hover:text-foreground transition-colors uppercase tracking-wider"
           >
             <Icons.Github className="size-5" />

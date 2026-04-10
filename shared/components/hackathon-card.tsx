@@ -185,38 +185,34 @@ export function HackathonCard({
 
         {/* Title */}
         <div className="px-4 pb-3 relative z-10">
-          <div className="flex items-start gap-2">
-            {hasImage && (
-              <div className="w-full h-full">
+          <div className="flex items-start gap-3">
+            {hasImage && hackathon.image && (
+              <div className="shrink-0 w-12 h-12">
                 <Image
-                  // oxlint-disable-next-line typescript/no-non-null-assertion
-                  src={hackathon.image!}
+                  src={hackathon.image}
                   alt={hackathon.title}
-                  width={1600}
-                  height={1600}
-                  className="w-full max-w-full h-full object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  width={96}
+                  height={96}
+                  quality={75}
+                  sizes="48px"
+                  className="w-full h-full object-cover"
                 />
               </div>
             )}
             {!hasImage && (
-              <div className="w-full h-full">
+              <div className="shrink-0 w-12 h-12">
                 <Image
-                  src="/hackra-logo.webp"
+                  src="/hackra-logo-sm.webp"
                   alt={hackathon.title}
-                  width={1600}
-                  height={1600}
+                  width={96}
+                  height={96}
+                  sizes="48px"
                   className="w-full h-full object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
                 />
               </div>
             )}
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1 min-w-0">
               <Link href={`/hackathon/${hackathon.slug}`}>
                 <h3 className="text-base md:text-lg group-hover:text-foreground/90 transition-colors text-balance hover:underline hover:decoration-brand-green hover:decoration-wavy hover:decoration-2 duration-200 ease-out line-clamp-2">
                   {hackathon.title}

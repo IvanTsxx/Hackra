@@ -1,12 +1,12 @@
 "use client";
 
-import { Filter, MapPin, Search, X } from "lucide-react";
+import { Filter, Search, X } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { useEffect, useRef, useState } from "react";
 
-import type { HackathonStatus } from "@/app/generated/prisma/enums";
 import { CodeText } from "@/shared/components/code-text";
+import { cn } from "@/shared/lib/utils";
 
 interface FilterOption {
   value: string;
@@ -18,14 +18,12 @@ interface ExploreFiltersProps {
     tags: FilterOption[];
     techs: FilterOption[];
     locations: FilterOption[];
-    statuses: { value: HackathonStatus; count: number }[];
+
     totalCount: number;
   };
   filteredCount: number;
   totalCount: number;
 }
-
-const STATUSES = ["UPCOMING", "LIVE", "ENDED"] as const;
 
 export function ExploreFilters({
   filterOptions,
@@ -52,37 +50,23 @@ export function ExploreFilters({
       .withDefault([])
       .withOptions({ shallow: false })
   );
-  const [statuses, setStatuses] = useQueryState(
-    "status",
-    parseAsArrayOf(parseAsString, ",")
-      .withDefault([])
-      .withOptions({ shallow: false })
-  );
+
   const [showFilters, setShowFilters] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { amount: 0.3, once: true });
 
-  const hasFilters =
-    search ||
-    location ||
-    tags.length > 0 ||
-    techs.length > 0 ||
-    statuses.length > 0;
-  const activeFilterCount = [
-    search,
-    location,
-    ...tags,
-    ...techs,
-    ...statuses,
-  ].filter(Boolean).length;
+  const hasFilters = search || location || tags.length > 0 || techs.length > 0;
+
+  const activeFilterCount = [search, location, ...tags, ...techs].filter(
+    Boolean
+  ).length;
 
   const clearAll = () => {
     setSearch(null);
     setLocation(null);
     setTags([]);
     setTechs([]);
-    setStatuses([]);
   };
 
   const toggleTag = (value: string) => {
@@ -93,12 +77,6 @@ export function ExploreFilters({
 
   const toggleTech = (value: string) => {
     setTechs((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    );
-  };
-
-  const toggleStatus = (value: string) => {
-    setStatuses((prev) =>
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
     );
   };
@@ -160,15 +138,6 @@ export function ExploreFilters({
             )}
           </div>
 
-          {/* Location detect */}
-          <button
-            type="button"
-            className="flex items-center gap-1.5 border border-border/50 px-3 py-2   text-xs text-muted-foreground hover:text-foreground hover:border-border/80 transition-colors"
-          >
-            <MapPin size={12} />
-            <span className="hidden sm:inline">near me</span>
-          </button>
-
           {/* Filter toggle */}
           <button
             type="button"
@@ -196,29 +165,6 @@ export function ExploreFilters({
             animate={{ opacity: 1, y: 0 }}
             className="border border-border/40 p-4 bg-secondary/10 space-y-4"
           >
-            {/* Status */}
-            <div className="space-y-2">
-              <span className="  text-xs text-muted-foreground tracking-widest">
-                STATUS
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                {STATUSES.map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => toggleStatus(s)}
-                    className={`  text-xs border px-2 py-0.5 transition-colors ${
-                      statuses.includes(s)
-                        ? "border-brand-green/60 text-brand-green bg-brand-green/5"
-                        : "border-border/40 text-muted-foreground hover:border-border/70"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Location */}
             {filterOptions.locations.length > 0 && (
               <div className="space-y-2">
@@ -233,11 +179,12 @@ export function ExploreFilters({
                       onClick={() =>
                         setLocation(location === loc.value ? null : loc.value)
                       }
-                      className={`  text-xs border px-2 py-0.5 transition-colors ${
+                      className={cn(
+                        "text-xs border px-2 py-0.5 transition-colors",
                         location === loc.value
                           ? "border-brand-green/60 text-brand-green bg-brand-green/5"
-                          : "border-border/40 text-muted-foreground hover:border-border/70"
-                      }`}
+                          : "border-border/40 text-muted-foreground hover:border-brand-green/40"
+                      )}
                     >
                       {loc.value}
                     </button>
@@ -258,11 +205,12 @@ export function ExploreFilters({
                       key={t.value}
                       type="button"
                       onClick={() => toggleTag(t.value)}
-                      className={`  text-xs border px-2 py-0.5 transition-colors ${
+                      className={cn(
+                        "text-xs border px-2 py-0.5 transition-colors",
                         tags.includes(t.value)
                           ? "border-brand-purple/60 text-brand-purple bg-brand-purple/5"
-                          : "border-border/40 text-muted-foreground hover:border-border/70"
-                      }`}
+                          : "border-border/40 text-muted-foreground hover:border-brand-purple/40"
+                      )}
                     >
                       {t.value}
                     </button>
@@ -283,11 +231,12 @@ export function ExploreFilters({
                       key={t.value}
                       type="button"
                       onClick={() => toggleTech(t.value)}
-                      className={`  text-xs border px-2 py-0.5 transition-colors ${
+                      className={cn(
+                        "text-xs border px-2 py-0.5 transition-colors",
                         techs.includes(t.value)
                           ? "border-foreground/50 text-foreground bg-foreground/5"
-                          : "border-border/40 text-muted-foreground hover:border-border/70"
-                      }`}
+                          : "border-border/40 text-muted-foreground hover:border-foreground/40"
+                      )}
                     >
                       {t.value}
                     </button>
@@ -352,17 +301,6 @@ export function ExploreFilters({
             >
               tech: {t}
               <button type="button" onClick={() => toggleTech(t)}>
-                <X size={9} />
-              </button>
-            </span>
-          ))}
-          {statuses.map((s) => (
-            <span
-              key={s}
-              className="flex items-center gap-1 border border-border/40   text-xs text-muted-foreground px-2 py-0.5"
-            >
-              status: {s}
-              <button type="button" onClick={() => toggleStatus(s)}>
                 <X size={9} />
               </button>
             </span>

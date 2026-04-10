@@ -72,7 +72,7 @@ export const ProfileHeader = ({
               alt={name}
               width={80}
               height={80}
-              loading="eager"
+              sizes="80px"
               priority
               className="rounded-full"
             />

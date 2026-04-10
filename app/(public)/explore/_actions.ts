@@ -1,6 +1,5 @@
 "use server";
 
-import type { HackathonStatus } from "@/app/generated/prisma/enums";
 import type { HackathonGetPayload } from "@/app/generated/prisma/models";
 import type { hackathonExploreInclude } from "@/data/hackatons";
 import { getHackathonsForExplore } from "@/data/hackatons";
@@ -10,7 +9,6 @@ interface LoadMoreFilters {
   location?: string;
   tags?: string[];
   techs?: string[];
-  statuses?: HackathonStatus[];
 }
 
 interface LoadMoreResult {

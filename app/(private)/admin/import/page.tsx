@@ -3,6 +3,7 @@
 
 import { useForm } from "@tanstack/react-form";
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -68,9 +69,13 @@ function LumaPreviewCard({
     >
       <Card className="max-w-xl">
         {data.image && (
-          <img
+          <Image
             src={data.image}
             alt={data.title}
+            width={600}
+            height={200}
+            quality={75}
+            sizes="(max-width: 768px) 100vw, 600px"
             className="w-full object-cover"
             style={{ maxHeight: "200px" }}
           />

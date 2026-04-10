@@ -16,6 +16,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -566,9 +567,13 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                   className="space-y-2 border border-border/30 bg-secondary/10 p-3"
                 >
                   {lumaPreviewData.image && (
-                    <img
+                    <Image
                       src={lumaPreviewData.image}
                       alt={lumaPreviewData.title}
+                      width={600}
+                      height={340}
+                      quality={75}
+                      sizes="(max-width: 768px) 100vw, 600px"
                       className="w-full h-full aspect-video object-cover"
                     />
                   )}
@@ -651,9 +656,13 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
               </label>
               {importedImageUrl ? (
                 <div className="relative border border-border/40 overflow-hidden">
-                  <img
+                  <Image
                     src={importedImageUrl}
                     alt="Cover"
+                    width={600}
+                    height={160}
+                    quality={75}
+                    sizes="(max-width: 768px) 100vw, 600px"
                     className="w-full h-40 object-cover"
                   />
                   <span className="absolute top-2 right-2 text-xs bg-brand-green/80 text-background px-2 py-0.5">

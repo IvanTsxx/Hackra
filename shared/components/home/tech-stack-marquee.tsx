@@ -1,42 +1,19 @@
-import {
-  Marquee,
-  MarqueeContent,
-  MarqueeFade,
-  MarqueeItem,
-} from "@/components/ui/marquee";
+import dynamic from "next/dynamic";
 
-const techStack = [
-  "REACT",
-  "NEXT.JS",
-  "TYPESCRIPT",
-  "NODE.JS",
-  "PYTHON",
-  "RUST",
-  "GO",
-  "TAILWIND",
-  "POSTGRESQL",
-  "REDIS",
-  "DOCKER",
-  "K8S",
-  "AWS",
-  "VERCEL",
-  "SUPABASE",
-];
-
-export const TechStackMarquee = () => (
-  <Marquee>
-    <MarqueeFade side="left" />
-    <MarqueeFade side="right" />
-
-    <MarqueeContent>
-      {techStack.map((item) => (
-        <MarqueeItem
-          key={item}
-          className="flex items-center gap-2 text-muted-foreground/50 hover:text-brand-green transition-colors shrink-0"
-        >
-          <span className="uppercase">{item}</span>
-        </MarqueeItem>
-      ))}
-    </MarqueeContent>
-  </Marquee>
+const TechStackMarqueeContent = dynamic(
+  async () => {
+    const mod = await import("@/shared/components/home/tech-stack-content");
+    return { default: mod.TechStackMarqueeContent };
+  },
+  {
+    loading: () => (
+      <div className="flex items-center justify-center py-8 text-muted-foreground/30 animate-pulse">
+        <span className="font-pixel text-xs tracking-widest">
+          LOADING TECH STACK...
+        </span>
+      </div>
+    ),
+  }
 );
+
+export const TechStackMarquee = () => <TechStackMarqueeContent />;

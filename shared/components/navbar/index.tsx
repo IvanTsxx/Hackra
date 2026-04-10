@@ -22,12 +22,13 @@ export async function Navbar() {
           className="flex items-center gap-2 group"
         >
           <Image
-            src="/hackra-logo.webp"
-            alt="Logo"
-            width={1600}
-            height={1600}
+            src="/hackra-logo-sm.webp"
+            alt="Hackra logo"
+            width={40}
+            height={40}
             loading="eager"
             priority
+            sizes="40px"
             className="w-10 h-10"
           />
           <span className="font-pixel text-sm text-muted-foreground tracking-widest">

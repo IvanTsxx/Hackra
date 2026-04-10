@@ -4,7 +4,6 @@ import { motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 import { loadMoreHackathons } from "@/app/(public)/explore/_actions";
-import type { HackathonStatus } from "@/app/generated/prisma/enums";
 import type { HackathonGetPayload } from "@/app/generated/prisma/models";
 import { HackathonCard } from "@/components/hackathon-card";
 import type { hackathonExploreInclude } from "@/data/hackatons";
@@ -24,7 +23,6 @@ interface ExploreGridProps {
     location?: string;
     tags?: string[];
     techs?: string[];
-    statuses?: HackathonStatus[];
   };
 }
 
@@ -68,7 +66,6 @@ export function ExploreGrid({
     const currentFilters = {
       location: filters.location,
       q: filters.q,
-      statuses: filters.statuses,
       tags: filters.tags,
       techs: filters.techs,
     };
@@ -94,7 +91,6 @@ export function ExploreGrid({
     filters.location,
     filters.tags,
     filters.techs,
-    filters.statuses,
   ]);
 
   if (hackathons.length === 0) {

@@ -2,6 +2,7 @@
 
 import { formatDistanceToNow } from "date-fns";
 import { motion } from "motion/react";
+import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -95,9 +96,12 @@ export function ManageApplicationCard({
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-none border border-border/40 bg-secondary/20 flex items-center justify-center font-pixel text-xs text-foreground shrink-0">
             {application.user.image ? (
-              <img
+              <Image
                 src={application.user.image}
-                alt={application.user.name}
+                alt={application.user.name ?? "User"}
+                width={40}
+                height={40}
+                sizes="40px"
                 className="w-full h-full object-cover"
               />
             ) : (

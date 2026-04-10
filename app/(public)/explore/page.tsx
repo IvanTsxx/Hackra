@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import type { HackathonStatus } from "@/app/generated/prisma/enums";
 import { getExploreFilters, getHackathonsForExplore } from "@/data/hackatons";
 
 import { ExploreFilters } from "./_components/explore-filters";
@@ -34,7 +33,6 @@ interface Props {
     location?: string;
     tag?: string | string[];
     tech?: string | string[];
-    status?: string | string[];
   }>;
 }
 
@@ -49,9 +47,6 @@ function parseArrayParam(
 export default async function ExplorePage({ searchParams }: Props) {
   const params = await searchParams;
 
-  const statuses = parseArrayParam(params.status) as
-    | HackathonStatus[]
-    | undefined;
   const tags = parseArrayParam(params.tag);
   const techs = parseArrayParam(params.tech);
 
@@ -59,7 +54,7 @@ export default async function ExplorePage({ searchParams }: Props) {
     getHackathonsForExplore({
       location: params.location,
       q: params.q,
-      statuses,
+
       tags,
       techs,
     }),
@@ -81,7 +76,7 @@ export default async function ExplorePage({ searchParams }: Props) {
         filters={{
           location: params.location,
           q: params.q,
-          statuses,
+
           tags,
           techs,
         }}

@@ -56,11 +56,11 @@ export function AdminSidebar() {
                   prefetch={false}
                 >
                   <Image
-                    src="/hackra-logo.webp"
-                    alt="Logo"
-                    width={1600}
-                    height={1600}
-                    loading="eager"
+                    src="/hackra-logo-sm.webp"
+                    alt="Hackra logo"
+                    width={40}
+                    height={40}
+                    sizes="40px"
                     priority
                     className="w-10 h-10"
                   />

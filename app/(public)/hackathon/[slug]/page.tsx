@@ -1,5 +1,13 @@
 import { format } from "date-fns";
-import { Calendar, MapPin, Trophy, ChevronRight, Building } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  Trophy,
+  ChevronRight,
+  Building,
+  ExternalLink,
+} from "lucide-react";
+import type { Route } from "next";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
@@ -140,15 +148,14 @@ export default async function HackathonDetailPage({
         <aside className="space-y-4">
           {/* Image */}
           <div className="relative aspect-video overflow-hidden border border-border/40 bg-secondary/30">
-            {hasImage && (
+            {hasImage && hackathon.image && (
               <Image
-                // oxlint-disable-next-line typescript/no-non-null-assertion
-                src={hackathon.image!}
+                src={hackathon.image}
                 alt={hackathon.title}
-                width={1600}
-                height={1600}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                loading="eager"
+                width={800}
+                height={450}
+                quality={75}
+                sizes="(max-width: 768px) 100vw, 400px"
                 priority
                 className="object-cover object-center w-full h-full"
               />
@@ -156,14 +163,13 @@ export default async function HackathonDetailPage({
             {!hasImage && (
               <div className="relative">
                 <Image
-                  src="/hackra-logo.webp"
+                  src="/hackra-logo-sm.webp"
                   alt={hackathon.title}
-                  width={1600}
-                  height={1600}
+                  width={320}
+                  height={180}
                   className="w-full h-full aspect-4/3 object-cover"
                   priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  sizes="(max-width: 768px) 100vw, 400px"
                 />
 
                 <span className="text-xl absolute bottom-0 inset-x-0 pb-2 text-muted-foreground dark:text-foreground/30 text-center leading-tight">
@@ -191,6 +197,7 @@ export default async function HackathonDetailPage({
                   alt={organizer.name}
                   width={36}
                   height={36}
+                  sizes="36px"
                   className="border rounded-full border-border/40"
                 />
                 <div>
@@ -236,6 +243,7 @@ export default async function HackathonDetailPage({
                           alt={user?.name || ""}
                           width={28}
                           height={28}
+                          sizes="28px"
                           className="rounded-full"
                         />
                         <div>
@@ -373,12 +381,32 @@ export default async function HackathonDetailPage({
 
             {/* Action buttons */}
             <div className="flex flex-wrap gap-2">
-              <JoinHackathonButton
-                hackathonId={hackathon.id}
-                isJoined={joined}
-                isOwner={user?.id === hackathon.organizerId}
-              />
+              {hackathon.status === "UPCOMING" &&
+                !joined &&
+                user?.id !== hackathon.organizerId && (
+                  <JoinHackathonButton
+                    hackathonId={hackathon.id}
+                    isJoined={joined}
+                    isOwner={user?.id === hackathon.organizerId}
+                  />
+                )}
               <ShareModal url={shareUrl} title={hackathon.title} />
+              {hackathon.source === "luma" && hackathon.externalUrl && (
+                <Button
+                  variant="outline"
+                  className="tracking-wider rounded-none border-purple-500/50 text-purple-400 hover:bg-purple-500/10 h-9 px-4"
+                  render={
+                    <Link
+                      href={hackathon.externalUrl as Route}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    />
+                  }
+                >
+                  <ExternalLink size={14} className="mr-1.5" />
+                  LUMA
+                </Button>
+              )}
 
               {/*   <Button
                   variant="ghost"

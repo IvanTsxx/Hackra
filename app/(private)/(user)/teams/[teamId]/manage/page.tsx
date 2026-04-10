@@ -8,6 +8,7 @@ import {
   Target,
 } from "lucide-react";
 import { headers } from "next/headers";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
@@ -284,9 +285,12 @@ export default async function ManageTeamPage({
               >
                 <div className="w-8 h-8 rounded-none border border-border/40 bg-secondary/20 flex items-center justify-center font-pixel text-xs text-foreground shrink-0">
                   {member.user.image ? (
-                    <img
+                    <Image
                       src={member.user.image}
-                      alt={member.user.name}
+                      alt={member.user.name ?? "User"}
+                      width={32}
+                      height={32}
+                      sizes="32px"
                       className="w-full h-full object-cover"
                     />
                   ) : (

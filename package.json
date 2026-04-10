@@ -88,5 +88,9 @@
     "*.{js,jsx,ts,tsx,json,jsonc}": [
       "bun x ultracite fix"
     ]
-  }
+  },
+  "browserslist": [
+    "defaults and fully supports es6-module",
+    "maintained node versions"
+  ]
 }

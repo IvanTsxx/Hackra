@@ -1,6 +1,7 @@
 import "server-only";
 import { format, formatDistanceToNow } from "date-fns";
 import { ExternalLink, MapPin, Users, Calendar, User } from "lucide-react";
+import Image from "next/image";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -99,9 +100,13 @@ export default async function AdminHackathonsPage() {
                       </DialogHeader>
                       <DialogDescription className="flex flex-col gap-4 text-sm text-foreground">
                         {h.image && (
-                          <img
+                          <Image
                             src={h.image}
                             alt={h.title}
+                            width={600}
+                            height={200}
+                            quality={75}
+                            sizes="(max-width: 768px) 100vw, 600px"
                             className="w-full rounded-lg object-cover"
                             style={{ maxHeight: "200px" }}
                           />

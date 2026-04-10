@@ -38,7 +38,7 @@ export const MobileMenu = ({ user }: { user?: User | null }) => (
       </div>
     )}
     <Sheet>
-      <SheetTrigger className="md:hidden">
+      <SheetTrigger className="md:hidden" aria-label="Abrir menú">
         <Menu />
       </SheetTrigger>
 
