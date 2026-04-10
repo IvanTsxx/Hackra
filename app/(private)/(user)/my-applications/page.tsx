@@ -24,6 +24,11 @@ const statusConfig: Record<
     label: "ACCEPTED",
     variant: "status-live",
   },
+  APPROVED: {
+    color: "text-brand-green",
+    label: "APPROVED",
+    variant: "status-live",
+  },
   PENDING: {
     color: "text-muted-foreground",
     label: "PENDING",

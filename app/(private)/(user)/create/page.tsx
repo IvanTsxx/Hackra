@@ -282,6 +282,9 @@ export default function CreateHackathonPage() {
 
   /* const isOnline = locationMode === "remote" || locationMode === "hybrid"; */
 
+  const { data } = useSession();
+  const user = data?.user;
+
   if (submitted) {
     return (
       <section className="h-full flex items-center justify-center">
@@ -312,9 +315,6 @@ export default function CreateHackathonPage() {
       </section>
     );
   }
-
-  const { data } = useSession();
-  const user = data?.user;
 
   return (
     <section>

@@ -1,7 +1,7 @@
 import "server-only";
 import { prisma } from "@/shared/lib/prisma";
 
-export const getTeamsForHackathon = async (hackathonId: string) =>
+export const getTeamsForHackathon = async (hackathonSlug: string) =>
   await prisma.team.findMany({
     include: {
       members: {
@@ -12,7 +12,9 @@ export const getTeamsForHackathon = async (hackathonId: string) =>
       questions: true,
     },
     where: {
-      hackathonId,
+      hackathon: {
+        slug: hackathonSlug,
+      },
     },
   });
 

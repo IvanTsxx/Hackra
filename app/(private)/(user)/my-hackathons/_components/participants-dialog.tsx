@@ -47,7 +47,7 @@ export function ParticipantsDialog({
 }: ParticipantsDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="md:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Participants — {hackathonTitle}</DialogTitle>
           <DialogDescription>

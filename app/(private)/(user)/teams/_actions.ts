@@ -207,10 +207,18 @@ export async function joinHackathon(
   if (existing)
     return { error: "Already registered for this hackathon", success: false };
 
+  // Check if hackathon requires approval
+  const hackathon = await prisma.hackathon.findUnique({
+    select: { requiresApproval: true },
+    where: { id: hackathonId.data },
+  });
+
+  const status = hackathon?.requiresApproval ? "PENDING" : "APPROVED";
+
   await prisma.hackathonParticipant.create({
     data: {
       hackathonId: hackathonId.data,
-      status: "PENDING",
+      status,
       userId: session.user.id,
     },
   });
@@ -249,31 +257,36 @@ export async function createTeam(
   });
   if (!hackathon) return { error: "Hackathon not found", success: false };
 
-  const team = await prisma.team.create({
-    data: {
-      description,
-      hackathonId,
-      maxMembers: hackathon.maxTeamSize,
-      name,
-      ownerId: session.user.id,
-      techs,
-    },
-    include: { hackathon: true },
-  });
-
-  if (questions.length > 0) {
-    await prisma.teamQuestion.createMany({
-      data: questions.map((q) => ({ question: q, teamId: team.id })),
+  try {
+    const team = await prisma.team.create({
+      data: {
+        description,
+        hackathonId,
+        maxMembers: hackathon.maxTeamSize,
+        name,
+        ownerId: session.user.id,
+        techs,
+      },
+      include: { hackathon: true },
     });
+
+    if (questions.length > 0) {
+      await prisma.teamQuestion.createMany({
+        data: questions.map((q) => ({ question: q, teamId: team.id })),
+      });
+    }
+
+    await prisma.teamMember.create({
+      data: {
+        teamId: team.id,
+        userId: session.user.id,
+      },
+    });
+
+    revalidatePath(`/hackathon/${team.hackathon.slug}/teams`);
+    return { success: true, teamId: team.id };
+  } catch (error) {
+    console.error("createTeam error:", error);
+    return { error: "Failed to create team", success: false };
   }
-
-  await prisma.teamMember.create({
-    data: {
-      teamId: team.id,
-      userId: session.user.id,
-    },
-  });
-
-  revalidatePath(`/hackathon/${team.hackathon.slug}/teams`);
-  return { success: true, teamId: team.id };
 }
