@@ -219,11 +219,7 @@ export function HackathonCard({
             <div className="flex flex-col gap-2">
               <Link href={`/hackathon/${hackathon.slug}`}>
                 <h3 className="text-base md:text-lg group-hover:text-foreground/90 transition-colors text-balance hover:underline hover:decoration-brand-green hover:decoration-wavy hover:decoration-2 duration-200 ease-out line-clamp-2">
-                  {hackathon.title} Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit. In ultrices suscipit odio in condimentum.
-                  Nunc nisi sapien, venenatis eget nisi quis, congue vehicula
-                  massa. Aenean molestie tincidunt diam, ac tristique odio
-                  tincidunt eget.
+                  {hackathon.title}
                 </h3>
               </Link>
               <p className="text-xs text-muted-foreground/60">{timeLabel}</p>
