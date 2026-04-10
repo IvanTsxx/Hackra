@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { prisma } from "@/shared/lib/prisma";
-
-const BASE_URL = "https://https://hackra.bongi.dev";
+import { SITE_URL } from "@/shared/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages
@@ -11,37 +10,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       lastModified: new Date(),
       priority: 1,
-      url: BASE_URL,
+      url: SITE_URL,
     },
     {
       changeFrequency: "daily",
       lastModified: new Date(),
       priority: 0.9,
-      url: `${BASE_URL}/explore`,
+      url: `${SITE_URL}/explore`,
     },
     {
       changeFrequency: "weekly",
       lastModified: new Date(),
       priority: 0.7,
-      url: `${BASE_URL}/sponsors`,
+      url: `${SITE_URL}/sponsors`,
     },
     {
       changeFrequency: "monthly",
       lastModified: new Date(),
       priority: 0.6,
-      url: `${BASE_URL}/about`,
+      url: `${SITE_URL}/about`,
     },
     {
       changeFrequency: "monthly",
       lastModified: new Date(),
       priority: 0.4,
-      url: `${BASE_URL}/terms`,
+      url: `${SITE_URL}/terms`,
     },
     {
       changeFrequency: "monthly",
       lastModified: new Date(),
       priority: 0.4,
-      url: `${BASE_URL}/privacy`,
+      url: `${SITE_URL}/privacy`,
     },
   ];
 
@@ -64,7 +63,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly" as const,
     lastModified: hackathon.updatedAt,
     priority: 0.8,
-    url: `${BASE_URL}/hackathon/${hackathon.slug}`,
+    url: `${SITE_URL}/hackathon/${hackathon.slug}`,
   }));
 
   // User profile pages
@@ -72,7 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly" as const,
     lastModified: user.updatedAt,
     priority: 0.7,
-    url: `${BASE_URL}/user/${user.username}`,
+    url: `${SITE_URL}/user/${user.username}`,
   }));
 
   // Team pages
@@ -80,7 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "daily" as const,
     lastModified: team.updatedAt,
     priority: 0.7,
-    url: `${BASE_URL}/team/${team.id}`,
+    url: `${SITE_URL}/team/${team.id}`,
   }));
 
   return [...staticPages, ...hackathonUrls, ...userUrls, ...teamUrls];

@@ -24,6 +24,7 @@ import { getTeamsForHackathon } from "@/data/teams";
 import { getUserById } from "@/data/user";
 import { CodeText } from "@/shared/components/code-text";
 import { auth } from "@/shared/lib/auth";
+import { SITE_URL } from "@/shared/lib/site";
 
 import { CreateTeamButton } from "./_components/create-team-button";
 import { HackatonTitle } from "./_components/hackaton-title";
@@ -50,7 +51,7 @@ export async function generateMetadata({
 
   return {
     alternates: {
-      canonical: `https://https://hackra.bongi.dev/hackathon/${slug}`,
+      canonical: `${SITE_URL}/hackathon/${slug}`,
     },
     description: hackathon.description,
     keywords: [
@@ -66,7 +67,7 @@ export async function generateMetadata({
       siteName: "Hackra",
       title: `${hackathon.title} | Hackra`,
       type: "website",
-      url: `https://https://hackra.bongi.dev/hackathon/${slug}`,
+      url: `${SITE_URL}/hackathon/${slug}`,
     },
     title: `${hackathon.title} | Hackra`,
     twitter: {
@@ -108,7 +109,7 @@ export default async function HackathonDetailPage({
   const shareUrl =
     typeof window !== "undefined"
       ? window.location.href
-      : `https://https://hackra.bongi.dev/hackathon/${slug}`;
+      : `${SITE_URL}/hackathon/${slug}`;
 
   const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
 

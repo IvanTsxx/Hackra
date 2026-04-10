@@ -1,4 +1,5 @@
 import { createOgImage, OG_COLORS, OgLayout } from "@/shared/lib/og";
+import { SITE_URL } from "@/shared/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,7 @@ export default function Image() {
       avatarSrc={avatarSrc}
       topBar={{ label: "HACKRA", right: "SPONSORS" }}
       authorName="Hackra"
-      url="https://https://hackra.bongi.dev/sponsors"
+      url={`${SITE_URL}/sponsors`}
     >
       {/* Main heading */}
       <div style={{ color: brandGreen, fontSize: 44, fontWeight: 700 }}>

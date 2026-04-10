@@ -1,5 +1,6 @@
 import { getHomeStats } from "@/data/home";
 import { createOgImage, OG_COLORS, OgLayout } from "@/shared/lib/og";
+import { SITE_URL } from "@/shared/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,7 @@ export default async function Image() {
       avatarSrc={avatarSrc}
       topBar={{ label: "HACKRA", right: "HOME" }}
       authorName="Hackra"
-      url="https://https://hackra.bongi.dev"
+      url={SITE_URL}
     >
       {/* Main heading */}
       <div

@@ -1,5 +1,6 @@
 import { getHackathon } from "@/data/hackatons";
 import { createOgImage, OG_COLORS, OgLayout } from "@/shared/lib/og";
+import { SITE_URL } from "@/shared/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export default async function Image({
       avatarSrc={hackathon?.organizer.image || null}
       topBar={{ label: "HACKRA", right: "HACKATHON" }}
       authorName={hackathon?.title || "Hackathon"}
-      url={`https://https://hackra.bongi.dev/hackathon/${slug}`}
+      url={`${SITE_URL}/hackathon/${slug}`}
     >
       {/* Title */}
       <div style={{ color: brandGreen, fontSize: 44, fontWeight: 700 }}>

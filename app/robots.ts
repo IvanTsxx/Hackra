@@ -1,33 +1,25 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://https://hackra.bongi.dev";
+import { SITE_URL } from "@/shared/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    host: BASE_URL,
+    host: SITE_URL,
     rules: [
       {
         allow: "/",
-        disallow: ["/api/", "/admin/", "/private/", "/(user)/"],
+        disallow: [
+          "/api/",
+          "/admin/",
+          "/create/",
+          "/my-hackathons/",
+          "/my-teams/",
+          "/settings/",
+          "/my-applications/",
+        ],
         userAgent: "*",
       },
-      {
-        disallow: ["/"],
-        userAgent: "GPTBot",
-      },
-      {
-        disallow: ["/"],
-        userAgent: "ChatGPT-User",
-      },
-      {
-        allow: "/",
-        userAgent: "Google-Extended",
-      },
-      {
-        allow: "/",
-        userAgent: "Bingbot",
-      },
     ],
-    sitemap: `${BASE_URL}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

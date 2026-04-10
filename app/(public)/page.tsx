@@ -4,14 +4,18 @@ import { HeroSection } from "@/components/home/hero-section";
 import { TechStackMarquee } from "@/components/home/tech-stack-marquee";
 import { KarmaHowItWorks } from "@/shared/components/home/karma-how-it-works";
 /* import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee"; */
+import { JsonLd } from "@/shared/components/json-ld";
 import { prisma } from "@/shared/lib/prisma";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/shared/lib/site";
 
 import { Banner } from "../_components/banner";
 import { FeaturedHackatons } from "../_components/featured-hackatons";
 
 export const metadata: Metadata = {
-  description:
-    "Discover hackathons worldwide. Connect with developers, build innovative projects, and compete in exciting coding events. Find online and in-person hackathons, form teams, and win prizes.",
+  alternates: {
+    canonical: SITE_URL,
+  },
+  description: SITE_DESCRIPTION,
   keywords: [
     "hackathon",
     "coding competition",
@@ -27,13 +31,12 @@ export const metadata: Metadata = {
     "innovation challenge",
   ],
   openGraph: {
-    description:
-      "Discover hackathons worldwide. Connect with developers, build innovative projects, and compete in exciting coding events.",
+    description: SITE_DESCRIPTION,
     locale: "en_US",
-    siteName: "Hackra",
+    siteName: SITE_NAME,
     title: "Hackra | Build. Compete. Together.",
     type: "website",
-    url: "https://https://hackra.bongi.dev",
+    url: SITE_URL,
   },
   robots: {
     follow: true,
@@ -42,8 +45,7 @@ export const metadata: Metadata = {
   title: "Hackra | Build. Compete. Together.",
   twitter: {
     card: "summary_large_image",
-    description:
-      "Discover hackathons worldwide. Connect with developers, build innovative projects, and compete in exciting coding events.",
+    description: SITE_DESCRIPTION,
     title: "Hackra | Build. Compete. Together.",
   },
 };
@@ -81,6 +83,7 @@ export default async function Home() {
 
   return (
     <section>
+      <JsonLd type="homepage" />
       <HeroSection stats={stats} />
       <TechStackMarquee />
       <KarmaHowItWorks />

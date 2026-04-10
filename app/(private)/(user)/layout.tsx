@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import {
@@ -10,6 +11,13 @@ import { UserMenu } from "@/shared/components/navbar/user-menu";
 import { ThemeToggle } from "@/shared/components/theme-toggle";
 
 import { UserSidebar } from "./_components/user-sidebar";
+
+export const metadata: Metadata = {
+  robots: {
+    follow: true,
+    index: false,
+  },
+};
 
 interface PrivateLayoutFormProps {
   children: ReactNode;
