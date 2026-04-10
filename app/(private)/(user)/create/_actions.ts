@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import * as z from "zod";
 
+import { HackathonStatus } from "@/app/generated/prisma/enums";
 import { createHackathon } from "@/data/admin-hackatons";
 import type { CreateHackathonDTO } from "@/data/admin-hackatons";
 import { auth } from "@/shared/lib/auth";
@@ -49,6 +50,14 @@ export async function createHackathonAction(raw: unknown): Promise<{
 
   const { data } = parsed;
 
+  // Determine status based on isPublished flag and dates
+  const now = new Date();
+  const status = data.isPublished
+    ? data.startDate <= now
+      ? HackathonStatus.LIVE
+      : HackathonStatus.UPCOMING
+    : HackathonStatus.DRAFT;
+
   // Validate end date is after start date
   if (data.endDate <= data.startDate) {
     return { error: "End date must be after start date.", success: false };
@@ -70,6 +79,7 @@ export async function createHackathonAction(raw: unknown): Promise<{
     slug: `${slugify(data.title)}-${Date.now()}`,
     source: "manual",
     startDate: data.startDate,
+    status,
     tags: data.tags,
     techs: data.techs,
     themeBg: data.themeBg,

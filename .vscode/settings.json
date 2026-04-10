@@ -56,7 +56,7 @@
     "source.fixAll.oxc": "explicit"
   },
   "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
+    "editor.defaultFormatter": "Prisma.prisma-insider"
   },
   "tailwindCSS.experimental.configFile": {
     "app/globals.css": "**"

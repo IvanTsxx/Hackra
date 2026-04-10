@@ -32,7 +32,7 @@ const PrivateLayout: React.FC<PrivateLayoutFormProps> = async ({
             <UserMenu user={user} />
           </div>
         </header>
-        <section className="flex-1 w-full max-w-4xl mx-auto px-4 lg:px-6">
+        <section className="flex-1 w-full max-w-4xl mx-auto px-4 lg:px-6 py-4">
           {children}
         </section>
       </SidebarInset>

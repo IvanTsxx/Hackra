@@ -6,6 +6,7 @@ export const createHackathonSchema = z.object({
     .min(20, "Description must be at least 20 characters."),
   endDate: z.coerce.date(),
   image: z.string().optional(),
+  isPublished: z.boolean().default(false),
   location: z.string().optional(),
   locationMode: z.enum(["remote", "in_person", "hybrid"]),
   maxParticipants: z.coerce.number().int().positive().optional(),

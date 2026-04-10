@@ -2,10 +2,24 @@ import "server-only";
 import { ChevronRight, Trash2, Mail, Shield } from "lucide-react";
 
 import { AnimatedSection } from "@/app/(private)/(user)/_components/animated-section";
-import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/data/auth-dal";
 import { CodeText } from "@/shared/components/code-text";
+import { prisma } from "@/shared/lib/prisma";
 
-export default function SettingsAccountPage() {
+import { DeleteAccountButton } from "./_components/delete-account-button";
+
+export default async function SettingsAccountPage() {
+  const currentUser = await getCurrentUser();
+  const accounts = await prisma.account.findMany({
+    select: {
+      id: true,
+      providerId: true,
+    },
+    where: {
+      userId: currentUser?.id,
+    },
+  });
+
   return (
     <section>
       {/* Breadcrumb */}
@@ -30,20 +44,10 @@ export default function SettingsAccountPage() {
             <h2 className="  text-xs tracking-widest text-foreground">EMAIL</h2>
           </div>
           <div className="border border-border/30 bg-secondary/10 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="  text-xs text-muted-foreground">Current email</p>
-                <p className="  text-sm text-foreground mt-1">
-                  user@example.com
-                </p>
-              </div>
-              <Button
-                variant="outline"
-                className="  text-xs rounded-none border-border/40 hover:border-brand-green/40 hover:text-brand-green"
-              >
-                CHANGE
-              </Button>
-            </div>
+            <p className="  text-xs text-muted-foreground">Current email</p>
+            <p className="  text-sm text-foreground mt-1">
+              {currentUser?.email}
+            </p>
           </div>
         </div>
 
@@ -56,20 +60,14 @@ export default function SettingsAccountPage() {
             </h2>
           </div>
           <div className="border border-border/30 bg-secondary/10 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="  text-xs text-muted-foreground">
-                  Connected accounts
-                </p>
-                <p className="  text-sm text-foreground mt-1">GitHub</p>
-              </div>
-              <Button
-                variant="outline"
-                className="  text-xs rounded-none border-border/40 hover:border-brand-green/40 hover:text-brand-green"
-              >
-                MANAGE
-              </Button>
-            </div>
+            <p className="  text-xs text-muted-foreground">
+              Connected accounts
+            </p>
+            <p className="  text-sm text-foreground mt-1">
+              {accounts.map((account) => (
+                <span key={account.id}>{account.providerId}</span>
+              ))}
+            </p>
           </div>
         </div>
 
@@ -91,12 +89,7 @@ export default function SettingsAccountPage() {
                 hackathons will be permanently removed.
               </p>
             </div>
-            <Button
-              variant="outline"
-              className="  text-xs rounded-none border-red-500/30 text-red-500 hover:bg-red-500/10 hover:border-red-500/50"
-            >
-              DELETE ACCOUNT
-            </Button>
+            <DeleteAccountButton />
           </div>
         </div>
       </div>

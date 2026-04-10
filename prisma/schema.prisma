@@ -131,7 +131,7 @@ model Hackathon {
   updatedAt DateTime @updatedAt
 
   organizerId String
-  organizer   User   @relation("UserHackathons", fields: [organizerId], references: [id])
+  organizer   User   @relation("UserHackathons", fields: [organizerId], references: [id], onDelete: Cascade)
 
   teams        Team[]
   participants HackathonParticipant[]
@@ -140,9 +140,9 @@ model Hackathon {
 
   status HackathonStatus @default(DRAFT)
 
-  source       String?   // "luma", "manual"
-  externalId   String?   // ID or slug from Luma
-  externalUrl  String?   // Original URL (lu.ma/...)
+  source       String? // "luma", "manual"
+  externalId   String? // ID or slug from Luma
+  externalUrl  String? // Original URL (lu.ma/...)
   lastSyncedAt DateTime? // Last sync timestamp
   isReadOnly   Boolean   @default(false)
 
@@ -165,7 +165,7 @@ model HackathonParticipant {
 
   createdAt DateTime @default(now())
 
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   hackathon Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
 
   @@unique([userId, hackathonId])
@@ -187,7 +187,7 @@ model Team {
   hackathon   Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
 
   ownerId String
-  owner   User   @relation("UserTeams", fields: [ownerId], references: [id])
+  owner   User   @relation("UserTeams", fields: [ownerId], references: [id], onDelete: Cascade)
 
   maxMembers Int
   techs      String[]
@@ -211,8 +211,8 @@ model TeamMember {
 
   joinedAt DateTime @default(now())
 
-  team Team @relation(fields: [teamId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([teamId, userId])
   @@index([userId])
@@ -224,14 +224,14 @@ model TeamApplication {
   teamId String
   userId String
 
-  status  ApplicationStatus @default(PENDING)
-  message String?
+  status          ApplicationStatus @default(PENDING)
+  message         String?
   rejectionReason String?
 
   createdAt DateTime @default(now())
 
-  team Team @relation(fields: [teamId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   answers TeamApplicationAnswer[]
 
@@ -254,7 +254,7 @@ model TeamQuestion {
 
   createdAt DateTime @default(now())
 
-  team Team @relation(fields: [teamId], references: [id])
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   answers TeamApplicationAnswer[]
 
@@ -269,8 +269,8 @@ model TeamApplicationAnswer {
 
   answer String
 
-  application TeamApplication @relation(fields: [applicationId], references: [id])
-  question    TeamQuestion    @relation(fields: [questionId], references: [id])
+  application TeamApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  question    TeamQuestion    @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@index([applicationId])
   @@index([questionId])

@@ -1,4 +1,5 @@
 import "server-only";
+import { HackathonStatus } from "@/app/generated/prisma/enums";
 import { prisma } from "@/shared/lib/prisma";
 
 export interface CreateHackathonDTO {
@@ -21,6 +22,8 @@ export interface CreateHackathonDTO {
   themeBg?: string;
   themeGradient?: string;
   themeStyle?: string;
+  // Status
+  status?: HackathonStatus;
   // Luma fields
   source?: string;
   externalId?: string;
@@ -85,6 +88,7 @@ export async function createHackathon(data: CreateHackathonDTO) {
       slug: data.slug,
       source: data.source,
       startDate: data.startDate,
+      status: data.status ?? HackathonStatus.DRAFT,
       tags: data.tags,
       techs: data.techs,
       themeBg: data.themeBg,
