@@ -118,21 +118,23 @@ export async function importFromLumaAction(url: string): Promise<{
     // Create as draft
     const hackathon = await createHackathon({
       description: eventData.description,
-      endDate: eventData.endDate,
+      endDate:
+        eventData.endDate ?? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       externalId: lumaUrl,
       externalUrl: lumaUrl,
       image: eventData.image,
       isOnline: !eventData.location,
       location: eventData.location ?? "Remote",
-      locationMode: eventData.location ? "in_person" : "remote",
+      locationMode:
+        eventData.locationMode ?? (eventData.location ? "in_person" : "remote"),
       maxParticipants: eventData.participantCount,
       organizerId: user.id,
-      requiresApproval: false,
+      requiresApproval: eventData.isFull ?? false,
       slug: `${slugify(eventData.title)}-${Date.now()}`,
       source: "luma",
-      startDate: eventData.startDate,
-      tags: [],
-      techs: [],
+      startDate: eventData.startDate ?? new Date(),
+      tags: eventData.tags ?? [],
+      techs: eventData.techs ?? [],
       title: eventData.title,
     });
 

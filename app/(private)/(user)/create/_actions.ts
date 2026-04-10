@@ -50,24 +50,40 @@ export async function createHackathonAction(raw: unknown): Promise<{
 
   const { data } = parsed;
 
+  // Check for required fields (now flexible - user can fill later)
+  const missingFields: string[] = [];
+  if (!data.title?.trim()) missingFields.push("title");
+  if (!data.description?.trim()) missingFields.push("description");
+  if (!data.location?.trim()) missingFields.push("location");
+
   // Determine status based on isPublished flag and dates
   const now = new Date();
-  const status = data.isPublished
-    ? data.startDate <= now
-      ? HackathonStatus.LIVE
-      : HackathonStatus.UPCOMING
-    : HackathonStatus.DRAFT;
+  const hasDates = data.startDate && data.endDate;
+  // Only set LIVE/UPCOMING if dates exist and published, otherwise DRAFT
+  let status: HackathonStatus = HackathonStatus.DRAFT;
+  if (data.isPublished && hasDates && data.startDate && data.endDate) {
+    status =
+      data.startDate <= now ? HackathonStatus.LIVE : HackathonStatus.UPCOMING;
+  }
 
-  // Validate end date is after start date
-  if (data.endDate <= data.startDate) {
+  // Validate end date is after start date (if both provided)
+  if (data.startDate && data.endDate && data.endDate <= data.startDate) {
     return { error: "End date must be after start date.", success: false };
   }
 
+  // If key fields are missing, return info about what to fill
+  if (missingFields.length > 0) {
+    return {
+      error: `Please fill in: ${missingFields.join(", ")}`,
+      success: false,
+    };
+  }
+
   const dto: CreateHackathonDTO = {
-    description: data.description,
-    endDate: data.endDate,
-    externalId: undefined,
-    externalUrl: undefined,
+    description: data.description ?? "",
+    endDate: data.endDate ?? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    externalId: data.externalId,
+    externalUrl: data.externalUrl,
     image: data.image,
     isOnline: data.locationMode === "remote",
     location: data.location ?? "",
@@ -76,13 +92,13 @@ export async function createHackathonAction(raw: unknown): Promise<{
     maxTeamSize: data.maxTeamSize,
     organizerId: session.user.id,
     requiresApproval: data.requiresApproval,
-    slug: `${slugify(data.title)}-${Date.now()}`,
-    source: "manual",
-    startDate: data.startDate,
+    slug: `${slugify(data.title ?? "hackathon")}-${Date.now()}`,
+    source: data.source ?? "manual",
+    startDate: data.startDate ?? new Date(),
     status,
     tags: data.tags,
     techs: data.techs,
-    title: data.title,
+    title: data.title ?? "",
   };
 
   try {
@@ -143,12 +159,18 @@ export async function importLumaFormDataAction(url: string): Promise<{
     title: string;
     description: string;
     image?: string;
-    startDate: Date;
-    endDate: Date;
+    startDate?: Date;
+    endDate?: Date;
     location?: string;
-    maxParticipants?: number;
-    locationMode: "remote" | "in_person";
+    locationMode: "remote" | "in_person" | "hybrid";
+    requiresApproval: boolean;
+    tags?: string[];
+    techs?: string[];
+    prizes?: { amount: string; description: string }[];
+    externalId?: string;
+    externalUrl?: string;
   };
+  missingFields?: string[];
   error?: string;
 }> {
   try {
@@ -168,17 +190,33 @@ export async function importLumaFormDataAction(url: string): Promise<{
     const { scrapeLumaEvent } = await import("@/shared/lib/luma-scraper");
     const eventData = await scrapeLumaEvent(parsed.data);
 
+    // Determine which required fields are missing and need user input
+    const missingFields: string[] = [];
+    if (!eventData.startDate) missingFields.push("startDate");
+    if (!eventData.endDate) missingFields.push("endDate");
+    if (!eventData.location) missingFields.push("location");
+
     return {
       data: {
         description: eventData.description,
         endDate: eventData.endDate,
+        externalId: eventData.externalId,
+        externalUrl: eventData.externalUrl,
         image: eventData.image,
         location: eventData.location,
-        locationMode: eventData.location ? "in_person" : "remote",
-        maxParticipants: eventData.participantCount,
+
+        locationMode: eventData.locationMode ?? "in_person",
+
+        prizes: eventData.prizes,
+
+        requiresApproval: eventData.isFull ?? false,
         startDate: eventData.startDate,
+        tags: eventData.tags,
+        techs: eventData.techs,
         title: eventData.title,
       },
+
+      missingFields: missingFields.length > 0 ? missingFields : undefined,
       success: true,
     };
   } catch (error) {

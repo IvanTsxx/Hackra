@@ -82,19 +82,23 @@ function LumaPreviewCard({
           <div className="grid grid-cols-2 gap-3 text-sm text-muted-foreground">
             <div>
               <span className="font-medium text-foreground">Start: </span>
-              {data.startDate.toLocaleDateString("en-US", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
+              {data.startDate
+                ? data.startDate.toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })
+                : "Not set"}
             </div>
             <div>
               <span className="font-medium text-foreground">End: </span>
-              {data.endDate.toLocaleDateString("en-US", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
+              {data.endDate
+                ? data.endDate.toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })
+                : "Not set"}
             </div>
             {data.location && (
               <div>

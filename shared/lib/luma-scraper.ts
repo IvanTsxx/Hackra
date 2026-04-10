@@ -1,3 +1,4 @@
+// oxlint-disable unicorn/prefer-array-find
 import * as cheerio from "cheerio";
 
 const TIMEOUT_MS = 10_000;
@@ -26,14 +27,29 @@ function setCachedLuma(url: string, data: LumaEventData): void {
 let lastRequestAt = 0;
 
 export interface LumaEventData {
+  // Required fields (always available from Luma)
   title: string;
   description: string;
-  image?: string;
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date;
+  endDate?: Date;
   location?: string;
+
+  // Optional fields (extracted when available)
+  image?: string;
   organizerName?: string;
   participantCount?: number;
+
+  // Luma-specific fields
+  externalId?: string;
+  externalUrl?: string;
+  locationMode?: "in_person" | "remote" | "hybrid";
+  isOnline?: boolean;
+  isFull?: boolean;
+
+  // Enrichment fields (extracted from description/content)
+  tags?: string[];
+  techs?: string[];
+  prizes?: { amount: string; description: string }[];
 }
 
 function isValidLumaUrl(url: string): boolean {
@@ -135,14 +151,13 @@ function constructDateFromParts(
       candidateDate.setHours(startTime.hours, startTime.minutes, 0, 0);
     }
 
-    // Calculate end date
     let endDate: Date;
     if (timeParts.end) {
       const endTime = parseTimeString(timeParts.end);
       if (endTime) {
         endDate = new Date(candidateDate);
         endDate.setHours(endTime.hours, endTime.minutes, 0, 0);
-        // Handle overnight events (end time is earlier than start time)
+
         if (endDate <= candidateDate) {
           endDate = new Date(endDate.getTime() + 86_400_000);
         }
@@ -150,7 +165,6 @@ function constructDateFromParts(
         endDate = new Date(candidateDate.getTime() + 3 * 60 * 60 * 1000);
       }
     } else {
-      // Default to 3 hours if no end time
       endDate = new Date(candidateDate.getTime() + 3 * 60 * 60 * 1000);
     }
 
@@ -292,7 +306,7 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
           return null;
         }
       })
-      // oxlint-disable-next-line unicorn/prefer-array-find
+
       .filter(Boolean)[0];
 
   if (startDateRaw) {
@@ -339,7 +353,7 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
             return null;
           }
         })
-        // oxlint-disable-next-line unicorn/prefer-array-find
+
         .filter(Boolean)[0];
 
     endDate =
@@ -365,7 +379,7 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
         return null;
       }
     })
-    // oxlint-disable-next-line unicorn/prefer-array-find
+
     .filter(Boolean);
   const [structuredLocation] = structuredLocations;
 
@@ -400,7 +414,7 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
           location = decodeURIComponent(query);
         }
       } catch {
-        // Ignore invalid URL
+        // ignore invalid URL
       }
     }
   }
@@ -427,7 +441,6 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
     undefined;
 
   if (!organizerName) {
-    // Try "Hosted by X" pattern
     const hostedByText = $("*")
       .filter((_, el) => {
         const text = $(el).text().trim();
@@ -476,14 +489,136 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
     participantCount = extractParticipantCount(participantText ?? null);
   }
 
+  // ─── NEW: Extract additional structured data ───────────────────────────────
+  // Extract externalId from @id URL (e.g., "st8g9u9v" from "https://luma.com/st8g9u9v")
+  let externalId: string | undefined;
+  const [structuredId] = $('script[type="application/ld+json"]')
+    .toArray()
+    .map((el) => {
+      try {
+        const data = JSON.parse($(el).html() ?? "");
+        return data["@id"] ?? null;
+      } catch {
+        return null;
+      }
+    })
+    // oxlint-disable-next-line unicorn/prefer-array-find
+    .filter(Boolean);
+  if (structuredId) {
+    try {
+      const idUrl = new URL(structuredId);
+      externalId = idUrl.pathname.replace("/", "") || undefined;
+    } catch {
+      // ignore invalid URL
+    }
+  }
+
+  // Extract locationMode from eventAttendanceMode
+  let locationMode: "in_person" | "remote" | "hybrid" | undefined;
+  const [attendanceMode] = $('script[type="application/ld+json"]')
+    .toArray()
+    .map((el) => {
+      try {
+        const data = JSON.parse($(el).html() ?? "");
+        return data.eventAttendanceMode ?? null;
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+  if (attendanceMode) {
+    if (attendanceMode.includes("Online")) {
+      locationMode = "remote";
+    } else if (attendanceMode.includes("Mixed")) {
+      locationMode = "hybrid";
+    } else {
+      locationMode = "in_person";
+    }
+  }
+
+  // Detect if event is full (waitlist mode)
+  let isFull = false;
+  const [availabilityStatus] = $('script[type="application/ld+json"]')
+    .toArray()
+    .map((el) => {
+      try {
+        const data = JSON.parse($(el).html() ?? "");
+        const offers = data.offers ?? [];
+        return offers[0]?.availability ?? null;
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+  if (availabilityStatus === "https://schema.org/SoldOut") {
+    isFull = true;
+  }
+  // Also check visible text for "Event Full"
+  const eventFullElements = $("*").filter((_, el) =>
+    /Event\s*Full/i.test($(el).text())
+  );
+  if (eventFullElements.length > 0) {
+    isFull = true;
+  }
+
+  // Extract tags and techs from description
+  const tags: string[] = [];
+  const techs: string[] = [];
+  const techKeywords = [
+    "AI",
+    "Machine Learning",
+    "ML",
+    "LLM",
+    "GPT",
+    "v0",
+    "Vercel",
+    "React",
+    "Next.js",
+    "Web3",
+    "Blockchain",
+    "Solidity",
+    "DeFi",
+    "NFT",
+    "DAO",
+  ];
+  const tagKeywords = [
+    "Build",
+    "Week",
+    "Hackathon",
+    "Workshop",
+    "Bootcamp",
+    "Meetup",
+  ];
+  const descLower = description.toLowerCase();
+  for (const kw of techKeywords) {
+    if (descLower.includes(kw.toLowerCase())) {
+      techs.push(kw);
+    }
+  }
+  for (const kw of tagKeywords) {
+    if (descLower.includes(kw.toLowerCase())) {
+      tags.push(kw);
+    }
+  }
+
   const result = {
     description,
     endDate,
+    externalId,
+    externalUrl: url,
     image,
+
+    isFull,
+    isOnline: locationMode === "remote",
     location,
+
+    locationMode,
     organizerName,
     participantCount,
     startDate,
+    tags: tags.length > 0 ? tags : undefined,
+
+    techs: techs.length > 0 ? techs : undefined,
     title,
   };
   setCachedLuma(url, result);

@@ -90,6 +90,7 @@ const LOCATION_OPTIONS: { value: LocationMode; label: string; desc: string }[] =
   ];
 
 export default function CreateHackathonPage() {
+  const { data } = useSession();
   const [step, setStep] = useState(0);
   const [previewMode, setPreviewMode] = useState<"form" | "preview">("form");
 
@@ -108,10 +109,7 @@ export default function CreateHackathonPage() {
   const [isPublished, setIsPublished] = useState(true);
   const [maxParticipants, setMaxParticipants] = useState(500);
   const [maxTeamSize, setMaxTeamSize] = useState(4);
-  const [prizes, setPrizes] = useState<PrizeEntry[]>([
-    { amount: "$10,000", description: "Grand Prize", place: "1st" },
-    { amount: "$5,000", description: "Runner Up", place: "2nd" },
-  ]);
+  const [prizes, setPrizes] = useState<PrizeEntry[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -193,16 +191,86 @@ export default function CreateHackathonPage() {
       const d = result.data;
       setTitle(d.title);
       setDescription(d.description);
-      setStartDate(d.startDate);
-      setEndDate(d.endDate);
+      // Dates may be undefined - user fills later
+      if (d.startDate) setStartDate(d.startDate);
+      if (d.endDate) setEndDate(d.endDate);
       if (d.location) setLocation(d.location);
       setLocationMode(d.locationMode);
-      if (d.maxParticipants) setMaxParticipants(d.maxParticipants);
+      // If event is full/waitlist, require approval
+      if (d.requiresApproval) {
+        setRequiresApproval(true);
+        toast.info("Event is full - registrations will require approval");
+      }
       if (d.image) setImportedImageUrl(d.image);
+
+      // Set tags from Luma (filter to only valid existing tags)
+      if (d.tags && d.tags.length > 0) {
+        const validTags = d.tags.filter((t) =>
+          AVAILABLE_TAGS.some((at) => at.toLowerCase() === t.toLowerCase())
+        );
+        if (validTags.length > 0) {
+          setSelectedTags((prev) => [...new Set([...prev, ...validTags])]);
+        }
+      }
+
+      // Set techs from Luma
+      if (d.techs && d.techs.length > 0) {
+        // Map Luma techs to our Tech enum
+        const techMap: Record<string, Tech> = {
+          AI: "AI",
+          Blockchain: "Blockchain",
+          DAO: "DAO",
+          DeFi: "DeFi",
+          GPT: "AI",
+          LLM: "AI",
+          ML: "AI",
+          "Machine Learning": "AI",
+          NFT: "NFT",
+          "Next.js": "Next.js",
+          React: "React",
+          Solidity: "Solidity",
+          Vercel: "Vercel",
+          Web3: "Web3",
+          v0: "v0",
+        };
+        const validTechs = d.techs
+          .map((t) => techMap[t])
+          .filter((t): t is Tech => t !== undefined);
+        if (validTechs.length > 0) {
+          setSelectedTechs((prev) => [...new Set([...prev, ...validTechs])]);
+        }
+      }
+
+      // Set prizes from Luma
+      if (d.prizes && d.prizes.length > 0) {
+        setPrizes(
+          d.prizes.map((p, i) => ({
+            amount: p.amount,
+            description: p.description,
+            place:
+              i === 0
+                ? "1st"
+                : i === 1
+                  ? "2nd"
+                  : i === 2
+                    ? "3rd"
+                    : `${i + 1}th`,
+          }))
+        );
+        toast.info(`Found ${d.prizes.length} prize(s) in description!`);
+      }
+
+      // Show notification about missing fields
+      if (result.missingFields && result.missingFields.length > 0) {
+        toast.success("Imported from Luma!", {
+          description: `Please fill in: ${result.missingFields.join(", ")}`,
+        });
+      } else {
+        toast.success("Imported from Luma!", {
+          description: "All fields have been auto-filled.",
+        });
+      }
       setLumaImported(true);
-      toast.success("Imported from Luma!", {
-        description: "All fields have been auto-filled.",
-      });
     } else {
       toast.error("Import failed", {
         description: result.error ?? "Could not import event data.",
@@ -279,7 +347,6 @@ export default function CreateHackathonPage() {
 
   /* const isOnline = locationMode === "remote" || locationMode === "hybrid"; */
 
-  const { data } = useSession();
   const user = data?.user;
 
   if (submitted) {
@@ -458,19 +525,26 @@ export default function CreateHackathonPage() {
                   <div className="grid grid-cols-2 gap-2   text-xs text-muted-foreground">
                     <div>
                       <span className="text-foreground">Start:</span>{" "}
-                      {lumaPreviewData.startDate.toLocaleDateString("en-US", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {lumaPreviewData.startDate
+                        ? lumaPreviewData.startDate.toLocaleDateString(
+                            "en-US",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )
+                        : "Not available"}
                     </div>
                     <div>
                       <span className="text-foreground">End:</span>{" "}
-                      {lumaPreviewData.endDate.toLocaleDateString("en-US", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {lumaPreviewData.endDate
+                        ? lumaPreviewData.endDate.toLocaleDateString("en-US", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : "Not available"}
                     </div>
                     {lumaPreviewData.location && (
                       <div>
