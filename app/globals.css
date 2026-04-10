@@ -300,3 +300,20 @@
 ::-webkit-scrollbar-thumb:hover {
   background: oklch(0.5 0 0);
 }
+
+::view-transition-new(root) {
+  mask: radial-gradient(circle at center, black 0%, transparent 60%);
+  -webkit-mask: radial-gradient(circle at center, black 0%, transparent 60%);
+  animation: reveal 800ms ease-out forwards;
+}
+
+@keyframes reveal {
+  from {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

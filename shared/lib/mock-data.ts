@@ -105,11 +105,6 @@ export interface Hackathon {
   organizerId: string;
   requiresApproval: boolean;
   maxTeamSize: number;
-  theme: {
-    bg: string;
-    gradient: string;
-    style: "default" | "neon" | "minimal" | "cyber";
-  };
 }
 
 // ─── SPONSORS ─────────────────────────────────────────────────────────────────
@@ -588,11 +583,6 @@ vercel --prod
     tags: ["Frontend", "Web", "AI", "Open Source"],
     teams: ["t1", "t2"],
     techs: ["Next.js", "TypeScript", "Vercel", "React", "Tailwind CSS"],
-    theme: {
-      bg: "#0a0a0a",
-      gradient: "from-zinc-950 to-zinc-900",
-      style: "default",
-    },
     title: "Vercel Ship Hackathon 2025",
   },
   {
@@ -643,11 +633,6 @@ ExCeL London, Royal Docks, London E16 1XL`,
     tags: ["Web3", "Ethereum", "DeFi", "ZK", "Identity"],
     teams: ["t3"],
     techs: ["Solidity", "TypeScript", "React", "Node.js"],
-    theme: {
-      bg: "#0d0d1a",
-      gradient: "from-purple-950 to-zinc-950",
-      style: "cyber",
-    },
     title: "ETHGlobal London 2025",
   },
   {
@@ -695,11 +680,6 @@ AI agents are systems that can:
     tags: ["AI", "Agents", "LLM", "Automation"],
     teams: ["t4"],
     techs: ["Python", "TypeScript", "Next.js", "Supabase", "React"],
-    theme: {
-      bg: "#030d0a",
-      gradient: "from-emerald-950 to-zinc-950",
-      style: "neon",
-    },
     title: "AI Agents Global Hackathon",
   },
   {
@@ -742,11 +722,6 @@ Build fast, safe, and reliable software with **Rust** and **WebAssembly**.
     tags: ["Systems", "WebAssembly", "Performance", "Open Source"],
     teams: ["t5"],
     techs: ["Rust", "WebAssembly", "TypeScript", "Go"],
-    theme: {
-      bg: "#1a0a00",
-      gradient: "from-orange-950 to-zinc-950",
-      style: "minimal",
-    },
     title: "Rust Belt Hack",
   },
   {
@@ -788,11 +763,6 @@ Open source is the backbone of the internet. This hackathon celebrates and exten
     tags: ["Open Source", "DevTools", "Community", "Documentation"],
     teams: [],
     techs: ["TypeScript", "Go", "Rust", "Python", "Node.js"],
-    theme: {
-      bg: "#0a0a0a",
-      gradient: "from-zinc-950 to-zinc-900",
-      style: "default",
-    },
     title: "Open Source Summit Hackathon",
   },
   {
@@ -836,11 +806,6 @@ const tokens = {
     tags: ["Design Systems", "Accessibility", "UI", "Components"],
     teams: [],
     techs: ["React", "Vue", "Svelte", "TypeScript", "Tailwind CSS"],
-    theme: {
-      bg: "#0a0a0a",
-      gradient: "from-zinc-950 to-zinc-900",
-      style: "minimal",
-    },
     title: "Design Systems Hackathon",
   },
   {
@@ -882,11 +847,6 @@ This hackathon is judged primarily on **real-world impact potential**, not techn
     tags: ["Climate", "Sustainability", "Impact", "Data"],
     teams: [],
     techs: ["Python", "TypeScript", "React", "PostgreSQL"],
-    theme: {
-      bg: "#031a0a",
-      gradient: "from-green-950 to-zinc-950",
-      style: "neon",
-    },
     title: "Climate Tech Hackathon",
   },
   {
@@ -924,11 +884,6 @@ Your game must incorporate **recursion** as a core mechanic, narrative, or aesth
     tags: ["Game Dev", "Creative", "WebGL", "72h"],
     teams: [],
     techs: ["Three.js", "TypeScript", "WebAssembly", "Rust"],
-    theme: {
-      bg: "#0d001a",
-      gradient: "from-violet-950 to-zinc-950",
-      style: "cyber",
-    },
     title: "GameDev Jam 2025",
   },
   {
@@ -968,11 +923,6 @@ A hackathon focused on builders from Latin America.
     tags: ["LATAM", "Startup", "AI", "Fintech"],
     teams: ["t7"],
     techs: ["Next.js", "Node.js", "PostgreSQL"],
-    theme: {
-      bg: "#041a1a",
-      gradient: "from-cyan-950 to-zinc-950",
-      style: "neon",
-    },
     title: "LATAM Buildathon 2025",
   },
   {
@@ -1003,11 +953,6 @@ Build tools for developers.
     tags: ["DevTools", "CLI", "Infra"],
     teams: [],
     techs: ["Go", "Rust", "Node.js"],
-    theme: {
-      bg: "#0a0f1a",
-      gradient: "from-blue-950 to-zinc-950",
-      style: "minimal",
-    },
     title: "DevTools Hackathon",
   },
 ];

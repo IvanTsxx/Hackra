@@ -109,7 +109,7 @@ export default async function AdminHackathonsPage() {
 
                         <div className="grid grid-cols-2 gap-3 text-muted-foreground">
                           <div className="flex items-center gap-2">
-                            <Calendar className="size-4 shrink-0" />
+                            <Calendar className="size-5 shrink-0" />
                             <span>
                               {format(new Date(h.startDate), "MMM d, yyyy")}
                               {h.endDate &&
@@ -118,20 +118,20 @@ export default async function AdminHackathonsPage() {
                           </div>
                           {h.location && (
                             <div className="flex items-center gap-2">
-                              <MapPin className="size-4 shrink-0" />
+                              <MapPin className="size-5 shrink-0" />
                               <span className="truncate">{h.location}</span>
                             </div>
                           )}
                           {h.organizer && (
                             <div className="flex items-center gap-2">
-                              <User className="size-4 shrink-0" />
+                              <User className="size-5 shrink-0" />
                               <span className="truncate">
                                 {h.organizer.name}
                               </span>
                             </div>
                           )}
                           <div className="flex items-center gap-2">
-                            <Users className="size-4 shrink-0" />
+                            <Users className="size-5 shrink-0" />
                             <span>{h.participants.length} participants</span>
                           </div>
                         </div>
@@ -143,7 +143,7 @@ export default async function AdminHackathonsPage() {
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 text-brand-green underline underline-offset-2 hover:opacity-80"
                           >
-                            <ExternalLink className="size-4" />
+                            <ExternalLink className="size-5" />
                             View on Luma
                           </a>
                         )}

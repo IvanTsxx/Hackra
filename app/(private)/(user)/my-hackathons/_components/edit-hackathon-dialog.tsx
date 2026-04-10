@@ -297,7 +297,7 @@ export function EditHackathonDialog({
                           />
                         }
                       >
-                        <CalendarIcon className="mr-2 size-4" />
+                        <CalendarIcon className="mr-2 size-5" />
                         {field.state.value
                           ? format(field.state.value, "MMM d, yyyy")
                           : "Pick a date"}
@@ -340,7 +340,7 @@ export function EditHackathonDialog({
                           />
                         }
                       >
-                        <CalendarIcon className="mr-2 size-4" />
+                        <CalendarIcon className="mr-2 size-5" />
                         {field.state.value
                           ? format(field.state.value, "MMM d, yyyy")
                           : "Pick a date"}
@@ -635,7 +635,7 @@ export function EditHackathonDialog({
               children={(canSubmit) => (
                 <Button type="submit" disabled={!canSubmit || isSubmitting}>
                   {isSubmitting && (
-                    <Loader2 className="mr-2 size-4 animate-spin" />
+                    <Loader2 className="mr-2 size-5 animate-spin" />
                   )}
                   Save Changes
                 </Button>

@@ -123,9 +123,6 @@ model Hackathon {
   maxParticipants  Int?
   maxTeamSize      Int
 
-  themeBg       String?
-  themeGradient String?
-  themeStyle    String? // "default" | "neon" | "minimal" | "cyber"
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

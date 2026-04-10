@@ -25,8 +25,6 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import type { Tech } from "@/lib/mock-data";
 import { CodeText } from "@/shared/components/code-text";
-import { ThemeCustomizer } from "@/shared/components/theme-customizer";
-import type { ThemeValue } from "@/shared/components/theme-customizer";
 import { Calendar } from "@/shared/components/ui/calendar";
 import {
   Popover,
@@ -74,7 +72,7 @@ const AVAILABLE_TECHS: Tech[] = [
   "Three.js",
 ];
 
-const STEPS = ["BASICS", "DETAILS", "PRIZES", "THEME", "PREVIEW"];
+const STEPS = ["BASICS", "DETAILS", "PRIZES", "PREVIEW"];
 
 type LocationMode = "remote" | "in_person" | "hybrid";
 
@@ -90,13 +88,6 @@ const LOCATION_OPTIONS: { value: LocationMode; label: string; desc: string }[] =
     { desc: "Physical venue", label: "IN_PERSON", value: "in_person" },
     { desc: "Both options", label: "HYBRID", value: "hybrid" },
   ];
-
-const DEFAULT_THEME: ThemeValue = {
-  bg: "#0a0a0a",
-  gradient: "from-zinc-950 to-zinc-900",
-  gradientCss: "linear-gradient(135deg, #0a0a0a 0%, #18181b 100%)",
-  style: "default",
-};
 
 export default function CreateHackathonPage() {
   const [step, setStep] = useState(0);
@@ -121,7 +112,6 @@ export default function CreateHackathonPage() {
     { amount: "$10,000", description: "Grand Prize", place: "1st" },
     { amount: "$5,000", description: "Runner Up", place: "2nd" },
   ]);
-  const [theme, setTheme] = useState<ThemeValue>(DEFAULT_THEME);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -258,9 +248,6 @@ export default function CreateHackathonPage() {
         startDate,
         tags: selectedTags,
         techs: selectedTechs,
-        themeBg: theme.bg,
-        themeGradient: theme.gradient,
-        themeStyle: theme.style,
         title: title.trim(),
       });
 

@@ -33,9 +33,6 @@ export async function seedHackathons() {
             status: mapHackathonStatus(hack.status),
             tags: hack.tags,
             techs: hack.techs,
-            themeBg: hack.theme.bg,
-            themeGradient: hack.theme.gradient,
-            themeStyle: hack.theme.style,
             title: hack.title,
           },
         })

@@ -18,10 +18,6 @@ export interface CreateHackathonDTO {
   maxParticipants?: number;
   maxTeamSize?: number;
   organizerId: string;
-  // Theme fields
-  themeBg?: string;
-  themeGradient?: string;
-  themeStyle?: string;
   // Status
   status?: HackathonStatus;
   // Luma fields
@@ -91,9 +87,6 @@ export async function createHackathon(data: CreateHackathonDTO) {
       status: data.status ?? HackathonStatus.DRAFT,
       tags: data.tags,
       techs: data.techs,
-      themeBg: data.themeBg,
-      themeGradient: data.themeGradient,
-      themeStyle: data.themeStyle,
       title: data.title,
     },
   });
