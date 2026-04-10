@@ -428,7 +428,7 @@ export default function CreateHackathonPage() {
                     <img
                       src={lumaPreviewData.image}
                       alt={lumaPreviewData.title}
-                      className="w-full h-24 object-cover"
+                      className="w-full h-full aspect-video object-cover"
                     />
                   )}
                   <p className="  text-xs text-foreground">

@@ -26,6 +26,7 @@ import { auth } from "@/shared/lib/auth";
 
 import { CreateTeamButton } from "./_components/create-team-button";
 import { HackatonTitle } from "./_components/hackaton-title";
+import { JoinHackathonButton } from "./_components/join-hackathon-button";
 import { ProgressParticipants } from "./_components/progress-participants";
 
 export const generateStaticParams = async () => {
@@ -361,16 +362,10 @@ export default async function HackathonDetailPage({
 
             {/* Action buttons */}
             <div className="flex flex-wrap gap-2">
-              <Button
-                /*   onClick={() => setJoined(!joined)} */
-                className={`font-pixel text-xs tracking-wider rounded-none h-9 px-5 transition-all ${
-                  joined
-                    ? "bg-brand-green text-background hover:bg-brand-green/90"
-                    : "bg-foreground text-background hover:bg-foreground/90"
-                }`}
-              >
-                {joined ? "✓ JOINED" : "+ JOIN HACKATHON"}
-              </Button>
+              <JoinHackathonButton
+                hackathonId={hackathon.id}
+                isJoined={joined}
+              />
               <ShareModal url={shareUrl} title={hackathon.title} />
 
               {/*   <Button

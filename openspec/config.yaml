@@ -1,0 +1,52 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Next.js 16, React 19, TypeScript, Prisma 7 (PostgreSQL), Better Auth, Tailwind CSS 4, shadcn/ui, Bun
+  Architecture: App Router with RSC, DAL pattern, Server Actions for mutations
+  Testing: NOT INSTALLED - no test framework (Vitest, Jest)
+  Style: Ultracite (oxlint + oxfmt), Tailwind CSS v4 with pixel-art design system
+
+strict_tdd: false
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Identify affected modules/packages
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group tasks by phase (infrastructure, implementation, testing)
+    - Use hierarchical numbering (1.1, 1.2, etc.)
+    - Keep tasks small enough to complete in one session
+  apply:
+    - Follow existing code patterns and conventions
+    - Load relevant coding skills for the project stack
+  verify:
+    - Manual verification (no test framework available)
+    - Compare implementation against every spec scenario
+  archive:
+    - Warn before merging destructive deltas (large removals)
+
+testing:
+  strict_tdd: false
+  runner:
+    command: null
+    framework: null
+  layers:
+    unit: false
+    integration: false
+    e2e: false
+  coverage:
+    available: false
+    command: null
+  quality:
+    linter: true
+    linter_command: "bun run check (ultracite)"
+    type_checker: true
+    type_checker_command: "bun run typecheck"
+    formatter: true
+    formatter_command: "bun run fix (ultracite)"

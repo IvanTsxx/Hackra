@@ -219,3 +219,61 @@ export async function joinHackathon(
   revalidatePath("/my-applications");
   return { success: true };
 }
+
+const createTeamSchema = z.object({
+  description: z.string().optional(),
+  hackathonId: z.string(),
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  questions: z.array(z.string()),
+  techs: z.array(z.string()),
+});
+
+export async function createTeam(
+  raw: unknown
+): Promise<{ success: boolean; teamId?: string; error?: string }> {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session?.user?.id) return { error: "Unauthorized", success: false };
+
+  const parsed = createTeamSchema.safeParse(raw);
+  if (!parsed.success) {
+    return {
+      error: parsed.error.issues.map((e) => e.message).join(", "),
+      success: false,
+    };
+  }
+
+  const { name, description, techs, questions, hackathonId } = parsed.data;
+
+  const hackathon = await prisma.hackathon.findUnique({
+    where: { id: hackathonId },
+  });
+  if (!hackathon) return { error: "Hackathon not found", success: false };
+
+  const team = await prisma.team.create({
+    data: {
+      description,
+      hackathonId,
+      maxMembers: hackathon.maxTeamSize,
+      name,
+      ownerId: session.user.id,
+      techs,
+    },
+    include: { hackathon: true },
+  });
+
+  if (questions.length > 0) {
+    await prisma.teamQuestion.createMany({
+      data: questions.map((q) => ({ question: q, teamId: team.id })),
+    });
+  }
+
+  await prisma.teamMember.create({
+    data: {
+      teamId: team.id,
+      userId: session.user.id,
+    },
+  });
+
+  revalidatePath(`/hackathon/${team.hackathon.slug}/teams`);
+  return { success: true, teamId: team.id };
+}

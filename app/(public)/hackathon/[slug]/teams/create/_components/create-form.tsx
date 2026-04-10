@@ -4,7 +4,9 @@ import { Plus, X, ChevronRight } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
+import { createTeam } from "@/app/(private)/(user)/teams/_actions";
 import type { Hackathon } from "@/app/generated/prisma/client";
 import { TagBadge } from "@/components/tag-badge";
 import { Button } from "@/components/ui/button";
@@ -31,12 +33,13 @@ const AVAILABLE_TECHS: Tech[] = [
 ];
 
 export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
-  const { slug } = hackathon;
+  const { slug, id: hackathonId } = hackathon;
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [selectedTechs, setSelectedTechs] = useState<Tech[]>([]);
   const [questions, setQuestions] = useState<string[]>([""]);
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleTech = (t: Tech) =>
     setSelectedTechs((prev) =>
@@ -106,9 +109,27 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
       </motion.div>
 
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          setSubmitted(true);
+          setIsLoading(true);
+
+          const nonEmptyQuestions = questions.filter((q) => q.trim() !== "");
+
+          const result = await createTeam({
+            description: description || undefined,
+            hackathonId,
+            name,
+            questions: nonEmptyQuestions,
+            techs: selectedTechs,
+          });
+
+          setIsLoading(false);
+
+          if (result.success) {
+            setSubmitted(true);
+          } else {
+            toast.error(result.error || "Failed to create team");
+          }
         }}
         className="space-y-6"
       >
@@ -220,9 +241,10 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
         <div className="pt-2 border-t border-border/30">
           <Button
             type="submit"
+            disabled={isLoading}
             className="w-full rounded-none font-pixel text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-10"
           >
-            LAUNCH TEAM →
+            {isLoading ? "CREATING..." : "LAUNCH TEAM →"}
           </Button>
         </div>
       </form>
