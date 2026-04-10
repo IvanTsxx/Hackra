@@ -180,7 +180,7 @@ export default async function HackathonDetailPage({
                   alt={organizer.name}
                   width={36}
                   height={36}
-                  className="border border-border/40"
+                  className="border rounded-full border-border/40"
                 />
                 <div>
                   <p className="  text-xs text-foreground group-hover:text-brand-green transition-colors">
