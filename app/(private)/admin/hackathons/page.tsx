@@ -1,5 +1,5 @@
 import "server-only";
-import { format, formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 import { ExternalLink, MapPin, Users, Calendar, User } from "lucide-react";
 import Image from "next/image";
 
@@ -23,6 +23,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
+import { TimeLabel } from "@/shared/components/ui/time-label";
 
 import {
   DeleteButton,
@@ -201,9 +202,7 @@ export default async function AdminHackathonsPage() {
                   </TableCell>
                   <TableCell>{h.participants.length}</TableCell>
                   <TableCell className="text-muted-foreground">
-                    {formatDistanceToNow(new Date(h.startDate), {
-                      addSuffix: true,
-                    })}
+                    <TimeLabel date={h.startDate} />
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">

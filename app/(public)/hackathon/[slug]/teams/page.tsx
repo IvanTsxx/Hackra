@@ -2,13 +2,22 @@ import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { TeamCard } from "@/components/team-card";
-import { getHackathon } from "@/data/hackatons";
+import { getAllHackathons, getHackathon } from "@/data/hackatons";
 import { getTeamsForHackathon } from "@/data/teams";
 import { CodeText } from "@/shared/components/code-text";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 
 import { CreateTeamButton } from "../_components/create-team-button";
+
+export const generateStaticParams = async () => {
+  const hackathons = await getAllHackathons();
+  return hackathons.length > 0
+    ? hackathons.map((hackathon) => ({ slug: hackathon.slug }))
+    : [{ slug: "fallback" }];
+};
 
 export async function generateMetadata({
   params,
@@ -29,7 +38,6 @@ export async function generateMetadata({
     title: `Teams | ${hackathon.title} | Hackra`,
   };
 }
-
 export default async function TeamsPage({
   params,
 }: {
@@ -69,7 +77,9 @@ export default async function TeamsPage({
             {teams.length} teams · max {hackathon.maxTeamSize} members each
           </p>
         </div>
-        <CreateTeamButton organizerId={hackathon.organizerId} slug={slug} />
+        <Suspense fallback={<Skeleton className="w-20 h-10" />}>
+          <CreateTeamButton organizerId={hackathon.organizerId} slug={slug} />
+        </Suspense>
       </div>
 
       {teams.length === 0 ? (
@@ -77,7 +87,9 @@ export default async function TeamsPage({
           <p className="font-pixel text-sm text-muted-foreground">
             NO_TEAMS_YET
           </p>
-          <CreateTeamButton organizerId={hackathon.organizerId} slug={slug} />
+          <Suspense fallback={<Skeleton className="w-20 h-10" />}>
+            <CreateTeamButton organizerId={hackathon.organizerId} slug={slug} />
+          </Suspense>
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 gap-4">

@@ -1,6 +1,6 @@
 // oxlint-disable typescript/no-non-null-assertion
 // oxlint-disable typescript/no-non-null-asserted-optional-chain
-import { formatDistanceToNow } from "date-fns";
+
 import { FileText, Rocket } from "lucide-react";
 import Link from "next/link";
 
@@ -10,6 +10,7 @@ import {
 } from "@/data/applications";
 import { requireUser } from "@/data/auth-dal";
 import { CodeText } from "@/shared/components/code-text";
+import { TimeLabel } from "@/shared/components/ui/time-label";
 import { cn } from "@/shared/lib/utils";
 
 import { AnimatedSection } from "../_components/animated-section";
@@ -149,11 +150,8 @@ export default async function MyApplicationsPage() {
                           {p.hackathon.title.toUpperCase()}
                         </Link>
                       </div>
-                      <span className="  text-xs text-muted-foreground/60">
-                        {formatDistanceToNow(new Date(p.createdAt), {
-                          addSuffix: true,
-                        })}
-                      </span>
+
+                      <TimeLabel date={p.createdAt} />
                     </div>
                   );
                 })}

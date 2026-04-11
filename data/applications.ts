@@ -105,7 +105,15 @@ export async function getTeamWithOwner(teamId: string) {
 export function getUserParticipations(userId: string) {
   return prisma.hackathonParticipant.findMany({
     include: {
-      hackathon: { select: { slug: true, status: true, title: true } },
+      hackathon: {
+        select: {
+          endDate: true,
+          slug: true,
+          startDate: true,
+          status: true,
+          title: true,
+        },
+      },
     },
     orderBy: { createdAt: "desc" },
     where: { userId },

@@ -367,7 +367,15 @@ export default async function HackathonDetailPage({
               </div>
             </div>
 
-            <Suspense fallback={<Skeleton className="h-9 w-full" />}>
+            <Suspense
+              fallback={
+                <section className="flex gap-2">
+                  <Skeleton className="h-9 w-32" />
+                  <Skeleton className="h-9 w-32" />
+                  <Skeleton className="h-9 w-32" />
+                </section>
+              }
+            >
               <HackathonActions
                 hackathonId={hackathon.id}
                 organizerId={hackathon.organizerId}
