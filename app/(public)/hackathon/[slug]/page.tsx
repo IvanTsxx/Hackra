@@ -1,21 +1,13 @@
 import { format } from "date-fns";
-import {
-  Calendar,
-  MapPin,
-  Trophy,
-  ChevronRight,
-  Building,
-  ExternalLink,
-} from "lucide-react";
-import type { Route } from "next";
-import { headers } from "next/headers";
+import { Calendar, MapPin, Trophy, ChevronRight, Building } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
+import type { Hackathon } from "@/app/generated/prisma/client";
 import { AvatarGroup } from "@/components/avatar-group";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
-import { ShareModal } from "@/components/share-modal";
 import { TagBadge, StatusPill } from "@/components/tag-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,19 +23,25 @@ import { getSponsorsForHackathon } from "@/data/sponsors";
 import { getTeamsForHackathon } from "@/data/teams";
 import { getUserById } from "@/data/user";
 import { CodeText } from "@/shared/components/code-text";
-import { auth } from "@/shared/lib/auth";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 import { SITE_URL } from "@/shared/lib/site";
 
-import { CreateTeamButton } from "./_components/create-team-button";
+import { HackathonActions } from "./_components/hackathon-actions";
 import { HackatonTitle } from "./_components/hackaton-title";
-import { JoinHackathonButton } from "./_components/join-hackathon-button";
 import { ProgressParticipants } from "./_components/progress-participants";
+import { TeamsSection } from "./_components/teams-section";
 
 export const generateStaticParams = async () => {
   const hackathons = await getAllHackathons();
-  return hackathons.map((hackathon) => ({
-    slug: hackathon.slug,
-  }));
+  return hackathons.length > 0
+    ? hackathons.map((hackathon) => ({
+        slug: hackathon.slug,
+      }))
+    : [
+        {
+          slug: "fallback",
+        },
+      ];
 };
 
 export async function generateMetadata({
@@ -86,6 +84,16 @@ export async function generateMetadata({
   };
 }
 
+const getHackathonData = async (hackathon: Hackathon) => {
+  const [organizer, sponsors, teams] = await Promise.all([
+    getUserById(hackathon.organizerId),
+    getSponsorsForHackathon(hackathon.id),
+    getTeamsForHackathon(hackathon.slug),
+  ]);
+
+  return { organizer, sponsors, teams };
+};
+
 export default async function HackathonDetailPage({
   params,
 }: {
@@ -94,31 +102,11 @@ export default async function HackathonDetailPage({
   const { slug } = await params;
   const hackathon = await getHackathon(slug);
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  const user = await getUserById(session?.user?.id || "");
-
   if (!hackathon) notFound();
 
-  const [organizer, sponsors, teams] = await Promise.all([
-    getUserById(hackathon.organizerId),
-    getSponsorsForHackathon(hackathon.id),
-    getTeamsForHackathon(slug),
-  ]);
+  const { organizer, sponsors, teams } = await getHackathonData(hackathon);
 
   const participants = hackathon.participants.map(({ user }) => user);
-
-  const joined = participants.some(
-    (participant) => participant?.id === user?.id
-  );
-
-  const shareUrl =
-    typeof window !== "undefined"
-      ? window.location.href
-      : `${SITE_URL}/hackathon/${slug}`;
-
   const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
 
   return (
@@ -379,43 +367,19 @@ export default async function HackathonDetailPage({
               </div>
             </div>
 
-            {/* Action buttons */}
-            <div className="flex flex-wrap gap-2">
-              {hackathon.status === "UPCOMING" &&
-                !joined &&
-                user?.id !== hackathon.organizerId && (
-                  <JoinHackathonButton
-                    hackathonId={hackathon.id}
-                    isJoined={joined}
-                    isOwner={user?.id === hackathon.organizerId}
-                  />
-                )}
-              <ShareModal url={shareUrl} title={hackathon.title} />
-              {hackathon.source === "luma" && hackathon.externalUrl && (
-                <Button
-                  variant="outline"
-                  className="tracking-wider rounded-none border-purple-500/50 text-purple-400 hover:bg-purple-500/10 h-9 px-4"
-                  render={
-                    <Link
-                      href={hackathon.externalUrl as Route}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
-                  }
-                >
-                  <ExternalLink size={14} className="mr-1.5" />
-                  LUMA
-                </Button>
-              )}
-
-              {/*   <Button
-                  variant="ghost"
-                  className="font-pixel text-xs tracking-wider rounded-none h-9 px-4 text-muted-foreground hover:text-foreground"
-                >
-                  <CalendarPlus size={12} className="mr-1.5" />
-                  CALENDAR
-                </Button> */}
-            </div>
+            <Suspense fallback={<Skeleton className="h-9 w-full" />}>
+              <HackathonActions
+                hackathonId={hackathon.id}
+                organizerId={hackathon.organizerId}
+                status={hackathon.status}
+                participants={participants}
+                shareUrl={`${SITE_URL}/hackathon/${slug}`}
+                title={hackathon.title}
+                source={hackathon.source}
+                externalUrl={hackathon.externalUrl}
+                slug={slug}
+              />
+            </Suspense>
           </div>
 
           {/* Prizes - solo mostrar si hay prizes */}
@@ -459,32 +423,13 @@ export default async function HackathonDetailPage({
           </div>
 
           {/* Teams CTA */}
-          <div className="glass border border-border/40 p-5 flex items-center justify-between">
-            <div>
-              <p className="font-pixel text-sm text-foreground">
-                FIND YOUR TEAM
-              </p>
-              <p className="  text-xs text-muted-foreground mt-1">
-                {teams.length} team{teams.length !== 1 ? "s" : ""} looking for
-                members
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                className="tracking-wider rounded-none border-border/50 hover:border-brand-green/50 hover:text-brand-green h-8 px-4 transition-all"
-                nativeButton={false}
-                render={<Link href={`/hackathon/${slug}/teams`} />}
-              >
-                BROWSE TEAMS
-              </Button>
-              <CreateTeamButton
-                isLoggedIn={!!user}
-                slug={slug}
-                isOwner={user?.id === hackathon.organizerId}
-              />
-            </div>
-          </div>
+          <Suspense fallback={<div className="h-20" />}>
+            <TeamsSection
+              slug={slug}
+              organizerId={hackathon.organizerId}
+              teamsCount={teams.length}
+            />
+          </Suspense>
         </div>
       </div>
     </main>

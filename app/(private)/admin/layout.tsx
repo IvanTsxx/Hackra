@@ -8,19 +8,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { requireAdminSession } from "@/data/auth-dal";
 import { UserMenu } from "@/shared/components/navbar/user-menu";
 import { ThemeToggle } from "@/shared/components/theme-toggle";
 
 import { AdminSidebar } from "./_components/admin-sidebar";
 
-export default async function AdminLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  const user = await requireAdminSession();
-
+export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
       <AdminSidebar />
@@ -49,7 +42,7 @@ export default async function AdminLayout({
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <UserMenu user={user} />
+            <UserMenu />
           </div>
         </header>
         <main className="flex-1 p-6">{children}</main>

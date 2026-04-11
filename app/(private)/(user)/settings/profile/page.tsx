@@ -1,30 +1,13 @@
 import { ChevronRight } from "lucide-react";
-import { headers } from "next/headers";
-import { notFound, redirect } from "next/navigation";
 
 import { AnimatedSection } from "@/app/(private)/(user)/_components/animated-section";
+import { getCurrentUser } from "@/data/auth-dal";
 import { CodeText } from "@/shared/components/code-text";
-import { auth } from "@/shared/lib/auth";
-import { prisma } from "@/shared/lib/prisma";
 
 import { ProfileForm } from "./_components/profile-form";
 
 export default async function SettingsProfilePage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session?.user?.id) {
-    redirect("/");
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-  });
-
-  if (!user) {
-    notFound();
-  }
+  const user = await getCurrentUser();
 
   return (
     <section>

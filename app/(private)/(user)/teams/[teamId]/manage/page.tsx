@@ -7,7 +7,6 @@ import {
   UserX,
   Target,
 } from "lucide-react";
-import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -17,8 +16,8 @@ import {
   getTeamMembers,
   getTeamWithOwner,
 } from "@/data/applications";
+import { requireUser } from "@/data/auth-dal";
 import { getAllTeams } from "@/data/teams";
-import { auth } from "@/shared/lib/auth";
 import { cn } from "@/shared/lib/utils";
 
 import { EditTeamForm } from "./_components/edit-team-form";
@@ -36,24 +35,18 @@ export default async function ManageTeamPage({
 }: {
   params: Promise<{ teamId: string }>;
 }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session?.user?.id) {
-    redirect("/");
-  }
+  const user = await requireUser();
 
   const { teamId } = await params;
 
   const team = await getTeamWithOwner(teamId);
   if (!team) notFound();
-  if (team.ownerId !== session.user.id) {
+  if (team.ownerId !== user.id) {
     redirect(`/team/${teamId}`);
   }
 
   const [applications, members] = await Promise.all([
-    getTeamApplicationsForOwner(teamId, session.user.id),
+    getTeamApplicationsForOwner(teamId, user.id),
     getTeamMembers(teamId),
   ]);
 

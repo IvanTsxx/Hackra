@@ -6,35 +6,9 @@ import Link from "next/link";
 
 import type { User as DatabaseUser } from "@/app/generated/prisma/client";
 import { Button } from "@/components/ui/button";
-import type { SessionDTO } from "@/data/auth-dal";
 import { Icons } from "@/shared/components/icons";
 import { KarmaButton } from "@/shared/components/karma-button";
-import type { User as SessionUser } from "@/shared/lib/auth";
-
-type AnyUser = SessionDTO | SessionUser | DatabaseUser | null;
-
-/*   const statItems = [
-    {
-      icon: <Trophy size={12} />,
-      label: "HACKATHONS CREATED",
-      value: user.organizedHackathons.length,
-    },
-    {
-      icon: <Trophy size={12} />,
-      label: "HACKATHONS PARTICIPATED",
-      value: user.participations.length,
-    },
-    {
-      icon: <Zap size={12} />,
-      label: "KARMA",
-      value: user.karmaPoints,
-    },
-    {
-      icon: <Users size={12} />,
-      label: "TEAMS CREATED",
-      value: user.ownedTeams.length,
-    },
-  ]; */
+import { useSession } from "@/shared/lib/auth-client";
 
 const mapStatsIcons = {
   created: Trophy,
@@ -45,17 +19,20 @@ const mapStatsIcons = {
 
 export const ProfileHeader = ({
   user,
-  isOwnProfile,
+
   stats,
-  currentUser,
 }: {
   user: DatabaseUser;
-  isOwnProfile: boolean;
+
   stats: { icon: string; label: string; value: number }[];
-  currentUser?: AnyUser;
 }) => {
+  const { data } = useSession();
+  const currentUser = data?.user;
+
   const { name, username, githubUsername, location, position, bio, image } =
     user;
+
+  const isOwnProfile = currentUser?.id === user.id;
 
   return (
     <motion.div

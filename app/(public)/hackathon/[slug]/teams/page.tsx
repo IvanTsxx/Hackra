@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { TeamCard } from "@/components/team-card";
-import { getCurrentUser } from "@/data/auth-dal";
 import { getHackathon } from "@/data/hackatons";
 import { getTeamsForHackathon } from "@/data/teams";
 import { CodeText } from "@/shared/components/code-text";
@@ -42,8 +41,6 @@ export default async function TeamsPage({
 
   const teams = await getTeamsForHackathon(slug);
 
-  const currentUser = await getCurrentUser();
-
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
@@ -72,11 +69,7 @@ export default async function TeamsPage({
             {teams.length} teams · max {hackathon.maxTeamSize} members each
           </p>
         </div>
-        <CreateTeamButton
-          isOwner={hackathon.organizerId === currentUser?.id}
-          isLoggedIn={!!currentUser}
-          slug={slug}
-        />
+        <CreateTeamButton organizerId={hackathon.organizerId} slug={slug} />
       </div>
 
       {teams.length === 0 ? (
@@ -84,11 +77,7 @@ export default async function TeamsPage({
           <p className="font-pixel text-sm text-muted-foreground">
             NO_TEAMS_YET
           </p>
-          <CreateTeamButton
-            isOwner={hackathon.organizerId === currentUser?.id}
-            isLoggedIn={!!currentUser}
-            slug={slug}
-          />
+          <CreateTeamButton organizerId={hackathon.organizerId} slug={slug} />
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 gap-4">

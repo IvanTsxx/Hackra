@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 
 import { HackathonCard } from "@/components/hackathon-card";
 import { TagBadge } from "@/components/tag-badge";
-import { getCurrentUser } from "@/data/auth-dal";
 import { getAllUsers, getUserByUsername } from "@/data/user";
 import {
   Tabs,
@@ -69,12 +68,10 @@ export default async function UserProfilePage({
   const user = await getUserByUsername(username);
   if (!user) notFound();
 
-  const currentUser = await getCurrentUser();
   const userHackathonsCreated = user.organizedHackathons;
   const userHackathonsParticipated = user.participations.map(
     (participation) => participation.hackathon
   );
-  const isOwnProfile = currentUser?.username === user.username;
 
   const statItems = [
     {
@@ -102,12 +99,7 @@ export default async function UserProfilePage({
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Profile header */}
-      <ProfileHeader
-        user={user}
-        isOwnProfile={isOwnProfile}
-        stats={statItems}
-        currentUser={currentUser}
-      />
+      <ProfileHeader user={user} stats={statItems} />
 
       <div className="grid md:grid-cols-3 gap-8">
         {/* Tech stack sidebar */}
