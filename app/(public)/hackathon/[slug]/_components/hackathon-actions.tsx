@@ -37,7 +37,7 @@ export async function HackathonActions({
   const isOwner = user?.id === organizerId;
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-col gap-2 lg:flex-row lg:gap-2">
       {status === "UPCOMING" && !joined && !isOwner && user ? (
         <JoinHackathonButton
           hackathonId={hackathonId}

@@ -1,3 +1,4 @@
+import { Search } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -14,7 +15,7 @@ interface Props {
 
 export function TeamsSection({ slug, organizerId, teamsCount }: Props) {
   return (
-    <div className="glass border border-border/40 p-5 flex items-center justify-between">
+    <div className="glass border border-border/40 p-5 flex lg:flex-row lg:items-center lg:justify-between flex-col gap-4">
       <div>
         <p className="font-pixel text-sm text-foreground">FIND YOUR TEAM</p>
         <p className="text-xs text-muted-foreground mt-1">
@@ -24,10 +25,11 @@ export function TeamsSection({ slug, organizerId, teamsCount }: Props) {
       <div className="flex gap-2">
         <Button
           variant="outline"
-          className="tracking-wider rounded-none border-border/50 hover:border-brand-green/50 hover:text-brand-green h-8 px-4 transition-all"
+          className="text-xs rounded-none h-9 px-4"
           nativeButton={false}
           render={<Link href={`/hackathon/${slug}/teams`} />}
         >
+          <Search size={12} className="mr-1.5" />
           BROWSE TEAMS
         </Button>
         <Suspense fallback={<Skeleton className="h-9 w-32" />}>

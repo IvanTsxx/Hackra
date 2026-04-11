@@ -110,7 +110,7 @@ export default async function HackathonDetailPage({
   const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
 
   return (
-    <main className="px-4 lg:px-6 py-20 bg-background">
+    <main className="px-2 lg:px-6 py-20 bg-background">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
         <Link
@@ -369,7 +369,7 @@ export default async function HackathonDetailPage({
 
             <Suspense
               fallback={
-                <section className="flex gap-2">
+                <section className="flex flex-col gap-2 lg:flex-row lg:gap-2">
                   <Skeleton className="h-9 w-32" />
                   <Skeleton className="h-9 w-32" />
                   <Skeleton className="h-9 w-32" />
