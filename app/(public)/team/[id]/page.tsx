@@ -17,9 +17,15 @@ import { TeamHeader } from "./_components/team-header";
 
 export async function generateStaticParams() {
   const teams = await getAllTeams();
-  return teams.map((team) => ({
-    id: team.id,
-  }));
+  return teams.length > 0
+    ? teams.map((team) => ({
+        id: team.id,
+      }))
+    : [
+        {
+          id: "fallback",
+        },
+      ];
 }
 
 export async function generateMetadata({

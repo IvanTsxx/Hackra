@@ -25,9 +25,15 @@ import { ManageApplicationCard } from "./_components/manage-application-card";
 
 export async function generateStaticParams() {
   const teams = await getAllTeams();
-  return teams.map((team) => ({
-    teamId: team.id,
-  }));
+  return teams.length > 0
+    ? teams.map((team) => ({
+        teamId: team.id,
+      }))
+    : [
+        {
+          teamId: "fallback",
+        },
+      ];
 }
 
 export default async function ManageTeamPage({

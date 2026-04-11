@@ -15,9 +15,15 @@ import { ProfileHeader } from "./_components/profile-header";
 
 export async function generateStaticParams() {
   const users = await getAllUsers();
-  return users.map((user) => ({
-    username: user.username,
-  }));
+  return users.length > 0
+    ? users.map((user) => ({
+        username: user.username,
+      }))
+    : [
+        {
+          username: "fallback",
+        },
+      ];
 }
 
 export async function generateMetadata({
