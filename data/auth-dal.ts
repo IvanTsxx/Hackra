@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { auth } from "@/shared/lib/auth";
-import { prisma } from "@/shared/lib/prisma";
 
 export interface SessionDTO {
   id: string;
@@ -55,15 +54,9 @@ export const requireAdminSession = async (): Promise<SessionDTO> => {
 };
 
 export const getCurrentUser = async () => {
-  const current = await requireUser();
-
-  const user = await prisma.user.findUnique({
-    where: { id: current.id },
+  const session = await auth.api.getSession({
+    headers: await headers(),
   });
 
-  if (!user) {
-    notFound();
-  }
-
-  return user;
+  return session?.user;
 };

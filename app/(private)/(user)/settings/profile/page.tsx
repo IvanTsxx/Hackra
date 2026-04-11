@@ -1,13 +1,30 @@
 import { ChevronRight } from "lucide-react";
+import { notFound } from "next/navigation";
 
 import { AnimatedSection } from "@/app/(private)/(user)/_components/animated-section";
 import { getCurrentUser } from "@/data/auth-dal";
 import { CodeText } from "@/shared/components/code-text";
+import { prisma } from "@/shared/lib/prisma";
 
 import { ProfileForm } from "./_components/profile-form";
 
 export default async function SettingsProfilePage() {
   const user = await getCurrentUser();
+  const userDB = await prisma.user.findUnique({
+    select: {
+      bio: true,
+      githubUsername: true,
+      location: true,
+      name: true,
+      position: true,
+      techStack: true,
+    },
+    where: { id: user?.id },
+  });
+
+  if (!user) {
+    notFound();
+  }
 
   return (
     <section>
@@ -27,12 +44,12 @@ export default async function SettingsProfilePage() {
 
       <ProfileForm
         initialData={{
-          bio: user.bio ?? "",
-          githubUsername: user.githubUsername ?? "",
-          location: user.location ?? "",
-          name: user.name,
-          position: user.position ?? "",
-          techStack: user.techStack,
+          bio: userDB?.bio ?? "",
+          githubUsername: userDB?.githubUsername ?? "",
+          location: userDB?.location ?? "",
+          name: userDB?.name ?? "",
+          position: userDB?.position ?? "",
+          techStack: userDB?.techStack ?? [],
         }}
       />
     </section>
