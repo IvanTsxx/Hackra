@@ -202,7 +202,7 @@ export default async function AdminHackathonsPage() {
                   </TableCell>
                   <TableCell>{h.participants.length}</TableCell>
                   <TableCell className="text-muted-foreground">
-                    <TimeLabel date={h.startDate} />
+                    <TimeLabel date={h.startDate?.toISOString()} />
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">

@@ -78,9 +78,30 @@ interface ExploreResult {
   hasMore: boolean;
 }
 
+function buildExploreCacheTag(
+  q?: string,
+  location?: string,
+  tags?: string[],
+  techs?: string[]
+): string {
+  const parts = [
+    q ?? "none",
+    location ?? "none",
+    tags?.join(",") ?? "none",
+    techs?.join(",") ?? "none",
+  ];
+  return `EXPLORE-${parts.join("-")}`;
+}
+
 export async function getHackathonsForExplore(
   params: ExploreFilters
 ): Promise<ExploreResult> {
+  "use cache";
+  cacheLife(CACHE_LIFE.HACKATHONS_LIST);
+  cacheTag(
+    buildExploreCacheTag(params.q, params.location, params.tags, params.techs)
+  );
+
   const { q, location, tags, techs, cursor } = params;
 
   const where: {

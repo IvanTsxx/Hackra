@@ -10,6 +10,13 @@ export const CACHE_TAGS = {
   HACKATHONS_LIST: "HACKATHONS_LIST",
   HACKATHON_BY_SLUG: (slug: string) => `HACKATHON-${slug}`,
   FEATURED_HACKATHONS: "FEATURED_HACKATHONS",
+  EXPLORE_HACKATHONS: (
+    q: string | undefined,
+    location: string | undefined,
+    tags: string[] | undefined,
+    techs: string[] | undefined
+  ) =>
+    `EXPLORE-${q ?? "all"}-${location ?? "all"}-${tags?.join(",") ?? "none"}-${techs?.join(",") ?? "none"}`,
   HACKATHON_PRIZES: (hackathonId: string) => `HACKATHON_PRIZES-${hackathonId}`,
   HACKATHON_PARTICIPANTS: (hackathonId: string) =>
     `HACKATHON_PARTICIPANTS-${hackathonId}`,

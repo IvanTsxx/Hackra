@@ -44,7 +44,7 @@ function parseArrayParam(
   return value.split(",").filter(Boolean);
 }
 
-export default async function ExplorePage({ searchParams }: Props) {
+async function ExploreContent({ searchParams }: Props) {
   const params = await searchParams;
 
   const tags = parseArrayParam(params.tag);
@@ -54,7 +54,6 @@ export default async function ExplorePage({ searchParams }: Props) {
     getHackathonsForExplore({
       location: params.location,
       q: params.q,
-
       tags,
       techs,
     }),
@@ -62,7 +61,7 @@ export default async function ExplorePage({ searchParams }: Props) {
   ]);
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-16">
+    <>
       <ExploreFilters
         filterOptions={filterOptions}
         filteredCount={data.totalCount}
@@ -76,11 +75,18 @@ export default async function ExplorePage({ searchParams }: Props) {
         filters={{
           location: params.location,
           q: params.q,
-
           tags,
           techs,
         }}
       />
+    </>
+  );
+}
+
+export default function ExplorePage({ searchParams }: Props) {
+  return (
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-16">
+      <ExploreContent searchParams={searchParams} />
     </main>
   );
 }
