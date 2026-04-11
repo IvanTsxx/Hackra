@@ -1,9 +1,8 @@
-"use client";
-
 import { User, Settings, FileText, Users, Trophy } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/data/auth-dal";
 import { LogoutButton } from "@/shared/components/auth/log-out-button";
 import {
   Avatar,
@@ -19,13 +18,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import type { User as UserType } from "@/shared/lib/auth";
 
-export function UserMenu({
-  user,
-}: {
-  user: Pick<UserType, "name" | "username" | "image">;
-}) {
+export async function UserMenu() {
+  const user = await getCurrentUser();
+  if (!user) {
+    return null;
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -142,12 +140,10 @@ export function UserMenu({
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          nativeButton={false}
           variant="destructive"
           className="rounded-none px-1 py-0.5"
-        >
-          <LogoutButton />
-        </DropdownMenuItem>
+          render={<LogoutButton />}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

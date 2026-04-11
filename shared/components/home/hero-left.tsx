@@ -1,12 +1,15 @@
 import { ArrowRight } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { getCurrentUser } from "@/data/auth-dal";
 import { CodeText } from "@/shared/components/code-text";
 import { Stats } from "@/shared/components/home/stats";
 import { Button } from "@/shared/components/ui/button";
 import { TextFlip } from "@/shared/components/ui/text-flip";
+
+import { Skeleton } from "../ui/skeleton";
 
 const AuthModalDialog = dynamic(
   async () => {
@@ -26,13 +29,11 @@ const AuthModalDialog = dynamic(
   }
 );
 
-export async function HeroLeft({
+export function HeroLeft({
   stats,
 }: {
   stats: { icon: string; label: string; value: string }[];
 }) {
-  const user = await getCurrentUser();
-
   return (
     <div className="flex flex-col text-left">
       {/* Terminal badge */}
@@ -75,20 +76,13 @@ export async function HeroLeft({
           </Button>
         </Link>
 
-        {!user && (
-          <AuthModalDialog
-            isRender
-            renderComponent={
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full sm:w-auto uppercase tracking-wider text-xs"
-              />
-            }
-          >
-            {"<"} Create Account {"/>"}
-          </AuthModalDialog>
-        )}
+        <Suspense
+          fallback={
+            <Skeleton className="w-full sm:w-auto uppercase tracking-wider text-xs" />
+          }
+        >
+          {renderButton()}
+        </Suspense>
       </div>
 
       {/* Stats */}
@@ -96,3 +90,25 @@ export async function HeroLeft({
     </div>
   );
 }
+
+const renderButton = async () => {
+  const user = await getCurrentUser();
+  if (user) {
+    return null;
+  }
+
+  return (
+    <AuthModalDialog
+      isRender
+      renderComponent={
+        <Button
+          size="lg"
+          variant="outline"
+          className="w-full sm:w-auto uppercase tracking-wider text-xs"
+        />
+      }
+    >
+      {"<"} Create Account {"/>"}
+    </AuthModalDialog>
+  );
+};

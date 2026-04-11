@@ -2,7 +2,6 @@
 import "server-only";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
-import { cache } from "react";
 
 import { auth } from "@/shared/lib/auth";
 
@@ -14,7 +13,7 @@ export interface SessionDTO {
   image: string;
 }
 
-export const requireSession = cache(async (): Promise<SessionDTO> => {
+export const requireSession = async (): Promise<SessionDTO> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -30,9 +29,9 @@ export const requireSession = cache(async (): Promise<SessionDTO> => {
     role: session.user.role!,
     username: session.user.username!,
   };
-});
+};
 
-export const requireAdminSession = cache(async (): Promise<SessionDTO> => {
+export const requireAdminSession = async (): Promise<SessionDTO> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -52,12 +51,12 @@ export const requireAdminSession = cache(async (): Promise<SessionDTO> => {
     role: session.user.role!,
     username: session.user.username!,
   };
-});
+};
 
-export const getCurrentUser = cache(async () => {
+export const getCurrentUser = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   return session?.user;
-});
+};

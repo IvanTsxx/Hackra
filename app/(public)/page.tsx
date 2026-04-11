@@ -107,7 +107,7 @@ function formatPrice(amount: number) {
   }).format(amount);
 }
 
-export default async function Home() {
+const getHomeData = async () => {
   "use cache";
   cacheLife(CACHE_LIFE.HOME_DATA);
   cacheTag(CACHE_TAGS.HOME_DATA);
@@ -122,6 +122,18 @@ export default async function Home() {
       }),
       prisma.sponsor.count(),
     ]);
+
+  return {
+    developersCount,
+    hackathonsCount,
+    prizesCount,
+    sponsors,
+  };
+};
+
+export default async function Home() {
+  const { hackathonsCount, developersCount, prizesCount, sponsors } =
+    await getHomeData();
 
   const stats: { icon: string; label: string; value: string }[] = [
     { icon: "Trophy", label: "HACKATHONS", value: `${hackathonsCount}+` },
