@@ -5,6 +5,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { getHackathonStats } from "@/data/admin-hackatons";
+import { requireAdminSession } from "@/data/auth-dal";
 
 import { AdminCharts } from "./_components/admin-charts";
 
@@ -22,6 +23,7 @@ const sourceColors: Record<string, string> = {
 };
 
 export default async function AdminDashboardPage() {
+  await requireAdminSession();
   const stats = await getHackathonStats();
 
   const lumaCount = stats.bySource.find((s) => s.source === "luma")?.count ?? 0;

@@ -145,6 +145,10 @@ export interface HackathonStats {
 }
 
 export async function getHackathonStats(): Promise<HackathonStats> {
+  "use cache";
+  cacheLife(CACHE_LIFE.ADMIN_HACKATHON_STATS);
+  cacheTag(CACHE_TAGS.ADMIN_HACKATHON_STATS);
+
   const [total, bySource, byStatus] = await Promise.all([
     prisma.hackathon.count(),
     prisma.hackathon.groupBy({
