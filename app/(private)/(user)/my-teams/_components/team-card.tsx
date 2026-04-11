@@ -1,12 +1,12 @@
 "use client";
 
-import { formatDistanceToNow } from "date-fns";
 import { ExternalLink, Settings, Users } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 
 import { StatusPill } from "@/components/tag-badge";
 import type { getUserTeams } from "@/data/applications";
+import { TimeLabel } from "@/shared/components/ui/time-label";
 
 type OwnedTeam = Awaited<ReturnType<typeof getUserTeams>>["owned"][number];
 type MemberTeam = Awaited<ReturnType<typeof getUserTeams>>["memberOf"][number];
@@ -80,10 +80,10 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
           <ExternalLink size={10} />
           VIEW
         </Link>
-        <span className="  text-xs text-muted-foreground/40 ml-auto">
-          Created{" "}
-          {formatDistanceToNow(new Date(team.createdAt), { addSuffix: true })}
-        </span>
+
+        <TimeLabel date={team.createdAt} className="ml-auto">
+          Created
+        </TimeLabel>
       </div>
     </motion.div>
   );
@@ -138,10 +138,7 @@ export function MemberTeamCard({ team, index }: MemberTeamCardProps) {
           <ExternalLink size={10} />
           VIEW TEAM
         </Link>
-        <span className="  text-xs text-muted-foreground/40">
-          Joined{" "}
-          {formatDistanceToNow(new Date(team.joinedAt), { addSuffix: true })}
-        </span>
+        <TimeLabel date={team.joinedAt}>Joined</TimeLabel>
       </div>
     </motion.div>
   );

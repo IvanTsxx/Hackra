@@ -2,23 +2,23 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/data/auth-dal";
 import { AuthModalDialog } from "@/shared/components/auth";
 
-export const CreateTeamButton = ({
-  isLoggedIn,
+export const CreateTeamButton = async ({
+  organizerId,
   slug,
-  isOwner,
 }: {
-  isLoggedIn: boolean;
   slug: string;
-  isOwner: boolean;
+  organizerId: string;
 }) => {
-  // Don't show button if user is the organizer
-  if (isOwner) return null;
+  const user = await getCurrentUser();
+
+  if (user?.id === organizerId) return null;
 
   return (
     <>
-      {isLoggedIn ? (
+      {user ? (
         <Link href={`/hackathon/${slug}/teams/create`}>
           <Button className="font-pixel text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-4">
             <Plus size={12} className="mr-1.5" /> CREATE TEAM

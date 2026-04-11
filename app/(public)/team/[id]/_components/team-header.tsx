@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
+import { useSession } from "@/shared/lib/auth-client";
 
 const inputClass =
   "w-full border border-border/40 bg-secondary/20 px-3 py-2   text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-brand-green/40 transition-colors";
@@ -23,17 +24,18 @@ export const TeamHeader = ({
   team,
   openSpots,
   isFull,
-  isOwner,
 }: {
   team: TeamGetPayload<{
     include: {
       questions: true;
+      hackathon: true;
     };
   }>;
   openSpots: number;
   isFull: boolean;
-  isOwner: boolean;
 }) => {
+  const { data } = useSession();
+  const isOwner = team.hackathon.organizerId === data?.user.id;
   const [submitted, setSubmitted] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]);
   const [message, setMessage] = useState("");

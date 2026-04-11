@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import type { SessionDTO } from "@/data/auth-dal";
-import { giveKarma } from "@/data/karma";
+import { giveKarma } from "@/shared/actions/karma";
 
 import type { User } from "../lib/auth";
 import { AuthModalDialog } from "./auth";
@@ -98,7 +98,7 @@ export const KarmaButton = ({
 
   const karmaDisplay = (
     <span
-      className={`font-pixel text-xs tracking-wider min-w-[2rem] text-center ${
+      className={`font-pixel text-xs tracking-wider min-w-8 text-center ${
         userVote === "up"
           ? "text-brand-green"
           : userVote === "down"

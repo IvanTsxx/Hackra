@@ -1,76 +1,34 @@
-import { formatDistanceToNow } from "date-fns";
-import { ChevronRight, FileText, Rocket } from "lucide-react";
-import { headers } from "next/headers";
+// oxlint-disable typescript/no-non-null-assertion
+// oxlint-disable typescript/no-non-null-asserted-optional-chain
+
+import { FileText, Rocket } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 import {
   getUserApplications,
   getUserParticipations,
 } from "@/data/applications";
+import { requireUser } from "@/data/auth-dal";
 import { CodeText } from "@/shared/components/code-text";
-import { auth } from "@/shared/lib/auth";
+import { TimeLabel } from "@/shared/components/ui/time-label";
 import { cn } from "@/shared/lib/utils";
 
 import { AnimatedSection } from "../_components/animated-section";
 import { ApplicationCard } from "./_components/application-card";
-
-const statusConfig: Record<
-  string,
-  { color: string; label: string; variant: string }
-> = {
-  ACCEPTED: {
-    color: "text-brand-green",
-    label: "ACCEPTED",
-    variant: "status-live",
-  },
-  APPROVED: {
-    color: "text-brand-green",
-    label: "APPROVED",
-    variant: "status-live",
-  },
-  PENDING: {
-    color: "text-muted-foreground",
-    label: "PENDING",
-    variant: "status-upcoming",
-  },
-  REJECTED: {
-    color: "text-destructive",
-    label: "REJECTED",
-    variant: "status-ended",
-  },
-};
+import { statusConfig } from "./constants";
 
 export default async function MyApplicationsPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session?.user?.id) {
-    redirect("/");
-  }
+  const user = await requireUser();
 
   const [applications, participations] = await Promise.all([
-    getUserApplications(session.user.id),
-    getUserParticipations(session.user.id),
+    getUserApplications(user.id),
+    getUserParticipations(user.id),
   ]);
 
   const hasAnyContent = applications.length > 0 || participations.length > 0;
 
   return (
     <section>
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
-        <Link
-          href={`/user/${session.user.username}`}
-          className="hover:text-foreground"
-        >
-          {session.user.username?.toUpperCase()}
-        </Link>
-        <ChevronRight size={10} />
-        <span className="text-foreground">MY APPLICATIONS</span>
-      </div>
-
       <AnimatedSection>
         <div className="space-y-1 mb-7">
           <CodeText as="p">navigation</CodeText>
@@ -192,11 +150,8 @@ export default async function MyApplicationsPage() {
                           {p.hackathon.title.toUpperCase()}
                         </Link>
                       </div>
-                      <span className="  text-xs text-muted-foreground/60">
-                        {formatDistanceToNow(new Date(p.createdAt), {
-                          addSuffix: true,
-                        })}
-                      </span>
+
+                      <TimeLabel date={p.createdAt} />
                     </div>
                   );
                 })}

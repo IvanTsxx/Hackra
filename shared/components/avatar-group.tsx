@@ -4,7 +4,7 @@ import type { User } from "@/app/generated/prisma/client";
 import { cn } from "@/lib/utils";
 
 interface AvatarGroupProps {
-  users: (User | null)[];
+  users: User[];
   max?: number;
   size?: "sm" | "md";
   className?: string;

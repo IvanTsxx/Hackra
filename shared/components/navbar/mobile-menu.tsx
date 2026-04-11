@@ -1,7 +1,6 @@
-"use client";
-
 import { Menu } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,33 +9,18 @@ import {
   SheetClose,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { getCurrentUser } from "@/data/auth-dal";
 import { AuthModalDialog } from "@/shared/components/auth";
-import type { User } from "@/shared/lib/auth";
 
+import { Skeleton } from "../ui/skeleton";
 import { NAV_LINKS } from "./constants";
 import { UserMenu } from "./user-menu";
 
-export const MobileMenu = ({ user }: { user?: User | null }) => (
+export const MobileMenu = () => (
   <div className="lg:hidden flex items-center gap-2">
-    {!user ? (
-      <AuthModalDialog
-        isRender
-        renderComponent={
-          <Button
-            size="sm"
-            className="uppercase tracking-wider text-xs glow-primary"
-            render={<Link href="/create" />}
-            nativeButton={false}
-          />
-        }
-      >
-        Create Hackathon
-      </AuthModalDialog>
-    ) : (
-      <div className="pt-2 border-t border-border/30">
-        <UserMenu user={user} />
-      </div>
-    )}
+    <Suspense fallback={<Skeleton className="w-32 h-10" />}>
+      <RenderButton />
+    </Suspense>
     <Sheet>
       <SheetTrigger className="md:hidden" aria-label="Abrir menú">
         <Menu />
@@ -63,3 +47,30 @@ export const MobileMenu = ({ user }: { user?: User | null }) => (
     </Sheet>
   </div>
 );
+
+const RenderButton = async () => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return (
+      <AuthModalDialog
+        isRender={true}
+        renderComponent={
+          <Button
+            size="sm"
+            className="uppercase tracking-wider text-xs glow-primary"
+          >
+            Create Hackathon
+          </Button>
+        }
+      >
+        Create Hackathon
+      </AuthModalDialog>
+    );
+  }
+  return (
+    <div className="pt-2 border-t border-border/30">
+      <UserMenu />
+    </div>
+  );
+};

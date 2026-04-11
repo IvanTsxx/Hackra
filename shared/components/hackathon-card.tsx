@@ -1,6 +1,6 @@
 "use client";
 
-import { format, formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 import { Calendar, MapPin, Users, Trophy, Wifi, Globe } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -10,6 +10,7 @@ import type { HackathonGetPayload } from "@/app/generated/prisma/models";
 import { Badge } from "@/components/ui/badge";
 
 import { StatusPill, TagBadge } from "./tag-badge";
+import { TimeLabel } from "./ui/time-label";
 
 interface HackathonCardProps {
   hackathon: HackathonGetPayload<{
@@ -36,12 +37,6 @@ export function HackathonCard({
 
   const endDate = new Date(hackathon.endDate);
   const startDate = new Date(hackathon.startDate);
-  const timeLabel =
-    hackathon.status === "LIVE"
-      ? `ends ${formatDistanceToNow(endDate, { addSuffix: true })}`
-      : hackathon.status === "UPCOMING"
-        ? `starts ${formatDistanceToNow(startDate, { addSuffix: true })}`
-        : `ended ${formatDistanceToNow(endDate, { addSuffix: true })}`;
 
   if (variant === "compact") {
     return (
@@ -72,9 +67,9 @@ export function HackathonCard({
               {hackathon.source === "luma" && (
                 <Badge
                   variant="outline"
-                  className="border-purple-500/50 text-purple-400 text-[8px] py-0 h-5 px-1"
+                  className="border-purple-500/50 text-purple-400 text-[8px] py-0 h-5 w-auto px-1"
                 >
-                  L
+                  LUMA
                 </Badge>
               )}
             </div>
@@ -218,7 +213,11 @@ export function HackathonCard({
                   {hackathon.title}
                 </h3>
               </Link>
-              <p className="text-xs text-muted-foreground/60">{timeLabel}</p>
+              <TimeLabel
+                status={hackathon.status}
+                startDate={startDate}
+                endDate={endDate}
+              />
             </div>
           </div>
         </div>

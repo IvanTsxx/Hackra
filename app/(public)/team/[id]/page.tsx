@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 
 import { AvatarGroup } from "@/components/avatar-group";
 import { TagBadge } from "@/components/tag-badge";
-import { getCurrentUser } from "@/data/auth-dal";
 import { getHackathon } from "@/data/hackatons";
 import { getAllTeams, getTeamById } from "@/data/teams";
 import {
@@ -18,9 +17,15 @@ import { TeamHeader } from "./_components/team-header";
 
 export async function generateStaticParams() {
   const teams = await getAllTeams();
-  return teams.map((team) => ({
-    id: team.id,
-  }));
+  return teams.length > 0
+    ? teams.map((team) => ({
+        id: team.id,
+      }))
+    : [
+        {
+          id: "fallback",
+        },
+      ];
 }
 
 export async function generateMetadata({
@@ -70,8 +75,6 @@ export default async function TeamDetailPage({
   const openSpots = team.maxMembers - team.members.length;
   const isFull = openSpots <= 0;
 
-  const currentUser = await getCurrentUser();
-
   return (
     <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Breadcrumb */}
@@ -102,12 +105,7 @@ export default async function TeamDetailPage({
       </div>
 
       {/* Header */}
-      <TeamHeader
-        team={team}
-        openSpots={openSpots}
-        isFull={isFull}
-        isOwner={team.hackathon.organizerId === currentUser?.id}
-      />
+      <TeamHeader team={team} openSpots={openSpots} isFull={isFull} />
 
       <div className="grid md:grid-cols-3 gap-6">
         {/* Main content */}

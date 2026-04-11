@@ -729,23 +729,25 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                   <div className="space-y-1">
                     <FieldLabel>END DATE *</FieldLabel>
                     <Popover>
-                      <PopoverTrigger>
-                        <button
-                          type="button"
-                          className={`w-full flex items-center gap-2 border border-border/40 bg-secondary/20 px-3 py-2 text-xs text-left transition-colors ${
-                            field.state.value
-                              ? "text-foreground"
-                              : "text-muted-foreground/50"
-                          } hover:border-brand-green/40 focus:border-brand-green/40 outline-none`}
-                        >
-                          <CalendarIcon
-                            size={11}
-                            className="text-muted-foreground shrink-0"
+                      <PopoverTrigger
+                        render={
+                          <button
+                            type="button"
+                            className={`w-full flex items-center gap-2 border border-border/40 bg-secondary/20 px-3 py-2 text-xs text-left transition-colors ${
+                              field.state.value
+                                ? "text-foreground"
+                                : "text-muted-foreground/50"
+                            } hover:border-brand-green/40 focus:border-brand-green/40 outline-none`}
                           />
-                          {field.state.value
-                            ? format(field.state.value, "MMM d, yyyy")
-                            : "Pick end date"}
-                        </button>
+                        }
+                      >
+                        <CalendarIcon
+                          size={11}
+                          className="text-muted-foreground shrink-0"
+                        />
+                        {field.state.value
+                          ? format(field.state.value, "MMM d, yyyy")
+                          : "Pick end date"}
                       </PopoverTrigger>
                       <PopoverContent
                         className="w-auto p-0 rounded-none border-border/50"

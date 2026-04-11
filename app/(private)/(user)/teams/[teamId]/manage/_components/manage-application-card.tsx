@@ -1,6 +1,5 @@
 "use client";
 
-import { formatDistanceToNow } from "date-fns";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -22,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import type { getTeamApplicationsForOwner } from "@/data/applications";
+import { TimeLabel } from "@/shared/components/ui/time-label";
 import { cn } from "@/shared/lib/utils";
 
 type Application = Awaited<
@@ -245,12 +245,12 @@ export function ManageApplicationCard({
         </div>
       )}
 
-      <p className="  text-xs text-muted-foreground/40">
-        Applied{" "}
-        {formatDistanceToNow(new Date(application.createdAt), {
-          addSuffix: true,
-        })}
-      </p>
+      <TimeLabel
+        date={application.createdAt}
+        className="text-xs text-muted-foreground/40"
+      >
+        Applied
+      </TimeLabel>
     </motion.div>
   );
 }

@@ -2,9 +2,9 @@
 import "server-only";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
-import { cache } from "react";
 
 import { auth } from "@/shared/lib/auth";
+import { prisma } from "@/shared/lib/prisma";
 
 export interface SessionDTO {
   id: string;
@@ -14,7 +14,7 @@ export interface SessionDTO {
   image: string;
 }
 
-export const requireSession = cache(async (): Promise<SessionDTO> => {
+export const requireUser = async (): Promise<SessionDTO> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -30,9 +30,9 @@ export const requireSession = cache(async (): Promise<SessionDTO> => {
     role: session.user.role!,
     username: session.user.username!,
   };
-});
+};
 
-export const requireAdminSession = cache(async (): Promise<SessionDTO> => {
+export const requireAdminSession = async (): Promise<SessionDTO> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -52,12 +52,18 @@ export const requireAdminSession = cache(async (): Promise<SessionDTO> => {
     role: session.user.role!,
     username: session.user.username!,
   };
-});
+};
 
-export const getCurrentUser = cache(async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
+export const getCurrentUser = async () => {
+  const current = await requireUser();
+
+  const user = await prisma.user.findUnique({
+    where: { id: current.id },
   });
 
-  return session?.user;
-});
+  if (!user) {
+    notFound();
+  }
+
+  return user;
+};

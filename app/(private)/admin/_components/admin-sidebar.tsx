@@ -1,12 +1,7 @@
 "use client";
 
 import type { LucideProps } from "lucide-react";
-import {
-  LayoutDashboardIcon,
-  Shield,
-  ShieldIcon,
-  UploadIcon,
-} from "lucide-react";
+import { LayoutDashboardIcon, Shield, ShieldIcon } from "lucide-react";
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,6 +21,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { cn } from "@/shared/lib/utils";
 
 const adminNavItems: {
   href: Route;
@@ -35,7 +31,6 @@ const adminNavItems: {
   label: string;
 }[] = [
   { href: "/admin", icon: LayoutDashboardIcon, label: "Dashboard" },
-  { href: "/admin/import", icon: UploadIcon, label: "Import" },
   { href: "/admin/hackathons", icon: ShieldIcon, label: "Hackathons" },
 ];
 
@@ -82,22 +77,25 @@ export function AdminSidebar() {
           <SidebarGroupLabel>Administration</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {adminNavItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    isActive={pathname === item.href}
-                    render={
-                      <Link
-                        href={item.href}
-                        className="flex items-center gap-2"
-                      >
-                        <item.icon />
-                        <span>{item.label}</span>
-                      </Link>
-                    }
-                  />
-                </SidebarMenuItem>
-              ))}
+              {adminNavItems.map((item) => {
+                const isActive = pathname.includes(item.href);
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      className={cn(isActive && "text-brand-green")}
+                      render={
+                        <Link
+                          href={item.href}
+                          className="flex items-center gap-2 hover:text-brand-green"
+                        >
+                          <item.icon />
+                          <span>{item.label}</span>
+                        </Link>
+                      }
+                    />
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

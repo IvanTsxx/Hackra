@@ -1,6 +1,13 @@
 import "server-only";
+import { cacheLife, cacheTag } from "next/cache";
+
 import { HackathonStatus } from "@/app/generated/prisma/enums";
 import { prisma } from "@/shared/lib/prisma";
+
+import { CACHE_TAGS, CACHE_LIFE } from "./cache-constants";
+
+// oxlint-disable require-await
+// "use cache" is an implicit await - the function is cached by Next.js at runtime
 
 export interface CreateHackathonDTO {
   title: string;
@@ -27,7 +34,11 @@ export interface CreateHackathonDTO {
 }
 
 export async function getAdminHackathons() {
-  return await prisma.hackathon.findMany({
+  "use cache";
+  cacheLife(CACHE_LIFE.ADMIN_ALL_HACKATHONS);
+  cacheTag(CACHE_TAGS.ADMIN_ALL_HACKATHONS);
+
+  return prisma.hackathon.findMany({
     include: {
       organizer: {
         select: {
@@ -43,7 +54,11 @@ export async function getAdminHackathons() {
 }
 
 export async function getAdminHackathon(id: string) {
-  return await prisma.hackathon.findUnique({
+  "use cache";
+  cacheLife(CACHE_LIFE.ADMIN_HACKATHON_STATS);
+  cacheTag(CACHE_TAGS.ADMIN_HACKATHON_STATS);
+
+  return prisma.hackathon.findUnique({
     include: {
       organizer: {
         select: {
@@ -130,6 +145,10 @@ export interface HackathonStats {
 }
 
 export async function getHackathonStats(): Promise<HackathonStats> {
+  "use cache";
+  cacheLife(CACHE_LIFE.ADMIN_HACKATHON_STATS);
+  cacheTag(CACHE_TAGS.ADMIN_HACKATHON_STATS);
+
   const [total, bySource, byStatus] = await Promise.all([
     prisma.hackathon.count(),
     prisma.hackathon.groupBy({

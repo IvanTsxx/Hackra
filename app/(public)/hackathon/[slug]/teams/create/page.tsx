@@ -1,7 +1,14 @@
 import { notFound } from "next/navigation";
 
 import { CreateForm } from "@/app/(public)/hackathon/[slug]/teams/create/_components/create-form";
-import { getHackathon } from "@/data/hackatons";
+import { getAllHackathons, getHackathon } from "@/data/hackatons";
+
+export const generateStaticParams = async () => {
+  const hackathons = await getAllHackathons();
+  return hackathons.length > 0
+    ? hackathons.map((hackathon) => ({ slug: hackathon.slug }))
+    : [{ slug: "fallback" }];
+};
 
 export default async function CreateTeamPage({
   params,

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import dynamic from "next/dynamic";
 
 import { HeroSection } from "@/components/home/hero-section";
+import { CACHE_TAGS, CACHE_LIFE } from "@/data/cache-constants";
 import { TechStackMarquee } from "@/shared/components/home/tech-stack-marquee";
 /* import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee"; */
 import { JsonLd } from "@/shared/components/json-ld";
@@ -105,7 +107,11 @@ function formatPrice(amount: number) {
   }).format(amount);
 }
 
-export default async function Home() {
+const getHomeData = async () => {
+  "use cache";
+  cacheLife(CACHE_LIFE.HOME_DATA);
+  cacheTag(CACHE_TAGS.HOME_DATA);
+
   const [hackathonsCount, developersCount, prizesCount, sponsors] =
     await Promise.all([
       prisma.hackathon.count(),
@@ -116,6 +122,18 @@ export default async function Home() {
       }),
       prisma.sponsor.count(),
     ]);
+
+  return {
+    developersCount,
+    hackathonsCount,
+    prizesCount,
+    sponsors,
+  };
+};
+
+export default async function Home() {
+  const { hackathonsCount, developersCount, prizesCount, sponsors } =
+    await getHomeData();
 
   const stats: { icon: string; label: string; value: string }[] = [
     { icon: "Trophy", label: "HACKATHONS", value: `${hackathonsCount}+` },

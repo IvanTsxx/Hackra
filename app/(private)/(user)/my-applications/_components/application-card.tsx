@@ -1,6 +1,5 @@
 "use client";
 
-import { formatDistanceToNow } from "date-fns";
 import { ExternalLink, Send, Users } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -9,6 +8,7 @@ import { toast } from "sonner";
 
 import { TagBadge } from "@/components/tag-badge";
 import type { getUserApplications } from "@/data/applications";
+import { TimeLabel } from "@/shared/components/ui/time-label";
 
 import { cancelApplication } from "../../teams/_actions";
 
@@ -71,12 +71,9 @@ export function ApplicationCard({
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
-          <span className="  text-xs text-muted-foreground/60 flex items-center gap-1">
+          <TimeLabel date={application.createdAt}>
             <Send size={10} />
-            {formatDistanceToNow(new Date(application.createdAt), {
-              addSuffix: true,
-            })}
-          </span>
+          </TimeLabel>
           {application.status === "ACCEPTED" && (
             <Link
               href={`/team/${application.team.id}`}

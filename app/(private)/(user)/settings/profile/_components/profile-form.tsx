@@ -7,9 +7,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import * as z from "zod";
 
+import { updateProfile } from "@/app/(private)/(user)/settings/profile/_actions";
 import { TagBadge } from "@/components/tag-badge";
 import { Button } from "@/components/ui/button";
-import { updateProfile } from "@/data/profile-actions";
 
 const AVAILABLE_TECHS = [
   "Next.js",
