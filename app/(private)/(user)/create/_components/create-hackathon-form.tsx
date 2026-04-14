@@ -34,8 +34,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/shared/components/ui/popover";
+import type { SimilarHackathon } from "@/shared/lib/similarity";
 
 import {
+  checkDuplicateHackathonAction,
   createHackathonAction,
   importLumaFormDataAction,
   previewLumaAction,
@@ -103,6 +105,13 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Duplicate check state
+  const [duplicateCheck, setDuplicateCheck] = useState<{
+    isChecking: boolean;
+    isDuplicate: boolean;
+    similarHackathons: SimilarHackathon[];
+  }>({ isChecking: false, isDuplicate: false, similarHackathons: [] });
+
   // Luma import state
   const [lumaUrl, setLumaUrl] = useState("");
   const [lumaPreviewData, setLumaPreviewData] = useState<
@@ -167,6 +176,14 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
           });
         }
         setSubmitted(true);
+      } else if (
+        result.similarHackathons &&
+        result.similarHackathons.length > 0
+      ) {
+        // Show specific duplicate warning with hackathons list
+        toast.error("Hackathon duplicado", {
+          description: result.error ?? "Ya existe un hackathon similar.",
+        });
       } else {
         toast.error("Deploy failed", { description: result.error });
       }
@@ -355,6 +372,31 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
     },
     []
   );
+
+  // Debounced duplicate check effect
+  useEffect(() => {
+    if (!title?.trim() || !description?.trim()) return;
+
+    const timeout = setTimeout(async () => {
+      setDuplicateCheck((prev) => ({ ...prev, isChecking: true }));
+      try {
+        const result = await checkDuplicateHackathonAction({
+          description,
+          title,
+        });
+        setDuplicateCheck({
+          isChecking: false,
+          isDuplicate: result.isDuplicate,
+          similarHackathons: result.similarHackathons,
+        });
+      } catch {
+        // Gracefully handle errors - allow creation if check fails
+        setDuplicateCheck((prev) => ({ ...prev, isChecking: false }));
+      }
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [title, description]);
 
   const handleSubmit = async () => {
     // Use getFieldValue in event handlers — NOT useStore (breaks Rules of Hooks)
@@ -623,6 +665,40 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                 </motion.div>
               )}
             </div>
+
+            {/* Duplicate Warning Panel */}
+            {duplicateCheck.isDuplicate && (
+              <div className="border border-red-500/50 bg-red-500/5 p-4 space-y-2">
+                <p className="font-pixel text-xs text-red-400 tracking-wider">
+                  HACKATHON DUPLICADO
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Ya existe un hackathon con un título o descripción similares:
+                </p>
+                <ul className="space-y-2">
+                  {duplicateCheck.similarHackathons.map((h) => (
+                    <li key={h.id} className="text-xs">
+                      <Link
+                        href={`/hackathon/${h.slug}`}
+                        className="text-foreground hover:text-brand-green transition-colors"
+                      >
+                        {h.title}
+                      </Link>
+                      {h.titleMatch && (
+                        <span className="ml-2 text-red-400 font-pixel text-[10px]">
+                          MISMO TÍTULO
+                        </span>
+                      )}
+                      {!h.titleMatch && (
+                        <span className="ml-2 text-yellow-400 text-[10px]">
+                          {Math.round(h.descriptionScore * 100)}% similar
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <form.Field
               name="title"
@@ -1219,10 +1295,18 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
             <Button
               type="button"
               onClick={handleSubmit}
-              disabled={isSubmitting}
+              disabled={
+                isSubmitting ||
+                duplicateCheck.isDuplicate ||
+                duplicateCheck.isChecking
+              }
               className="w-full rounded-none font-pixel text-xs tracking-widest bg-foreground text-background hover:bg-foreground/90 h-11 disabled:opacity-50"
             >
-              {isSubmitting ? "DEPLOYING..." : "DEPLOY HACKATHON →"}
+              {isSubmitting
+                ? "DEPLOYING..."
+                : duplicateCheck.isChecking
+                  ? "CHECKING..."
+                  : "DEPLOY HACKATHON →"}
             </Button>
           </motion.div>
         )}
@@ -1243,7 +1327,8 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
             type="button"
             onClick={handleNextStep}
             disabled={
-              (step === 0 && !canGoToDetails) || (step === 1 && !canGoToPrizes)
+              (step === 0 && (!canGoToDetails || duplicateCheck.isDuplicate)) ||
+              (step === 1 && !canGoToPrizes)
             }
             className="font-pixel text-xs tracking-wider text-foreground border border-border/40 px-4 py-2 hover:border-brand-green/50 hover:text-brand-green transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >

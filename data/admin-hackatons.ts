@@ -3,6 +3,8 @@ import { cacheLife, cacheTag } from "next/cache";
 
 import { HackathonStatus } from "@/app/generated/prisma/enums";
 import { prisma } from "@/shared/lib/prisma";
+import { SIMILARITY_CONFIG, isSimilarHackathon } from "@/shared/lib/similarity";
+import type { SimilarHackathon } from "@/shared/lib/similarity";
 
 import { CACHE_TAGS, CACHE_LIFE } from "./cache-constants";
 
@@ -172,4 +174,49 @@ export async function getHackathonStats(): Promise<HackathonStats> {
     })),
     total,
   };
+}
+
+/**
+ * Find hackathons similar to the given title/description.
+ * Uses title pre-filtering + application-layer Dice coefficient scoring.
+ */
+export async function findSimilarHackathons(
+  title: string,
+  description: string,
+  opts?: { threshold?: number; limit?: number }
+): Promise<SimilarHackathon[]> {
+  const threshold = opts?.threshold ?? SIMILARITY_CONFIG.DESCRIPTION_THRESHOLD;
+  const limit = opts?.limit ?? SIMILARITY_CONFIG.MAX_RESULTS;
+
+  // Fetch all hackathons with required fields for comparison
+  const allHackathons = await prisma.hackathon.findMany({
+    select: {
+      description: true,
+      id: true,
+      slug: true,
+      title: true,
+    },
+  });
+
+  // Score each hackathon
+  const scored = allHackathons
+    .map((h) => {
+      const result = isSimilarHackathon(title, description, h, { threshold });
+      return {
+        description: h.description,
+        descriptionScore: result.descriptionScore,
+        id: h.id,
+        isBlocked: result.isBlocked,
+        slug: h.slug,
+        title: h.title,
+        titleMatch: result.titleMatch,
+      };
+    })
+    .filter((h) => h.isBlocked);
+
+  // Sort by description score descending (most similar first)
+  scored.sort((a, b) => b.descriptionScore - a.descriptionScore);
+
+  // Return top N results
+  return scored.slice(0, limit);
 }

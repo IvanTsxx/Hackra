@@ -5,11 +5,12 @@ import { headers } from "next/headers";
 import * as z from "zod";
 
 import { HackathonStatus } from "@/app/generated/prisma/enums";
-import { createHackathon } from "@/data/admin-hackatons";
+import { createHackathon, findSimilarHackathons } from "@/data/admin-hackatons";
 import type { CreateHackathonDTO } from "@/data/admin-hackatons";
 import { karmaForCreateHackathon } from "@/shared/actions/karma";
 import { auth } from "@/shared/lib/auth";
 import type { LumaEventData } from "@/shared/lib/luma-scraper";
+import type { SimilarHackathon } from "@/shared/lib/similarity";
 import { createHackathonSchema } from "@/shared/lib/validation";
 
 // ─── Helper ──────────────────────────────────────────────────────────────────
@@ -28,6 +29,7 @@ function slugify(text: string): string {
 export async function createHackathonAction(raw: unknown): Promise<{
   success: boolean;
   error?: string;
+  similarHackathons?: SimilarHackathon[];
 }> {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -76,6 +78,19 @@ export async function createHackathonAction(raw: unknown): Promise<{
   if (missingFields.length > 0) {
     return {
       error: `Please fill in: ${missingFields.join(", ")}`,
+      success: false,
+    };
+  }
+
+  // Check for duplicate hackathons (title match or description similarity)
+  const similar = await findSimilarHackathons(
+    data.title ?? "",
+    data.description ?? ""
+  );
+  if (similar.length > 0) {
+    return {
+      error: "Ya existe un hackathon con un título o descripción similares.",
+      similarHackathons: similar,
       success: false,
     };
   }
@@ -230,5 +245,34 @@ export async function importLumaFormDataAction(url: string): Promise<{
           : "Failed to import Luma event data.",
       success: false,
     };
+  }
+}
+
+// ─── Duplicate Check ─────────────────────────────────────────────────────────
+
+export async function checkDuplicateHackathonAction(raw: {
+  title: string;
+  description: string;
+}): Promise<{
+  isDuplicate: boolean;
+  similarHackathons: SimilarHackathon[];
+}> {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user?.id) {
+    return { isDuplicate: false, similarHackathons: [] };
+  }
+
+  try {
+    const similar = await findSimilarHackathons(raw.title, raw.description);
+    return {
+      isDuplicate: similar.length > 0,
+      similarHackathons: similar,
+    };
+  } catch {
+    // If the check fails, allow creation to proceed
+    return { isDuplicate: false, similarHackathons: [] };
   }
 }
