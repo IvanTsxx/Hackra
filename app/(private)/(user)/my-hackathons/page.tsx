@@ -8,6 +8,7 @@ import {
   getHackathonPendingCounts,
   getOrganizerHackathons,
   getTotalPendingParticipants,
+  getCoOrganizerHackathons,
 } from "@/data/organizer-hackathons";
 import { CodeText } from "@/shared/components/code-text";
 import { auth } from "@/shared/lib/auth";
@@ -31,11 +32,16 @@ export default async function MyHackathonsPage() {
 
   const userId = session.user.id as string;
 
-  const [hackathons, totalPending, pendingCounts] = await Promise.all([
-    getOrganizerHackathons(userId),
-    getTotalPendingParticipants(userId),
-    getHackathonPendingCounts(userId),
-  ]);
+  const [hackathons, coOrganizedHackathons, totalPending, pendingCounts] =
+    await Promise.all([
+      getOrganizerHackathons(userId),
+      getCoOrganizerHackathons(userId),
+      getTotalPendingParticipants(userId),
+      getHackathonPendingCounts(userId),
+    ]);
+
+  const hasAnyHackathons =
+    hackathons.length > 0 || coOrganizedHackathons.length > 0;
 
   return (
     <section>
@@ -67,7 +73,7 @@ export default async function MyHackathonsPage() {
         </div>
       </AnimatedSection>
 
-      {hackathons.length === 0 ? (
+      {hasAnyHackathons === false ? (
         <div className="glass border border-border/40 p-12 text-center space-y-4">
           <div className="flex justify-center mb-2">
             <div className="relative">
@@ -103,6 +109,7 @@ export default async function MyHackathonsPage() {
         >
           <MyHackathonsClient
             hackathons={hackathons}
+            coOrganizedHackathons={coOrganizedHackathons}
             pendingCounts={pendingCounts}
           />
         </Suspense>

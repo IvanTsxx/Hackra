@@ -44,15 +44,40 @@ export async function getOrganizerHackathons(
   });
 }
 
+export async function getCoOrganizerHackathons(
+  userId: string
+): Promise<OrganizerHackathon[]> {
+  const coOrgs = await prisma.hackathonOrganizer.findMany({
+    orderBy: { createdAt: "desc" },
+    select: {
+      hackathon: {
+        include: organizerHackathonInclude,
+      },
+    },
+    where: { userId },
+  });
+
+  return coOrgs.map((co) => co.hackathon);
+}
+
 export async function getHackathonPendingCounts(
   userId: string
 ): Promise<Record<string, number>> {
-  const hackathons = await prisma.hackathon.findMany({
-    select: { id: true },
-    where: { organizerId: userId },
-  });
+  const [owned, coOrged] = await Promise.all([
+    prisma.hackathon.findMany({
+      select: { id: true },
+      where: { organizerId: userId },
+    }),
+    prisma.hackathonOrganizer.findMany({
+      select: { hackathonId: true },
+      where: { userId },
+    }),
+  ]);
 
-  const hackathonIds = hackathons.map((h) => h.id);
+  const hackathonIds = [
+    ...owned.map((h) => h.id),
+    ...coOrged.map((h) => h.hackathonId),
+  ];
 
   if (hackathonIds.length === 0) return {};
 
@@ -77,12 +102,21 @@ export async function getHackathonPendingCounts(
 export async function getTotalPendingParticipants(
   userId: string
 ): Promise<number> {
-  const hackathons = await prisma.hackathon.findMany({
-    select: { id: true },
-    where: { organizerId: userId },
-  });
+  const [owned, coOrged] = await Promise.all([
+    prisma.hackathon.findMany({
+      select: { id: true },
+      where: { organizerId: userId },
+    }),
+    prisma.hackathonOrganizer.findMany({
+      select: { hackathonId: true },
+      where: { userId },
+    }),
+  ]);
 
-  const hackathonIds = hackathons.map((h) => h.id);
+  const hackathonIds = [
+    ...owned.map((h) => h.id),
+    ...coOrged.map((h) => h.hackathonId),
+  ];
 
   if (hackathonIds.length === 0) return 0;
 

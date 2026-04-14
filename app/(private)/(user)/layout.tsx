@@ -26,7 +26,9 @@ interface PrivateLayoutFormProps {
 
 const PrivateLayout: React.FC<PrivateLayoutFormProps> = ({ children }) => (
   <SidebarProvider>
-    <UserSidebar />
+    <Suspense fallback={<Skeleton className="size-8 rounded-full" />}>
+      <UserSidebar />
+    </Suspense>
     <SidebarInset>
       <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4 justify-between">
         <SidebarTrigger />

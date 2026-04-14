@@ -31,6 +31,7 @@ type HackathonRow = HackathonDTO;
 interface HackathonsTableProps {
   hackathons: HackathonRow[];
   pendingCounts: Record<string, number>;
+  isCoOrganizer?: boolean;
   onEditClick: (hackathon: HackathonRow) => void;
   onDeleteClick: (hackathon: HackathonRow) => void;
 }
@@ -56,6 +57,7 @@ const statusConfig: Record<
 export function HackathonsTable({
   hackathons,
   pendingCounts,
+  isCoOrganizer,
   onEditClick,
   onDeleteClick,
 }: HackathonsTableProps) {
@@ -87,6 +89,7 @@ export function HackathonsTable({
                   key={hackathon.id}
                   hackathon={hackathon}
                   pendingCount={pendingCounts[hackathon.id] ?? 0}
+                  isCoOrganizer={isCoOrganizer}
                   onEditClick={onEditClick}
                   onDeleteClick={onDeleteClick}
                 />
@@ -124,11 +127,13 @@ function actionButton(
 function HackathonRow({
   hackathon,
   pendingCount,
+  isCoOrganizer,
   onEditClick,
   onDeleteClick,
 }: {
   hackathon: HackathonRow;
   pendingCount: number;
+  isCoOrganizer?: boolean;
   onEditClick: (hackathon: HackathonRow) => void;
   onDeleteClick: (hackathon: HackathonRow) => void;
 }) {
@@ -169,36 +174,38 @@ function HackathonRow({
       </TableCell>
       <TableCell>
         <div className="flex items-center gap-2">
-          {actionButton(
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-7 px-2 text-xs font-pixel"
-              disabled={isLive}
-              onClick={() => onEditClick(hackathon)}
-              aria-label={`Edit ${hackathon.title}`}
-            >
-              <Edit size={12} />
-              EDIT
-            </Button>,
-            "Cannot modify a live hackathon",
-            isLive
-          )}
-          {actionButton(
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-7 px-2 text-xs font-pixel text-destructive border-destructive/30 hover:bg-destructive/10"
-              disabled={isLive}
-              onClick={() => onDeleteClick(hackathon)}
-              aria-label={`Delete ${hackathon.title}`}
-            >
-              <Trash2 size={12} />
-              DELETE
-            </Button>,
-            "Cannot modify a live hackathon",
-            isLive
-          )}
+          {!isCoOrganizer &&
+            actionButton(
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 px-2 text-xs font-pixel"
+                disabled={isLive}
+                onClick={() => onEditClick(hackathon)}
+                aria-label={`Edit ${hackathon.title}`}
+              >
+                <Edit size={12} />
+                EDIT
+              </Button>,
+              "Cannot modify a live hackathon",
+              isLive
+            )}
+          {!isCoOrganizer &&
+            actionButton(
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 px-2 text-xs font-pixel text-destructive border-destructive/30 hover:bg-destructive/10"
+                disabled={isLive}
+                onClick={() => onDeleteClick(hackathon)}
+                aria-label={`Delete ${hackathon.title}`}
+              >
+                <Trash2 size={12} />
+                DELETE
+              </Button>,
+              "Cannot modify a live hackathon",
+              isLive
+            )}
           <Link
             href={`/my-hackathons/${hackathon.id}/manage` as Route}
             className="inline-flex items-center gap-1 shrink-0 h-7 px-2 text-xs font-pixel border border-border bg-input/30 hover:bg-input/50 hover:text-foreground transition-colors"

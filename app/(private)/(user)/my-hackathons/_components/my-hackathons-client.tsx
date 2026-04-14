@@ -33,6 +33,7 @@ export interface HackathonDTO {
 
 interface MyHackathonsClientProps {
   hackathons: HackathonDTO[];
+  coOrganizedHackathons: HackathonDTO[];
   pendingCounts: Record<string, number>;
 }
 
@@ -40,6 +41,7 @@ interface MyHackathonsClientProps {
 
 export function MyHackathonsClient({
   hackathons,
+  coOrganizedHackathons,
   pendingCounts,
 }: MyHackathonsClientProps) {
   const router = useRouter();
@@ -61,15 +63,39 @@ export function MyHackathonsClient({
   };
 
   return (
-    <>
-      <HackathonsTable
-        hackathons={hackathons}
-        pendingCounts={pendingCounts}
-        onEditClick={(hackathon) => setEditHackathon(hackathon)}
-        onDeleteClick={(hackathon) =>
-          setDeleteHackathon({ id: hackathon.id, title: hackathon.title })
-        }
-      />
+    <div className="space-y-12">
+      {hackathons.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="font-pixel text-sm text-muted-foreground tracking-wider mb-4 border-b border-border/40 pb-2">
+            OWNED HACKATHONS
+          </h2>
+          <HackathonsTable
+            hackathons={hackathons}
+            pendingCounts={pendingCounts}
+            onEditClick={(hackathon) => setEditHackathon(hackathon)}
+            onDeleteClick={(hackathon) =>
+              setDeleteHackathon({ id: hackathon.id, title: hackathon.title })
+            }
+          />
+        </div>
+      )}
+
+      {coOrganizedHackathons.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="font-pixel text-sm text-muted-foreground tracking-wider mb-4 border-b border-border/40 pb-2">
+            CO-ORGANIZING
+          </h2>
+          <HackathonsTable
+            hackathons={coOrganizedHackathons}
+            pendingCounts={pendingCounts}
+            isCoOrganizer
+            onEditClick={(hackathon) => setEditHackathon(hackathon)}
+            onDeleteClick={(hackathon) =>
+              setDeleteHackathon({ id: hackathon.id, title: hackathon.title })
+            }
+          />
+        </div>
+      )}
 
       {editHackathon && (
         <EditHackathonDialog
@@ -97,6 +123,6 @@ export function MyHackathonsClient({
           onSuccess={handleDeleteSuccess}
         />
       )}
-    </>
+    </div>
   );
 }
