@@ -116,6 +116,8 @@ model Hackathon {
   location     String
   locationMode String   @default("in_person") // "remote" | "in_person" | "hybrid"
   isOnline     Boolean  @default(false)
+  latitude     Float?
+  longitude    Float?
   tags         String[]
   techs        String[]
 
@@ -149,6 +151,7 @@ model Hackathon {
   @@index([source])
   @@index([externalId])
   @@index([externalUrl])
+  @@index([latitude, longitude])
   @@map("hackathon")
 }
 

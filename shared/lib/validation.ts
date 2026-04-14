@@ -9,8 +9,10 @@ export const createHackathonSchema = z.object({
   image: z.string().optional(),
   isPublished: z.boolean().default(false),
 
+  latitude: z.number().min(-90).max(90).optional().nullable(),
   location: z.string().min(1, "Location is required"),
   locationMode: z.enum(["remote", "in_person", "hybrid"]).default("in_person"),
+  longitude: z.number().min(-180).max(180).optional().nullable(),
   maxParticipants: z.coerce.number().int().positive().optional(),
   maxTeamSize: z.coerce.number().int().positive().min(1).default(4),
   requiresApproval: z.boolean().default(false),

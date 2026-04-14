@@ -102,8 +102,10 @@ export async function createHackathonAction(raw: unknown): Promise<{
     externalUrl: data.externalUrl,
     image: data.image,
     isOnline: data.locationMode === "remote",
+    latitude: data.latitude,
     location: data.location ?? "",
     locationMode: data.locationMode,
+    longitude: data.longitude,
     maxParticipants: data.maxParticipants,
     maxTeamSize: data.maxTeamSize,
     organizerId: session.user.id,
@@ -187,6 +189,8 @@ export async function importLumaFormDataAction(url: string): Promise<{
     prizes?: { amount: string; description: string }[];
     externalId?: string;
     externalUrl?: string;
+    latitude?: number;
+    longitude?: number;
   };
   missingFields?: string[];
   error?: string;
@@ -221,9 +225,11 @@ export async function importLumaFormDataAction(url: string): Promise<{
         externalId: eventData.externalId,
         externalUrl: eventData.externalUrl,
         image: eventData.image,
+        latitude: eventData.latitude,
         location: eventData.location,
 
         locationMode: eventData.locationMode ?? "in_person",
+        longitude: eventData.longitude,
 
         prizes: eventData.prizes,
 

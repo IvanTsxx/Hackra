@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import type { Tech } from "@/lib/mock-data";
 import { CodeText } from "@/shared/components/code-text";
+import { LocationPicker } from "@/shared/components/location-picker";
 import { Calendar } from "@/shared/components/ui/calendar";
 import { FieldError, FieldLabel } from "@/shared/components/ui/field";
 import {
@@ -133,8 +134,10 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       externalId: undefined as string | undefined,
       externalUrl: undefined as string | undefined,
       isPublished: true,
+      latitude: null as number | null,
       location: "",
       locationMode: "in_person" as LocationMode,
+      longitude: null as number | null,
       maxParticipants: 500,
       maxTeamSize: 4,
       prizes: [] as PrizeEntry[],
@@ -153,8 +156,10 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
         externalUrl: value.externalUrl,
         image: importedImageUrl,
         isPublished: value.isPublished,
+        latitude: value.latitude,
         location: value.location,
         locationMode: value.locationMode,
+        longitude: value.longitude,
         maxParticipants: value.maxParticipants,
         maxTeamSize: value.maxTeamSize,
         requiresApproval: value.requiresApproval,
@@ -194,10 +199,12 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
   // REACTIVE SUBSCRIPTIONS — MUST come right after form, before any logic
   // ═══════════════════════════════════════════════════════════════════════════
   const isPublished = useStore(form.store, (state) => state.values.isPublished);
+  const latitude = useStore(form.store, (state) => state.values.latitude);
   const locationMode = useStore(
     form.store,
     (state) => state.values.locationMode
   );
+  const longitude = useStore(form.store, (state) => state.values.longitude);
   const title = useStore(form.store, (state) => state.values.title);
   const description = useStore(form.store, (state) => state.values.description);
   const startDate = useStore(form.store, (state) => state.values.startDate);
@@ -307,6 +314,9 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       if (d.endDate) form.setFieldValue("endDate", d.endDate);
       if (d.location) form.setFieldValue("location", d.location);
       form.setFieldValue("locationMode", d.locationMode);
+      if (d.latitude !== undefined) form.setFieldValue("latitude", d.latitude);
+      if (d.longitude !== undefined)
+        form.setFieldValue("longitude", d.longitude);
       if (d.requiresApproval) {
         form.setFieldValue("requiresApproval", true);
         toast.info("Event is full - registrations will require approval");
@@ -372,6 +382,14 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
     },
     []
   );
+
+  // Clear lat/lng when switching to remote mode
+  useEffect(() => {
+    if (locationMode === "remote") {
+      form.setFieldValue("latitude", null);
+      form.setFieldValue("longitude", null);
+    }
+  }, [locationMode, form]);
 
   // Debounced duplicate check effect
   useEffect(() => {
@@ -943,6 +961,45 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                           )}
                         </>
                       );
+                    }}
+                  />
+                  <form.Field
+                    name="latitude"
+                    children={(field) => (
+                      <input
+                        type="hidden"
+                        value={field.state.value ?? ""}
+                        onChange={(e) =>
+                          field.handleChange(
+                            e.target.value ? Number(e.target.value) : null
+                          )
+                        }
+                      />
+                    )}
+                  />
+                  <form.Field
+                    name="longitude"
+                    children={(field) => (
+                      <input
+                        type="hidden"
+                        value={field.state.value ?? ""}
+                        onChange={(e) =>
+                          field.handleChange(
+                            e.target.value ? Number(e.target.value) : null
+                          )
+                        }
+                      />
+                    )}
+                  />
+                  <LocationPicker
+                    latitude={latitude}
+                    longitude={longitude}
+                    onLocationChange={(lat, lng, address) => {
+                      form.setFieldValue("latitude", lat);
+                      form.setFieldValue("longitude", lng);
+                      if (address && !form.getFieldValue("location")) {
+                        form.setFieldValue("location", address);
+                      }
                     }}
                   />
                 </motion.div>

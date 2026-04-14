@@ -33,6 +33,9 @@ export interface CreateHackathonDTO {
   source?: string;
   externalId?: string;
   externalUrl?: string;
+  // Geocoordinates
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 export async function getAdminHackathons() {
@@ -92,8 +95,10 @@ export async function createHackathon(data: CreateHackathonDTO) {
       externalUrl: data.externalUrl,
       image: data.image,
       isOnline: data.isOnline,
+      latitude: data.latitude,
       location: data.location ?? "",
       locationMode: data.locationMode,
+      longitude: data.longitude,
       maxParticipants: data.maxParticipants,
       maxTeamSize: data.maxTeamSize ?? 4,
       organizerId: data.organizerId,

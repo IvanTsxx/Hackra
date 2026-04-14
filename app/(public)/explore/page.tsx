@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 
-import { getExploreFilters, getHackathonsForExplore } from "@/data/hackatons";
+import { getExploreFilters, getHackathonsForMap } from "@/data/hackatons";
 
-import { ExploreFilters } from "./_components/explore-filters";
-import { ExploreGrid } from "./_components/explore-grid";
+import { ExploreMapWrapper } from "./_components/explore-map-wrapper";
 
 export const metadata: Metadata = {
   description:
@@ -50,42 +49,34 @@ async function ExploreContent({ searchParams }: Props) {
   const tags = parseArrayParam(params.tag);
   const techs = parseArrayParam(params.tech);
 
-  const [data, filterOptions] = await Promise.all([
-    getHackathonsForExplore({
-      location: params.location,
-      q: params.q,
-      tags,
-      techs,
-    }),
+  const filters = {
+    location: params.location,
+    q: params.q,
+    tags,
+    techs,
+  };
+
+  // Fetch map data and filter options in parallel
+  const [mapData, filterOptions] = await Promise.all([
+    getHackathonsForMap(filters),
     getExploreFilters(),
   ]);
 
-  return (
-    <>
-      <ExploreFilters
-        filterOptions={filterOptions}
-        filteredCount={data.totalCount}
-        totalCount={filterOptions.totalCount}
-      />
+  // Calculate filtered count based on returned data
+  const filteredCount = mapData.length;
 
-      <ExploreGrid
-        initialHackathons={data.hackathons}
-        nextCursor={data.nextCursor}
-        hasMore={data.hasMore}
-        filters={{
-          location: params.location,
-          q: params.q,
-          tags,
-          techs,
-        }}
-      />
-    </>
+  return (
+    <ExploreMapWrapper
+      hackathons={mapData}
+      filterOptions={filterOptions}
+      filteredCount={filteredCount}
+    />
   );
 }
 
 export default function ExplorePage({ searchParams }: Props) {
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-16">
+    <main className="h-[calc(100dvh-4rem)]">
       <ExploreContent searchParams={searchParams} />
     </main>
   );

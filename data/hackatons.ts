@@ -18,9 +18,40 @@ export const hackathonExploreInclude = {
   prizes: true,
 } as const;
 
+export const hackathonMapInclude = {
+  prizes: {
+    orderBy: {
+      sortOrder: "asc" as const,
+    },
+    select: {
+      amount: true,
+    },
+  },
+} as const;
+
 type ExploreHackathon = HackathonGetPayload<{
   include: typeof hackathonExploreInclude;
 }>;
+
+export interface MapHackathon {
+  id: string;
+  slug: string;
+  title: string;
+  location: string;
+  locationMode: string;
+  isOnline: boolean;
+  latitude: number | null;
+  longitude: number | null;
+  status: string;
+  tags: string[];
+  techs: string[];
+  startDate: Date;
+  endDate: Date;
+  topPrize: number | null;
+  participantCount: number;
+  maxParticipants: number | null;
+  image: string | null;
+}
 
 export async function getFeaturedHackatons() {
   "use cache";
@@ -238,3 +269,160 @@ export const getAllHackathons = async () =>
     },
     take: 100,
   });
+
+/**
+ * Get featured hackathons for the map view (top ~8 by participant count).
+ * Used by the home page to show featured hackathons on a map.
+ */
+export async function getFeaturedHackatonsForMap(): Promise<MapHackathon[]> {
+  "use cache";
+  cacheLife(CACHE_LIFE.FEATURED_HACKATHONS);
+  cacheTag(CACHE_TAGS.FEATURED_HACKATHONS);
+
+  const hackathons = await prisma.hackathon.findMany({
+    include: {
+      participants: {
+        select: { id: true },
+      },
+      prizes: {
+        orderBy: { sortOrder: "asc" },
+        select: { amount: true },
+        take: 1,
+      },
+    },
+    orderBy: {
+      participants: {
+        _count: "desc",
+      },
+    },
+    take: 8,
+    where: {
+      status: { in: ["LIVE", "UPCOMING"] },
+    },
+  });
+
+  return hackathons.map((h) => ({
+    endDate: h.endDate,
+    id: h.id,
+    image: h.image,
+    isOnline: h.isOnline,
+    latitude: h.latitude,
+    location: h.location,
+    locationMode: h.locationMode,
+    longitude: h.longitude,
+    maxParticipants: h.maxParticipants,
+    participantCount: h.participants.length,
+    slug: h.slug,
+    startDate: h.startDate,
+    status: h.status,
+    tags: h.tags,
+    techs: h.techs,
+    title: h.title,
+    topPrize: h.prizes[0]?.amount ?? null,
+  }));
+}
+
+/**
+ * Get all hackathons for the map view (no pagination, includes coordinates).
+ * Returns both hackathons with coordinates (for map markers) and online-only ones (for list).
+ */
+export async function getHackathonsForMap(
+  params: ExploreFilters
+): Promise<MapHackathon[]> {
+  "use cache";
+  cacheLife(CACHE_LIFE.HACKATHONS_LIST);
+  cacheTag(
+    buildMapCacheTag(params.q, params.location, params.tags, params.techs)
+  );
+
+  const { q, location, tags, techs } = params;
+
+  const where: {
+    status?: { in: HackathonStatus[] };
+    tags?: { hasSome: string[] };
+    techs?: { hasSome: string[] };
+    location?: string;
+    isOnline?: boolean;
+    OR?: {
+      title?: { contains: string; mode: "insensitive" };
+      description?: { contains: string; mode: "insensitive" };
+    }[];
+  } = {
+    status: { in: ["LIVE", "UPCOMING"] },
+  };
+
+  if (tags && tags.length > 0) {
+    where.tags = { hasSome: tags };
+  }
+
+  if (techs && techs.length > 0) {
+    where.techs = { hasSome: techs };
+  }
+
+  if (location) {
+    if (location === "Online") {
+      where.isOnline = true;
+    } else {
+      where.location = location;
+    }
+  }
+
+  if (q) {
+    where.OR = [
+      { title: { contains: q, mode: "insensitive" } },
+      { description: { contains: q, mode: "insensitive" } },
+    ];
+  }
+
+  const hackathons = await prisma.hackathon.findMany({
+    include: {
+      participants: {
+        select: { id: true },
+      },
+      prizes: {
+        orderBy: { sortOrder: "asc" },
+        select: { amount: true },
+        take: 1,
+      },
+    },
+    orderBy: { startDate: "asc" },
+    take: 500,
+    where,
+  });
+
+  return hackathons.map((h) => ({
+    endDate: h.endDate,
+    id: h.id,
+    image: h.image,
+    isOnline: h.isOnline,
+    latitude: h.latitude,
+    location: h.location,
+    locationMode: h.locationMode,
+    longitude: h.longitude,
+    maxParticipants: h.maxParticipants,
+    participantCount: h.participants.length,
+    slug: h.slug,
+    startDate: h.startDate,
+    status: h.status,
+    tags: h.tags,
+    techs: h.techs,
+    title: h.title,
+    topPrize: h.prizes[0]?.amount ?? null,
+  }));
+}
+
+function buildMapCacheTag(
+  q?: string,
+  location?: string,
+  tags?: string[],
+  techs?: string[]
+): string {
+  const parts = [
+    q ?? "none",
+    location ?? "none",
+    tags?.join(",") ?? "none",
+    techs?.join(",") ?? "none",
+    "map",
+  ];
+  return `EXPLORE-${parts.join("-")}`;
+}

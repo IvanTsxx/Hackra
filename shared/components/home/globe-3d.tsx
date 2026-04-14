@@ -1,130 +1,180 @@
 "use client";
 
-import { Points, PointMaterial, OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { useTheme } from "next-themes";
-import { useRef, useMemo } from "react";
-import type * as THREE from "three";
+import { Calendar, ExternalLink, Trophy, Users } from "lucide-react";
+import Link from "next/link";
+import { useRef } from "react";
 
-interface GlobeProps {
-  color: string;
+import type { MapHackathon } from "@/data/hackatons";
+import { cn } from "@/shared/lib/utils";
+import type { MapRef } from "@/ui/map";
+import {
+  Map,
+  MapControls,
+  MapMarker,
+  MarkerContent,
+  MarkerTooltip,
+  MapPopup,
+} from "@/ui/map";
+
+interface HackathonGlobeProps {
+  hackathons: MapHackathon[];
+  className?: string;
 }
 
-function Globe({ color }: GlobeProps) {
-  const ref = useRef<THREE.Points>(null);
-
-  const points = useMemo(() => {
-    const pts: number[] = [];
-    const radius = 2;
-
-    // Latitude lines
-    for (let lat = -80; lat <= 80; lat += 20) {
-      const latRad = (lat * Math.PI) / 180;
-      const r = radius * Math.cos(latRad);
-      const y = radius * Math.sin(latRad);
-
-      for (let lon = 0; lon < 360; lon += 5) {
-        const lonRad = (lon * Math.PI) / 180;
-        pts.push(r * Math.cos(lonRad), y, r * Math.sin(lonRad));
-      }
-    }
-
-    // Longitude lines
-    for (let lon = 0; lon < 360; lon += 30) {
-      const lonRad = (lon * Math.PI) / 180;
-
-      for (let lat = -90; lat <= 90; lat += 5) {
-        const latRad = (lat * Math.PI) / 180;
-        const r = radius * Math.cos(latRad);
-        const y = radius * Math.sin(latRad);
-        pts.push(r * Math.cos(lonRad), y, r * Math.sin(lonRad));
-      }
-    }
-
-    return new Float32Array(pts);
-  }, []);
-
+function StatusDot({ status }: { status: string }) {
   return (
-    <Points ref={ref} positions={points} stride={3}>
-      <PointMaterial
-        transparent
-        color={color}
-        size={0.03}
-        sizeAttenuation
-        depthWrite={false}
-      />
-    </Points>
+    <span
+      className={cn(
+        "inline-block size-1.5 rounded-full",
+        status === "LIVE" ? "bg-green-400" : "bg-amber-400"
+      )}
+    />
   );
 }
 
-interface FloatingParticlesProps {
-  color: string;
-}
+export function HackathonGlobe({ hackathons, className }: HackathonGlobeProps) {
+  const mapRef = useRef<MapRef>(null);
 
-function FloatingParticles({ color }: FloatingParticlesProps) {
-  const ref = useRef<THREE.Points>(null);
-
-  const particles = useMemo(() => {
-    const pts: number[] = [];
-
-    for (let i = 0; i < 200; i += 1) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-      const r = 3 + Math.random() * 2;
-
-      pts.push(
-        r * Math.sin(phi) * Math.cos(theta),
-        r * Math.sin(phi) * Math.sin(theta),
-        r * Math.cos(phi)
-      );
-    }
-
-    return new Float32Array(pts);
-  }, []);
-
-  return (
-    <Points ref={ref} positions={particles} stride={3}>
-      <PointMaterial
-        transparent
-        color={color}
-        size={0.02}
-        sizeAttenuation
-        depthWrite={false}
-        opacity={0.5}
-      />
-    </Points>
+  // Only hackathons with coordinates
+  const pinned = hackathons.filter(
+    (h): h is MapHackathon & { latitude: number; longitude: number } =>
+      Number.isFinite(h.latitude) && Number.isFinite(h.longitude)
   );
-}
-
-export function Globe3D() {
-  const { resolvedTheme } = useTheme();
-
-  const pointColor = resolvedTheme === "dark" ? "#4ade80" : "#0a0a0a";
 
   return (
-    <div className="relative w-full h-full cursor-grab">
-      <Canvas
-        camera={{ fov: 55, position: [0, 0, 6] }}
-        gl={{ alpha: true, antialias: true }}
-        style={{ background: "transparent" }}
+    <div className={cn("relative h-[380px] overflow-hidden w-full", className)}>
+      {/* Globe map */}
+
+      <Map
+        ref={mapRef}
+        center={[10, 20]}
+        zoom={0.8}
+        projection={{ type: "globe" }}
+        className="h-full w-full"
       >
-        <ambientLight intensity={0.5} />
+        {pinned.map((h) => (
+          <MapMarker key={h.id} longitude={h.longitude} latitude={h.latitude}>
+            <MarkerContent>
+              <button
+                type="button"
+                className="relative flex items-center justify-center focus:outline-none"
+                onClick={() => {
+                  mapRef.current?.flyTo({
+                    center: [h.longitude, h.latitude],
+                    duration: 1800,
+                    zoom: 6,
+                  });
+                }}
+              >
+                {h.status === "LIVE" && (
+                  <span className="absolute size-6 animate-ping rounded-full bg-green-500/30" />
+                )}
+                <span
+                  className={cn(
+                    "size-4 rounded-full border-2 border-white shadow-lg",
+                    h.status === "LIVE" ? "bg-green-400" : "bg-amber-400"
+                  )}
+                />
+              </button>
+            </MarkerContent>
 
-        <Globe color={pointColor} />
-        <FloatingParticles color={pointColor} />
+            <MarkerTooltip>
+              <div className="min-w-[180px] space-y-1.5">
+                <div className="flex items-center gap-1.5">
+                  <StatusDot status={h.status} />
+                  <span className="text-[10px] font-semibold uppercase tracking-wide opacity-70">
+                    {h.status}
+                  </span>
+                </div>
 
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          rotateSpeed={0.6}
-          autoRotate
-          autoRotateSpeed={0.5}
-          enableDamping
-          dampingFactor={0.05}
-          minPolarAngle={Math.PI / 3}
-          maxPolarAngle={(Math.PI / 3) * 2}
-        />
-      </Canvas>
+                <p className="text-xs font-medium leading-snug line-clamp-2">
+                  {h.title}
+                </p>
+
+                <div className="flex items-center gap-3 text-[10px] opacity-60">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="size-2.5" />
+                    {new Date(h.startDate).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Users className="size-2.5" />
+                    {h.participantCount}
+                  </span>
+                  {h.topPrize && (
+                    <span className="flex items-center gap-1 text-green-400">
+                      <Trophy className="size-2.5" />
+                      {h.topPrize.toLocaleString("en-US", {
+                        currency: "USD",
+                        maximumFractionDigits: 0,
+                        style: "currency",
+                      })}
+                    </span>
+                  )}
+                </div>
+
+                <Link
+                  href={`/hackathon/${h.slug}`}
+                  className="flex items-center gap-1 text-[10px] text-green-400 hover:underline"
+                >
+                  View details
+                  <ExternalLink className="size-2.5" />
+                </Link>
+              </div>
+            </MarkerTooltip>
+            <MapPopup latitude={h.latitude} longitude={h.longitude}>
+              <div className="min-w-[180px] space-y-1.5">
+                <div className="flex items-center gap-1.5">
+                  <StatusDot status={h.status} />
+                  <span className="text-[10px] font-semibold uppercase tracking-wide opacity-70">
+                    {h.status}
+                  </span>
+                </div>
+
+                <p className="text-xs font-medium leading-snug line-clamp-2">
+                  {h.title}
+                </p>
+
+                <div className="flex items-center gap-3 text-[10px] opacity-60">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="size-2.5" />
+                    {new Date(h.startDate).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Users className="size-2.5" />
+                    {h.participantCount}
+                  </span>
+                  {h.topPrize && (
+                    <span className="flex items-center gap-1 text-green-400">
+                      <Trophy className="size-2.5" />
+                      {h.topPrize.toLocaleString("en-US", {
+                        currency: "USD",
+                        maximumFractionDigits: 0,
+                        style: "currency",
+                      })}
+                    </span>
+                  )}
+                </div>
+
+                <Link
+                  href={`/hackathon/${h.slug}`}
+                  className="flex items-center gap-1 text-[10px] text-green-400 hover:underline"
+                >
+                  View details
+                  <ExternalLink className="size-2.5" />
+                </Link>
+              </div>
+            </MapPopup>
+          </MapMarker>
+        ))}
+
+        <MapControls position="top-right" showZoom />
+      </Map>
     </div>
   );
 }

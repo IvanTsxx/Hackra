@@ -1,17 +1,13 @@
-"use client";
+import { getFeaturedHackatonsForMap } from "@/data/hackatons";
 
-import dynamic from "next/dynamic";
+import { HackathonGlobe } from "./globe-3d";
 
-const Globe3D = dynamic(
-  async () => {
-    const mod = await import("./globe-3d");
-    return mod.Globe3D;
-  },
-  { ssr: false }
-);
+export async function HeroRight() {
+  const hackathons = await getFeaturedHackatonsForMap();
 
-export const HeroRight = () => (
-  <div className="relative flex items-center justify-center h-[350px] lg:h-[600px] w-full">
-    <Globe3D />
-  </div>
-);
+  return (
+    <div className="relative w-full">
+      <HackathonGlobe hackathons={hackathons} />
+    </div>
+  );
+}
