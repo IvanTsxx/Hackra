@@ -1,3 +1,72 @@
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+
+## 1. Think Before Coding
+
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+## 2. Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+## 3. Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+## 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
+
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
+
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+---
+
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
 # Hackra — Agent Guidelines
 
 Hackra is a hackathon platform built with Next.js 16, React 19, TypeScript, Prisma 7 (PostgreSQL), Better Auth, Tailwind CSS 4, and shadcn/ui. Package manager: **Bun**.
@@ -10,7 +79,7 @@ Hackra is a hackathon platform built with Next.js 16, React 19, TypeScript, Pris
 
 ### References
 
-- **AGENTS.md**: Contains the same guidelines as this file — [ver AGENTS.md](./AGENTS.md)
+- **GEMINI.md**: Contains the same guidelines as this file — [ver GEMINI.md](./GEMINI.md)
 - **CLAUDE.md**: Version for Claude Code with `.claude/skills` paths — [ver CLAUDE.md](./CLAUDE.md)
 - **DESIGN.md**: Complete design system documentation — [ver DESIGN.md](./DESIGN.md)
 
@@ -54,29 +123,29 @@ Hackra is a hackathon platform built with Next.js 16, React 19, TypeScript, Pris
 
 ### SDD (Spec-Driven Development) Skills
 
-| Skill         | When to Load                      | Location                                  |
-| ------------- | --------------------------------- | ----------------------------------------- |
-| `sdd-init`    | Initialize SDD context in project | `~/.opencode/skills/sdd-init/SKILL.md`    |
-| `sdd-explore` | Explore and investigate ideas     | `~/.opencode/skills/sdd-explore/SKILL.md` |
-| `sdd-propose` | Create change proposals           | `~/.opencode/skills/sdd-propose/SKILL.md` |
-| `sdd-spec`    | Write specifications              | `~/.opencode/skills/sdd-spec/SKILL.md`    |
-| `sdd-design`  | Create technical design           | `~/.opencode/skills/sdd-design/SKILL.md`  |
-| `sdd-tasks`   | Break down into tasks             | `~/.opencode/skills/sdd-tasks/SKILL.md`   |
-| `sdd-apply`   | Implement tasks                   | `~/.opencode/skills/sdd-apply/SKILL.md`   |
-| `sdd-verify`  | Validate implementation           | `~/.opencode/skills/sdd-verify/SKILL.md`  |
-| `sdd-archive` | Archive completed change          | `~/.opencode/skills/sdd-archive/SKILL.md` |
-| `sdd-onboard` | Guided SDD walkthrough            | `~/.opencode/skills/sdd-onboard/SKILL.md` |
+| Skill         | When to Load                      | Location                                                      |
+| ------------- | --------------------------------- | ------------------------------------------------------------- |
+| `sdd-init`    | Initialize SDD context in project | `C:\Users\juanb\.config\opencode/skills/sdd-init/SKILL.md`    |
+| `sdd-explore` | Explore and investigate ideas     | `C:\Users\juanb\.config\opencode/skills/sdd-explore/SKILL.md` |
+| `sdd-propose` | Create change proposals           | `C:\Users\juanb\.config\opencode/skills/sdd-propose/SKILL.md` |
+| `sdd-spec`    | Write specifications              | `C:\Users\juanb\.config\opencode/skills/sdd-spec/SKILL.md`    |
+| `sdd-design`  | Create technical design           | `C:\Users\juanb\.config\opencode/skills/sdd-design/SKILL.md`  |
+| `sdd-tasks`   | Break down into tasks             | `C:\Users\juanb\.config\opencode/skills/sdd-tasks/SKILL.md`   |
+| `sdd-apply`   | Implement tasks                   | `C:\Users\juanb\.config\opencode/skills/sdd-apply/SKILL.md`   |
+| `sdd-verify`  | Validate implementation           | `C:\Users\juanb\.config\opencode/skills/sdd-verify/SKILL.md`  |
+| `sdd-archive` | Archive completed change          | `C:\Users\juanb\.config\opencode/skills/sdd-archive/SKILL.md` |
+| `sdd-onboard` | Guided SDD walkthrough            | `C:\Users\juanb\.config\opencode/skills/sdd-onboard/SKILL.md` |
 
 ### Workflow Skills
 
-| Skill            | When to Load                        | Location                                     |
-| ---------------- | ----------------------------------- | -------------------------------------------- |
-| `branch-pr`      | Creating pull requests, PR workflow | `~/.opencode/skills/branch-pr/SKILL.md`      |
-| `issue-creation` | Creating GitHub issues              | `~/.opencode/skills/issue-creation/SKILL.md` |
-| `judgment-day`   | Adversarial code review             | `~/.opencode/skills/judgment-day/SKILL.md`   |
-| `skill-creator`  | Creating new AI agent skills        | `~/.opencode/skills/skill-creator/SKILL.md`  |
-| `skill-registry` | Update skill registry               | `~/.opencode/skills/skill-registry/SKILL.md` |
-| `go-testing`     | Go testing patterns                 | `~/.opencode/skills/go-testing/SKILL.md`     |
+| Skill            | When to Load                        | Location                                                         |
+| ---------------- | ----------------------------------- | ---------------------------------------------------------------- |
+| `branch-pr`      | Creating pull requests, PR workflow | `C:\Users\juanb\.config\opencode/skills/branch-pr/SKILL.md`      |
+| `issue-creation` | Creating GitHub issues              | `C:\Users\juanb\.config\opencode/skills/issue-creation/SKILL.md` |
+| `judgment-day`   | Adversarial code review             | `C:\Users\juanb\.config\opencode/skills/judgment-day/SKILL.md`   |
+| `skill-creator`  | Creating new AI agent skills        | `C:\Users\juanb\.config\opencode/skills/skill-creator/SKILL.md`  |
+| `skill-registry` | Update skill registry               | `C:\Users\juanb\.config\opencode/skills/skill-registry/SKILL.md` |
+| `go-testing`     | Go testing patterns                 | `C:\Users\juanb\.config\opencode/skills/go-testing/SKILL.md`     |
 
 ### Skill Loading Rules
 
