@@ -2,7 +2,7 @@
 
 import { Calendar, MapPin, Trophy, Users } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import type { MapHackathon } from "@/data/hackatons";
 import { cn } from "@/shared/lib/utils";
@@ -11,7 +11,6 @@ import {
   MapClusterLayer,
   MapControls,
   MapPopup,
-  useMap,
 } from "@/ui/map";
 
 import { StatusPill } from "./tag-badge";
@@ -35,52 +34,6 @@ interface HackathonProperties {
   slug: string;
   status: string;
   title: string;
-}
-
-// Auto-fit bounds to show all markers on load
-function FitBoundsOnLoad({ hackathons }: { hackathons: MapHackathon[] }) {
-  const { map, isLoaded } = useMap();
-
-  useEffect(() => {
-    if (!isLoaded || !map) return;
-
-    const valid = hackathons.filter(
-      (h) => Number.isFinite(h.latitude) && Number.isFinite(h.longitude)
-    );
-
-    if (valid.length === 0) return;
-
-    if (valid.length === 1) {
-      const [first] = valid;
-      map.setCenter([Number(first.longitude), Number(first.latitude)]);
-      map.setZoom(6);
-      return;
-    }
-
-    let minLng = Infinity;
-    let maxLng = -Infinity;
-    let minLat = Infinity;
-    let maxLat = -Infinity;
-
-    for (const h of valid) {
-      const lng = Number(h.longitude);
-      const lat = Number(h.latitude);
-      if (lng < minLng) minLng = lng;
-      if (lng > maxLng) maxLng = lng;
-      if (lat < minLat) minLat = lat;
-      if (lat > maxLat) maxLat = lat;
-    }
-
-    map.fitBounds(
-      [
-        [minLng, minLat],
-        [maxLng, maxLat],
-      ],
-      { maxZoom: 8, padding: 60 }
-    );
-  }, [isLoaded, map, hackathons]);
-
-  return null;
 }
 
 export function FeaturedHackathonsMap({
@@ -166,7 +119,6 @@ export function FeaturedHackathonsMap({
           onViewportChange={(v) => setViewport(v)}
           className="h-full w-full"
         >
-          <FitBoundsOnLoad hackathons={mapHackathons} />
           <MapControls position="top-right" showZoom showCompass />
 
           <MapClusterLayer<HackathonProperties>

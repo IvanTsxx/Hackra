@@ -71,7 +71,7 @@ interface ActiveFilter extends FilterItem {
 function FlyToController({
   target,
 }: {
-  target: { lng: number; lat: number } | null;
+  target: { lng: number; lat: number; zoom?: number } | null;
 }) {
   const { map } = useMap();
 
@@ -80,7 +80,7 @@ function FlyToController({
     map.flyTo({
       center: [target.lng, target.lat],
       duration: 1200,
-      zoom: 6,
+      zoom: target.zoom ?? 6,
     });
   }, [map, target]);
 
@@ -340,7 +340,10 @@ export function ExploreMap({
   const [flyTarget, setFlyTarget] = useState<{
     lng: number;
     lat: number;
+    zoom?: number;
   } | null>(null);
+
+  const [isLocating, setIsLocating] = useState(false);
 
   // Active filter dropdown state
   const [activeFilter, setActiveFilter] = useState<ActiveFilter | null>(null);
@@ -403,19 +406,21 @@ export function ExploreMap({
     return map;
   }, [mapHackathons]);
 
-  // Geolocation for initial center
-  useEffect(() => {
+  // Handle locate user
+  const locateUser = useCallback(() => {
     if (typeof navigator !== "undefined" && navigator.geolocation) {
+      setIsLocating(true);
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          setViewport((prev) => ({
-            ...prev,
-            center: [pos.coords.longitude, pos.coords.latitude],
+          setFlyTarget({
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
             zoom: 10,
-          }));
+          });
+          setIsLocating(false);
         },
         () => {
-          // Fallback: keep defaults
+          setIsLocating(false);
         },
         { timeout: 5000 }
       );
@@ -464,8 +469,8 @@ export function ExploreMap({
     [activeFilter, hackathons]
   );
 
-  const handleFlyTo = useCallback((lng: number, lat: number) => {
-    setFlyTarget({ lat, lng });
+  const handleFlyTo = useCallback((lng: number, lat: number, zoom?: number) => {
+    setFlyTarget({ lat, lng, zoom });
   }, []);
 
   return (
@@ -473,6 +478,23 @@ export function ExploreMap({
       {/* ── Filter bar ─────────────────────────────────────────────────────── */}
       {showFilters && (
         <div className="relative z-20 flex items-center gap-2 px-3 py-2 bg-card/80 border-b border-border/30 backdrop-blur-md overflow-x-auto no-scrollbar">
+          <button
+            type="button"
+            onClick={locateUser}
+            disabled={isLocating}
+            className={cn(
+              "flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium transition-all shrink-0 border backdrop-blur-md",
+              isLocating
+                ? "bg-brand-green/20 border-brand-green text-brand-green animate-pulse"
+                : "bg-card/70 border-border/40 text-muted-foreground hover:border-brand-green/40 hover:text-foreground"
+            )}
+          >
+            <MapPin className="size-3" />
+            <span>{isLocating ? "Buscando..." : "Buscar cerca de mí"}</span>
+          </button>
+
+          <div className="w-px h-4 bg-border/40 shrink-0" />
+
           <span className="text-[10px] font-pixel text-muted-foreground uppercase tracking-wider shrink-0 mr-1">
             Filtrar
           </span>
@@ -624,6 +646,46 @@ export function ExploreMap({
             </div>
           </div>
         )}
+
+        {/* Map Hackathons Results overlay panel - bottom-right */}
+        {mapHackathons.length > 0 && (
+          <div className="absolute bottom-4 right-4 z-10 w-[240px] sm:w-[280px]">
+            <div className="glass bg-card/80 backdrop-blur-md border border-border/40 p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <MapPin size={12} className="text-brand-green" />
+                <h3 className="font-pixel text-[10px] text-brand-green tracking-wider">
+                  EN EL MAPA
+                </h3>
+                <span className="text-[10px] text-muted-foreground">
+                  (
+                  {
+                    (activeFilter
+                      ? activeFilter.hackathons.filter((h) =>
+                          Number.isFinite(h.latitude)
+                        )
+                      : mapHackathons
+                    ).length
+                  }
+                  )
+                </span>
+              </div>
+              <div className="max-h-[180px] overflow-y-auto space-y-1.5 pr-1">
+                {(activeFilter
+                  ? activeFilter.hackathons.filter((h) =>
+                      Number.isFinite(h.latitude)
+                    )
+                  : mapHackathons
+                ).map((h) => (
+                  <MapResultRow
+                    key={h.id}
+                    hackathon={h}
+                    onFlyTo={handleFlyTo}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -747,5 +809,45 @@ function OnlineHackathonRow({ hackathon: h }: { hackathon: MapHackathon }) {
         </div>
       </article>
     </Link>
+  );
+}
+
+function MapResultRow({
+  hackathon: h,
+  onFlyTo,
+}: {
+  hackathon: MapHackathon;
+  onFlyTo: (lng: number, lat: number) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        if (Number.isFinite(h.longitude) && Number.isFinite(h.latitude)) {
+          onFlyTo(Number(h.longitude), Number(h.latitude));
+        }
+      }}
+      className="w-full flex items-start gap-2 p-1.5 hover:bg-accent/30 transition-colors text-left group border border-transparent hover:border-border/30"
+    >
+      <div className="pt-0.5 shrink-0">
+        <StatusPill
+          index={0}
+          status={h.status as "LIVE" | "UPCOMING" | "ENDED"}
+        />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-[11px] text-foreground group-hover:text-brand-green transition-colors truncate">
+          {h.title}
+        </p>
+        <div className="flex items-center gap-2 mt-0.5 text-[9px] text-muted-foreground">
+          <span className="flex items-center gap-0.5 truncate">
+            {h.location.split(",")[0]}
+          </span>
+          <span className="opacity-0 group-hover:opacity-100 transition-opacity ml-auto text-brand-green/80 flex items-center gap-0.5">
+            Volver
+          </span>
+        </div>
+      </div>
+    </button>
   );
 }

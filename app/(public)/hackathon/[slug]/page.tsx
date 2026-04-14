@@ -18,11 +18,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import type { MapHackathon } from "@/data/hackatons";
 import { getAllHackathons, getHackathon } from "@/data/hackatons";
 import { getSponsorsForHackathon } from "@/data/sponsors";
 import { getTeamsForHackathon } from "@/data/teams";
 import { getUserById } from "@/data/user";
 import { CodeText } from "@/shared/components/code-text";
+import { FeaturedHackathonsMap } from "@/shared/components/featured-hackathons-map";
 import { HackathonBackground } from "@/shared/components/hackathon-background";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { SITE_URL } from "@/shared/lib/site";
@@ -109,6 +111,26 @@ export default async function HackathonDetailPage({
 
   const participants = hackathon.participants.map(({ user }) => user);
   const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
+
+  const mapHackathon: MapHackathon = {
+    endDate: hackathon.endDate,
+    id: hackathon.id,
+    image: hackathon.image,
+    isOnline: hackathon.isOnline,
+    latitude: hackathon.latitude,
+    location: hackathon.location,
+    locationMode: hackathon.locationMode,
+    longitude: hackathon.longitude,
+    maxParticipants: hackathon.maxParticipants,
+    participantCount: participants.length,
+    slug: hackathon.slug,
+    startDate: hackathon.startDate,
+    status: hackathon.status,
+    tags: hackathon.tags,
+    techs: hackathon.techs,
+    title: hackathon.title,
+    topPrize: hackathon.prizes[0]?.amount ?? null,
+  };
 
   return (
     <main className="px-2 lg:px-6 py-20">
@@ -431,6 +453,19 @@ export default async function HackathonDetailPage({
             <CodeText as="p">ABOUT</CodeText>
             <MarkdownRenderer content={hackathon.description} />
           </div>
+
+          {/* Map */}
+          {!hackathon.isOnline && hackathon.latitude && hackathon.longitude && (
+            <div className="glass border border-border/40 p-5 space-y-4">
+              <div className="flex items-center gap-2">
+                <MapPin size={13} className="text-brand-green" />
+                <p className="  text-xs text-muted-foreground tracking-widest">
+                  LOCATION
+                </p>
+              </div>
+              <FeaturedHackathonsMap hackathons={[mapHackathon]} />
+            </div>
+          )}
 
           {/* Teams CTA */}
           <Suspense fallback={<div className="h-20" />}>
