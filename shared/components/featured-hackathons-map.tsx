@@ -1,27 +1,18 @@
 "use client";
 
-import {
-  Calendar,
-  ExternalLink,
-  MapPin,
-  Trophy,
-  Users,
-  Wifi,
-} from "lucide-react";
+import { Calendar, MapPin, Trophy, Users, Wifi } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { MapHackathon } from "@/data/hackatons";
 import { cn } from "@/shared/lib/utils";
 import {
   Map as MapLibreMap,
+  MapClusterLayer,
   MapControls,
-  MapMarker,
-  MarkerContent,
-  MarkerTooltip,
+  MapPopup,
   useMap,
 } from "@/ui/map";
-import type { MapRef } from "@/ui/map";
 
 import { StatusPill } from "./tag-badge";
 
@@ -30,21 +21,37 @@ interface FeaturedHackathonsMapProps {
   className?: string;
 }
 
-// Auto-fit bounds to show all markers
+// Hex only — MapLibre GL doesn't support oklch
+const CLUSTER_COLORS: [string, string, string] = [
+  "#4ade80",
+  "#8b5cf6",
+  "#7c3aed",
+];
+const CLUSTER_THRESHOLDS: [number, number] = [5, 20];
+const POINT_COLOR = "#4ade80";
+
+interface HackathonProperties {
+  id: string;
+  slug: string;
+  status: string;
+  title: string;
+}
+
+// Auto-fit bounds to show all markers on load
 function FitBoundsOnLoad({ hackathons }: { hackathons: MapHackathon[] }) {
   const { map, isLoaded } = useMap();
 
   useEffect(() => {
     if (!isLoaded || !map) return;
 
-    const validHackathons = hackathons.filter(
+    const valid = hackathons.filter(
       (h) => Number.isFinite(h.latitude) && Number.isFinite(h.longitude)
     );
 
-    if (validHackathons.length === 0) return;
+    if (valid.length === 0) return;
 
-    if (validHackathons.length === 1) {
-      const [first] = validHackathons;
+    if (valid.length === 1) {
+      const [first] = valid;
       map.setCenter([Number(first.longitude), Number(first.latitude)]);
       map.setZoom(6);
       return;
@@ -55,7 +62,7 @@ function FitBoundsOnLoad({ hackathons }: { hackathons: MapHackathon[] }) {
     let minLat = Infinity;
     let maxLat = -Infinity;
 
-    for (const h of validHackathons) {
+    for (const h of valid) {
       const lng = Number(h.longitude);
       const lat = Number(h.latitude);
       if (lng < minLng) minLng = lng;
@@ -76,70 +83,164 @@ function FitBoundsOnLoad({ hackathons }: { hackathons: MapHackathon[] }) {
   return null;
 }
 
-// ─── Marker dot ───────────────────────────────────────────────────────────────
+export function FeaturedHackathonsMap({
+  hackathons,
+  className,
+}: FeaturedHackathonsMapProps) {
+  const [selectedPoint, setSelectedPoint] = useState<{
+    coordinates: [number, number];
+    properties: HackathonProperties;
+  } | null>(null);
 
-function HackathonMarkerDot({
-  status,
-  onClick,
-}: {
-  status: string;
-  onClick: () => void;
-}) {
-  const isLive = status === "LIVE";
+  const [viewport, setViewport] = useState({
+    bearing: 0,
+    center: [0, 20] as [number, number],
+    pitch: 0,
+    zoom: 1,
+  });
+
+  const mapHackathons = useMemo(
+    () =>
+      hackathons.filter(
+        (h): h is MapHackathon & { latitude: number; longitude: number } =>
+          Number.isFinite(h.latitude) && Number.isFinite(h.longitude)
+      ),
+    [hackathons]
+  );
+
+  const onlineHackathons = useMemo(
+    () => hackathons.filter((h) => h.isOnline || h.locationMode === "remote"),
+    [hackathons]
+  );
+
+  // GeoJSON for cluster layer
+  const geojson = useMemo(
+    () => ({
+      features: mapHackathons.map((h) => ({
+        geometry: {
+          coordinates: [Number(h.longitude), Number(h.latitude)] as [
+            number,
+            number,
+          ],
+          type: "Point" as const,
+        },
+        properties: {
+          id: h.id,
+          slug: h.slug,
+          status: h.status,
+          title: h.title,
+        } as HackathonProperties,
+        type: "Feature" as const,
+      })),
+      type: "FeatureCollection" as const,
+    }),
+    [mapHackathons]
+  );
+
+  // Lookup for full hackathon data
+  const hackathonMap = useMemo(() => {
+    const map = new Map<string, (typeof mapHackathons)[number]>();
+    for (const h of mapHackathons) map.set(h.id, h);
+    return map;
+  }, [mapHackathons]);
+
+  const handlePointClick = useCallback(
+    (
+      feature: GeoJSON.Feature<GeoJSON.Point, HackathonProperties>,
+      coordinates: [number, number]
+    ) => {
+      setSelectedPoint({ coordinates, properties: feature.properties });
+    },
+    []
+  );
+
+  const selectedHackathon = selectedPoint
+    ? (hackathonMap.get(selectedPoint.properties.id) ?? null)
+    : null;
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="relative flex items-center justify-center focus:outline-none"
-    >
-      {/* Ping animation for LIVE */}
-      {isLive && (
-        <span className="absolute size-6 animate-ping rounded-full bg-brand-green/30" />
+    <div className={cn("relative", className)}>
+      <div className="relative h-[380px] border border-border/40 overflow-hidden">
+        <MapLibreMap
+          viewport={viewport}
+          onViewportChange={(v) => setViewport(v)}
+          className="h-full w-full"
+        >
+          <FitBoundsOnLoad hackathons={mapHackathons} />
+          <MapControls position="top-right" showZoom showCompass />
+
+          <MapClusterLayer<HackathonProperties>
+            data={geojson}
+            clusterMaxZoom={14}
+            clusterRadius={50}
+            clusterColors={CLUSTER_COLORS}
+            clusterThresholds={CLUSTER_THRESHOLDS}
+            pointColor={POINT_COLOR}
+            onPointClick={handlePointClick}
+          />
+
+          {selectedPoint && selectedHackathon && (
+            <MapPopup
+              key={`${selectedPoint.coordinates[0]}-${selectedPoint.coordinates[1]}`}
+              longitude={selectedPoint.coordinates[0]}
+              latitude={selectedPoint.coordinates[1]}
+              onClose={() => setSelectedPoint(null)}
+              closeOnClick={false}
+              focusAfterOpen={false}
+              closeButton
+            >
+              <FeaturedPopupCard hackathon={selectedHackathon} />
+            </MapPopup>
+          )}
+        </MapLibreMap>
+      </div>
+
+      {/* Online hackathons grid below map */}
+      {onlineHackathons.length > 0 && (
+        <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {onlineHackathons.slice(0, 3).map((h) => (
+            <OnlineOnlyCard key={h.id} hackathon={h} />
+          ))}
+        </div>
       )}
-      {/* Outer glow ring */}
-      <span
-        className={cn(
-          "absolute rounded-full opacity-30",
-          isLive ? "size-5 bg-brand-green" : "size-4 bg-amber-400"
-        )}
-      />
-      {/* Core dot */}
-      <span
-        className={cn(
-          "relative rounded-full border-2 border-white shadow-lg shadow-black/40",
-          isLive ? "size-4 bg-brand-green" : "size-3.5 bg-amber-400"
-        )}
-      />
-    </button>
+    </div>
   );
 }
 
-// ─── Tooltip content ──────────────────────────────────────────────────────────
+// ─── Popup card — misma info que explore-map ─────────────────────────────────
 
-function HackathonTooltipContent({ h }: { h: MapHackathon }) {
+function FeaturedPopupCard({
+  hackathon: h,
+}: {
+  hackathon: MapHackathon & { latitude: number; longitude: number };
+}) {
   const startDate = new Date(h.startDate);
   const endDate = new Date(h.endDate);
 
   return (
-    <div className="min-w-[200px] max-w-[260px] space-y-2">
+    <div className="min-w-[240px] max-w-[300px] space-y-2 bg-card p-3 border border-border/40">
       {/* Status + location */}
       <div className="flex items-center gap-2">
         <StatusPill
           index={0}
           status={h.status as "LIVE" | "UPCOMING" | "ENDED"}
         />
-        <span className="flex items-center gap-1 text-[10px] opacity-60">
+        <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
           <MapPin className="size-2.5" />
           {h.location.split(",")[0]}
         </span>
       </div>
 
       {/* Title */}
-      <p className="text-xs font-medium leading-snug line-clamp-2">{h.title}</p>
+      <Link
+        href={`/hackathon/${h.slug}`}
+        className="block text-sm font-medium text-foreground hover:text-brand-green transition-colors line-clamp-2"
+      >
+        {h.title}
+      </Link>
 
       {/* Dates + participants */}
-      <div className="flex items-center gap-3 text-[10px] opacity-60">
+      <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
         <span className="flex items-center gap-1">
           <Calendar className="size-2.5" />
           {startDate.toLocaleDateString("en-US", {
@@ -156,14 +257,16 @@ function HackathonTooltipContent({ h }: { h: MapHackathon }) {
           <Users className="size-2.5" />
           {h.participantCount}
           {h.maxParticipants && (
-            <span className="opacity-60">/{h.maxParticipants}</span>
+            <span className="text-muted-foreground/50">
+              /{h.maxParticipants}
+            </span>
           )}
         </span>
       </div>
 
       {/* Prize */}
       {h.topPrize && (
-        <div className="flex items-center gap-1 text-[10px] text-brand-green">
+        <div className="flex items-center gap-1 text-[11px] text-brand-green">
           <Trophy className="size-2.5" />
           {h.topPrize.toLocaleString("en-US", {
             currency: "USD",
@@ -173,96 +276,28 @@ function HackathonTooltipContent({ h }: { h: MapHackathon }) {
         </div>
       )}
 
-      {/* Link */}
-      <Link
-        href={`/hackathon/${h.slug}`}
-        className="flex items-center gap-1 text-[10px] text-brand-green hover:underline font-medium"
-      >
-        View details
-        <ExternalLink className="size-2.5" />
-      </Link>
-    </div>
-  );
-}
-
-// ─── Main component ───────────────────────────────────────────────────────────
-
-export function FeaturedHackathonsMap({
-  hackathons,
-  className,
-}: FeaturedHackathonsMapProps) {
-  const mapRef = useRef<MapRef>(null);
-
-  const [viewport, setViewport] = useState({
-    bearing: 0,
-    center: [0, 20] as [number, number],
-    pitch: 0,
-    zoom: 1,
-  });
-
-  // Only hackathons with valid coordinates
-  const pinnedHackathons = useMemo(
-    () =>
-      hackathons.filter(
-        (h): h is MapHackathon & { latitude: number; longitude: number } =>
-          Number.isFinite(h.latitude) && Number.isFinite(h.longitude)
-      ),
-    [hackathons]
-  );
-
-  // Online-only hackathons
-  const onlineHackathons = useMemo(
-    () => hackathons.filter((h) => h.isOnline || h.locationMode === "remote"),
-    [hackathons]
-  );
-
-  const handleMarkerClick = useCallback((lng: number, lat: number) => {
-    mapRef.current?.flyTo({
-      center: [lng, lat],
-      duration: 1200,
-      zoom: 6,
-    });
-  }, []);
-
-  return (
-    <div className={cn("relative", className)}>
-      {/* Map */}
-      <div className="relative h-[380px] border border-border/40 overflow-hidden">
-        <MapLibreMap
-          ref={mapRef}
-          viewport={viewport}
-          onViewportChange={(v) => setViewport(v)}
-          className="h-full w-full"
-        >
-          <FitBoundsOnLoad hackathons={pinnedHackathons} />
-          <MapControls position="top-right" showZoom showCompass />
-
-          {/* Individual markers */}
-          {pinnedHackathons.map((h) => (
-            <MapMarker key={h.id} longitude={h.longitude} latitude={h.latitude}>
-              <MarkerContent>
-                <HackathonMarkerDot
-                  status={h.status}
-                  onClick={() => handleMarkerClick(h.longitude, h.latitude)}
-                />
-              </MarkerContent>
-
-              <MarkerTooltip>
-                <HackathonTooltipContent h={h} />
-              </MarkerTooltip>
-            </MapMarker>
-          ))}
-        </MapLibreMap>
-      </div>
-
-      {/* Online hackathons list below map */}
-      {onlineHackathons.length > 0 && (
-        <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {onlineHackathons.slice(0, 3).map((h) => (
-            <OnlineOnlyCard key={h.id} hackathon={h} />
+      {/* Tags */}
+      {h.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {h.tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className="text-[9px] border border-brand-purple/30 px-1.5 py-0.5 text-brand-purple"
+            >
+              {tag}
+            </span>
           ))}
         </div>
       )}
+
+      {/* CTA */}
+      <Link
+        href={`/hackathon/${h.slug}`}
+        className="inline-flex items-center gap-1 text-[11px] text-brand-green hover:underline hover:decoration-brand-green hover:decoration-wavy transition-colors font-medium"
+      >
+        View Details
+        <span aria-hidden="true">→</span>
+      </Link>
     </div>
   );
 }
