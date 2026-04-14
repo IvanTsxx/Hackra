@@ -398,6 +398,22 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
     return () => clearTimeout(timeout);
   }, [title, description]);
 
+  const handleReset = () => {
+    form.reset();
+    setStep(0);
+    setDuplicateCheck({
+      isChecking: false,
+      isDuplicate: false,
+      similarHackathons: [],
+    });
+    setLumaUrl("");
+    setLumaPreviewData(undefined);
+    setLumaPreviewError(null);
+    setLumaLoading(false);
+    setLumaImported(false);
+    setImportedImageUrl(undefined);
+  };
+
   const handleSubmit = async () => {
     // Use getFieldValue in event handlers — NOT useStore (breaks Rules of Hooks)
     const startDate = form.getFieldValue("startDate");
@@ -516,6 +532,13 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
             form.setFieldValue("isPublished", checked)
           }
         />
+      </div>
+
+      <div className="flex justify-end">
+        <Button variant="destructive" type="button" onClick={handleReset}>
+          <X className="size-5" />
+          LIMPIAR
+        </Button>
       </div>
 
       {/* Step tabs */}
@@ -1314,14 +1337,16 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
 
       {/* Navigation */}
       <div className="flex items-center justify-between mt-8 py-4 border-t border-border/20">
-        <button
-          type="button"
-          onClick={() => setStep((s) => Math.max(0, s - 1))}
-          disabled={step === 0}
-          className="font-pixel text-xs tracking-wider text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-3 py-2"
-        >
-          ← BACK
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setStep((s) => Math.max(0, s - 1))}
+            disabled={step === 0}
+            className="font-pixel text-xs tracking-wider text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-3 py-2"
+          >
+            ← BACK
+          </button>
+        </div>
         {step < STEPS.length - 1 && (
           <button
             type="button"
