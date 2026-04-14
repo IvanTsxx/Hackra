@@ -1,6 +1,8 @@
 // oxlint-disable unicorn/prefer-array-find
 import * as cheerio from "cheerio";
 
+import { geocodeLocation } from "@/shared/lib/geocoding";
+
 const TIMEOUT_MS = 10_000;
 const RATE_LIMIT_DELAY_MS = 1000;
 
@@ -50,6 +52,10 @@ export interface LumaEventData {
   tags?: string[];
   techs?: string[];
   prizes?: { amount: string; description: string }[];
+
+  // Geocoordinates (geocoded from location)
+  latitude?: number;
+  longitude?: number;
 }
 
 function isValidLumaUrl(url: string): boolean {
@@ -601,6 +607,21 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
     }
   }
 
+  // Geocode location if available (graceful - set to null if fails)
+  let latitude: number | undefined;
+  let longitude: number | undefined;
+  if (location && locationMode !== "remote") {
+    try {
+      const geoResult = await geocodeLocation(location);
+      if (geoResult) {
+        ({ latitude } = geoResult);
+        ({ longitude } = geoResult);
+      }
+    } catch {
+      // Geocoding failed - continue without coordinates
+    }
+  }
+
   const result = {
     description,
     endDate,
@@ -610,9 +631,11 @@ export async function scrapeLumaEvent(url: string): Promise<LumaEventData> {
 
     isFull,
     isOnline: locationMode === "remote",
+    latitude,
     location,
 
     locationMode,
+    longitude,
     organizerName,
     participantCount,
     startDate,

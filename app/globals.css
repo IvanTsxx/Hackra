@@ -156,6 +156,12 @@
   p {
     @apply tracking-widest;
   }
+  .maplibregl-popup-content {
+    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
 }
 
 /* Pixel dot grid background */
@@ -360,4 +366,62 @@
     filter: blur(0px);
     opacity: 1;
   }
+}
+
+body
+  > main
+  > section
+  > section.flex.flex-col
+  > div
+  > div
+  > div
+  > div.order-1.lg\:order-2
+  > div
+  > div
+  > div
+  > div.maplibregl-control-container
+  > div.maplibregl-ctrl-bottom-right {
+  display: none !important;
+}
+
+body
+  > main
+  > section
+  > section.max-w-7xl.mx-auto.px-4.sm\:px-6.py-16
+  > div.relative.h-full
+  > div
+  > div
+  > div.relative.h-full.w-full.maplibregl-map
+  > div.maplibregl-control-container
+  > div.maplibregl-ctrl-bottom-right {
+  display: none !important;
+}
+
+body
+  > main
+  > main
+  > div
+  > div.relative.h-full
+  > div.relative.h-\[calc\(100dvh-4rem-40px\)\].border.border-border\/40.overflow-hidden
+  > div.relative.h-full.w-full.maplibregl-map
+  > div.maplibregl-control-container
+  > div.maplibregl-ctrl-bottom-right {
+  display: none !important;
+}
+
+body
+  > div.group\/sidebar-wrapper.flex.min-h-svh.w-full.has-data-\[variant\=inset\]\:bg-background
+  > main
+  > section
+  > section
+  > div.space-y-6
+  > div
+  > div:nth-child(7)
+  > div.space-y-1
+  > div
+  > div.h-\[360px\].border.border-border\/40.overflow-hidden.cursor-crosshair
+  > div
+  > div.maplibregl-control-container
+  > div.maplibregl-ctrl-bottom-right {
+  display: none !important;
 }

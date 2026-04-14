@@ -1,32 +1,20 @@
-import dynamic from "next/dynamic";
 import Link from "next/link";
 
-import { getFeaturedHackatons } from "@/data/hackatons";
+import { getFeaturedHackatonsForMap } from "@/data/hackatons";
 import { CodeText } from "@/shared/components/code-text";
-
-const HackathonCard = dynamic(
-  async () => {
-    const mod = await import("@/shared/components/hackathon-card");
-    return { default: mod.HackathonCard };
-  },
-  {
-    loading: () => (
-      <div className="border border-border/40 bg-card/30 h-[300px] animate-pulse" />
-    ),
-  }
-);
+import { ExploreMap } from "@/shared/components/explore-map";
 
 export const FeaturedHackatons = async () => {
-  const featured = await getFeaturedHackatons();
+  const featured = await getFeaturedHackatonsForMap();
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <CodeText as="p" className="text-xs text-brand-green mb-1">
             Featured
           </CodeText>
-          <h2 className="text-xl text-foreground">ACTIVE_HACKATHONS</h2>
+          <h2 className="text-xl text-foreground">FEATURED_HACKATHONS</h2>
         </div>
         <Link
           href="/explore"
@@ -35,10 +23,9 @@ export const FeaturedHackatons = async () => {
           VIEW ALL →
         </Link>
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {featured.map((hackathon, i) => (
-          <HackathonCard key={hackathon.slug} hackathon={hackathon} i={i} />
-        ))}
+
+      <div className="relative h-full">
+        <ExploreMap hackathons={featured} showFilters={false} />
       </div>
     </section>
   );

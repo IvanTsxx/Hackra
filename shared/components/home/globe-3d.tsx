@@ -1,130 +1,202 @@
 "use client";
 
-import { Points, PointMaterial, OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { useTheme } from "next-themes";
-import { useRef, useMemo } from "react";
-import type * as THREE from "three";
+import { Calendar, ExternalLink, MapPin, Trophy, Users } from "lucide-react";
+import Link from "next/link";
+import { useCallback, useMemo, useRef } from "react";
 
-interface GlobeProps {
-  color: string;
+import type { MapHackathon } from "@/data/hackatons";
+import { cn } from "@/shared/lib/utils";
+import {
+  Map,
+  MapControls,
+  MapMarker,
+  MarkerContent,
+  MarkerPopup,
+  MarkerTooltip,
+} from "@/ui/map";
+import type { MapRef } from "@/ui/map";
+
+import { StatusPill } from "../tag-badge";
+
+interface HackathonGlobeProps {
+  hackathons: MapHackathon[];
+  className?: string;
 }
 
-function Globe({ color }: GlobeProps) {
-  const ref = useRef<THREE.Points>(null);
+export function HackathonGlobe({ hackathons, className }: HackathonGlobeProps) {
+  const mapRef = useRef<MapRef>(null);
 
-  const points = useMemo(() => {
-    const pts: number[] = [];
-    const radius = 2;
+  // Only hackathons with valid coordinates
+  const pinned = useMemo(
+    () =>
+      hackathons.filter(
+        (h): h is MapHackathon & { latitude: number; longitude: number } =>
+          Number.isFinite(h.latitude) && Number.isFinite(h.longitude)
+      ),
+    [hackathons]
+  );
 
-    // Latitude lines
-    for (let lat = -80; lat <= 80; lat += 20) {
-      const latRad = (lat * Math.PI) / 180;
-      const r = radius * Math.cos(latRad);
-      const y = radius * Math.sin(latRad);
-
-      for (let lon = 0; lon < 360; lon += 5) {
-        const lonRad = (lon * Math.PI) / 180;
-        pts.push(r * Math.cos(lonRad), y, r * Math.sin(lonRad));
-      }
-    }
-
-    // Longitude lines
-    for (let lon = 0; lon < 360; lon += 30) {
-      const lonRad = (lon * Math.PI) / 180;
-
-      for (let lat = -90; lat <= 90; lat += 5) {
-        const latRad = (lat * Math.PI) / 180;
-        const r = radius * Math.cos(latRad);
-        const y = radius * Math.sin(latRad);
-        pts.push(r * Math.cos(lonRad), y, r * Math.sin(lonRad));
-      }
-    }
-
-    return new Float32Array(pts);
+  const handleMarkerClick = useCallback((lng: number, lat: number) => {
+    mapRef.current?.flyTo({
+      center: [lng, lat],
+      duration: 1800,
+      zoom: 6,
+    });
   }, []);
 
   return (
-    <Points ref={ref} positions={points} stride={3}>
-      <PointMaterial
-        transparent
-        color={color}
-        size={0.03}
-        sizeAttenuation
-        depthWrite={false}
-      />
-    </Points>
-  );
-}
-
-interface FloatingParticlesProps {
-  color: string;
-}
-
-function FloatingParticles({ color }: FloatingParticlesProps) {
-  const ref = useRef<THREE.Points>(null);
-
-  const particles = useMemo(() => {
-    const pts: number[] = [];
-
-    for (let i = 0; i < 200; i += 1) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-      const r = 3 + Math.random() * 2;
-
-      pts.push(
-        r * Math.sin(phi) * Math.cos(theta),
-        r * Math.sin(phi) * Math.sin(theta),
-        r * Math.cos(phi)
-      );
-    }
-
-    return new Float32Array(pts);
-  }, []);
-
-  return (
-    <Points ref={ref} positions={particles} stride={3}>
-      <PointMaterial
-        transparent
-        color={color}
-        size={0.02}
-        sizeAttenuation
-        depthWrite={false}
-        opacity={0.5}
-      />
-    </Points>
-  );
-}
-
-export function Globe3D() {
-  const { resolvedTheme } = useTheme();
-
-  const pointColor = resolvedTheme === "dark" ? "#4ade80" : "#0a0a0a";
-
-  return (
-    <div className="relative w-full h-full cursor-grab">
-      <Canvas
-        camera={{ fov: 55, position: [0, 0, 6] }}
-        gl={{ alpha: true, antialias: true }}
-        style={{ background: "transparent" }}
+    <div className={cn("relative h-[380px] overflow-hidden w-full", className)}>
+      <Map
+        minZoom={1}
+        ref={mapRef}
+        center={[10, 20]}
+        zoom={0.8}
+        projection={{ type: "globe" }}
+        className="h-full w-full"
       >
-        <ambientLight intensity={0.5} />
+        {pinned.map((h) => (
+          <MapMarker key={h.id} longitude={h.longitude} latitude={h.latitude}>
+            <MarkerContent>
+              <button
+                type="button"
+                className="relative flex items-center justify-center focus:outline-none"
+                onClick={() => handleMarkerClick(h.longitude, h.latitude)}
+              >
+                {h.status === "LIVE" && (
+                  <span className="absolute size-6 animate-ping rounded-full bg-green-500/30" />
+                )}
+                <span
+                  className={cn(
+                    "size-4 rounded-full border-2 border-white shadow-lg",
+                    h.status === "LIVE" ? "bg-green-400" : "bg-amber-400"
+                  )}
+                />
+              </button>
+            </MarkerContent>
 
-        <Globe color={pointColor} />
-        <FloatingParticles color={pointColor} />
+            {/* Tooltip on hover */}
+            <MarkerTooltip>
+              <div className="flex items-center gap-1.5">
+                <span
+                  className={cn(
+                    "inline-block size-1.5 rounded-full",
+                    h.status === "LIVE" ? "bg-green-400" : "bg-amber-400"
+                  )}
+                />
+                <span className="text-[10px] font-semibold uppercase tracking-wide opacity-80">
+                  {h.status}
+                </span>
+                <span className="text-[10px] opacity-60">—</span>
+                <span className="text-[10px] font-medium max-w-[160px] truncate">
+                  {h.title}
+                </span>
+              </div>
+            </MarkerTooltip>
 
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          rotateSpeed={0.6}
-          autoRotate
-          autoRotateSpeed={0.5}
-          enableDamping
-          dampingFactor={0.05}
-          minPolarAngle={Math.PI / 3}
-          maxPolarAngle={(Math.PI / 3) * 2}
+            {/* Popup on click — uses marker.setPopup() internally */}
+            <MarkerPopup closeButton>
+              <GlobePopupCard hackathon={h} />
+            </MarkerPopup>
+          </MapMarker>
+        ))}
+
+        <MapControls position="top-right" showZoom />
+      </Map>
+    </div>
+  );
+}
+
+// ─── Popup card — same info as explore-map HackathonPopupCard ────────────────
+
+function GlobePopupCard({
+  hackathon: h,
+}: {
+  hackathon: MapHackathon & { latitude: number; longitude: number };
+}) {
+  const startDate = new Date(h.startDate);
+  const endDate = new Date(h.endDate);
+
+  return (
+    <div className="min-w-[240px] max-w-[300px] space-y-2 bg-card p-3 ">
+      {/* Status + location */}
+      <div className="flex items-center gap-2">
+        <StatusPill
+          index={0}
+          status={h.status as "LIVE" | "UPCOMING" | "ENDED"}
         />
-      </Canvas>
+        <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
+          <MapPin className="size-2.5" />
+          {h.location.split(",")[0]}
+        </span>
+      </div>
+
+      {/* Title */}
+      <Link
+        href={`/hackathon/${h.slug}`}
+        className="block text-sm font-medium text-foreground hover:text-brand-green transition-colors line-clamp-2"
+      >
+        {h.title}
+      </Link>
+
+      {/* Dates + participants */}
+      <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+        <span className="flex items-center gap-1">
+          <Calendar className="size-2.5" />
+          {startDate.toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "short",
+          })}
+          {" – "}
+          {endDate.toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "short",
+          })}
+        </span>
+        <span className="flex items-center gap-1">
+          <Users className="size-2.5" />
+          {h.participantCount}
+          {h.maxParticipants && (
+            <span className="text-muted-foreground/50">
+              /{h.maxParticipants}
+            </span>
+          )}
+        </span>
+      </div>
+
+      {/* Prize */}
+      {h.topPrize && (
+        <div className="flex items-center gap-1 text-[11px] text-brand-green">
+          <Trophy className="size-2.5" />
+          {h.topPrize.toLocaleString("en-US", {
+            currency: "USD",
+            maximumFractionDigits: 0,
+            style: "currency",
+          })}
+        </div>
+      )}
+
+      {/* Tags */}
+      {h.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {h.tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className="text-[9px] border border-brand-purple/30 px-1.5 py-0.5 text-brand-purple"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* CTA */}
+      <Link
+        href={`/hackathon/${h.slug}`}
+        className="inline-flex items-center gap-1 text-[11px] text-brand-green hover:underline hover:decoration-brand-green hover:decoration-wavy transition-colors font-medium"
+      >
+        View Details
+        <ExternalLink className="size-2.5" />
+      </Link>
     </div>
   );
 }

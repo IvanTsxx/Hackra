@@ -103,6 +103,8 @@ export interface Hackathon {
   endDate: string;
   location: string;
   isOnline: boolean;
+  latitude: number | null;
+  longitude: number | null;
   tags: string[];
   techs: Tech[];
   maxParticipants: number;
@@ -569,7 +571,9 @@ vercel --prod
     endDate: "2025-01-22T23:59:00Z",
     image: "/placeholder.svg?height=400&width=800",
     isOnline: false,
+    latitude: 37.7749,
     location: "San Francisco, CA",
+    longitude: -122.4194,
     maxParticipants: 500,
     maxTeamSize: 4,
     organizerId: "u2",
@@ -619,7 +623,9 @@ ExCeL London, Royal Docks, London E16 1XL`,
     endDate: "2025-02-16T18:00:00Z",
     image: "/placeholder.svg?height=400&width=800",
     isOnline: false,
+    latitude: 51.5074,
     location: "London, UK",
+    longitude: -0.1278,
     maxParticipants: 1000,
     maxTeamSize: 5,
     organizerId: "u8",
@@ -666,7 +672,9 @@ AI agents are systems that can:
     endDate: "2025-03-31T23:59:00Z",
     image: "/placeholder.svg?height=400&width=800",
     isOnline: true,
+    latitude: null,
     location: "Online",
+    longitude: null,
     maxParticipants: 2000,
     maxTeamSize: 5,
     organizerId: "u4",
@@ -713,7 +721,9 @@ Build fast, safe, and reliable software with **Rust** and **WebAssembly**.
     endDate: "2025-04-07T18:00:00Z",
     image: "/placeholder.svg?height=400&width=800",
     isOnline: false,
+    latitude: 40.4406,
     location: "Pittsburgh, PA",
+    longitude: -79.9959,
     maxParticipants: 200,
     maxTeamSize: 3,
     organizerId: "u7",
@@ -750,7 +760,9 @@ Open source is the backbone of the internet. This hackathon celebrates and exten
     endDate: "2025-05-25T18:00:00Z",
     image: "/placeholder.svg?height=400&width=800",
     isOnline: false,
-    location: "Seattle, WA",
+    latitude: 30.2672,
+    location: "Austin, TX",
+    longitude: -97.7431,
     maxParticipants: 300,
     maxTeamSize: 4,
     organizerId: "u3",
@@ -794,10 +806,12 @@ const tokens = {
   radii: { sm: '4px', md: '8px', lg: '16px' },
 }
 \`\`\``,
-    endDate: "2024-11-10T18:00:00Z",
+    endDate: "2025-10-20T18:00:00Z",
     image: "/placeholder.svg?height=400&width=800",
-    isOnline: true,
-    location: "Online",
+    isOnline: false,
+    latitude: 41.3874,
+    location: "Barcelona, Spain",
+    longitude: 2.1686,
     maxParticipants: 500,
     maxTeamSize: 4,
     organizerId: "u1",
@@ -809,8 +823,8 @@ const tokens = {
     requiresApproval: false,
     slug: "design-systems-hack",
     sponsors: ["vercel", "liveblocks", "convex"],
-    startDate: "2024-11-01T09:00:00Z",
-    status: "ended",
+    startDate: "2025-10-15T09:00:00Z",
+    status: "upcoming",
     tags: ["Design Systems", "Accessibility", "UI", "Components"],
     teams: [],
     techs: ["React", "Vue", "Svelte", "TypeScript", "Tailwind CSS"],
@@ -833,8 +847,10 @@ Technology can help solve the climate crisis. **Build something that matters.**
 This hackathon is judged primarily on **real-world impact potential**, not technical complexity.`,
     endDate: "2025-06-22T18:00:00Z",
     image: "/placeholder.svg?height=400&width=800",
-    isOnline: true,
-    location: "Online",
+    isOnline: false,
+    latitude: 55.6761,
+    location: "Copenhagen, Denmark",
+    longitude: 12.5683,
     maxParticipants: 1000,
     maxTeamSize: 5,
     organizerId: "u5",
@@ -872,10 +888,12 @@ Your game must incorporate **recursion** as a core mechanic, narrative, or aesth
 - Three.js / R3F
 - Canvas / WebGL
 - Anything goes!`,
-    endDate: "2024-12-04T00:00:00Z",
+    endDate: "2025-09-01T00:00:00Z",
     image: "/placeholder.svg?height=400&width=800",
-    isOnline: true,
-    location: "Online",
+    isOnline: false,
+    latitude: 35.6762,
+    location: "Tokyo, Japan",
+    longitude: 139.6503,
     maxParticipants: 800,
     maxTeamSize: 4,
     organizerId: "u7",
@@ -887,8 +905,8 @@ Your game must incorporate **recursion** as a core mechanic, narrative, or aesth
     requiresApproval: false,
     slug: "gamedev-jam",
     sponsors: ["cloudflare", "neon", "upstash"],
-    startDate: "2024-12-01T00:00:00Z",
-    status: "ended",
+    startDate: "2025-08-29T00:00:00Z",
+    status: "upcoming",
     tags: ["Game Dev", "Creative", "WebGL", "72h"],
     teams: [],
     techs: ["Three.js", "TypeScript", "WebAssembly", "Rust"],
@@ -913,8 +931,10 @@ A hackathon focused on builders from Latin America.
 `,
     endDate: "2025-07-15T18:00:00Z",
     image: "/placeholder.svg?height=400&width=800",
-    isOnline: true,
-    location: "Online",
+    isOnline: false,
+    latitude: -34.6037,
+    location: "Buenos Aires, Argentina",
+    longitude: -58.3816,
     maxParticipants: 1200,
     maxTeamSize: 5,
     organizerId: "u9",
@@ -947,7 +967,9 @@ Build tools for developers.
     endDate: "2025-08-05T18:00:00Z",
     image: "/placeholder.svg?height=400&width=800",
     isOnline: false,
-    location: "Berlin, DE",
+    latitude: 32.0853,
+    location: "Tel Aviv, Israel",
+    longitude: 34.7818,
     maxParticipants: 400,
     maxTeamSize: 4,
     organizerId: "u10",
@@ -962,6 +984,238 @@ Build tools for developers.
     teams: [],
     techs: ["Go", "Rust", "Node.js"],
     title: "DevTools Hackathon",
+  },
+  {
+    description: `## Africa Tech Challenge
+
+Empowering the next generation of African builders to solve local and global challenges through technology.
+
+## Focus Areas
+
+- Fintech & Mobile Money
+- Agricultural Tech
+- Health Tech
+- EdTech
+
+## Why Africa?
+
+With the fastest-growing mobile market and a young, tech-savvy population, Africa is poised for innovation.`,
+    endDate: "2025-09-28T18:00:00Z",
+    image: "/placeholder.svg?height=400&width=800",
+    isOnline: false,
+    latitude: 6.5244,
+    location: "Lagos, Nigeria",
+    longitude: 3.3792,
+    maxParticipants: 600,
+    maxTeamSize: 5,
+    organizerId: "u8",
+    participants: ["u8", "u9"],
+    prizes: [
+      { amount: 25_000, description: "Grand Prize", place: "1st" },
+      { amount: 12_000, description: "Runner Up", place: "2nd" },
+    ],
+    requiresApproval: false,
+    slug: "africa-tech-challenge",
+    sponsors: ["vercel", "supabase"],
+    startDate: "2025-09-20T09:00:00Z",
+    status: "upcoming",
+    tags: ["Africa", "Fintech", "Mobile", "Impact"],
+    teams: [],
+    techs: ["React", "Node.js", "Python", "PostgreSQL"],
+    title: "Africa Tech Challenge",
+  },
+  {
+    description: `## Asia Dev Summit
+
+Asia's premier developer conference hackathon. Build the future of software in one of the world's most dynamic tech ecosystems.
+
+## Tracks
+
+- Web3 & Blockchain
+- AI & Machine Learning
+- Cloud Infrastructure
+- Consumer Apps`,
+    endDate: "2025-11-15T18:00:00Z",
+    image: "/placeholder.svg?height=400&width=800",
+    isOnline: false,
+    latitude: 1.3521,
+    location: "Singapore",
+    longitude: 103.8198,
+    maxParticipants: 800,
+    maxTeamSize: 4,
+    organizerId: "u2",
+    participants: ["u2", "u4"],
+    prizes: [
+      { amount: 30_000, description: "Best Overall", place: "1st" },
+      { amount: 15_000, description: "Runner Up", place: "2nd" },
+    ],
+    requiresApproval: false,
+    slug: "asia-dev-summit",
+    sponsors: ["vercel", "cloudflare", "supabase"],
+    startDate: "2025-11-10T09:00:00Z",
+    status: "upcoming",
+    tags: ["Asia", "AI", "Web3", "Cloud"],
+    teams: [],
+    techs: ["Next.js", "TypeScript", "Python", "AI"],
+    title: "Asia Dev Summit",
+  },
+  {
+    description: `## LatAm Code Fest
+
+South America's largest hackathon celebrating innovation from the LATAM developer community.
+
+## Mission
+
+- Showcase LATAM talent to the world
+- Build solutions for regional challenges
+- Connect builders across borders
+
+## Categories
+
+- Banking & Finance
+- Logistics & Supply Chain
+- Healthcare
+- Education`,
+    endDate: "2025-08-31T18:00:00Z",
+    image: "/placeholder.svg?height=400&width=800",
+    isOnline: false,
+    latitude: -23.5505,
+    location: "São Paulo, Brazil",
+    longitude: -46.6333,
+    maxParticipants: 1500,
+    maxTeamSize: 5,
+    organizerId: "u9",
+    participants: ["u9", "u10"],
+    prizes: [
+      { amount: 35_000, description: "Grand Prize", place: "1st" },
+      { amount: 18_000, description: "Runner Up", place: "2nd" },
+    ],
+    requiresApproval: false,
+    slug: "latam-code-fest",
+    sponsors: ["supabase", "vercel", "cloudflare"],
+    startDate: "2025-08-25T09:00:00Z",
+    status: "upcoming",
+    tags: ["LATAM", "Brazil", "Innovation", "Enterprise"],
+    teams: [],
+    techs: ["Next.js", "Node.js", "Python", "AI"],
+    title: "LatAm Code Fest",
+  },
+  {
+    description: `## Pacific Builder
+
+The premier hackathon in the Southern Hemisphere. Build something amazing Down Under.
+
+## Theme: **Sustainable Tech**
+
+Create technology solutions that address environmental challenges and promote sustainability in the Pacific region.
+
+## What to Build
+
+- Climate monitoring tools
+- Sustainable agriculture
+- Ocean conservation
+- Renewable energy platforms`,
+    endDate: "2025-10-12T18:00:00Z",
+    image: "/placeholder.svg?height=400&width=800",
+    isOnline: false,
+    latitude: -33.8688,
+    location: "Sydney, Australia",
+    longitude: 151.2093,
+    maxParticipants: 700,
+    maxTeamSize: 4,
+    organizerId: "u3",
+    participants: ["u3", "u5"],
+    prizes: [
+      { amount: 28_000, description: "Grand Prize", place: "1st" },
+      { amount: 14_000, description: "Runner Up", place: "2nd" },
+    ],
+    requiresApproval: false,
+    slug: "pacific-builder",
+    sponsors: ["vercel", "supabase", "neon"],
+    startDate: "2025-10-05T09:00:00Z",
+    status: "upcoming",
+    tags: ["Pacific", "Sustainability", "Climate", "Innovation"],
+    teams: [],
+    techs: ["React", "Next.js", "TypeScript", "Python"],
+    title: "Pacific Builder",
+  },
+  {
+    description: `## India Hack Night
+
+India's most intense overnight hackathon. Build a complete product in 24 hours.
+
+## Challenge
+
+Build solutions for one of the world's most diverse and fast-growing tech markets.
+
+## Tracks
+
+- UPI & Digital Payments
+- Healthcare Access
+- Agricultural Technology
+- Education Platforms`,
+    endDate: "2025-07-06T18:00:00Z",
+    image: "/placeholder.svg?height=400&width=800",
+    isOnline: false,
+    latitude: 19.076,
+    location: "Mumbai, India",
+    longitude: 72.8777,
+    maxParticipants: 900,
+    maxTeamSize: 4,
+    organizerId: "u4",
+    participants: ["u4", "u6"],
+    prizes: [
+      { amount: 22_000, description: "Grand Prize", place: "1st" },
+      { amount: 11_000, description: "Runner Up", place: "2nd" },
+    ],
+    requiresApproval: false,
+    slug: "india-hack-night",
+    sponsors: ["vercel", "supabase", "upstash"],
+    startDate: "2025-07-04T18:00:00Z",
+    status: "upcoming",
+    tags: ["India", "Fintech", "Health", "EdTech"],
+    teams: [],
+    techs: ["React", "Node.js", "Python", "TypeScript"],
+    title: "India Hack Night",
+  },
+  {
+    description: `## NorthCan Dev Sprint
+
+Canada's premier hackathon bringing together the best developers from the Great White North.
+
+## Focus
+
+Build tools and applications that make a difference in Canadian communities and beyond.
+
+## Tracks
+
+- Clean Tech & Sustainability
+- Indigenous Tech Solutions
+- Healthcare Innovation
+- Smart Cities`,
+    endDate: "2025-09-14T18:00:00Z",
+    image: "/placeholder.svg?height=400&width=800",
+    isOnline: false,
+    latitude: 43.6532,
+    location: "Toronto, Canada",
+    longitude: -79.3832,
+    maxParticipants: 650,
+    maxTeamSize: 5,
+    organizerId: "u7",
+    participants: ["u7", "u8"],
+    prizes: [
+      { amount: 26_000, description: "Grand Prize", place: "1st" },
+      { amount: 13_000, description: "Runner Up", place: "2nd" },
+    ],
+    requiresApproval: false,
+    slug: "northcan-dev-sprint",
+    sponsors: ["cloudflare", "neon", "upstash"],
+    startDate: "2025-09-07T09:00:00Z",
+    status: "upcoming",
+    tags: ["Canada", "CleanTech", "Innovation", "Community"],
+    teams: [],
+    techs: ["Go", "Rust", "TypeScript", "PostgreSQL"],
+    title: "NorthCan Dev Sprint",
   },
 ];
 

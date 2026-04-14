@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import type { Tech } from "@/lib/mock-data";
 import { CodeText } from "@/shared/components/code-text";
+import { LocationAutocomplete } from "@/shared/components/location-autocomplete";
 import { Calendar } from "@/shared/components/ui/calendar";
 import { FieldError, FieldLabel } from "@/shared/components/ui/field";
 import {
@@ -133,8 +134,10 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       externalId: undefined as string | undefined,
       externalUrl: undefined as string | undefined,
       isPublished: true,
+      latitude: null as number | null,
       location: "",
       locationMode: "in_person" as LocationMode,
+      longitude: null as number | null,
       maxParticipants: 500,
       maxTeamSize: 4,
       prizes: [] as PrizeEntry[],
@@ -153,8 +156,10 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
         externalUrl: value.externalUrl,
         image: importedImageUrl,
         isPublished: value.isPublished,
+        latitude: value.latitude,
         location: value.location,
         locationMode: value.locationMode,
+        longitude: value.longitude,
         maxParticipants: value.maxParticipants,
         maxTeamSize: value.maxTeamSize,
         requiresApproval: value.requiresApproval,
@@ -194,10 +199,12 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
   // REACTIVE SUBSCRIPTIONS — MUST come right after form, before any logic
   // ═══════════════════════════════════════════════════════════════════════════
   const isPublished = useStore(form.store, (state) => state.values.isPublished);
+  const latitude = useStore(form.store, (state) => state.values.latitude);
   const locationMode = useStore(
     form.store,
     (state) => state.values.locationMode
   );
+  const longitude = useStore(form.store, (state) => state.values.longitude);
   const title = useStore(form.store, (state) => state.values.title);
   const description = useStore(form.store, (state) => state.values.description);
   const startDate = useStore(form.store, (state) => state.values.startDate);
@@ -293,10 +300,79 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
 
   const handleImportFromLuma = useCallback(async () => {
     if (!lumaUrl) return;
+
+    // Use cached preview data if available — no second server call needed
+    if (lumaPreviewData) {
+      const d = lumaPreviewData;
+      form.setFieldValue("title", d.title);
+      form.setFieldValue("description", d.description);
+      if (d.startDate) form.setFieldValue("startDate", d.startDate);
+      if (d.endDate) form.setFieldValue("endDate", d.endDate);
+      if (d.location) form.setFieldValue("location", d.location);
+      form.setFieldValue("locationMode", d.locationMode ?? "in_person");
+      if (d.latitude !== undefined) form.setFieldValue("latitude", d.latitude);
+      if (d.longitude !== undefined)
+        form.setFieldValue("longitude", d.longitude);
+      if (d.isFull) {
+        form.setFieldValue("requiresApproval", true);
+        toast.info("Event is full - registrations will require approval");
+      }
+      if (d.image) setImportedImageUrl(d.image);
+
+      if (d.externalId) form.setFieldValue("externalId", d.externalId);
+      if (d.externalUrl) form.setFieldValue("externalUrl", d.externalUrl);
+      form.setFieldValue("source", "luma");
+
+      if (d.tags && d.tags.length > 0) {
+        const current = form.getFieldValue("tags");
+        form.setFieldValue("tags", [...new Set([...current, ...d.tags])]);
+      }
+
+      if (d.techs && d.techs.length > 0) {
+        const current = form.getFieldValue("techs");
+        form.setFieldValue("techs", [...new Set([...current, ...d.techs])]);
+      }
+
+      if (d.prizes && d.prizes.length > 0) {
+        form.setFieldValue(
+          "prizes",
+          d.prizes.map((p, i) => ({
+            amount: p.amount,
+            description: p.description,
+            place:
+              i === 0
+                ? "1st"
+                : i === 1
+                  ? "2nd"
+                  : i === 2
+                    ? "3rd"
+                    : `${i + 1}th`,
+          }))
+        );
+        toast.info(`Found ${d.prizes.length} prize(s) in description!`);
+      }
+
+      const missingFields: string[] = [];
+      if (!d.startDate) missingFields.push("startDate");
+      if (!d.endDate) missingFields.push("endDate");
+      if (!d.location) missingFields.push("location");
+
+      if (missingFields.length > 0) {
+        toast.success("Imported from Luma!", {
+          description: `Please fill in: ${missingFields.join(", ")}`,
+        });
+      } else {
+        toast.success("Imported from Luma!", {
+          description: "All fields have been auto-filled.",
+        });
+      }
+      setLumaImported(true);
+      return;
+    }
+
+    // Fallback: no preview data available — call server
     setLumaLoading(true);
-
     const result = await importLumaFormDataAction(lumaUrl);
-
     setLumaLoading(false);
 
     if (result.success && result.data) {
@@ -307,25 +383,25 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       if (d.endDate) form.setFieldValue("endDate", d.endDate);
       if (d.location) form.setFieldValue("location", d.location);
       form.setFieldValue("locationMode", d.locationMode);
+      if (d.latitude !== undefined) form.setFieldValue("latitude", d.latitude);
+      if (d.longitude !== undefined)
+        form.setFieldValue("longitude", d.longitude);
       if (d.requiresApproval) {
         form.setFieldValue("requiresApproval", true);
         toast.info("Event is full - registrations will require approval");
       }
       if (d.image) setImportedImageUrl(d.image);
 
-      // Luma metadata fields
       if (d.externalId) form.setFieldValue("externalId", d.externalId);
       if (d.externalUrl) form.setFieldValue("externalUrl", d.externalUrl);
       form.setFieldValue("source", "luma");
 
       if (d.tags && d.tags.length > 0) {
-        console.log(d.tags);
         const current = form.getFieldValue("tags");
         form.setFieldValue("tags", [...new Set([...current, ...d.tags])]);
       }
 
       if (d.techs && d.techs.length > 0) {
-        console.log(d.techs);
         const current = form.getFieldValue("techs");
         form.setFieldValue("techs", [...new Set([...current, ...d.techs])]);
       }
@@ -364,7 +440,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
         description: result.error ?? "Could not import event data.",
       });
     }
-  }, [lumaUrl, form]);
+  }, [lumaUrl, lumaPreviewData, form]);
 
   useEffect(
     () => () => {
@@ -372,6 +448,14 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
     },
     []
   );
+
+  // Clear lat/lng when switching to remote mode
+  useEffect(() => {
+    if (locationMode === "remote") {
+      form.setFieldValue("latitude", null);
+      form.setFieldValue("longitude", null);
+    }
+  }, [locationMode, form]);
 
   // Debounced duplicate check effect
   useEffect(() => {
@@ -439,6 +523,11 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       await form.handleSubmit();
     } finally {
       setIsSubmitting(false);
+      setSubmitted(true);
+      handleReset();
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 5000);
     }
   };
 
@@ -603,7 +692,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                   <button
                     type="button"
                     onClick={handleImportFromLuma}
-                    disabled={lumaLoading || !lumaUrl}
+                    disabled={!lumaPreviewData || lumaLoading}
                     className="font-pixel text-xs bg-brand-green/20 text-brand-green border border-brand-green/40 px-3 hover:bg-brand-green/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all shrink-0"
                   >
                     {lumaLoading ? "..." : "IMPORT"}
@@ -928,15 +1017,18 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                             VENUE LOCATION{" "}
                             {locationMode === "hybrid" && "(physical venue)"}
                           </FieldLabel>
-                          <input
-                            id={field.name}
-                            type="text"
+                          <LocationAutocomplete
                             value={field.state.value}
-                            onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(e.target.value)}
+                            latitude={latitude}
+                            longitude={longitude}
+                            onChange={(text, lat, lng) => {
+                              field.handleChange(text);
+                              if (lat !== null)
+                                form.setFieldValue("latitude", lat);
+                              if (lng !== null)
+                                form.setFieldValue("longitude", lng);
+                            }}
                             placeholder="San Francisco, CA"
-                            className={inputClass}
-                            aria-invalid={isInvalid}
                           />
                           {isInvalid && (
                             <FieldError errors={field.state.meta.errors} />
