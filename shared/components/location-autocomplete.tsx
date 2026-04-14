@@ -84,6 +84,11 @@ export function LocationAutocomplete({
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Track whether a coordinate change came from internal user interaction,
+  // so we don't double-flyTo when the user picks a suggestion (handleSelect
+  // already calls flyTo) or clicks/drags the map.
+  const isInternalCoordChange = useRef(false);
+
   const hasCoordinates = latitude !== null && longitude !== null;
 
   // Sync when parent value changes externally (e.g. Luma import)
@@ -94,6 +99,22 @@ export function LocationAutocomplete({
       setSelectedSuggestion(null);
     }
   }, [value]);
+
+  // Fly to location when coordinates are set externally (e.g. Luma import)
+  useEffect(() => {
+    if (latitude !== null && longitude !== null && mapRef.current) {
+      // Skip if the change was initiated by user interaction within this component
+      if (isInternalCoordChange.current) {
+        isInternalCoordChange.current = false;
+        return;
+      }
+      mapRef.current.flyTo({
+        center: [longitude, latitude],
+        duration: 1200,
+        zoom: 10,
+      });
+    }
+  }, [latitude, longitude]);
 
   // Debounced search
   const handleInputChange = useCallback(
@@ -134,6 +155,7 @@ export function LocationAutocomplete({
       setSelectedSuggestion(suggestion);
       setSuggestions([]);
       setShowSuggestions(false);
+      isInternalCoordChange.current = true;
       onChange(suggestion.shortName, suggestion.latitude, suggestion.longitude);
 
       // Fly the map to the selected location
@@ -149,6 +171,8 @@ export function LocationAutocomplete({
   // User clicks on the map → reverse geocode → update everything
   const handleMapClick = useCallback(
     async (lng: number, lat: number) => {
+      // Mark as internal so the flyTo effect doesn't fire
+      isInternalCoordChange.current = true;
       // Immediately move marker
       onChange(query, lat, lng);
 
@@ -171,6 +195,8 @@ export function LocationAutocomplete({
   // Drag end on map marker
   const handleDragEnd = useCallback(
     async (lngLat: { lng: number; lat: number }) => {
+      // Mark as internal so the flyTo effect doesn't fire
+      isInternalCoordChange.current = true;
       onChange(query, lngLat.lat, lngLat.lng);
       setIsLoadingAddress(true);
       try {

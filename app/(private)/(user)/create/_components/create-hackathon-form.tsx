@@ -300,10 +300,79 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
 
   const handleImportFromLuma = useCallback(async () => {
     if (!lumaUrl) return;
+
+    // Use cached preview data if available — no second server call needed
+    if (lumaPreviewData) {
+      const d = lumaPreviewData;
+      form.setFieldValue("title", d.title);
+      form.setFieldValue("description", d.description);
+      if (d.startDate) form.setFieldValue("startDate", d.startDate);
+      if (d.endDate) form.setFieldValue("endDate", d.endDate);
+      if (d.location) form.setFieldValue("location", d.location);
+      form.setFieldValue("locationMode", d.locationMode ?? "in_person");
+      if (d.latitude !== undefined) form.setFieldValue("latitude", d.latitude);
+      if (d.longitude !== undefined)
+        form.setFieldValue("longitude", d.longitude);
+      if (d.isFull) {
+        form.setFieldValue("requiresApproval", true);
+        toast.info("Event is full - registrations will require approval");
+      }
+      if (d.image) setImportedImageUrl(d.image);
+
+      if (d.externalId) form.setFieldValue("externalId", d.externalId);
+      if (d.externalUrl) form.setFieldValue("externalUrl", d.externalUrl);
+      form.setFieldValue("source", "luma");
+
+      if (d.tags && d.tags.length > 0) {
+        const current = form.getFieldValue("tags");
+        form.setFieldValue("tags", [...new Set([...current, ...d.tags])]);
+      }
+
+      if (d.techs && d.techs.length > 0) {
+        const current = form.getFieldValue("techs");
+        form.setFieldValue("techs", [...new Set([...current, ...d.techs])]);
+      }
+
+      if (d.prizes && d.prizes.length > 0) {
+        form.setFieldValue(
+          "prizes",
+          d.prizes.map((p, i) => ({
+            amount: p.amount,
+            description: p.description,
+            place:
+              i === 0
+                ? "1st"
+                : i === 1
+                  ? "2nd"
+                  : i === 2
+                    ? "3rd"
+                    : `${i + 1}th`,
+          }))
+        );
+        toast.info(`Found ${d.prizes.length} prize(s) in description!`);
+      }
+
+      const missingFields: string[] = [];
+      if (!d.startDate) missingFields.push("startDate");
+      if (!d.endDate) missingFields.push("endDate");
+      if (!d.location) missingFields.push("location");
+
+      if (missingFields.length > 0) {
+        toast.success("Imported from Luma!", {
+          description: `Please fill in: ${missingFields.join(", ")}`,
+        });
+      } else {
+        toast.success("Imported from Luma!", {
+          description: "All fields have been auto-filled.",
+        });
+      }
+      setLumaImported(true);
+      return;
+    }
+
+    // Fallback: no preview data available — call server
     setLumaLoading(true);
-
     const result = await importLumaFormDataAction(lumaUrl);
-
     setLumaLoading(false);
 
     if (result.success && result.data) {
@@ -323,19 +392,16 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       }
       if (d.image) setImportedImageUrl(d.image);
 
-      // Luma metadata fields
       if (d.externalId) form.setFieldValue("externalId", d.externalId);
       if (d.externalUrl) form.setFieldValue("externalUrl", d.externalUrl);
       form.setFieldValue("source", "luma");
 
       if (d.tags && d.tags.length > 0) {
-        console.log(d.tags);
         const current = form.getFieldValue("tags");
         form.setFieldValue("tags", [...new Set([...current, ...d.tags])]);
       }
 
       if (d.techs && d.techs.length > 0) {
-        console.log(d.techs);
         const current = form.getFieldValue("techs");
         form.setFieldValue("techs", [...new Set([...current, ...d.techs])]);
       }
@@ -374,7 +440,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
         description: result.error ?? "Could not import event data.",
       });
     }
-  }, [lumaUrl, form]);
+  }, [lumaUrl, lumaPreviewData, form]);
 
   useEffect(
     () => () => {
@@ -626,7 +692,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                   <button
                     type="button"
                     onClick={handleImportFromLuma}
-                    disabled={lumaLoading || !lumaUrl}
+                    disabled={!lumaPreviewData || lumaLoading}
                     className="font-pixel text-xs bg-brand-green/20 text-brand-green border border-brand-green/40 px-3 hover:bg-brand-green/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all shrink-0"
                   >
                     {lumaLoading ? "..." : "IMPORT"}

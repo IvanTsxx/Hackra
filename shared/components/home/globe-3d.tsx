@@ -47,6 +47,7 @@ export function HackathonGlobe({ hackathons, className }: HackathonGlobeProps) {
   return (
     <div className={cn("relative h-[380px] overflow-hidden w-full", className)}>
       <Map
+        minZoom={1}
         ref={mapRef}
         center={[10, 20]}
         zoom={0.8}
@@ -116,7 +117,7 @@ function GlobePopupCard({
   const endDate = new Date(h.endDate);
 
   return (
-    <div className="min-w-[240px] max-w-[300px] space-y-2 bg-card p-3 border border-border/40">
+    <div className="min-w-[240px] max-w-[300px] space-y-2 bg-card p-3 ">
       {/* Status + location */}
       <div className="flex items-center gap-2">
         <StatusPill
