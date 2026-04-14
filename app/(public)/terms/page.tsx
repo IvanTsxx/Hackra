@@ -164,7 +164,7 @@ export default function TermsPage() {
                 </h2>
                 <p className="text-muted-foreground  text-sm">
                   {
-                    "/* Questions about these Terms of Service should be sent to terms@hackra.dev */"
+                    "/* Questions about these Terms of Service should be sent to terms@hackra.bongi.dev */"
                   }
                 </p>
               </section>

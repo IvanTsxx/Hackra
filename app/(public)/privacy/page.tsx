@@ -117,7 +117,7 @@ export default function PrivacyPage() {
                 </h2>
                 <p className="text-muted-foreground  text-sm">
                   {
-                    "/* If you have questions about this Privacy Policy, please contact us at privacy@hackra.dev */"
+                    "/* If you have questions about this Privacy Policy, please contact us at privacy@hackra.bongi.dev */"
                   }
                 </p>
               </section>

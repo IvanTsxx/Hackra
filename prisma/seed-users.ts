@@ -9,7 +9,7 @@ export async function seedUsers() {
   const users = await prisma.user.createManyAndReturn({
     data: USERS.map((user) => ({
       bio: user.bio,
-      email: `${user.username}@hackra.dev`,
+      email: `${user.username}@hackra.bongi.dev`,
       emailVerified: true,
       githubUsername: user.githubUsername,
       id: user.id,

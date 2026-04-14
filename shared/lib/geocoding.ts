@@ -7,7 +7,8 @@ import "server-only";
 // - Graceful degradation: returns null instead of throwing
 
 const NOMINATIM_BASE = "https://nominatim.openstreetmap.org";
-const USER_AGENT = "Hackra/1.0 (https://hackra.dev; hello@hackra.dev)";
+const USER_AGENT =
+  "Hackra/1.0 (https://hackra.bongi.dev; hello@hackra.bongi.dev)";
 
 export interface GeocodeResult {
   latitude: number;
