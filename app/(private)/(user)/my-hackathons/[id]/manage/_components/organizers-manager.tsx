@@ -67,8 +67,8 @@ const addOrgSchema = z.object({
     .min(2, "Username must be at least 2 characters")
     .max(50, "Username too long")
     .regex(
-      /^[a-z0-9_-]+$/,
-      "Only lowercase letters, numbers, underscores and dashes"
+      /^[a-zA-Z0-9_-]+$/,
+      "Only letters, numbers, underscores and dashes allowed"
     ),
 });
 
