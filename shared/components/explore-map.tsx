@@ -31,6 +31,7 @@ import { StatusPill } from "./tag-badge";
 interface ExploreMapProps {
   hackathons: MapHackathon[];
   className?: string;
+  showFilters?: boolean;
 }
 
 // Brand colors for clusters: green (few) → purple (many)
@@ -317,7 +318,11 @@ function FilterDropdownRow({
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export function ExploreMap({ hackathons, className }: ExploreMapProps) {
+export function ExploreMap({
+  hackathons,
+  className,
+  showFilters = true,
+}: ExploreMapProps) {
   const mapRef = useRef<MapRef>(null);
 
   const [selectedPoint, setSelectedPoint] = useState<{
@@ -466,81 +471,27 @@ export function ExploreMap({ hackathons, className }: ExploreMapProps) {
   return (
     <div className={cn("relative h-full", className)}>
       {/* ── Filter bar ─────────────────────────────────────────────────────── */}
-      <div className="relative z-20 flex items-center gap-2 px-3 py-2 bg-card/80 border-b border-border/30 backdrop-blur-md overflow-x-auto no-scrollbar">
-        <span className="text-[10px] font-pixel text-muted-foreground uppercase tracking-wider shrink-0 mr-1">
-          Filtrar
-        </span>
+      {showFilters && (
+        <div className="relative z-20 flex items-center gap-2 px-3 py-2 bg-card/80 border-b border-border/30 backdrop-blur-md overflow-x-auto no-scrollbar">
+          <span className="text-[10px] font-pixel text-muted-foreground uppercase tracking-wider shrink-0 mr-1">
+            Filtrar
+          </span>
 
-        {/* Status filters */}
-        {[...statusMap.entries()].map(([status, count]) => (
-          <div key={`s-${status}`} className="relative">
-            <FilterChip
-              label={status}
-              count={count}
-              icon={<Zap className="size-3" />}
-              active={
-                activeFilter?.kind === "status" &&
-                activeFilter?.value === status
-              }
-              onClick={() => handleFilterClick("status", status)}
-            />
-            {activeFilter?.kind === "status" &&
-              activeFilter?.value === status && (
-                <FilterDropdown
-                  filter={activeFilter}
-                  onClose={() => setActiveFilter(null)}
-                  onFlyTo={handleFlyTo}
-                />
-              )}
-          </div>
-        ))}
-
-        <div className="w-px h-4 bg-border/40 shrink-0" />
-
-        {/* Top tags */}
-        {[...tagMap.entries()]
-          .toSorted((a, b) => b[1] - a[1])
-          .slice(0, 6)
-          .map(([tag, count]) => (
-            <div key={`t-${tag}`} className="relative">
+          {/* Status filters */}
+          {[...statusMap.entries()].map(([status, count]) => (
+            <div key={`s-${status}`} className="relative">
               <FilterChip
-                label={tag}
+                label={status}
                 count={count}
-                icon={<Tag className="size-3" />}
+                icon={<Zap className="size-3" />}
                 active={
-                  activeFilter?.kind === "tag" && activeFilter?.value === tag
+                  activeFilter?.kind === "status" &&
+                  activeFilter?.value === status
                 }
-                onClick={() => handleFilterClick("tag", tag)}
+                onClick={() => handleFilterClick("status", status)}
               />
-              {activeFilter?.kind === "tag" && activeFilter?.value === tag && (
-                <FilterDropdown
-                  filter={activeFilter}
-                  onClose={() => setActiveFilter(null)}
-                  onFlyTo={handleFlyTo}
-                />
-              )}
-            </div>
-          ))}
-
-        <div className="w-px h-4 bg-border/40 shrink-0" />
-
-        {/* Top techs */}
-        {[...techMap.entries()]
-          .toSorted((a, b) => b[1] - a[1])
-          .slice(0, 5)
-          .map(([tech, count]) => (
-            <div key={`tc-${tech}`} className="relative">
-              <FilterChip
-                label={tech}
-                count={count}
-                icon={<Zap className="size-2.5" />}
-                active={
-                  activeFilter?.kind === "tech" && activeFilter?.value === tech
-                }
-                onClick={() => handleFilterClick("tech", tech)}
-              />
-              {activeFilter?.kind === "tech" &&
-                activeFilter?.value === tech && (
+              {activeFilter?.kind === "status" &&
+                activeFilter?.value === status && (
                   <FilterDropdown
                     filter={activeFilter}
                     onClose={() => setActiveFilter(null)}
@@ -549,7 +500,65 @@ export function ExploreMap({ hackathons, className }: ExploreMapProps) {
                 )}
             </div>
           ))}
-      </div>
+
+          <div className="w-px h-4 bg-border/40 shrink-0" />
+
+          {/* Top tags */}
+          {[...tagMap.entries()]
+            .toSorted((a, b) => b[1] - a[1])
+            .slice(0, 6)
+            .map(([tag, count]) => (
+              <div key={`t-${tag}`} className="relative">
+                <FilterChip
+                  label={tag}
+                  count={count}
+                  icon={<Tag className="size-3" />}
+                  active={
+                    activeFilter?.kind === "tag" && activeFilter?.value === tag
+                  }
+                  onClick={() => handleFilterClick("tag", tag)}
+                />
+                {activeFilter?.kind === "tag" &&
+                  activeFilter?.value === tag && (
+                    <FilterDropdown
+                      filter={activeFilter}
+                      onClose={() => setActiveFilter(null)}
+                      onFlyTo={handleFlyTo}
+                    />
+                  )}
+              </div>
+            ))}
+
+          <div className="w-px h-4 bg-border/40 shrink-0" />
+
+          {/* Top techs */}
+          {[...techMap.entries()]
+            .toSorted((a, b) => b[1] - a[1])
+            .slice(0, 5)
+            .map(([tech, count]) => (
+              <div key={`tc-${tech}`} className="relative">
+                <FilterChip
+                  label={tech}
+                  count={count}
+                  icon={<Zap className="size-2.5" />}
+                  active={
+                    activeFilter?.kind === "tech" &&
+                    activeFilter?.value === tech
+                  }
+                  onClick={() => handleFilterClick("tech", tech)}
+                />
+                {activeFilter?.kind === "tech" &&
+                  activeFilter?.value === tech && (
+                    <FilterDropdown
+                      filter={activeFilter}
+                      onClose={() => setActiveFilter(null)}
+                      onFlyTo={handleFlyTo}
+                    />
+                  )}
+              </div>
+            ))}
+        </div>
+      )}
 
       {/* ── Map ────────────────────────────────────────────────────────────── */}
       <div className="relative h-[calc(100dvh-4rem-40px)] border border-border/40 overflow-hidden">

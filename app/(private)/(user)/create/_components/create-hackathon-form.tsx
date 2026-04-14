@@ -27,7 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import type { Tech } from "@/lib/mock-data";
 import { CodeText } from "@/shared/components/code-text";
-import { LocationPicker } from "@/shared/components/location-picker";
+import { LocationAutocomplete } from "@/shared/components/location-autocomplete";
 import { Calendar } from "@/shared/components/ui/calendar";
 import { FieldError, FieldLabel } from "@/shared/components/ui/field";
 import {
@@ -457,6 +457,11 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       await form.handleSubmit();
     } finally {
       setIsSubmitting(false);
+      setSubmitted(true);
+      handleReset();
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 5000);
     }
   };
 
@@ -946,60 +951,24 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                             VENUE LOCATION{" "}
                             {locationMode === "hybrid" && "(physical venue)"}
                           </FieldLabel>
-                          <input
-                            id={field.name}
-                            type="text"
+                          <LocationAutocomplete
                             value={field.state.value}
-                            onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(e.target.value)}
+                            latitude={latitude}
+                            longitude={longitude}
+                            onChange={(text, lat, lng) => {
+                              field.handleChange(text);
+                              if (lat !== null)
+                                form.setFieldValue("latitude", lat);
+                              if (lng !== null)
+                                form.setFieldValue("longitude", lng);
+                            }}
                             placeholder="San Francisco, CA"
-                            className={inputClass}
-                            aria-invalid={isInvalid}
                           />
                           {isInvalid && (
                             <FieldError errors={field.state.meta.errors} />
                           )}
                         </>
                       );
-                    }}
-                  />
-                  <form.Field
-                    name="latitude"
-                    children={(field) => (
-                      <input
-                        type="hidden"
-                        value={field.state.value ?? ""}
-                        onChange={(e) =>
-                          field.handleChange(
-                            e.target.value ? Number(e.target.value) : null
-                          )
-                        }
-                      />
-                    )}
-                  />
-                  <form.Field
-                    name="longitude"
-                    children={(field) => (
-                      <input
-                        type="hidden"
-                        value={field.state.value ?? ""}
-                        onChange={(e) =>
-                          field.handleChange(
-                            e.target.value ? Number(e.target.value) : null
-                          )
-                        }
-                      />
-                    )}
-                  />
-                  <LocationPicker
-                    latitude={latitude}
-                    longitude={longitude}
-                    onLocationChange={(lat, lng, address) => {
-                      form.setFieldValue("latitude", lat);
-                      form.setFieldValue("longitude", lng);
-                      if (address && !form.getFieldValue("location")) {
-                        form.setFieldValue("location", address);
-                      }
                     }}
                   />
                 </motion.div>

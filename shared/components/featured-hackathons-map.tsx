@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, MapPin, Trophy, Users, Wifi } from "lucide-react";
+import { Calendar, MapPin, Trophy, Users } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -304,36 +304,55 @@ function FeaturedPopupCard({
 
 // ─── Online-only card ─────────────────────────────────────────────────────────
 
-function OnlineOnlyCard({ hackathon: h }: { hackathon: MapHackathon }) {
-  const startDate = new Date(h.startDate);
+function OnlineOnlyCard({
+  hackathon,
+}: {
+  hackathon: {
+    id: string;
+    slug: string;
+    title: string;
+    startDate: Date;
+    endDate: Date;
+    participantCount: number;
+    tags: string[];
+    status: string;
+    location: string;
+  };
+}) {
+  const startDate = new Date(hackathon.startDate);
 
   return (
-    <Link href={`/hackathon/${h.slug}`} className="block group">
-      <article className="glass bg-card/50 border border-border/40 p-3 hover:border-brand-purple/40 transition-colors">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="flex items-center gap-1 text-[9px] border border-brand-purple/30 px-1.5 py-0.5 text-brand-purple">
-            <Wifi size={6} /> ONLINE
+    <Link href={`/hackathon/${hackathon.slug}`} className="block group">
+      <article className="glass bg-card/50 border border-border/40 p-4 hover:border-brand-purple/40 transition-colors">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-[9px] border border-brand-purple/30 px-1.5 py-0.5 text-brand-purple">
+            ONLINE
           </span>
-          <StatusPill
-            index={0}
-            status={h.status as "LIVE" | "UPCOMING" | "ENDED"}
-          />
+          <span className="text-[9px] text-muted-foreground uppercase">
+            {hackathon.status}
+          </span>
         </div>
-        <p className="text-xs font-medium text-foreground group-hover:text-brand-green transition-colors truncate">
-          {h.title}
-        </p>
-        <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-1">
-          <span className="flex items-center gap-0.5">
-            <Calendar size={8} />
+        <h3 className="text-sm font-medium text-foreground group-hover:text-brand-green transition-colors line-clamp-2 mb-2">
+          {hackathon.title}
+        </h3>
+        <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+          <span>
             {startDate.toLocaleDateString("en-US", {
               day: "numeric",
               month: "short",
             })}
           </span>
-          <span className="flex items-center gap-0.5">
-            <Users size={8} />
-            {h.participantCount}
-          </span>
+          <span>{hackathon.participantCount} participants</span>
+        </div>
+        <div className="flex flex-wrap gap-1 mt-2">
+          {hackathon.tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className="text-[8px] border border-brand-purple/30 px-1 py-0.5 text-brand-purple"
+            >
+              {tag}
+            </span>
+          ))}
         </div>
       </article>
     </Link>

@@ -287,7 +287,6 @@ export async function getFeaturedHackatonsForMap(): Promise<MapHackathon[]> {
       prizes: {
         orderBy: { sortOrder: "asc" },
         select: { amount: true },
-        take: 1,
       },
     },
     orderBy: {
@@ -295,7 +294,6 @@ export async function getFeaturedHackatonsForMap(): Promise<MapHackathon[]> {
         _count: "desc",
       },
     },
-    take: 8,
     where: {
       status: { in: ["LIVE", "UPCOMING"] },
     },
