@@ -6,6 +6,8 @@ import type {
 import type { HackathonGetPayload } from "@/app/generated/prisma/models";
 import { prisma } from "@/shared/lib/prisma";
 
+import { requireManageAccess } from "./hackathon-organizer";
+
 export interface EditHackathonDTO {
   title?: string;
   description?: string;
@@ -209,6 +211,65 @@ async function verifyOwnership(id: string, userId: string): Promise<void> {
   }
 }
 
+// Allows owner, admin, or co-organizer to manage participants
+async function verifyManageAccessLocal(
+  hackathonId: string,
+  userId: string,
+  userRole = "USER"
+): Promise<void> {
+  return await requireManageAccess(hackathonId, userId, userRole);
+}
+
+export async function getHackathonForManage(
+  hackathonId: string,
+  userId: string,
+  userRole: string
+) {
+  await requireManageAccess(hackathonId, userId, userRole);
+
+  const hackathon = await prisma.hackathon.findUnique({
+    include: {
+      organizer: {
+        select: { id: true, image: true, name: true, username: true },
+      },
+      organizers: {
+        include: {
+          addedBy: { select: { username: true } },
+          user: {
+            select: {
+              email: true,
+              id: true,
+              image: true,
+              name: true,
+              username: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      },
+      participants: {
+        include: {
+          user: {
+            select: {
+              email: true,
+              id: true,
+              image: true,
+              name: true,
+              username: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      },
+    },
+    where: { id: hackathonId },
+  });
+
+  if (!hackathon) throw new Error("Hackathon not found");
+
+  return hackathon;
+}
+
 export async function updateHackathon(
   id: string,
   userId: string,
@@ -263,9 +324,10 @@ export async function deleteHackathon(id: string, userId: string) {
 export async function approveParticipant(
   hackathonId: string,
   participantId: string,
-  userId: string
+  userId: string,
+  userRole = "USER"
 ) {
-  await verifyOwnership(hackathonId, userId);
+  await verifyManageAccessLocal(hackathonId, userId, userRole);
 
   return await prisma.hackathonParticipant.update({
     data: { status: "APPROVED" as ParticipantStatus },
@@ -276,9 +338,10 @@ export async function approveParticipant(
 export async function rejectParticipant(
   hackathonId: string,
   participantId: string,
-  userId: string
+  userId: string,
+  userRole = "USER"
 ) {
-  await verifyOwnership(hackathonId, userId);
+  await verifyManageAccessLocal(hackathonId, userId, userRole);
 
   return await prisma.hackathonParticipant.update({
     data: { status: "REJECTED" as ParticipantStatus },

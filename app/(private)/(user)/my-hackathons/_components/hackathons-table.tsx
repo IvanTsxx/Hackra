@@ -1,7 +1,9 @@
 "use client";
 
 import { format } from "date-fns";
-import { Edit, Eye, Trash2 } from "lucide-react";
+import { Edit, Settings, Trash2 } from "lucide-react";
+import type { Route } from "next";
+import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,7 +33,6 @@ interface HackathonsTableProps {
   pendingCounts: Record<string, number>;
   onEditClick: (hackathon: HackathonRow) => void;
   onDeleteClick: (hackathon: HackathonRow) => void;
-  onParticipantsClick: (hackathon: HackathonRow) => void;
 }
 
 // ─── Status Config ───────────────────────────────────────────────────────────
@@ -57,7 +58,6 @@ export function HackathonsTable({
   pendingCounts,
   onEditClick,
   onDeleteClick,
-  onParticipantsClick,
 }: HackathonsTableProps) {
   return (
     <div className="space-y-4">
@@ -89,7 +89,6 @@ export function HackathonsTable({
                   pendingCount={pendingCounts[hackathon.id] ?? 0}
                   onEditClick={onEditClick}
                   onDeleteClick={onDeleteClick}
-                  onParticipantsClick={onParticipantsClick}
                 />
               ))
             )}
@@ -127,13 +126,11 @@ function HackathonRow({
   pendingCount,
   onEditClick,
   onDeleteClick,
-  onParticipantsClick,
 }: {
   hackathon: HackathonRow;
   pendingCount: number;
   onEditClick: (hackathon: HackathonRow) => void;
   onDeleteClick: (hackathon: HackathonRow) => void;
-  onParticipantsClick: (hackathon: HackathonRow) => void;
 }) {
   const isLive = hackathon.status === "LIVE";
   const cfg = statusConfig[hackathon.status] ?? {
@@ -202,15 +199,14 @@ function HackathonRow({
             "Cannot modify a live hackathon",
             isLive
           )}
-          <button
-            type="button"
-            onClick={() => onParticipantsClick(hackathon)}
-            className="inline-flex items-center gap-1 shrink-0 h-7 px-2 text-xs font-pixel border border-border bg-input/30 hover:bg-input/50 hover:text-foreground rounded-4xl transition-colors cursor-pointer"
-            aria-label={`View participants for ${hackathon.title}`}
+          <Link
+            href={`/my-hackathons/${hackathon.id}/manage` as Route}
+            className="inline-flex items-center gap-1 shrink-0 h-7 px-2 text-xs font-pixel border border-border bg-input/30 hover:bg-input/50 hover:text-foreground transition-colors"
+            aria-label={`Manage ${hackathon.title}`}
           >
-            <Eye size={12} />
-            MANAGE PARTICIPANTS
-          </button>
+            <Settings size={12} />
+            MANAGE
+          </Link>
         </div>
       </TableCell>
     </TableRow>

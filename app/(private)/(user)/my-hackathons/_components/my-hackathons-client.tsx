@@ -6,7 +6,6 @@ import { useState } from "react";
 import { DeleteHackathonDialog } from "./delete-hackathon-dialog";
 import { EditHackathonDialog } from "./edit-hackathon-dialog";
 import { HackathonsTable } from "./hackathons-table";
-import { ParticipantsDialog } from "./participants-dialog";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -35,20 +34,6 @@ export interface HackathonDTO {
 interface MyHackathonsClientProps {
   hackathons: HackathonDTO[];
   pendingCounts: Record<string, number>;
-  participantsMap: Record<
-    string,
-    {
-      id: string;
-      status: string;
-      createdAt: Date;
-      user: {
-        id: string;
-        name: string | null;
-        username: string;
-        email: string;
-      };
-    }[]
-  >;
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -56,7 +41,6 @@ interface MyHackathonsClientProps {
 export function MyHackathonsClient({
   hackathons,
   pendingCounts,
-  participantsMap,
 }: MyHackathonsClientProps) {
   const router = useRouter();
 
@@ -64,22 +48,6 @@ export function MyHackathonsClient({
   const [deleteHackathon, setDeleteHackathon] = useState<{
     id: string;
     title: string;
-  } | null>(null);
-  const [participantsHackathon, setParticipantsHackathon] = useState<{
-    id: string;
-    title: string;
-    requiresApproval: boolean;
-    participants: {
-      id: string;
-      status: string;
-      createdAt: Date;
-      user: {
-        id: string;
-        name: string | null;
-        username: string;
-        email: string;
-      };
-    }[];
   } | null>(null);
 
   const handleEditSuccess = () => {
@@ -92,11 +60,6 @@ export function MyHackathonsClient({
     router.refresh();
   };
 
-  const handleParticipantsClose = () => {
-    setParticipantsHackathon(null);
-    router.refresh();
-  };
-
   return (
     <>
       <HackathonsTable
@@ -105,14 +68,6 @@ export function MyHackathonsClient({
         onEditClick={(hackathon) => setEditHackathon(hackathon)}
         onDeleteClick={(hackathon) =>
           setDeleteHackathon({ id: hackathon.id, title: hackathon.title })
-        }
-        onParticipantsClick={(hackathon) =>
-          setParticipantsHackathon({
-            id: hackathon.id,
-            participants: participantsMap[hackathon.id] ?? [],
-            requiresApproval: hackathon.requiresApproval,
-            title: hackathon.title,
-          })
         }
       />
 
@@ -140,21 +95,6 @@ export function MyHackathonsClient({
             }
           }}
           onSuccess={handleDeleteSuccess}
-        />
-      )}
-
-      {participantsHackathon && (
-        <ParticipantsDialog
-          hackathonId={participantsHackathon.id}
-          hackathonTitle={participantsHackathon.title}
-          requiresApproval={participantsHackathon.requiresApproval}
-          participants={participantsHackathon.participants}
-          open={!!participantsHackathon}
-          onOpenChange={(open) => {
-            if (!open) {
-              handleParticipantsClose();
-            }
-          }}
         />
       )}
     </>

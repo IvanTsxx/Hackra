@@ -27,11 +27,13 @@ model User {
   sessions Session[]
   accounts Account[]
 
-  organizedHackathons Hackathon[]            @relation("UserHackathons")
-  ownedTeams          Team[]                 @relation("UserTeams")
-  teamMemberships     TeamMember[]
-  teamApplications    TeamApplication[]
-  participations      HackathonParticipant[]
+  organizedHackathons  Hackathon[]            @relation("UserHackathons")
+  ownedTeams           Team[]                 @relation("UserTeams")
+  teamMemberships      TeamMember[]
+  teamApplications     TeamApplication[]
+  participations       HackathonParticipant[]
+  coOrganizing         HackathonOrganizer[]   @relation("HackathonCoOrganizers")
+  organizerAssignments HackathonOrganizer[]   @relation("HackathonOrganizerAddedBy")
 
   role Role @default(USER)
 
@@ -125,7 +127,6 @@ model Hackathon {
   maxParticipants  Int?
   maxTeamSize      Int
 
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -136,6 +137,7 @@ model Hackathon {
   participants HackathonParticipant[]
   sponsors     HackathonSponsor[]
   prizes       HackathonPrize[]
+  organizers   HackathonOrganizer[]
 
   status HackathonStatus @default(DRAFT)
 
@@ -170,6 +172,25 @@ model HackathonParticipant {
 
   @@unique([userId, hackathonId])
   @@index([hackathonId])
+}
+
+// Co-organizers assigned per hackathon (not a global role)
+model HackathonOrganizer {
+  id          String   @id @default(cuid())
+  hackathonId String
+  userId      String
+  addedById   String
+  createdAt   DateTime @default(now())
+
+  hackathon Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+  user      User      @relation("HackathonCoOrganizers", fields: [userId], references: [id], onDelete: Cascade)
+  addedBy   User      @relation("HackathonOrganizerAddedBy", fields: [addedById], references: [id])
+
+  @@unique([hackathonId, userId])
+  @@index([hackathonId])
+  @@index([userId])
+  @@index([addedById])
+  @@map("hackathon_organizer")
 }
 
 enum ParticipantStatus {

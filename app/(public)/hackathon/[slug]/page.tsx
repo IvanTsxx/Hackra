@@ -23,6 +23,7 @@ import { getSponsorsForHackathon } from "@/data/sponsors";
 import { getTeamsForHackathon } from "@/data/teams";
 import { getUserById } from "@/data/user";
 import { CodeText } from "@/shared/components/code-text";
+import { HackathonBackground } from "@/shared/components/hackathon-background";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { SITE_URL } from "@/shared/lib/site";
 
@@ -110,7 +111,8 @@ export default async function HackathonDetailPage({
   const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
 
   return (
-    <main className="px-2 lg:px-6 py-20 bg-background">
+    <main className="px-2 lg:px-6 py-20">
+      <HackathonBackground imageUrl={hasImage ? hackathon.image : undefined} />
       {/* Breadcrumb */}
       <div className="flex items-center gap-2   text-sm text-muted-foreground mb-6 mt-4">
         <Link
