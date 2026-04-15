@@ -40,7 +40,7 @@ export function TeamCard({ team, i }: TeamCardProps) {
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
           <Link href={`/team/${team.id}`}>
-            <h3 className="font-pixel text-sm text-foreground hover:text-brand-green transition-colors">
+            <h3 className=" text-sm text-foreground hover:text-brand-green transition-colors">
               {team.name}
             </h3>
           </Link>
@@ -86,7 +86,7 @@ export function TeamCard({ team, i }: TeamCardProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="font-pixel text-xs tracking-wider h-7 px-2 rounded-none"
+              className=" text-xs tracking-wider h-7 px-2 rounded-none"
             >
               VIEW
             </Button>

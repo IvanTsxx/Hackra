@@ -40,7 +40,7 @@ export default async function MyTeamsPage() {
       <AnimatedSection>
         <div className="space-y-1 mb-7">
           <CodeText as="p">navigation</CodeText>
-          <h1 className="font-pixel text-2xl text-foreground">MY TEAMS</h1>
+          <h1 className=" text-2xl text-foreground">MY TEAMS</h1>
         </div>
       </AnimatedSection>
       {/* Empty state when nothing at all */}
@@ -60,7 +60,7 @@ export default async function MyTeamsPage() {
               />
             </div>
           </div>
-          <h3 className="font-pixel text-sm text-foreground tracking-wider">
+          <h3 className=" text-sm text-foreground tracking-wider">
             NO TEAMS YET
           </h3>
           <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
@@ -68,7 +68,7 @@ export default async function MyTeamsPage() {
           </p>
           <Link
             href="/explore"
-            className="inline-flex items-center gap-2 font-pixel text-xs tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
+            className="inline-flex items-center gap-2  text-xs tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
           >
             BROWSE HACKATHONS →
           </Link>
@@ -77,7 +77,7 @@ export default async function MyTeamsPage() {
         <>
           {/* Teams you own */}
           <section className="mb-10">
-            <h2 className="font-pixel text-sm text-brand-green tracking-wider mb-4">
+            <h2 className=" text-sm text-brand-green tracking-wider mb-4">
               TEAMS YOU OWN ({owned.length})
             </h2>
 
@@ -105,7 +105,7 @@ export default async function MyTeamsPage() {
 
           {/* Teams you're in */}
           <section>
-            <h2 className="font-pixel text-sm text-brand-purple tracking-wider mb-4">
+            <h2 className=" text-sm text-brand-purple tracking-wider mb-4">
               TEAMS YOU&apos;RE IN ({memberOf.length})
             </h2>
 

@@ -98,7 +98,7 @@ export const KarmaButton = ({
 
   const karmaDisplay = (
     <span
-      className={`font-pixel text-xs tracking-wider min-w-8 text-center ${
+      className={` text-xs tracking-wider min-w-8 text-center ${
         userVote === "up"
           ? "text-brand-green"
           : userVote === "down"

@@ -114,7 +114,7 @@ export default async function ManageHackathonPage({
         <div className="space-y-1 mb-7">
           <CodeText as="p">hackathon management</CodeText>
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="font-pixel text-2xl text-foreground">
+            <h1 className=" text-2xl text-foreground">
               {hackathon.title.toUpperCase()}
             </h1>
             {pendingCount > 0 && (
@@ -136,7 +136,7 @@ export default async function ManageHackathonPage({
         <TabsList className="h-auto p-0 bg-transparent border border-border/40 w-full sm:w-auto">
           <TabsTrigger
             value="participants"
-            className="rounded-none font-pixel text-xs tracking-wider data-[state=active]:bg-brand-green/10 data-[state=active]:text-brand-green gap-1.5 px-4 h-9"
+            className="rounded-none  text-xs tracking-wider data-[state=active]:bg-brand-green/10 data-[state=active]:text-brand-green gap-1.5 px-4 h-9"
           >
             <Users size={12} />
             PARTICIPANTS
@@ -148,14 +148,14 @@ export default async function ManageHackathonPage({
           </TabsTrigger>
           <TabsTrigger
             value="organizers"
-            className="rounded-none font-pixel text-xs tracking-wider data-[state=active]:bg-brand-green/10 data-[state=active]:text-brand-green gap-1.5 px-4 h-9"
+            className="rounded-none  text-xs tracking-wider data-[state=active]:bg-brand-green/10 data-[state=active]:text-brand-green gap-1.5 px-4 h-9"
           >
             <Shield size={12} />
             CO-ORGANIZERS
           </TabsTrigger>
           <TabsTrigger
             value="email"
-            className="rounded-none font-pixel text-xs tracking-wider data-[state=active]:bg-brand-green/10 data-[state=active]:text-brand-green gap-1.5 px-4 h-9"
+            className="rounded-none  text-xs tracking-wider data-[state=active]:bg-brand-green/10 data-[state=active]:text-brand-green gap-1.5 px-4 h-9"
           >
             <Settings size={12} />
             EMAILS

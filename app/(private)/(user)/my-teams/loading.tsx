@@ -48,12 +48,12 @@ export default function Loading() {
       {/* Header */}
       <div className="space-y-1 mb-7">
         <CodeText as="p">navigation</CodeText>
-        <h1 className="font-pixel text-2xl text-foreground">MY TEAMS</h1>
+        <h1 className=" text-2xl text-foreground">MY TEAMS</h1>
       </div>
 
       {/* Owned Teams */}
       <section className="mb-10">
-        <h2 className="font-pixel text-sm text-brand-green tracking-wider mb-4">
+        <h2 className=" text-sm text-brand-green tracking-wider mb-4">
           TEAMS YOU OWN
         </h2>
 
@@ -66,7 +66,7 @@ export default function Loading() {
 
       {/* Member Teams */}
       <section>
-        <h2 className="font-pixel text-sm text-brand-purple tracking-wider mb-4">
+        <h2 className=" text-sm text-brand-purple tracking-wider mb-4">
           TEAMS YOU&apos;RE IN
         </h2>
 

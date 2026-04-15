@@ -108,7 +108,7 @@ export function MapSearchOverlay({
         <div className="flex items-center justify-between px-3 py-2 border-b border-border/30">
           <div className="flex items-center gap-2">
             <Filter size={12} className="text-brand-green" />
-            <span className="text-xs font-pixel tracking-wider text-brand-green">
+            <span className="text-xs  tracking-wider text-brand-green">
               FILTER
             </span>
           </div>

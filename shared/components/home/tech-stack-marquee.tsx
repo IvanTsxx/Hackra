@@ -8,9 +8,7 @@ const TechStackMarqueeContent = dynamic(
   {
     loading: () => (
       <div className="flex items-center justify-center py-8 text-muted-foreground/30 animate-pulse">
-        <span className="font-pixel text-xs tracking-widest">
-          LOADING TECH STACK...
-        </span>
+        <span className=" text-xs tracking-widest">LOADING TECH STACK...</span>
       </div>
     ),
   }

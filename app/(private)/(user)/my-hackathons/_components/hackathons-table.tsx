@@ -149,7 +149,7 @@ function HackathonRow({
         <div className="flex items-center gap-2">
           <a
             href={`/hackathon/${hackathon.slug}`}
-            className="font-pixel text-xs text-foreground hover:text-brand-green transition-colors"
+            className=" text-xs text-foreground hover:text-brand-green transition-colors"
           >
             {hackathon.title.toUpperCase()}
           </a>
@@ -195,7 +195,7 @@ function HackathonRow({
               <Button
                 variant="outline"
                 size="sm"
-                className="h-7 px-2 text-xs font-pixel text-destructive border-destructive/30 hover:bg-destructive/10"
+                className="h-7 px-2 text-xs  text-destructive border-destructive/30 hover:bg-destructive/10"
                 disabled={isLive}
                 onClick={() => onDeleteClick(hackathon)}
                 aria-label={`Delete ${hackathon.title}`}
@@ -208,7 +208,7 @@ function HackathonRow({
             )}
           <Link
             href={`/my-hackathons/${hackathon.id}/manage` as Route}
-            className="inline-flex items-center gap-1 shrink-0 h-7 px-2 text-xs font-pixel border border-border bg-input/30 hover:bg-input/50 hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1 shrink-0 h-7 px-2 text-xs  border border-border bg-input/30 hover:bg-input/50 hover:text-foreground transition-colors"
             aria-label={`Manage ${hackathon.title}`}
           >
             <Settings size={12} />

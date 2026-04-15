@@ -46,9 +46,7 @@ export function KarmaHowItWorks() {
               key={way.action}
               className="bg-secondary/10 p-5 text-center hover:bg-secondary/20 transition-colors"
             >
-              <p className="font-pixel text-brand-green text-lg mb-1">
-                {way.karma}
-              </p>
+              <p className=" text-brand-green text-lg mb-1">{way.karma}</p>
               <p className="text-xs text-foreground font-medium mb-2">
                 {way.action}
               </p>

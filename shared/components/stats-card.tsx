@@ -24,9 +24,7 @@ export function StatsCard({ icon, value, label, className }: StatsCardProps) {
       )}
     >
       <div className="text-muted-foreground">{icon}</div>
-      <span className="font-pixel text-2xl md:text-3xl text-foreground">
-        {value}
-      </span>
+      <span className=" text-2xl md:text-3xl text-foreground">{value}</span>
       <span className="  text-xs tracking-widest text-muted-foreground uppercase">
         {label}
       </span>

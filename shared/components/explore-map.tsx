@@ -181,7 +181,7 @@ function FilterDropdown({ filter, onClose, onFlyTo }: FilterDropdownProps) {
       <div className="glass bg-card/90 border border-border/50 backdrop-blur-md shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between px-3 py-2 border-b border-border/30">
-          <span className="text-[10px] font-pixel text-brand-green tracking-wider uppercase">
+          <span className="text-[10px]  text-brand-green tracking-wider uppercase">
             {filter.kind === "status" ? filter.value : `#${filter.value}`} —{" "}
             {filter.hackathons.length} hackathones
           </span>
@@ -495,7 +495,7 @@ export function ExploreMap({
 
           <div className="w-px h-4 bg-border/40 shrink-0" />
 
-          <span className="text-[10px] font-pixel text-muted-foreground uppercase tracking-wider shrink-0 mr-1">
+          <span className="text-[10px]  text-muted-foreground uppercase tracking-wider shrink-0 mr-1">
             Filtrar
           </span>
 
@@ -626,7 +626,7 @@ export function ExploreMap({
             <div className="glass bg-card/80 backdrop-blur-md border border-border/40 p-3">
               <div className="flex items-center gap-2 mb-2">
                 <Globe size={12} className="text-brand-green" />
-                <h3 className="font-pixel text-[10px] text-brand-green tracking-wider">
+                <h3 className=" text-[10px] text-brand-green tracking-wider">
                   ONLINE HACKATHONS
                 </h3>
                 <span className="text-[10px] text-muted-foreground">
@@ -653,7 +653,7 @@ export function ExploreMap({
             <div className="glass bg-card/80 backdrop-blur-md border border-border/40 p-3">
               <div className="flex items-center gap-2 mb-2">
                 <MapPin size={12} className="text-brand-green" />
-                <h3 className="font-pixel text-[10px] text-brand-green tracking-wider">
+                <h3 className=" text-[10px] text-brand-green tracking-wider">
                   EN EL MAPA
                 </h3>
                 <span className="text-[10px] text-muted-foreground">

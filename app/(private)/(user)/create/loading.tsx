@@ -22,7 +22,7 @@ export default function Loading() {
       {/* Header */}
       <div className="space-y-1 mb-7">
         <CodeText as="p">navigation</CodeText>
-        <h1 className="font-pixel text-2xl text-foreground">CREATE</h1>
+        <h1 className=" text-2xl text-foreground">CREATE</h1>
       </div>
 
       {/* Publish switch */}

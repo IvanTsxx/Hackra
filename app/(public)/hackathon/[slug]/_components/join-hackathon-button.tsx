@@ -41,7 +41,7 @@ export function JoinHackathonButton({
     <Button
       onClick={handleJoin}
       disabled={isLoading || isJoined}
-      className={`font-pixel text-xs tracking-wider rounded-none h-9 px-5 transition-all ${
+      className={` text-xs tracking-wider rounded-none h-9 px-5 transition-all ${
         isJoined
           ? "bg-brand-green text-background hover:bg-brand-green/90"
           : "bg-foreground text-background hover:bg-foreground/90"

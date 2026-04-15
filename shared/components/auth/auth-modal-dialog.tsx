@@ -61,7 +61,7 @@ export function AuthModalDialog({
         <div className="flex items-center justify-between px-6 pt-5 pb-0">
           <div className="space-y-0.5">
             <CodeText as="p">hackra.auth()</CodeText>
-            <DialogTitle className="font-pixel text-base text-foreground tracking-wider">
+            <DialogTitle className=" text-base text-foreground tracking-wider">
               WELCOME
             </DialogTitle>
           </div>
@@ -82,7 +82,7 @@ export function AuthModalDialog({
               className="w-full flex items-center gap-3 border border-border/50 bg-secondary/10 px-4 py-3 hover:border-foreground/40 hover:bg-secondary/20 transition-all group"
             >
               <Icons.Github className="shrink-0 text-foreground/70 group-hover:text-foreground transition-colors" />
-              <span className="font-pixel text-sm tracking-wider text-foreground/80 group-hover:text-foreground transition-colors">
+              <span className=" text-sm tracking-wider text-foreground/80 group-hover:text-foreground transition-colors">
                 CONTINUE WITH GITHUB
               </span>
             </button>

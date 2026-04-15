@@ -17,7 +17,7 @@ export function TeamsSection({ slug, organizerId, teamsCount }: Props) {
   return (
     <div className="glass border border-border/40 p-5 flex lg:flex-row lg:items-center lg:justify-between flex-col gap-4">
       <div>
-        <p className="font-pixel text-sm text-foreground">FIND YOUR TEAM</p>
+        <p className=" text-sm text-foreground">FIND YOUR TEAM</p>
         <p className="text-xs text-muted-foreground mt-1">
           {teamsCount} team{teamsCount !== 1 ? "s" : ""} looking for members
         </p>

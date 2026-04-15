@@ -28,9 +28,7 @@ export default function Loading() {
       <AnimatedSection>
         <div className="space-y-1 mb-7">
           <CodeText as="p">navigation</CodeText>
-          <h1 className="font-pixel text-2xl text-foreground">
-            MY APPLICATIONS
-          </h1>
+          <h1 className=" text-2xl text-foreground">MY APPLICATIONS</h1>
         </div>
       </AnimatedSection>
 
@@ -38,7 +36,7 @@ export default function Loading() {
       <>
         {/* Team Applications */}
         <section className="mb-10">
-          <h2 className="font-pixel text-sm text-brand-green tracking-wider mb-4">
+          <h2 className=" text-sm text-brand-green tracking-wider mb-4">
             TEAM APPLICATIONS
           </h2>
 
@@ -51,7 +49,7 @@ export default function Loading() {
 
         {/* Hackathon Participations */}
         <section>
-          <h2 className="font-pixel text-sm text-brand-purple tracking-wider mb-4">
+          <h2 className=" text-sm text-brand-purple tracking-wider mb-4">
             HACKATHON REGISTRATIONS
           </h2>
 

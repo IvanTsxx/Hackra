@@ -56,7 +56,7 @@ export const ProfileHeader = ({
             />
           ) : (
             <div className="w-20 h-20 bg-secondary border border-border/50 flex items-center justify-center">
-              <span className="font-pixel text-center text-2xl text-muted-foreground">
+              <span className=" text-center text-2xl text-muted-foreground">
                 {name}
               </span>
             </div>
@@ -68,9 +68,7 @@ export const ProfileHeader = ({
         <div className="flex-1 space-y-2">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
-              <h1 className="font-pixel text-xl md:text-2xl text-foreground">
-                {name}
-              </h1>
+              <h1 className=" text-xl md:text-2xl text-foreground">{name}</h1>
               <p className="  text-xs text-brand-green mt-1">@{username}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -95,7 +93,7 @@ export const ProfileHeader = ({
                   <Button
                     size="sm"
                     variant="outline"
-                    className="font-pixel text-xs tracking-wider rounded-none h-8 border-border/40 hover:border-brand-green/50 hover:text-brand-green"
+                    className=" text-xs tracking-wider rounded-none h-8 border-border/40 hover:border-brand-green/50 hover:text-brand-green"
                   >
                     <Settings size={11} className="mr-1.5" /> EDIT
                   </Button>
@@ -130,7 +128,7 @@ export const ProfileHeader = ({
                 <Icon size={12} />
                 <span className="  text-xs tracking-widest">{item.label}</span>
               </div>
-              <p className="font-pixel text-xl text-foreground">{item.value}</p>
+              <p className=" text-xl text-foreground">{item.value}</p>
             </div>
           );
         })}

@@ -38,7 +38,7 @@ export default async function SettingsProfilePage() {
       <AnimatedSection>
         <div className="space-y-1 mb-7">
           <CodeText as="p">settings</CodeText>
-          <h1 className="font-pixel text-2xl text-foreground">PROFILE</h1>
+          <h1 className=" text-2xl text-foreground">PROFILE</h1>
         </div>
       </AnimatedSection>
 

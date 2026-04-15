@@ -539,20 +539,20 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
           animate={{ opacity: 1, scale: 1 }}
           className="text-center space-y-4 p-12 border border-brand-green/30 bg-brand-green/5"
         >
-          <p className="font-pixel text-3xl text-brand-green">DEPLOYED.</p>
+          <p className=" text-3xl text-brand-green">DEPLOYED.</p>
           <p className="text-xs text-muted-foreground">
             Your hackathon has been created successfully.
           </p>
           <div className="flex gap-2 justify-center pt-2">
             <Link
               href="/explore"
-              className="font-pixel text-xs border border-border/50 px-4 py-2 hover:border-brand-green/50 hover:text-brand-green transition-all"
+              className=" text-xs border border-border/50 px-4 py-2 hover:border-brand-green/50 hover:text-brand-green transition-all"
             >
               VIEW ALL
             </Link>
             <button
               onClick={() => setSubmitted(false)}
-              className="font-pixel text-xs bg-foreground text-background px-4 py-2 hover:opacity-90"
+              className=" text-xs bg-foreground text-background px-4 py-2 hover:opacity-90"
             >
               CREATE ANOTHER
             </button>
@@ -590,7 +590,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
       <AnimatedSection>
         <div className="space-y-1 mb-7">
           <CodeText as="p">navigation</CodeText>
-          <h1 className="font-pixel text-2xl text-foreground">CREATE</h1>
+          <h1 className=" text-2xl text-foreground">CREATE</h1>
         </div>
       </AnimatedSection>
 
@@ -637,7 +637,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
             key={s}
             type="button"
             onClick={() => setStep(i)}
-            className={`font-pixel text-xs tracking-wider px-4 py-2.5 border-b-2 transition-all whitespace-nowrap ${
+            className={` text-xs tracking-wider px-4 py-2.5 border-b-2 transition-all whitespace-nowrap ${
               step === i
                 ? "border-brand-green text-brand-green"
                 : "border-transparent text-muted-foreground hover:text-foreground"
@@ -693,7 +693,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                     type="button"
                     onClick={handleImportFromLuma}
                     disabled={!lumaPreviewData || lumaLoading}
-                    className="font-pixel text-xs bg-brand-green/20 text-brand-green border border-brand-green/40 px-3 hover:bg-brand-green/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all shrink-0"
+                    className=" text-xs bg-brand-green/20 text-brand-green border border-brand-green/40 px-3 hover:bg-brand-green/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all shrink-0"
                   >
                     {lumaLoading ? "..." : "IMPORT"}
                   </button>
@@ -781,7 +781,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
             {/* Duplicate Warning Panel */}
             {duplicateCheck.isDuplicate && (
               <div className="border border-red-500/50 bg-red-500/5 p-4 space-y-2">
-                <p className="font-pixel text-xs text-red-400 tracking-wider">
+                <p className=" text-xs text-red-400 tracking-wider">
                   HACKATHON DUPLICADO
                 </p>
                 <p className="text-xs text-muted-foreground">
@@ -797,7 +797,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                         {h.title}
                       </Link>
                       {h.titleMatch && (
-                        <span className="ml-2 text-red-400 font-pixel text-[10px]">
+                        <span className="ml-2 text-red-400  text-[10px]">
                           MISMO TÍTULO
                         </span>
                       )}
@@ -992,9 +992,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                         : "bg-secondary/5 text-muted-foreground hover:text-foreground hover:bg-secondary/10"
                     }`}
                   >
-                    <span className="font-pixel text-xs tracking-wider">
-                      {opt.label}
-                    </span>
+                    <span className=" text-xs tracking-wider">{opt.label}</span>
                     <span className="text-xs opacity-70">{opt.desc}</span>
                   </button>
                 ))}
@@ -1232,7 +1230,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                 className="border border-border/40 p-4 space-y-3 relative"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-pixel text-xs text-muted-foreground">
+                  <span className=" text-xs text-muted-foreground">
                     PRIZE {i + 1}
                   </span>
                   <button
@@ -1302,7 +1300,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
               type="button"
               variant="outline"
               onClick={addPrize}
-              className="w-full rounded-none font-pixel text-xs tracking-wider border-dashed border-border/50 hover:border-brand-green/50 hover:text-brand-green h-9 transition-all"
+              className="w-full rounded-none  text-xs tracking-wider border-dashed border-border/50 hover:border-brand-green/50 hover:text-brand-green h-9 transition-all"
             >
               <Plus size={12} className="mr-2" /> ADD PRIZE
             </Button>
@@ -1319,7 +1317,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
           >
             <div className="glass border border-border/40 p-6 space-y-4">
               <div className="p-6 border border-white/10 relative overflow-hidden bg-zinc-950">
-                <p className="relative font-pixel text-2xl text-white/90 mb-2">
+                <p className="relative  text-2xl text-white/90 mb-2">
                   {title || "UNTITLED"}
                 </p>
                 <p className="relative text-xs text-white/50">
@@ -1415,7 +1413,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
                 duplicateCheck.isDuplicate ||
                 duplicateCheck.isChecking
               }
-              className="w-full rounded-none font-pixel text-xs tracking-widest bg-foreground text-background hover:bg-foreground/90 h-11 disabled:opacity-50"
+              className="w-full rounded-none  text-xs tracking-widest bg-foreground text-background hover:bg-foreground/90 h-11 disabled:opacity-50"
             >
               {isSubmitting
                 ? "DEPLOYING..."
@@ -1434,7 +1432,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
             type="button"
             onClick={() => setStep((s) => Math.max(0, s - 1))}
             disabled={step === 0}
-            className="font-pixel text-xs tracking-wider text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-3 py-2"
+            className=" text-xs tracking-wider text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-3 py-2"
           >
             ← BACK
           </button>
@@ -1447,7 +1445,7 @@ export function CreateHackathonForm({ username }: CreateHackathonFormProps) {
               (step === 0 && (!canGoToDetails || duplicateCheck.isDuplicate)) ||
               (step === 1 && !canGoToPrizes)
             }
-            className="font-pixel text-xs tracking-wider text-foreground border border-border/40 px-4 py-2 hover:border-brand-green/50 hover:text-brand-green transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className=" text-xs tracking-wider text-foreground border border-border/40 px-4 py-2 hover:border-brand-green/50 hover:text-brand-green transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >
             NEXT →
           </button>

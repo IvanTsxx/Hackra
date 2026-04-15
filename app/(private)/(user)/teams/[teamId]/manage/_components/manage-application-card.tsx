@@ -94,7 +94,7 @@ export function ManageApplicationCard({
       {/* Applicant info */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-none border border-border/40 bg-secondary/20 flex items-center justify-center font-pixel text-xs text-foreground shrink-0">
+          <div className="w-10 h-10 rounded-none border border-border/40 bg-secondary/20 flex items-center justify-center  text-xs text-foreground shrink-0">
             {application.user.image ? (
               <Image
                 src={application.user.image}
@@ -109,7 +109,7 @@ export function ManageApplicationCard({
             )}
           </div>
           <div>
-            <p className="font-pixel text-xs text-foreground">
+            <p className=" text-xs text-foreground">
               {application.user.name.toUpperCase()}
             </p>
             <p className="  text-xs text-muted-foreground">
@@ -182,7 +182,7 @@ export function ManageApplicationCard({
             onClick={handleAccept}
             disabled={isProcessing}
             size="sm"
-            className="rounded-none font-pixel text-xs tracking-wider bg-brand-green/20 text-brand-green border border-brand-green/40 hover:bg-brand-green/30 h-8"
+            className="rounded-none  text-xs tracking-wider bg-brand-green/20 text-brand-green border border-brand-green/40 hover:bg-brand-green/30 h-8"
           >
             {isProcessing ? "PROCESSING..." : "ACCEPT →"}
           </Button>
@@ -193,7 +193,7 @@ export function ManageApplicationCard({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="rounded-none font-pixel text-xs tracking-wider border-destructive/40 text-destructive hover:bg-destructive/10 h-8"
+                  className="rounded-none  text-xs tracking-wider border-destructive/40 text-destructive hover:bg-destructive/10 h-8"
                 />
               }
             >
@@ -201,7 +201,7 @@ export function ManageApplicationCard({
             </DialogTrigger>
             <DialogContent className="rounded-none border-border/50 max-w-sm">
               <DialogHeader>
-                <DialogTitle className="font-pixel text-sm tracking-wider">
+                <DialogTitle className=" text-sm tracking-wider">
                   REJECT APPLICATION
                 </DialogTitle>
               </DialogHeader>
@@ -226,7 +226,7 @@ export function ManageApplicationCard({
                   render={
                     <Button
                       variant="outline"
-                      className="rounded-none font-pixel text-xs tracking-wider h-8"
+                      className="rounded-none  text-xs tracking-wider h-8"
                     />
                   }
                 >
@@ -235,7 +235,7 @@ export function ManageApplicationCard({
                 <Button
                   onClick={handleReject}
                   disabled={isProcessing}
-                  className="rounded-none font-pixel text-xs tracking-wider bg-destructive text-white hover:bg-destructive/90 h-8"
+                  className="rounded-none  text-xs tracking-wider bg-destructive text-white hover:bg-destructive/90 h-8"
                 >
                   {isProcessing ? "PROCESSING..." : "CONFIRM REJECT"}
                 </Button>

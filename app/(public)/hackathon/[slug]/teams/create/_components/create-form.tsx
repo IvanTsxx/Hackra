@@ -62,14 +62,14 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
         animate={{ opacity: 1, scale: 1 }}
         className="text-center space-y-4 p-12 border border-brand-green/30 bg-brand-green/5 min-h-[calc(100vh-100px)] flex flex-col items-center justify-center"
       >
-        <p className="font-pixel text-3xl text-brand-green">TEAM CREATED.</p>
+        <p className=" text-3xl text-brand-green">TEAM CREATED.</p>
         <p className="  text-xs text-muted-foreground">
           {name} is ready to recruit.
         </p>
         <div className="flex gap-2 justify-center pt-2">
           <Link
             href={`/hackathon/${slug}/teams`}
-            className="font-pixel text-xs bg-foreground text-background px-4 py-2 hover:opacity-90"
+            className=" text-xs bg-foreground text-background px-4 py-2 hover:opacity-90"
           >
             VIEW TEAMS
           </Link>
@@ -105,7 +105,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
         className="mb-8 space-y-1"
       >
         <CodeText as="p">new team</CodeText>
-        <h1 className="font-pixel text-2xl text-foreground">CREATE_TEAM</h1>
+        <h1 className=" text-2xl text-foreground">CREATE_TEAM</h1>
       </motion.div>
 
       <form
@@ -242,7 +242,7 @@ export const CreateForm = ({ hackathon }: { hackathon: Hackathon }) => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-none font-pixel text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-10"
+            className="w-full rounded-none  text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-10"
           >
             {isLoading ? "CREATING..." : "LAUNCH TEAM →"}
           </Button>

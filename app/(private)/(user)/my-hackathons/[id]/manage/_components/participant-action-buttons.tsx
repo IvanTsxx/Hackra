@@ -61,7 +61,7 @@ export function ParticipantActionButtons({
       <Button
         variant="outline"
         size="sm"
-        className="h-7 px-3 text-xs font-pixel text-brand-green border-brand-green/30 hover:bg-brand-green/10"
+        className="h-7 px-3 text-xs  text-brand-green border-brand-green/30 hover:bg-brand-green/10"
         disabled={isPending}
         onClick={handleApprove}
       >
@@ -70,7 +70,7 @@ export function ParticipantActionButtons({
       <Button
         variant="outline"
         size="sm"
-        className="h-7 px-3 text-xs font-pixel text-destructive border-destructive/30 hover:bg-destructive/10"
+        className="h-7 px-3 text-xs  text-destructive border-destructive/30 hover:bg-destructive/10"
         disabled={isPending}
         onClick={handleReject}
       >

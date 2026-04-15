@@ -43,9 +43,7 @@ export default async function SponsorsPage() {
     <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 pb-16">
       <div className="mb-12 space-y-2">
         <CodeText as="p">sponsors</CodeText>
-        <h1 className="font-pixel text-2xl md:text-3xl text-foreground">
-          SPONSORS
-        </h1>
+        <h1 className=" text-2xl md:text-3xl text-foreground">SPONSORS</h1>
         <p className="  text-sm text-muted-foreground max-w-xl">
           The companies and teams powering hackathons and prizes on Hackra.
         </p>
@@ -59,7 +57,7 @@ export default async function SponsorsPage() {
             <div key={tier}>
               <div className="flex items-center gap-3 mb-5">
                 <span
-                  className={`font-pixel text-xs tracking-widest px-2 py-0.5 border ${
+                  className={` text-xs tracking-widest px-2 py-0.5 border ${
                     tier === "PLATINUM"
                       ? "border-foreground/30 text-foreground"
                       : tier === "GOLD"
@@ -86,7 +84,7 @@ export default async function SponsorsPage() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="w-24 h-8 bg-secondary/30 flex items-center justify-center">
-                        <span className="font-pixel text-xs text-muted-foreground">
+                        <span className=" text-xs text-muted-foreground">
                           {sponsor.name}
                         </span>
                       </div>
@@ -109,7 +107,7 @@ export default async function SponsorsPage() {
       </div>
 
       <div className="mt-16 border border-brand-green/20 bg-brand-green/5 p-8 text-center space-y-3">
-        <p className="font-pixel text-sm text-foreground">BECOME A SPONSOR</p>
+        <p className=" text-sm text-foreground">BECOME A SPONSOR</p>
         <p className="  text-xs text-muted-foreground max-w-md mx-auto">
           Reach thousands of developers. Fund prizes, get exposure, and support
           the builder community.
@@ -119,7 +117,7 @@ export default async function SponsorsPage() {
           target="_blank"
           rel="noopener noreferrer"
           prefetch={false}
-          className="inline-block font-pixel text-xs border border-brand-green/50 text-brand-green px-6 py-2.5 hover:bg-brand-green/10 transition-colors mt-2"
+          className="inline-block  text-xs border border-brand-green/50 text-brand-green px-6 py-2.5 hover:bg-brand-green/10 transition-colors mt-2"
         >
           GET IN TOUCH →
         </Link>

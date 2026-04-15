@@ -300,7 +300,7 @@ function AddOrganizerForm({
               variant="outline"
               size="sm"
               disabled={isSubmitting}
-              className="h-9 px-4 font-pixel text-xs tracking-wider border-brand-green/40 text-brand-green hover:bg-brand-green/10 shrink-0"
+              className="h-9 px-4  text-xs tracking-wider border-brand-green/40 text-brand-green hover:bg-brand-green/10 shrink-0"
             >
               {isSubmitting ? (
                 <Loader2 size={12} className="animate-spin mr-1.5" />
@@ -346,7 +346,7 @@ function RemoveOrganizerButton({
     <Button
       variant="outline"
       size="sm"
-      className="h-7 px-2 text-xs font-pixel text-destructive border-destructive/30 hover:bg-destructive/10"
+      className="h-7 px-2 text-xs  text-destructive border-destructive/30 hover:bg-destructive/10"
       disabled={isPending}
       onClick={handleRemove}
       aria-label={`Remove @${username} as co-organizer`}

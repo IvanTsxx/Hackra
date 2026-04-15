@@ -60,7 +60,7 @@ export function AdminSidebar() {
                     className="w-10 h-10"
                   />
                   <div className="flex items-start gap-2">
-                    <span className="font-pixel text-sm text-muted-foreground tracking-widest">
+                    <span className=" text-sm text-muted-foreground tracking-widest">
                       HACKRA ADMIN
                     </span>
                     <Shield className="w-5 h-5" />

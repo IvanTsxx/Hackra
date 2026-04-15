@@ -175,7 +175,7 @@ export function SendEmailSection({ hackathonId }: { hackathonId: string }) {
                 variant="outline"
                 size="sm"
                 disabled={true}
-                className="h-9 px-5 font-pixel text-xs tracking-wider opacity-40 cursor-not-allowed"
+                className="h-9 px-5  text-xs tracking-wider opacity-40 cursor-not-allowed"
               >
                 <Send size={12} className="mr-1.5" />
                 SEND EMAIL

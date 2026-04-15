@@ -22,7 +22,7 @@ export default function SettingsNotificationsPage() {
       <AnimatedSection>
         <div className="space-y-1 mb-7">
           <CodeText as="p">settings</CodeText>
-          <h1 className="font-pixel text-2xl text-foreground">NOTIFICATIONS</h1>
+          <h1 className=" text-2xl text-foreground">NOTIFICATIONS</h1>
         </div>
       </AnimatedSection>
 
@@ -119,7 +119,7 @@ export default function SettingsNotificationsPage() {
 
         {/* Save button */}
         <div className="pt-2 border-t border-border/30 flex justify-end">
-          <Button className="font-pixel text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-6">
+          <Button className=" text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-6">
             SAVE PREFERENCES
           </Button>
         </div>

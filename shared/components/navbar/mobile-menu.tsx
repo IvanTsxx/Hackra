@@ -35,7 +35,7 @@ export const MobileMenu = () => (
               render={
                 <Link
                   href={link.href}
-                  className="font-pixel  tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+                  className="  tracking-widest text-muted-foreground hover:text-foreground transition-colors"
                 />
               }
             >

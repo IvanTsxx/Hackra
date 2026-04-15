@@ -64,7 +64,7 @@ export function ApplyModal({
           <Button
             size="sm"
             variant="outline"
-            className="font-pixel text-xs tracking-wider h-7 px-2 rounded-none border-foreground/30 hover:border-brand-green/60 hover:text-brand-green transition-all"
+            className=" text-xs tracking-wider h-7 px-2 rounded-none border-foreground/30 hover:border-brand-green/60 hover:text-brand-green transition-all"
           />
         }
       >
@@ -83,7 +83,7 @@ export function ApplyModal({
             animate={{ opacity: 1, y: 0 }}
             className="py-8 text-center space-y-2"
           >
-            <p className="font-pixel text-lg text-brand-green">SENT.</p>
+            <p className=" text-lg text-brand-green">SENT.</p>
             <p className="  text-xs text-muted-foreground">
               Application submitted successfully
             </p>
@@ -125,7 +125,7 @@ export function ApplyModal({
             <Button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="w-full rounded-none font-pixel text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-9"
+              className="w-full rounded-none  text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-9"
             >
               {isSubmitting ? "SENDING..." : "SEND APPLICATION →"}
             </Button>

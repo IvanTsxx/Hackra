@@ -37,7 +37,7 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
         <div className="flex flex-col gap-1">
           <Link
             href={`/team/${team.id}`}
-            className="font-pixel text-xs text-foreground hover:text-brand-green transition-colors"
+            className=" text-xs text-foreground hover:text-brand-green transition-colors"
           >
             {team.name.toUpperCase()}
           </Link>
@@ -58,7 +58,7 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
           {memberCount}/{team.maxMembers} MEMBERS
         </span>
         {pendingApps > 0 && (
-          <span className="font-pixel text-xs tracking-wider text-brand-purple/80 border border-brand-purple/30 px-2 py-0.5">
+          <span className=" text-xs tracking-wider text-brand-purple/80 border border-brand-purple/30 px-2 py-0.5">
             {pendingApps} PENDING APP{pendingApps > 1 ? "S" : ""}
           </span>
         )}
@@ -68,14 +68,14 @@ export function OwnedTeamCard({ team, index }: OwnedTeamCardProps) {
       <div className="flex items-center gap-3 pt-1 border-t border-border/30">
         <Link
           href={`/teams/${team.id}/manage`}
-          className="font-pixel text-xs tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
+          className=" text-xs tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
         >
           <Settings size={10} />
           MANAGE
         </Link>
         <Link
           href={`/team/${team.id}`}
-          className="font-pixel text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+          className=" text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
         >
           <ExternalLink size={10} />
           VIEW
@@ -104,7 +104,7 @@ export function MemberTeamCard({ team, index }: MemberTeamCardProps) {
         <div className="flex flex-col gap-1">
           <Link
             href={`/team/${team.team.id}`}
-            className="font-pixel text-xs text-foreground hover:text-brand-green transition-colors"
+            className=" text-xs text-foreground hover:text-brand-green transition-colors"
           >
             {team.team.name.toUpperCase()}
           </Link>
@@ -133,7 +133,7 @@ export function MemberTeamCard({ team, index }: MemberTeamCardProps) {
       <div className="flex items-center justify-between pt-1 border-t border-border/30">
         <Link
           href={`/team/${team.team.id}`}
-          className="font-pixel text-xs tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
+          className=" text-xs tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
         >
           <ExternalLink size={10} />
           VIEW TEAM

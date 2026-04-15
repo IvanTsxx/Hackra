@@ -50,7 +50,7 @@ export async function HackathonActions({
           renderComponent={
             <Button
               variant="outline"
-              className={`font-pixel text-xs tracking-wider rounded-none h-9 px-5 transition-all ${
+              className={` text-xs tracking-wider rounded-none h-9 px-5 transition-all ${
                 joined
                   ? "bg-brand-green text-background hover:bg-brand-green/90"
                   : "bg-foreground text-background hover:bg-brand-purple/90"

@@ -61,9 +61,7 @@ export default async function MyHackathonsPage() {
         <div className="space-y-1 mb-7">
           <CodeText as="p">navigation</CodeText>
           <div className="flex items-center gap-3">
-            <h1 className="font-pixel text-2xl text-foreground">
-              MY HACKATHONS
-            </h1>
+            <h1 className=" text-2xl text-foreground">MY HACKATHONS</h1>
             {totalPending > 0 && (
               <span className="inline-flex items-center border border-brand-green/40 bg-brand-green/5   rounded-none px-2 py-0.5 text-xs text-brand-green">
                 {totalPending} PENDING
@@ -84,7 +82,7 @@ export default async function MyHackathonsPage() {
               />
             </div>
           </div>
-          <h3 className="font-pixel text-sm text-foreground tracking-wider">
+          <h3 className=" text-sm text-foreground tracking-wider">
             NO HACKATHONS YET
           </h3>
           <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
@@ -92,7 +90,7 @@ export default async function MyHackathonsPage() {
           </p>
           <Link
             href="/create"
-            className="inline-flex items-center gap-2 font-pixel text-xs tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
+            className="inline-flex items-center gap-2  text-xs tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
           >
             CREATE YOUR FIRST HACKATHON →
           </Link>

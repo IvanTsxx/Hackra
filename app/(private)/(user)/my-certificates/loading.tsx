@@ -7,7 +7,7 @@ export default function Loading() {
   return (
     <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16">
       {/* Title (estático) */}
-      <h1 className="font-pixel text-2xl mb-2">MY CERTIFICATES</h1>
+      <h1 className=" text-2xl mb-2">MY CERTIFICATES</h1>
 
       {/* Dynamic subtitle */}
       <Skeleton className="h-4 w-40 mb-8" />

@@ -85,7 +85,7 @@ export default async function ManageTeamPage({
       {/* Team header */}
       <div className="mb-8 space-y-2">
         <p className="  text-xs text-brand-green tracking-widest">manage</p>
-        <h1 className="font-pixel text-2xl md:text-3xl text-foreground">
+        <h1 className=" text-2xl md:text-3xl text-foreground">
           {team.name.toUpperCase()}
         </h1>
         {team.description && (
@@ -139,7 +139,7 @@ export default async function ManageTeamPage({
       {capacity > 0 && (
         <div className="mb-8 glass border border-border/40 p-4 space-y-2">
           <div className="flex items-center justify-between">
-            <span className="font-pixel text-xs tracking-wider text-muted-foreground">
+            <span className=" text-xs tracking-wider text-muted-foreground">
               TEAM CAPACITY
             </span>
             <span className="  text-xs text-foreground">
@@ -164,7 +164,7 @@ export default async function ManageTeamPage({
 
       {/* Applications section with tabs */}
       <section className="mb-10">
-        <h2 className="font-pixel text-sm text-brand-green tracking-wider mb-4 flex items-center gap-2">
+        <h2 className=" text-sm text-brand-green tracking-wider mb-4 flex items-center gap-2">
           <Target size={14} />
           APPLICATIONS
         </h2>
@@ -178,7 +178,7 @@ export default async function ManageTeamPage({
                 strokeWidth={1}
               />
             </div>
-            <h3 className="font-pixel text-sm text-foreground tracking-wider">
+            <h3 className=" text-sm text-foreground tracking-wider">
               NO APPLICATIONS YET
             </h3>
             <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
@@ -191,7 +191,7 @@ export default async function ManageTeamPage({
             {/* Pending */}
             {pendingApps.length > 0 && (
               <div>
-                <h3 className="font-pixel text-xs tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
+                <h3 className=" text-xs tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
                   <Clock size={12} />
                   PENDING ({pendingApps.length})
                 </h3>
@@ -210,7 +210,7 @@ export default async function ManageTeamPage({
             {/* Accepted */}
             {acceptedApps.length > 0 && (
               <div>
-                <h3 className="font-pixel text-xs tracking-wider text-brand-green/70 mb-3 flex items-center gap-1.5">
+                <h3 className=" text-xs tracking-wider text-brand-green/70 mb-3 flex items-center gap-1.5">
                   <UserCheck size={12} />
                   ACCEPTED ({acceptedApps.length})
                 </h3>
@@ -230,7 +230,7 @@ export default async function ManageTeamPage({
             {/* Rejected */}
             {rejectedApps.length > 0 && (
               <div>
-                <h3 className="font-pixel text-xs tracking-wider text-muted-foreground/50 mb-3 flex items-center gap-1.5">
+                <h3 className=" text-xs tracking-wider text-muted-foreground/50 mb-3 flex items-center gap-1.5">
                   <UserX size={12} />
                   REJECTED ({rejectedApps.length})
                 </h3>
@@ -254,7 +254,7 @@ export default async function ManageTeamPage({
       <section>
         <div className="flex items-center gap-2 mb-4">
           <Users size={14} className="text-brand-purple" />
-          <h2 className="font-pixel text-sm text-brand-purple tracking-wider">
+          <h2 className=" text-sm text-brand-purple tracking-wider">
             TEAM MEMBERS ({members.length})
           </h2>
         </div>
@@ -268,7 +268,7 @@ export default async function ManageTeamPage({
                 strokeWidth={1}
               />
             </div>
-            <h3 className="font-pixel text-sm text-foreground tracking-wider">
+            <h3 className=" text-sm text-foreground tracking-wider">
               NO MEMBERS YET
             </h3>
             <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
@@ -282,7 +282,7 @@ export default async function ManageTeamPage({
                 key={member.id}
                 className="glass border border-border/40 p-4 flex items-center gap-4"
               >
-                <div className="w-8 h-8 rounded-none border border-border/40 bg-secondary/20 flex items-center justify-center font-pixel text-xs text-foreground shrink-0">
+                <div className="w-8 h-8 rounded-none border border-border/40 bg-secondary/20 flex items-center justify-center  text-xs text-foreground shrink-0">
                   {member.user.image ? (
                     <Image
                       src={member.user.image}
@@ -297,7 +297,7 @@ export default async function ManageTeamPage({
                   )}
                 </div>
                 <div>
-                  <p className="font-pixel text-xs text-foreground">
+                  <p className=" text-xs text-foreground">
                     {member.user.name.toUpperCase()}
                   </p>
                   <p className="  text-xs text-muted-foreground">
@@ -340,7 +340,7 @@ function StatCard({
     <div className="glass border border-border/40 p-3 space-y-1">
       <div className={cn("flex items-center gap-1.5", color)}>
         {icon}
-        <span className="font-pixel text-xs tracking-wider">{label}</span>
+        <span className=" text-xs tracking-wider">{label}</span>
       </div>
       <p className="  text-lg text-foreground">{value}</p>
     </div>

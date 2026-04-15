@@ -78,7 +78,7 @@ export function EditTeamForm({ team }: EditTeamFormProps) {
     return (
       <div className="glass border border-border/40 p-4 space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="font-pixel text-xs tracking-wider text-muted-foreground">
+          <h3 className=" text-xs tracking-wider text-muted-foreground">
             TEAM INFO
           </h3>
           <Button
@@ -124,7 +124,7 @@ export function EditTeamForm({ team }: EditTeamFormProps) {
       className="glass border border-border/40 p-4 space-y-4"
     >
       <div className="flex items-center justify-between">
-        <h3 className="font-pixel text-xs tracking-wider text-muted-foreground">
+        <h3 className=" text-xs tracking-wider text-muted-foreground">
           EDIT TEAM
         </h3>
         <div className="flex gap-2">

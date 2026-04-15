@@ -148,7 +148,7 @@ export default async function TeamDetailPage({
           {team.applications.length > 0 && (
             <div className="border border-border/30 p-4 flex items-center gap-3">
               <div className="w-8 h-8 border border-brand-green/30 flex items-center justify-center">
-                <span className="font-pixel text-sm text-brand-green">
+                <span className=" text-sm text-brand-green">
                   {team.applications.length}
                 </span>
               </div>
@@ -214,7 +214,7 @@ export default async function TeamDetailPage({
             <Link href={`/hackathon/${hackathon.slug}`} className="block">
               <div className="border border-border/40 p-4 space-y-1 hover:border-brand-green/40 transition-colors group">
                 <p className="  text-xs text-muted-foreground">HACKATHON</p>
-                <p className="font-pixel text-xs text-foreground group-hover:text-brand-green transition-colors">
+                <p className=" text-xs text-foreground group-hover:text-brand-green transition-colors">
                   {hackathon.title}
                 </p>
               </div>

@@ -55,7 +55,7 @@ export async function UserMenu() {
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col min-w-0">
-                <span className="font-pixel text-xs tracking-wider text-foreground truncate">
+                <span className=" text-xs tracking-wider text-foreground truncate">
                   {user.name?.toUpperCase()}
                 </span>
                 <span className="  text-xs text-muted-foreground truncate">
@@ -74,7 +74,7 @@ export async function UserMenu() {
           >
             <Link
               href={`/user/${user.username}`}
-              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5  text-xs tracking-wider text-foreground w-full"
             >
               <User size={14} className="text-muted-foreground shrink-0" />
               My Profile
@@ -87,7 +87,7 @@ export async function UserMenu() {
           >
             <Link
               href="/my-applications"
-              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5  text-xs tracking-wider text-foreground w-full"
             >
               <FileText size={14} className="text-muted-foreground shrink-0" />
               My Applications
@@ -100,7 +100,7 @@ export async function UserMenu() {
           >
             <Link
               href="/my-teams"
-              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5  text-xs tracking-wider text-foreground w-full"
             >
               <Users size={14} className="text-muted-foreground shrink-0" />
               My Teams
@@ -113,7 +113,7 @@ export async function UserMenu() {
           >
             <Link
               href="/my-hackathons"
-              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5  text-xs tracking-wider text-foreground w-full"
               suppressHydrationWarning
             >
               <Trophy size={14} className="text-muted-foreground shrink-0" />
@@ -129,7 +129,7 @@ export async function UserMenu() {
           >
             <Link
               href="/settings/profile"
-              className="flex items-center gap-2.5 font-pixel text-xs tracking-wider text-foreground w-full"
+              className="flex items-center gap-2.5  text-xs tracking-wider text-foreground w-full"
             >
               <Settings size={14} className="text-muted-foreground shrink-0" />
               Settings

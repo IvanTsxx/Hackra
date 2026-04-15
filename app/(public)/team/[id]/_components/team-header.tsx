@@ -76,7 +76,7 @@ export const TeamHeader = ({
           <CodeText as="p" className="text-brand-green tracking-widest">
             team
           </CodeText>
-          <h1 className="font-pixel text-2xl md:text-3xl text-foreground">
+          <h1 className=" text-2xl md:text-3xl text-foreground">
             {team.name.toUpperCase()}
           </h1>
         </div>
@@ -99,7 +99,7 @@ export const TeamHeader = ({
             <Dialog>
               <DialogTrigger
                 render={
-                  <Button className="font-pixel text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-4" />
+                  <Button className=" text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-4" />
                 }
               >
                 APPLY →
@@ -120,7 +120,7 @@ export const TeamHeader = ({
                     className="py-8 text-center space-y-2"
                   >
                     <Send size={20} className="mx-auto text-brand-green mb-3" />
-                    <p className="font-pixel text-lg text-brand-green">SENT.</p>
+                    <p className=" text-lg text-brand-green">SENT.</p>
                     <p className="  text-xs text-muted-foreground">
                       Your application was submitted.
                     </p>
@@ -161,7 +161,7 @@ export const TeamHeader = ({
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full rounded-none font-pixel text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-9"
+                      className="w-full rounded-none  text-xs tracking-wider bg-foreground text-background hover:bg-foreground/90 h-9"
                     >
                       {isSubmitting ? "SENDING..." : "SEND APPLICATION →"}
                     </Button>

@@ -65,7 +65,7 @@ export function ShareModal({ url, title }: ShareModalProps) {
         render={
           <Button
             variant="outline"
-            className="font-pixel text-xs tracking-wider rounded-none h-9 px-4 border-border/50 hover:border-brand-green/50 hover:text-brand-green transition-all"
+            className=" text-xs tracking-wider rounded-none h-9 px-4 border-border/50 hover:border-brand-green/50 hover:text-brand-green transition-all"
           />
         }
       >

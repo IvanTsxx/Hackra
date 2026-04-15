@@ -32,9 +32,7 @@ export default async function MyApplicationsPage() {
       <AnimatedSection>
         <div className="space-y-1 mb-7">
           <CodeText as="p">navigation</CodeText>
-          <h1 className="font-pixel text-2xl text-foreground">
-            MY APPLICATIONS
-          </h1>
+          <h1 className=" text-2xl text-foreground">MY APPLICATIONS</h1>
         </div>
       </AnimatedSection>
 
@@ -55,7 +53,7 @@ export default async function MyApplicationsPage() {
               />
             </div>
           </div>
-          <h3 className="font-pixel text-sm text-foreground tracking-wider">
+          <h3 className=" text-sm text-foreground tracking-wider">
             NO APPLICATIONS YET
           </h3>
           <p className="  text-xs text-muted-foreground max-w-sm mx-auto">
@@ -64,7 +62,7 @@ export default async function MyApplicationsPage() {
           </p>
           <Link
             href="/explore"
-            className="inline-flex items-center gap-2 font-pixel text-xs tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
+            className="inline-flex items-center gap-2  text-xs tracking-wider text-brand-green border border-brand-green/40 px-4 py-2 hover:bg-brand-green/10 transition-colors"
           >
             BROWSE HACKATHONS →
           </Link>
@@ -73,7 +71,7 @@ export default async function MyApplicationsPage() {
         <>
           {/* Team Applications */}
           <section className="mb-10">
-            <h2 className="font-pixel text-sm text-brand-green tracking-wider mb-4">
+            <h2 className=" text-sm text-brand-green tracking-wider mb-4">
               TEAM APPLICATIONS ({applications.length})
             </h2>
 
@@ -109,7 +107,7 @@ export default async function MyApplicationsPage() {
 
           {/* Hackathon Participations */}
           <section>
-            <h2 className="font-pixel text-sm text-brand-purple tracking-wider mb-4">
+            <h2 className=" text-sm text-brand-purple tracking-wider mb-4">
               HACKATHON REGISTRATIONS ({participations.length})
             </h2>
 
@@ -145,7 +143,7 @@ export default async function MyApplicationsPage() {
                         </span>
                         <Link
                           href={`/hackathon/${p.hackathon.slug}`}
-                          className="font-pixel text-xs text-foreground hover:text-brand-green transition-colors"
+                          className=" text-xs text-foreground hover:text-brand-green transition-colors"
                         >
                           {p.hackathon.title.toUpperCase()}
                         </Link>

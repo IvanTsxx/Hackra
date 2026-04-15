@@ -66,7 +66,7 @@ export function MyHackathonsClient({
     <div className="space-y-12">
       {hackathons.length > 0 && (
         <div className="space-y-4">
-          <h2 className="font-pixel text-sm text-muted-foreground tracking-wider mb-4 border-b border-border/40 pb-2">
+          <h2 className=" text-sm text-muted-foreground tracking-wider mb-4 border-b border-border/40 pb-2">
             OWNED HACKATHONS
           </h2>
           <HackathonsTable
@@ -82,7 +82,7 @@ export function MyHackathonsClient({
 
       {coOrganizedHackathons.length > 0 && (
         <div className="space-y-4">
-          <h2 className="font-pixel text-sm text-muted-foreground tracking-wider mb-4 border-b border-border/40 pb-2">
+          <h2 className=" text-sm text-muted-foreground tracking-wider mb-4 border-b border-border/40 pb-2">
             CO-ORGANIZING
           </h2>
           <HackathonsTable

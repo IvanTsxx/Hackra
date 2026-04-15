@@ -320,7 +320,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
         </span>
         <Button
           type="submit"
-          className="font-pixel text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-6"
+          className=" text-xs tracking-wider rounded-none bg-foreground text-background hover:bg-foreground/90 h-9 px-6"
         >
           <Save size={11} className="mr-2" />
           SAVE CHANGES

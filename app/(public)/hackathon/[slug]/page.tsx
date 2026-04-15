@@ -436,9 +436,7 @@ export default async function HackathonDetailPage({
                     <p className="  text-xs text-muted-foreground">
                       {prize.place}
                     </p>
-                    <p className="font-pixel text-lg text-foreground">
-                      {prize.amount}
-                    </p>
+                    <p className=" text-lg text-foreground">{prize.amount}</p>
                     <p className="  text-xs text-muted-foreground/70">
                       {prize.description}
                     </p>

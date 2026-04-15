@@ -46,7 +46,7 @@ export default function Loading() {
         <CodeText as="p">navigation</CodeText>
 
         <div className="flex items-center gap-3">
-          <h1 className="font-pixel text-2xl text-foreground">MY HACKATHONS</h1>
+          <h1 className=" text-2xl text-foreground">MY HACKATHONS</h1>
 
           {/* Pending badge */}
           <Skeleton className="h-5 w-20" />

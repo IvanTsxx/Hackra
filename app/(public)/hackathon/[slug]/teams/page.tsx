@@ -72,7 +72,7 @@ export default async function TeamsPage({
           <CodeText as="p" className="text-brand-green tracking-widest">
             teams
           </CodeText>
-          <h1 className="font-pixel text-2xl text-foreground">TEAMS</h1>
+          <h1 className=" text-2xl text-foreground">TEAMS</h1>
           <p className="  text-xs text-muted-foreground">
             {teams.length} teams · max {hackathon.maxTeamSize} members each
           </p>
@@ -84,9 +84,7 @@ export default async function TeamsPage({
 
       {teams.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 border border-dashed border-border/30 space-y-4">
-          <p className="font-pixel text-sm text-muted-foreground">
-            NO_TEAMS_YET
-          </p>
+          <p className=" text-sm text-muted-foreground">NO_TEAMS_YET</p>
           <Suspense fallback={<Skeleton className="w-20 h-10" />}>
             <CreateTeamButton organizerId={hackathon.organizerId} slug={slug} />
           </Suspense>

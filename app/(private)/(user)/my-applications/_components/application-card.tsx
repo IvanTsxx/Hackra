@@ -62,7 +62,7 @@ export function ApplicationCard({
             index={0}
           />
           <div className="flex flex-col">
-            <span className="font-pixel text-xs text-foreground">
+            <span className=" text-xs text-foreground">
               {application.team.name.toUpperCase()}
             </span>
             <span className="  text-xs text-muted-foreground">
@@ -77,7 +77,7 @@ export function ApplicationCard({
           {application.status === "ACCEPTED" && (
             <Link
               href={`/team/${application.team.id}`}
-              className="font-pixel text-xs tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
+              className=" text-xs tracking-wider text-brand-green/80 hover:text-brand-green transition-colors flex items-center gap-1"
             >
               VIEW TEAM <ExternalLink size={10} />
             </Link>
@@ -121,7 +121,7 @@ export function ApplicationCard({
             type="button"
             onClick={handleCancel}
             disabled={isCancelling}
-            className="font-pixel text-xs tracking-wider text-destructive/70 hover:text-destructive transition-colors disabled:opacity-50"
+            className=" text-xs tracking-wider text-destructive/70 hover:text-destructive transition-colors disabled:opacity-50"
           >
             {isCancelling ? "CANCELLING..." : "CANCEL →"}
           </button>

@@ -82,7 +82,7 @@ export function UserSidebar() {
                     priority
                     className="w-10 h-10"
                   />
-                  <span className="font-pixel text-sm text-muted-foreground tracking-widest">
+                  <span className=" text-sm text-muted-foreground tracking-widest">
                     HACKRA
                   </span>
                 </Link>
