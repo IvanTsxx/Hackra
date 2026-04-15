@@ -4,8 +4,9 @@ import dynamic from "next/dynamic";
 
 import { HeroSection } from "@/components/home/hero-section";
 import { CACHE_TAGS, CACHE_LIFE } from "@/data/cache-constants";
-import { TechStackMarquee } from "@/shared/components/home/tech-stack-marquee";
 /* import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee"; */
+import { PlatformFeatures } from "@/shared/components/home/platform-features";
+import { TechStackMarquee } from "@/shared/components/home/tech-stack-marquee";
 import { JsonLd } from "@/shared/components/json-ld";
 import { prisma } from "@/shared/lib/prisma";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/shared/lib/site";
@@ -152,6 +153,7 @@ export default async function Home() {
       <HeroSection stats={stats} />
       <TechStackMarquee />
       <KarmaHowItWorks />
+      <PlatformFeatures />
       <FeaturedHackatons />
       {/* <SponsorsMarquee /> */}
       <Banner />

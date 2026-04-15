@@ -1,4 +1,6 @@
 import "server-only";
+import { v4 as uuidv4 } from "uuid";
+
 import type {
   HackathonStatus,
   ParticipantStatus,
@@ -327,7 +329,10 @@ export async function updateHackathon(
     status,
   } = data;
 
-  return await prisma.hackathon.update({
+  // Check if status is changing to ENDED
+  const isEnding = status === "ENDED";
+
+  const hackathon = await prisma.hackathon.update({
     data: {
       ...(title !== undefined && { title }),
       ...(description !== undefined && { description }),
@@ -345,6 +350,18 @@ export async function updateHackathon(
     },
     where: { id },
   });
+
+  // Generate certificates when hackathon ends
+  if (isEnding) {
+    try {
+      await generateHackathonCertificates(id);
+    } catch (error) {
+      // Log but don't fail the update if certificate generation fails
+      console.error("Failed to generate certificates:", error);
+    }
+  }
+
+  return hackathon;
 }
 
 export async function deleteHackathon(id: string, userId: string) {
@@ -380,5 +397,162 @@ export async function rejectParticipant(
   return await prisma.hackathonParticipant.update({
     data: { status: "REJECTED" as ParticipantStatus },
     where: { id: participantId },
+  });
+}
+
+/**
+ * Generate certificates for all participants in a completed hackathon
+ * Called when hackathon status changes to ENDED
+ */
+export async function generateHackathonCertificates(
+  hackathonId: string
+): Promise<{ generated: number; errors: string[] }> {
+  const errors: string[] = [];
+  let generated = 0;
+
+  // Get all participants who completed the hackathon
+  const participants = await prisma.hackathonParticipant.findMany({
+    include: {
+      hackathon: true,
+      user: true,
+    },
+    where: {
+      hackathonId,
+      status: "APPROVED",
+    },
+  });
+
+  // Also get organizers
+  const organizers = await prisma.hackathonOrganizer.findMany({
+    include: {
+      hackathon: true,
+      user: true,
+    },
+    where: { hackathonId },
+  });
+
+  // Generate participant certificates
+  for (const participant of participants) {
+    try {
+      await prisma.certificate.upsert({
+        create: {
+          hackathonId,
+          recipientEmail: participant.user.email,
+          recipientName: participant.user.name,
+          role: "PARTICIPANT",
+          token: uuidv4(),
+          userId: participant.userId,
+        },
+        update: {
+          recipientEmail: participant.user.email,
+          recipientName: participant.user.name,
+          role: "PARTICIPANT",
+        },
+        where: {
+          userId_hackathonId: {
+            hackathonId,
+            userId: participant.userId,
+          },
+        },
+      });
+      generated += 1;
+    } catch (error) {
+      errors.push(
+        `Failed to generate certificate for ${participant.user.email}: ${error}`
+      );
+    }
+  }
+
+  // Generate organizer certificates
+  for (const organizer of organizers) {
+    try {
+      await prisma.certificate.upsert({
+        create: {
+          hackathonId,
+          recipientEmail: organizer.user.email,
+          recipientName: organizer.user.name,
+          role:
+            organizer.userId === organizer.hackathon.organizerId
+              ? "ORGANIZER"
+              : "CO_ORGANIZER",
+          token: uuidv4(),
+          userId: organizer.userId,
+        },
+        update: {
+          recipientEmail: organizer.user.email,
+          recipientName: organizer.user.name,
+          role:
+            organizer.userId === organizer.hackathon.organizerId
+              ? "ORGANIZER"
+              : "CO_ORGANIZER",
+        },
+        where: {
+          userId_hackathonId: {
+            hackathonId,
+            userId: organizer.userId,
+          },
+        },
+      });
+      generated += 1;
+    } catch (error) {
+      errors.push(
+        `Failed to generate certificate for organizer ${organizer.user.email}: ${error}`
+      );
+    }
+  }
+
+  return { errors, generated };
+}
+
+/**
+ * Generate winner certificate with placement
+ */
+export async function generateWinnerCertificate(
+  hackathonId: string,
+  userId: string,
+  place: "FIRST_PLACE" | "SECOND_PLACE" | "THIRD_PLACE"
+) {
+  const hackathon = await prisma.hackathon.findUnique({
+    where: { id: hackathonId },
+  });
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!hackathon || !user) {
+    throw new Error("Hackathon or user not found");
+  }
+
+  return prisma.certificate.upsert({
+    create: {
+      hackathonId,
+      place:
+        place === "FIRST_PLACE"
+          ? "1st"
+          : place === "SECOND_PLACE"
+            ? "2nd"
+            : "3rd",
+      recipientEmail: user.email,
+      recipientName: user.name,
+      role: place,
+      token: uuidv4(),
+      userId,
+    },
+    update: {
+      place:
+        place === "FIRST_PLACE"
+          ? "1st"
+          : place === "SECOND_PLACE"
+            ? "2nd"
+            : "3rd",
+      role: place,
+    },
+    where: {
+      userId_hackathonId: {
+        hackathonId,
+        userId,
+      },
+    },
   });
 }

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { HackathonCard } from "@/components/hackathon-card";
 import { TagBadge } from "@/components/tag-badge";
+import { getUserCertificateCount } from "@/data/certificates";
 import { getAllUsers, getUserByUsername } from "@/data/user";
 import {
   Tabs,
@@ -79,6 +80,9 @@ export default async function UserProfilePage({
     (participation) => participation.hackathon
   );
 
+  // Fetch certificate count for display
+  const certificateCount = await getUserCertificateCount(user.id);
+
   const statItems = [
     {
       icon: "created",
@@ -89,6 +93,11 @@ export default async function UserProfilePage({
       icon: "participated",
       label: "HACKATHONS PARTICIPATED",
       value: user.participations.length,
+    },
+    {
+      icon: "certificates",
+      label: "CERTIFICATES",
+      value: certificateCount,
     },
     {
       icon: "karma",

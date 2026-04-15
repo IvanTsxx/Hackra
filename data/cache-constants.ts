@@ -55,6 +55,13 @@ export const CACHE_TAGS = {
 
   // Home
   HOME_DATA: "HOME_DATA",
+
+  // Certificates
+  USER_CERTIFICATES: "USER_CERTIFICATES",
+  USER_CERTIFICATES_BY_ID: (userId: string) => `USER_CERTIFICATES-${userId}`,
+  USER_CERTIFICATES_COUNT: (userId: string) =>
+    `USER_CERTIFICATES_COUNT-${userId}`,
+  CERTIFICATE_BY_TOKEN: (token: string) => `CERTIFICATE-${token}`,
 } as const;
 
 /**
@@ -103,6 +110,12 @@ export const CACHE_LIFE = {
 
   // Home — featured content changes periodically
   HOME_DATA: "days",
+
+  // Certificates
+  USER_CERTIFICATES: "days",
+  USER_CERTIFICATES_BY_ID: "days",
+  USER_CERTIFICATES_COUNT: "days",
+  CERTIFICATE_BY_TOKEN: "days",
 } as const;
 
 // Type helper: Generate cache tag from a tag key

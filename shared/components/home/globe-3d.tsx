@@ -55,7 +55,12 @@ export function HackathonGlobe({ hackathons, className }: HackathonGlobeProps) {
         className="h-full w-full"
       >
         {pinned.map((h) => (
-          <MapMarker key={h.id} longitude={h.longitude} latitude={h.latitude}>
+          <MapMarker
+            key={h.id}
+            longitude={h.longitude}
+            latitude={h.latitude}
+            occlude={true}
+          >
             <MarkerContent>
               <button
                 type="button"

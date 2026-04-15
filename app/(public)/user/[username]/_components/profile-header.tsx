@@ -11,6 +11,7 @@ import { KarmaButton } from "@/shared/components/karma-button";
 import { useSession } from "@/shared/lib/auth-client";
 
 const mapStatsIcons = {
+  certificates: Trophy,
   created: Trophy,
   karma: Zap,
   participated: Trophy,

@@ -34,6 +34,7 @@ model User {
   participations       HackathonParticipant[]
   coOrganizing         HackathonOrganizer[]   @relation("HackathonCoOrganizers")
   organizerAssignments HackathonOrganizer[]   @relation("HackathonOrganizerAddedBy")
+  certificates        Certificate[]
 
   role Role @default(USER)
 
@@ -138,6 +139,7 @@ model Hackathon {
   sponsors     HackathonSponsor[]
   prizes       HackathonPrize[]
   organizers   HackathonOrganizer[]
+  certificates Certificate[]
 
   status HackathonStatus @default(DRAFT)
 
@@ -341,4 +343,43 @@ model HackathonPrize {
 
   @@index([hackathonId])
   @@map("hackathon_prize")
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  userId      String
+  hackathonId String
+
+  // Certificate details
+  recipientName String
+  recipientEmail String
+  role        String // "participant", "organizer", "mentor", "winner", etc.
+  place       String? // "1st", "2nd", "3rd", "winner", null for participants
+
+  // Verification
+  token       String   @unique // Unique verification token
+  verifiedAt  DateTime?
+
+  createdAt DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hackathon Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, hackathonId])
+  @@index([userId])
+  @@index([hackathonId])
+  @@index([token])
+  @@map("certificate")
+}
+
+enum CertificateRole {
+  PARTICIPANT
+  ORGANIZER
+  CO_ORGANIZER
+  MENTOR
+  JUDGE
+  WINNER
+  FIRST_PLACE
+  SECOND_PLACE
+  THIRD_PLACE
 }

@@ -385,8 +385,9 @@ function MapMarker({
   onDrag,
   onDragEnd,
   draggable = false,
+  occlude = false,
   ...markerOptions
-}: MapMarkerProps) {
+}: MapMarkerProps & { occlude?: boolean }) {
   const { map } = useMap();
 
   const callbacksRef = useRef({
@@ -447,19 +448,49 @@ function MapMarker({
     return markerInstance;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [longitude, latitude]);
 
   useEffect(() => {
     if (!map) return;
 
     marker.addTo(map);
 
+    // Occlusion handling for globe projection
+    if (occlude) {
+      const updateOcclusion = () => {
+        const center = map.getCenter();
+        const markerLng = marker.getLngLat().lng;
+
+        // Calculate angular distance between marker and center
+        const dLng = Math.abs(center.lng - markerLng);
+        const effectiveDiff = dLng > 180 ? 360 - dLng : dLng;
+
+        // Check if marker is on the visible side (within ~90° of center longitude)
+        // Apply bearing to determine visibility
+        const isVisible =
+          effectiveDiff < 90 || (effectiveDiff < 120 && center.lat > 60);
+
+        const el = marker.getElement();
+        if (el) {
+          el.style.display = isVisible ? "" : "none";
+        }
+      };
+
+      map.on("move", updateOcclusion);
+      updateOcclusion(); // Initial check
+
+      return () => {
+        map.off("move", updateOcclusion);
+        marker.remove();
+      };
+    }
+
     return () => {
       marker.remove();
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map]);
+  }, [map, occlude]);
 
   if (
     marker.getLngLat().lng !== longitude ||

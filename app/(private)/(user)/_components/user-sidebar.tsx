@@ -2,6 +2,7 @@
 
 import type { LucideProps } from "lucide-react";
 import {
+  FileTextIcon,
   LayoutDashboardIcon,
   SettingsIcon,
   TrophyIcon,
@@ -28,15 +29,18 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/shared/lib/utils";
 
-const mainNavItems: {
-  href: Route;
+interface NavItem {
+  href: string;
   icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
   label: string;
-}[] = [
+}
+
+const mainNavItems: NavItem[] = [
   { href: "/create", icon: SettingsIcon, label: "Create" },
   { href: "/my-applications", icon: UserIcon, label: "My Applications" },
+  { href: "/my-certificates", icon: FileTextIcon, label: "My Certificates" },
   { href: "/my-hackathons", icon: TrophyIcon, label: "My Hackathons" },
   { href: "/my-teams", icon: LayoutDashboardIcon, label: "My Teams" },
 ];
@@ -100,13 +104,10 @@ export function UserSidebar() {
                     <SidebarMenuButton
                       className={cn(isActive && "text-brand-green")}
                       render={
-                        <Link
-                          href={item.href}
-                          className="flex items-center gap-2"
-                        >
+                        <a href={item.href} className="flex items-center gap-2">
                           <item.icon />
                           <span>{item.label}</span>
-                        </Link>
+                        </a>
                       }
                     />
                   </SidebarMenuItem>
@@ -128,13 +129,10 @@ export function UserSidebar() {
                     <SidebarMenuButton
                       className={cn(isActive && "text-brand-green")}
                       render={
-                        <Link
-                          href={item.href}
-                          className="flex items-center gap-2"
-                        >
+                        <a href={item.href} className="flex items-center gap-2">
                           <item.icon />
                           <span>{item.label}</span>
-                        </Link>
+                        </a>
                       }
                     />
                   </SidebarMenuItem>
