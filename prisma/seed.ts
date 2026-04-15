@@ -1,4 +1,5 @@
 import { prisma } from "./seed-client";
+import { seedCoOrganizerRequests } from "./seed-co-organizer-requests";
 import { seedHackathons } from "./seed-hackathons";
 import { seedSponsors } from "./seed-sponsors";
 import { seedTeams } from "./seed-teams";
@@ -14,6 +15,8 @@ async function main() {
   await prisma.teamQuestion.deleteMany();
   await prisma.teamMember.deleteMany();
   await prisma.team.deleteMany();
+  await prisma.coOrganizerRequest.deleteMany();
+  await prisma.hackathonOrganizer.deleteMany();
   await prisma.hackathonSponsor.deleteMany();
   await prisma.hackathonPrize.deleteMany();
   await prisma.hackathonParticipant.deleteMany();
@@ -26,12 +29,14 @@ async function main() {
   // 1. Users (no dependencies)
   // 2. Sponsors (no dependencies)
   // 3. Hackathons (depends on users for organizerId)
-  // 4. Teams (depends on hackathons and users)
-  // 5. Hackathon sponsors (depends on hackathons and sponsors)
+  // 4. CoOrganizerRequests (depends on hackathon and user)
+  // 5. Teams (depends on hackathons and users)
+  // 6. Hackathon sponsors (depends on hackathons and sponsors)
 
   await seedUsers();
   await seedSponsors();
   await seedHackathons();
+  await seedCoOrganizerRequests();
   await seedTeams();
 
   console.log("\n✨ Database seed completed successfully!");

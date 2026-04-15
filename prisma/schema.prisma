@@ -34,6 +34,7 @@ model User {
   participations       HackathonParticipant[]
   coOrganizing         HackathonOrganizer[]   @relation("HackathonCoOrganizers")
   organizerAssignments HackathonOrganizer[]   @relation("HackathonOrganizerAddedBy")
+  coOrganizerRequests  CoOrganizerRequest[]
   certificates        Certificate[]
 
   role Role @default(USER)
@@ -139,6 +140,7 @@ model Hackathon {
   sponsors     HackathonSponsor[]
   prizes       HackathonPrize[]
   organizers   HackathonOrganizer[]
+  coOrganizerRequests CoOrganizerRequest[]
   certificates Certificate[]
 
   status HackathonStatus @default(DRAFT)
@@ -193,6 +195,34 @@ model HackathonOrganizer {
   @@index([userId])
   @@index([addedById])
   @@map("hackathon_organizer")
+}
+
+// Pending co-organizer requests
+model CoOrganizerRequest {
+  id          String   @id @default(cuid())
+  hackathonId String
+  userId      String
+  message     String?
+  status      CoOrganizerRequestStatus @default(PENDING)
+  responseMessage String? // Organizer's response when accepting/rejecting
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  respondedAt DateTime?
+
+  hackathon Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([hackathonId, userId])
+  @@index([hackathonId])
+  @@index([userId])
+  @@index([status])
+  @@map("co_organizer_request")
+}
+
+enum CoOrganizerRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 enum ParticipantStatus {

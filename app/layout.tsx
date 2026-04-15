@@ -7,13 +7,26 @@ import {
   GeistPixelLine,
   GeistPixelTriangle,
 } from "geist/font/pixel";
+import dynamic from "next/dynamic";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Suspense } from "react";
 
-import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { ModalProviders } from "@/shared/components/providers/modal-privders";
 import { Toaster } from "@/shared/components/ui/sonner";
-import { TooltipProvider } from "@/shared/components/ui/tooltip";
+
+const ThemeProvider = dynamic(async () => {
+  const mod = await import("@/components/theme-provider");
+  return mod.ThemeProvider;
+});
+const TooltipProvider = dynamic(async () => {
+  const mod = await import("@/shared/components/ui/tooltip");
+  return mod.TooltipProvider;
+});
+
+function ProvidersLoader() {
+  return <div className="min-h-screen" />;
+}
 
 export default function RootLayout({
   children,
@@ -35,16 +48,18 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>
-          <TooltipProvider>
-            <NuqsAdapter>
-              {children}
-              <Toaster position="top-right" richColors />
-              <ModalProviders />
-            </NuqsAdapter>
-          </TooltipProvider>
-          <Analytics />
-        </ThemeProvider>
+        <Suspense fallback={<ProvidersLoader />}>
+          <ThemeProvider>
+            <TooltipProvider>
+              <NuqsAdapter>
+                {children}
+                <Toaster position="top-right" richColors />
+                <ModalProviders />
+              </NuqsAdapter>
+            </TooltipProvider>
+          </ThemeProvider>
+        </Suspense>
+        <Analytics />
       </body>
     </html>
   );

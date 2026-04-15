@@ -18,6 +18,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { getCurrentUser } from "@/data/auth-dal";
+import { getUserRequestForHackathon } from "@/data/co-organizer-request";
+import { getCoOrganizers } from "@/data/hackathon-organizer";
 import type { MapHackathon } from "@/data/hackatons";
 import { getAllHackathons, getHackathon } from "@/data/hackatons";
 import { getSponsorsForHackathon } from "@/data/sponsors";
@@ -88,13 +91,35 @@ export async function generateMetadata({
 }
 
 const getHackathonData = async (hackathon: Hackathon) => {
-  const [organizer, sponsors, teams] = await Promise.all([
+  const user = await getCurrentUser();
+  const [organizer, sponsors, teams, coOrganizers] = await Promise.all([
     getUserById(hackathon.organizerId),
     getSponsorsForHackathon(hackathon.id),
     getTeamsForHackathon(hackathon.slug),
+    user?.id
+      ? getCoOrganizers(hackathon.id, user.id, user.role ?? "USER").catch(
+          () => []
+        )
+      : Promise.resolve([]),
   ]);
 
-  return { organizer, sponsors, teams };
+  // Check if user has existing request
+  let hasExistingRequest = false;
+  let isAlreadyCoOrganizer = false;
+  if (user?.id) {
+    const request = await getUserRequestForHackathon(user.id, hackathon.id);
+    hasExistingRequest = request !== null;
+    isAlreadyCoOrganizer = coOrganizers.some((co) => co.user.id === user.id);
+  }
+
+  return {
+    coOrganizers,
+    hasExistingRequest,
+    isAlreadyCoOrganizer,
+    organizer,
+    sponsors,
+    teams,
+  };
 };
 
 export default async function HackathonDetailPage({
@@ -107,7 +132,14 @@ export default async function HackathonDetailPage({
 
   if (!hackathon) notFound();
 
-  const { organizer, sponsors, teams } = await getHackathonData(hackathon);
+  const {
+    organizer,
+    sponsors,
+    teams,
+    coOrganizers,
+    hasExistingRequest,
+    isAlreadyCoOrganizer,
+  } = await getHackathonData(hackathon);
 
   const participants = hackathon.participants.map(({ user }) => user);
   const hasImage = hackathon.image && !hackathon.image.includes("/placeholder");
@@ -221,6 +253,41 @@ export default async function HackathonDetailPage({
                   </p>
                 </div>
               </Link>
+            </div>
+          )}
+
+          {/* Co-organizers */}
+          {coOrganizers && coOrganizers.length > 0 && (
+            <div className="glass border border-border/40 p-4 space-y-3">
+              <p className="  text-xs text-muted-foreground tracking-widest">
+                CO-ORGANIZERS ({coOrganizers.length})
+              </p>
+              <div className="space-y-2">
+                {coOrganizers.map((coOrg) => (
+                  <Link
+                    key={coOrg.id}
+                    href={`/user/${coOrg.user.username}`}
+                    className="flex items-center gap-3 group"
+                  >
+                    <Image
+                      src={coOrg.user.image ?? ""}
+                      alt={coOrg.user.name ?? ""}
+                      width={32}
+                      height={32}
+                      sizes="32px"
+                      className="border rounded-full border-border/40"
+                    />
+                    <div>
+                      <p className="  text-xs text-foreground group-hover:text-brand-purple transition-colors">
+                        {coOrg.user.name}
+                      </p>
+                      <p className="  text-xs text-muted-foreground">
+                        @{coOrg.user.username}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           )}
 
@@ -410,6 +477,8 @@ export default async function HackathonDetailPage({
                 source={hackathon.source}
                 externalUrl={hackathon.externalUrl}
                 slug={slug}
+                hasExistingRequest={hasExistingRequest}
+                isAlreadyCoOrganizer={isAlreadyCoOrganizer}
               />
             </Suspense>
           </div>

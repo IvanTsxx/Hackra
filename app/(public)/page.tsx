@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
+import { HackathonStatus } from "@/app/generated/prisma/enums";
 import { HeroSection } from "@/components/home/hero-section";
 import { CACHE_TAGS, CACHE_LIFE } from "@/data/cache-constants";
+import { CountdownTimer } from "@/shared/components/home/countdown-timer";
+import { LeadershipBoard } from "@/shared/components/home/leadership-board";
 /* import { SponsorsMarquee } from "@/shared/components/home/sponsors-marquee"; */
 import { PlatformFeatures } from "@/shared/components/home/platform-features";
 import { TechStackMarquee } from "@/shared/components/home/tech-stack-marquee";
+import { UpcomingDeadlines } from "@/shared/components/home/upcoming-deadlines";
 import { JsonLd } from "@/shared/components/json-ld";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 import { prisma } from "@/shared/lib/prisma";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/shared/lib/site";
 
@@ -113,28 +119,69 @@ const getHomeData = async () => {
   cacheLife(CACHE_LIFE.HOME_DATA);
   cacheTag(CACHE_TAGS.HOME_DATA);
 
-  const [hackathonsCount, developersCount, prizesCount, sponsors] =
-    await Promise.all([
-      prisma.hackathon.count(),
-      prisma.user.count(),
-
-      prisma.hackathonPrize.aggregate({
-        _sum: { amount: true },
-      }),
-      prisma.sponsor.count(),
-    ]);
+  const [
+    hackathonsCount,
+    developersCount,
+    prizesCount,
+    sponsors,
+    upcomingHackathons,
+    topUsers,
+  ] = await Promise.all([
+    prisma.hackathon.count(),
+    prisma.user.count(),
+    prisma.hackathonPrize.aggregate({
+      _sum: { amount: true },
+    }),
+    prisma.sponsor.count(),
+    prisma.hackathon.findMany({
+      orderBy: { startDate: "asc" },
+      select: {
+        endDate: true,
+        id: true,
+        slug: true,
+        startDate: true,
+        title: true,
+      },
+      take: 10,
+      where: {
+        status: {
+          in: [HackathonStatus.UPCOMING],
+        },
+      },
+    }),
+    prisma.user.findMany({
+      orderBy: { karmaPoints: "desc" },
+      select: {
+        id: true,
+        image: true,
+        karmaPoints: true,
+        name: true,
+        position: true,
+        username: true,
+      },
+      take: 10,
+    }),
+  ]);
 
   return {
     developersCount,
     hackathonsCount,
     prizesCount,
     sponsors,
+    topUsers,
+    upcomingHackathons,
   };
 };
 
 export default async function Home() {
-  const { hackathonsCount, developersCount, prizesCount, sponsors } =
-    await getHomeData();
+  const {
+    hackathonsCount,
+    developersCount,
+    prizesCount,
+    sponsors,
+    upcomingHackathons,
+    topUsers,
+  } = await getHomeData();
 
   const stats: { icon: string; label: string; value: string }[] = [
     { icon: "Trophy", label: "HACKATHONS", value: `${hackathonsCount}+` },
@@ -147,12 +194,31 @@ export default async function Home() {
     { icon: "Building2", label: "SPONSORS", value: `${sponsors}+` },
   ];
 
+  // Find next upcoming hackathon for countdown
+  const [nextHackathon] = upcomingHackathons;
+
   return (
     <section>
       <JsonLd type="homepage" />
       <HeroSection stats={stats} />
       <TechStackMarquee />
+      {nextHackathon && (
+        <Suspense
+          fallback={
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 flex justify-center">
+              <Skeleton className="h-20 w-80" />
+            </div>
+          }
+        >
+          <CountdownTimer
+            targetDate={nextHackathon.startDate}
+            title={`Next: ${nextHackathon.title}`}
+          />
+        </Suspense>
+      )}
       <KarmaHowItWorks />
+      <UpcomingDeadlines hackathons={upcomingHackathons} />
+      <LeadershipBoard leaders={topUsers} />
       <PlatformFeatures />
       <FeaturedHackatons />
       {/* <SponsorsMarquee /> */}

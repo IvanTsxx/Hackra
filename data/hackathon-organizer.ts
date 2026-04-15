@@ -170,7 +170,38 @@ export async function removeCoOrganizer(
   );
   if (!ok) throw new Error("Unauthorized");
 
+  // Get the co-organizer record to find the userId
+  const coOrg = await prisma.hackathonOrganizer.findUnique({
+    select: { userId: true },
+    where: { id: coOrgId },
+  });
+
+  // Delete the co-organizer
   await prisma.hackathonOrganizer.delete({
     where: { id: coOrgId },
   });
+
+  // If there's an accepted request for this user, mark it as rejected
+  // so they can apply again
+  if (coOrg) {
+    const existingRequest = await prisma.coOrganizerRequest.findUnique({
+      where: {
+        hackathonId_userId: {
+          hackathonId,
+          userId: coOrg.userId,
+        },
+      },
+    });
+
+    if (existingRequest) {
+      await prisma.coOrganizerRequest.update({
+        data: {
+          respondedAt: new Date(),
+          responseMessage: "Removed as co-organizer",
+          status: "REJECTED",
+        },
+        where: { id: existingRequest.id },
+      });
+    }
+  }
 }

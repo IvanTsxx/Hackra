@@ -1,14 +1,16 @@
-import { ChevronRight, Settings, Shield, Users } from "lucide-react";
+import { ChevronRight, Settings, Shield, Users, Inbox } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { requireUser } from "@/data/auth-dal";
+import { getPendingRequestsForHackathon } from "@/data/co-organizer-request";
 import { hasManageAccess } from "@/data/hackathon-organizer";
 import { getHackathonForManage } from "@/data/organizer-hackathons";
 import { CodeText } from "@/shared/components/code-text";
 
 import { AnimatedSection } from "../../../_components/animated-section";
+import { CoOrganizerRequestsManager } from "./_components/co-organizer-requests-manager";
 import { OrganizersManager } from "./_components/organizers-manager";
 import { ParticipantsManager } from "./_components/participants-manager";
 import { SendEmailSection } from "./_components/send-email-section";
@@ -85,6 +87,13 @@ export default async function ManageHackathonPage({
     (p) => p.status === "PENDING"
   ).length;
 
+  // Fetch pending co-organizer requests (only for owner/admin)
+  const coOrganizerRequests = isOwnerOrAdmin
+    ? await getPendingRequestsForHackathon(hackathon.id, user.id, user.role)
+    : [];
+
+  const pendingRequestsCount = coOrganizerRequests.length;
+
   return (
     <section>
       {/* Breadcrumb */}
@@ -153,6 +162,20 @@ export default async function ManageHackathonPage({
             <Shield size={12} />
             CO-ORGANIZERS
           </TabsTrigger>
+          {isOwnerOrAdmin && (
+            <TabsTrigger
+              value="requests"
+              className="rounded-none  text-xs tracking-wider data-[state=active]:bg-brand-purple/10 data-[state=active]:text-brand-purple gap-1.5 px-4 h-9"
+            >
+              <Inbox size={12} />
+              REQUESTS
+              {pendingRequestsCount > 0 && (
+                <span className="ml-1 inline-flex items-center justify-center w-4 h-4 rounded-full bg-brand-purple text-background text-[9px] font-bold">
+                  {pendingRequestsCount}
+                </span>
+              )}
+            </TabsTrigger>
+          )}
           <TabsTrigger
             value="email"
             className="rounded-none  text-xs tracking-wider data-[state=active]:bg-brand-green/10 data-[state=active]:text-brand-green gap-1.5 px-4 h-9"
@@ -189,6 +212,16 @@ export default async function ManageHackathonPage({
             canManage={isOwnerOrAdmin}
           />
         </TabsContent>
+
+        {/* ── Requests Tab (owner/admin only) ── */}
+        {isOwnerOrAdmin && (
+          <TabsContent value="requests" className="mt-0">
+            <CoOrganizerRequestsManager
+              _hackathonId={hackathon.id}
+              requests={coOrganizerRequests}
+            />
+          </TabsContent>
+        )}
 
         {/* ── Email Tab ── */}
         <TabsContent value="email" className="mt-0">

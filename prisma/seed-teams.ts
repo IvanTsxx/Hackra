@@ -1,25 +1,72 @@
-import { TEAMS } from "../shared/lib/mock-data";
+/* eslint-disable sort-keys, no-inline-comments */
 import { prisma } from "./seed-client";
+
+const TEAM_DATA = [
+  {
+    hackathonSlug: "vercel-ship-2026",
+    name: "Zero Config",
+    description:
+      "Building the next generation of zero-config deployment tools.",
+    techs: ["Next.js", "TypeScript", "Vercel"],
+    ownerId: "u2",
+    members: ["u2", "u3"],
+    maxMembers: 4,
+  },
+  {
+    hackathonSlug: "ai-agents-hackathon",
+    name: "AgentForge",
+    description: "Forging autonomous AI agents that can reason and act.",
+    techs: ["Python", "TypeScript", "Next.js"],
+    ownerId: "u4",
+    members: ["u4", "u3", "u5"],
+    maxMembers: 5,
+  },
+  {
+    hackathonSlug: "eth-global-london",
+    name: "ZK Builders",
+    description: "Building privacy-preserving voting systems on Ethereum.",
+    techs: ["Solidity", "TypeScript", "React"],
+    ownerId: "u8",
+    members: ["u8", "u7"],
+    maxMembers: 4,
+  },
+  {
+    hackathonSlug: "rust-wasm-hack",
+    name: "Ferris Wheel",
+    description: "Bringing the performance of Rust to the web.",
+    techs: ["Rust", "WebAssembly", "TypeScript"],
+    ownerId: "u7",
+    members: ["u7"],
+    maxMembers: 3,
+  },
+  {
+    hackathonSlug: "design-systems-hack",
+    name: "Component Lib",
+    description: "Building beautiful, accessible component libraries.",
+    techs: ["React", "TypeScript", "Tailwind CSS"],
+    ownerId: "u1",
+    members: ["u1", "u2"],
+    maxMembers: 4,
+  },
+];
 
 export async function seedTeams() {
   console.log("🌱 Seeding teams, members, questions, and applications...");
 
   const createdTeams: string[] = [];
-  const questionIdMap = new Map<string, string>();
 
-  for (const team of TEAMS) {
-    // Create the team
+  for (const team of TEAM_DATA) {
     const createdTeam = await prisma.team.create({
       data: {
         description: team.description,
         hackathon: {
           connect: { slug: team.hackathonSlug },
         },
-        id: team.id,
+        id: `team-${team.hackathonSlug}`,
         maxMembers: team.maxMembers,
         name: team.name,
         owner: {
-          connect: { id: team.members[0].userId },
+          connect: { id: team.ownerId },
         },
         techs: team.techs,
       },
@@ -27,82 +74,15 @@ export async function seedTeams() {
 
     createdTeams.push(createdTeam.id);
 
-    // Create team members
     await prisma.teamMember.createManyAndReturn({
-      data: team.members.map((member) => ({
-        joinedAt: new Date(member.joinedAt),
+      data: team.members.map((userId, index) => ({
+        joinedAt: new Date(Date.now() - index * 2 * 24 * 60 * 60 * 1000),
         teamId: createdTeam.id,
-        userId: member.userId,
+        userId,
       })),
     });
-
-    // Create team questions
-    const questions = await prisma.teamQuestion.createManyAndReturn({
-      data: team.questions.map((question) => ({
-        question,
-        teamId: createdTeam.id,
-      })),
-    });
-
-    // Build a map from question text to question ID for this team
-    for (const q of questions) {
-      questionIdMap.set(`${createdTeam.id}:${q.question}`, q.id);
-    }
-
-    // Create team applications with answers
-    for (const applicant of team.applicants) {
-      const application = await prisma.teamApplication.create({
-        data: {
-          createdAt: new Date(applicant.appliedAt),
-          message: applicant.message,
-          status: mapApplicationStatus(applicant.status),
-          teamId: createdTeam.id,
-          userId: applicant.userId,
-        },
-      });
-
-      // Create application answers
-      for (const qa of applicant.answers) {
-        const questionId = questionIdMap.get(
-          `${createdTeam.id}:${qa.question}`
-        );
-        if (!questionId) {
-          console.warn(
-            `⚠️  Question not found for answer: "${qa.question}" in team "${team.name}"`
-          );
-          continue;
-        }
-
-        await prisma.teamApplicationAnswer.create({
-          data: {
-            answer: qa.answer,
-            applicationId: application.id,
-            questionId,
-          },
-        });
-      }
-    }
   }
 
   console.log(`✅ Seeded ${createdTeams.length} teams`);
   return createdTeams;
-}
-
-function mapApplicationStatus(
-  status: "pending" | "accepted" | "rejected"
-): "PENDING" | "ACCEPTED" | "REJECTED" {
-  switch (status) {
-    case "pending": {
-      return "PENDING";
-    }
-    case "accepted": {
-      return "ACCEPTED";
-    }
-    case "rejected": {
-      return "REJECTED";
-    }
-    default: {
-      return "PENDING";
-    }
-  }
 }

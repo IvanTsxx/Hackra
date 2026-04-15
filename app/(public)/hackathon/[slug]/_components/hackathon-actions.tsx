@@ -8,6 +8,7 @@ import { AuthModalDialog } from "@/shared/components/auth";
 import { Button } from "@/shared/components/ui/button";
 
 import { JoinHackathonButton } from "./join-hackathon-button";
+import { RequestCoOrganizerButton } from "./request-co-organizer-button";
 
 interface Props {
   hackathonId: string;
@@ -19,6 +20,8 @@ interface Props {
   source: string | null;
   externalUrl: string | null;
   slug: string;
+  hasExistingRequest: boolean;
+  isAlreadyCoOrganizer: boolean;
 }
 
 export async function HackathonActions({
@@ -30,6 +33,9 @@ export async function HackathonActions({
   title,
   source,
   externalUrl,
+  slug,
+  hasExistingRequest,
+  isAlreadyCoOrganizer,
 }: Props) {
   const user = await getCurrentUser();
 
@@ -63,6 +69,16 @@ export async function HackathonActions({
             JOIN HACKATHON
           </span>
         </AuthModalDialog>
+      )}
+      {user && !isOwner && (
+        <RequestCoOrganizerButton
+          hackathonId={hackathonId}
+          _hackathonSlug={slug}
+          hackathonTitle={title}
+          _hasExistingRequest={hasExistingRequest}
+          isAlreadyCoOrganizer={isAlreadyCoOrganizer}
+          isOwner={isOwner}
+        />
       )}
       <ShareModal url={shareUrl} title={title} />
       {source === "luma" && externalUrl && (
