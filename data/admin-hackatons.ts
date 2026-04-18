@@ -154,8 +154,26 @@ export async function publishHackathon(id: string) {
 export async function updateHackathonStatuses() {
   const now = new Date();
 
+  // Find hackathons that will change to LIVE
+  const toLive = await prisma.hackathon.findMany({
+    select: { id: true, organizerId: true, slug: true },
+    where: {
+      startDate: { lte: now },
+      status: HackathonStatus.UPCOMING,
+    },
+  });
+
+  // Find hackathons that will change to ENDED
+  const toEnded = await prisma.hackathon.findMany({
+    select: { id: true, organizerId: true, slug: true },
+    where: {
+      endDate: { lte: now },
+      status: HackathonStatus.LIVE,
+    },
+  });
+
   // UPCOMING → LIVE: startDate <= now
-  const toLiveResult = await prisma.hackathon.updateMany({
+  await prisma.hackathon.updateMany({
     data: { status: HackathonStatus.LIVE },
     where: {
       startDate: { lte: now },
@@ -164,7 +182,7 @@ export async function updateHackathonStatuses() {
   });
 
   // LIVE → ENDED: endDate <= now
-  const endedResult = await prisma.hackathon.updateMany({
+  await prisma.hackathon.updateMany({
     data: { status: HackathonStatus.ENDED },
     where: {
       endDate: { lte: now },
@@ -173,8 +191,10 @@ export async function updateHackathonStatuses() {
   });
 
   return {
-    ended: endedResult.count,
-    started: toLiveResult.count,
+    ended: toEnded.length,
+    started: toLive.length,
+    toEnded,
+    toLive,
   };
 }
 
