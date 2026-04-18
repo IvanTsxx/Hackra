@@ -68,9 +68,5 @@ const RenderButton = async () => {
       </AuthModalDialog>
     );
   }
-  return (
-    <div className="pt-2 border-t border-border/30">
-      <UserMenu />
-    </div>
-  );
+  return <UserMenu />;
 };

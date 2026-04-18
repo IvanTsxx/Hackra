@@ -145,6 +145,34 @@ export async function publishHackathon(id: string) {
   });
 }
 
+/**
+ * Update hackathon statuses based on dates.
+ * UPCOMING → LIVE when startDate is reached
+ * LIVE → ENDED when endDate is reached
+ * This should be called periodically (e.g., on app startup or via cron)
+ */
+export async function updateHackathonStatuses() {
+  const now = new Date();
+
+  // UPCOMING → LIVE: startDate <= now
+  await prisma.hackathon.updateMany({
+    data: { status: HackathonStatus.LIVE },
+    where: {
+      startDate: { lte: now },
+      status: HackathonStatus.UPCOMING,
+    },
+  });
+
+  // LIVE → ENDED: endDate <= now
+  await prisma.hackathon.updateMany({
+    data: { status: HackathonStatus.ENDED },
+    where: {
+      endDate: { lte: now },
+      status: HackathonStatus.LIVE,
+    },
+  });
+}
+
 export interface HackathonStats {
   total: number;
   bySource: { source: string | null; count: number }[];

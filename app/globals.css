@@ -168,7 +168,7 @@
 .pixel-grid {
   background-image: radial-gradient(
     circle,
-    oklch(0.25 0 0) 1px,
+    oklch(0.25 0 0 / 0.6) 1px,
     transparent 1px
   );
   background-size: 16px 16px;
@@ -417,6 +417,23 @@ body
   > div.space-y-6
   > div
   > div:nth-child(7)
+  > div.space-y-1
+  > div
+  > div.h-\[360px\].border.border-border\/40.overflow-hidden.cursor-crosshair
+  > div
+  > div.maplibregl-control-container
+  > div.maplibregl-ctrl-bottom-right {
+  display: none !important;
+}
+
+body
+  > div.group\/sidebar-wrapper.flex.min-h-svh.w-full.has-data-\[variant\=inset\]\:bg-background
+  > main
+  > section
+  > section
+  > div.space-y-6
+  > div
+  > div:nth-child(5)
   > div.space-y-1
   > div
   > div.h-\[360px\].border.border-border\/40.overflow-hidden.cursor-crosshair

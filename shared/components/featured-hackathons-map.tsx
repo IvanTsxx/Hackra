@@ -18,6 +18,7 @@ import { StatusPill } from "./tag-badge";
 interface FeaturedHackathonsMapProps {
   hackathons: MapHackathon[];
   className?: string;
+  initialZoom?: number;
 }
 
 // Hex only — MapLibre GL doesn't support oklch
@@ -39,18 +40,37 @@ interface HackathonProperties {
 export function FeaturedHackathonsMap({
   hackathons,
   className,
+  initialZoom,
 }: FeaturedHackathonsMapProps) {
   const [selectedPoint, setSelectedPoint] = useState<{
     coordinates: [number, number];
     properties: HackathonProperties;
   } | null>(null);
 
-  const [viewport, setViewport] = useState({
-    bearing: 0,
-    center: [0, 20] as [number, number],
-    pitch: 0,
-    zoom: 1,
-  });
+  // Determine initial viewport based on props and hackathons
+  const initialViewport = (() => {
+    // If initialZoom is provided and there's only one hackathon with coords
+    if (initialZoom && hackathons.length === 1) {
+      const [h] = hackathons;
+      if (Number.isFinite(h.latitude) && Number.isFinite(h.longitude)) {
+        return {
+          bearing: 0,
+          center: [Number(h.longitude), Number(h.latitude)] as [number, number],
+          pitch: 0,
+          zoom: initialZoom,
+        };
+      }
+    }
+    // Default: world view
+    return {
+      bearing: 0,
+      center: [0, 20] as [number, number],
+      pitch: 0,
+      zoom: 1,
+    };
+  })();
+
+  const [viewport, setViewport] = useState(initialViewport);
 
   const mapHackathons = useMemo(
     () =>

@@ -11,8 +11,8 @@ export const CreateHackatonButton = async () => {
     <>
       {user ? (
         <Button
-          size="lg"
-          className="gap-2 w-full sm:w-auto uppercase tracking-wider text-xs glow-primary"
+          size="sm"
+          className="uppercase tracking-wider text-xs glow-primary"
           render={<Link href="/create" />}
           nativeButton={false}
         >
@@ -23,8 +23,8 @@ export const CreateHackatonButton = async () => {
           isRender
           renderComponent={
             <Button
-              size="lg"
-              className="gap-2 w-full sm:w-auto uppercase tracking-wider text-xs glow-primary"
+              size="sm"
+              className="uppercase tracking-wider text-xs glow-primary"
             />
           }
         >

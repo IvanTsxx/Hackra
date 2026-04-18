@@ -530,7 +530,10 @@ export default async function HackathonDetailPage({
                   LOCATION
                 </p>
               </div>
-              <FeaturedHackathonsMap hackathons={[mapHackathon]} />
+              <FeaturedHackathonsMap
+                hackathons={[mapHackathon]}
+                initialZoom={14}
+              />
             </div>
           )}
 

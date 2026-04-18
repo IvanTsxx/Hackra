@@ -119,6 +119,9 @@ const getHomeData = async () => {
   cacheLife(CACHE_LIFE.HOME_DATA);
   cacheTag(CACHE_TAGS.HOME_DATA);
 
+  // Update hackathon statuses based on dates
+  /* await updateHackathonStatuses(); */
+
   const [
     hackathonsCount,
     developersCount,

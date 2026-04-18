@@ -59,3 +59,43 @@ export async function getAllUsers() {
     take: 100,
   });
 }
+
+export interface LeaderboardUser {
+  id: string;
+  username: string;
+  name: string | null;
+  image: string | null;
+  karmaPoints: number;
+  position: string | null;
+}
+
+const LEADERBOARD_PAGE_SIZE = 10;
+
+export async function getLeaderboard(page = 1) {
+  const skip = (page - 1) * LEADERBOARD_PAGE_SIZE;
+
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      orderBy: { karmaPoints: "desc" },
+      select: {
+        id: true,
+        image: true,
+        karmaPoints: true,
+        name: true,
+        position: true,
+        username: true,
+      },
+      skip,
+      take: LEADERBOARD_PAGE_SIZE,
+    }),
+    prisma.user.count(),
+  ]);
+
+  return {
+    hasMore: page < Math.ceil(total / LEADERBOARD_PAGE_SIZE),
+    page,
+    total,
+    totalPages: Math.ceil(total / LEADERBOARD_PAGE_SIZE),
+    users: users as LeaderboardUser[],
+  };
+}

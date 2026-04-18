@@ -59,12 +59,6 @@ export function KarmaHowItWorks() {
               {"// Earn karma by participating in the community"}
             </h2>
           </div>
-          <div className="text-right">
-            <p className="text-2xl font-bold text-brand-green">UNLOCK PERKS</p>
-            <p className="text-xs text-muted-foreground">
-              Higher karma = more benefits
-            </p>
-          </div>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-px">
@@ -112,16 +106,10 @@ export function KarmaHowItWorks() {
               Earn karma continuously
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-brand-purple rounded-full animate-pulse" />
-            <p className="text-xs text-muted-foreground">
-              Unlock exclusive perks
-            </p>
-          </div>
         </div>
 
         <p className="text-xs text-muted-foreground mt-6 text-center">
-          {"/* Karma reflects your activity. Earn more to unlock perks! */"}
+          {"/* Karma reflects your activity. */"}
         </p>
       </div>
     </section>
