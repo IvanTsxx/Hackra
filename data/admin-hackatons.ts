@@ -155,7 +155,7 @@ export async function updateHackathonStatuses() {
   const now = new Date();
 
   // UPCOMING → LIVE: startDate <= now
-  await prisma.hackathon.updateMany({
+  const toLiveResult = await prisma.hackathon.updateMany({
     data: { status: HackathonStatus.LIVE },
     where: {
       startDate: { lte: now },
@@ -164,13 +164,18 @@ export async function updateHackathonStatuses() {
   });
 
   // LIVE → ENDED: endDate <= now
-  await prisma.hackathon.updateMany({
+  const endedResult = await prisma.hackathon.updateMany({
     data: { status: HackathonStatus.ENDED },
     where: {
       endDate: { lte: now },
       status: HackathonStatus.LIVE,
     },
   });
+
+  return {
+    ended: endedResult.count,
+    started: toLiveResult.count,
+  };
 }
 
 export interface HackathonStats {
